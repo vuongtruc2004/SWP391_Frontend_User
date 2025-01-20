@@ -6,7 +6,7 @@ const SingleBlogSlider = () => {
         <Box sx={{
             display: 'grid',
             gridTemplateColumns: '1fr 300px',
-            bgcolor: 'black',
+            background: '#15171c',
             width: '100%',
             height: '100%',
             borderRadius: '6px',

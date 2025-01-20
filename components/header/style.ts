@@ -31,8 +31,7 @@ export const LabelStyled = styled('label')({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    backdropFilter: 'blur(20px)',
-    background: 'rgba(255, 255, 255, 0.4)',
+    border: '1px solid rgba(255,255, 255, 0.4)',
     borderRadius: '5px',
     paddingLeft: '5px',
 })

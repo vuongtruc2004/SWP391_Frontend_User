@@ -5,7 +5,7 @@ import SingleCourseSlider from './single.course.slider'
 const CourseSlider = () => {
     return (
         <>
-            <h3 className='text-center font-bold uppercase text-2xl text-blue-950 mt-10'>Khóa học phổ biến</h3>
+            <h3 className='text-center font-bold uppercase text-2xl text-white mt-10'>Khóa học phổ biến</h3>
             <Box sx={{
                 display: 'grid',
                 gridTemplateColumns: 'repeat(3, 1fr)',

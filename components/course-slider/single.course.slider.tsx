@@ -12,9 +12,8 @@ const SingleCourseSlider = (props: IProps) => {
 
     return (
         <Box sx={{
-            border: '1px solid #ced4da',
+            background: '#15171c',
             borderRadius: '6px',
-            boxShadow: '2px 2px 5px rgba(0,0,0,0.2)',
             '.mui-1txyin7-MuiLinearProgress-root': {
                 bgcolor: '#ced4da'
             },
@@ -24,7 +23,7 @@ const SingleCourseSlider = (props: IProps) => {
             },
         }}>
             <div className='relative'>
-                <div className='bg-black rounded-md w-full h-48 cursor-pointer'>
+                <div className='bg-blue-500 rounded-md w-full h-48 cursor-pointer'>
 
                 </div>
                 <Box sx={{
@@ -44,8 +43,8 @@ const SingleCourseSlider = (props: IProps) => {
                 </Box>
             </div>
 
-            <div className='p-5'>
-                <Link href={"/test"} className='text-black font-semibold hover:underline hover:text-blue-500'>Khóa học Spring Boot từ A-Z</Link>
+            <div className='p-5 text-white'>
+                <Link href={"/test"} className='font-semibold hover:underline hover:text-blue-500'>Khóa học Spring Boot từ A-Z</Link>
                 <ul className='flex items-center gap-x-3 mt-1'>
                     <li>
                         <Chip size='small' variant="outlined" color="success" label="Java" />
@@ -61,7 +60,7 @@ const SingleCourseSlider = (props: IProps) => {
                     {index % 2 === 0 ? (
                         <div className='flex items-center justify-between mt-2'>
                             <div>
-                                <p className='text-gray-500 text-sm'>Sale off 30%</p>
+                                <p className='text-gray-500 text-sm'>Giảm giá 30%</p>
                                 <div className='flex items-center gap-x-3'>
                                     <p className='text-red-500 italic line-through'>300.000đ</p>
                                     <p>299.000đ</p>
@@ -72,9 +71,8 @@ const SingleCourseSlider = (props: IProps) => {
                     ) : (
                         <div className='flex items-center justify-between mt-3'>
                             <div className='text-sm flex items-center gap-x-2'>
-                                <p className='text-gray-500'>Hoàn thành:</p>
                                 <FacebookCircularProgress variant="determinate" value={40} width={30} />
-                                <p className='text-black font-semibold'>40%</p>
+                                <p className='font-semibold'>40%</p>
                             </div>
                             <Button sx={{ textTransform: 'capitalize', marginTop: '10px' }} size='small' variant='outlined' color='warning'>Tiếp tục học</Button>
                         </div>

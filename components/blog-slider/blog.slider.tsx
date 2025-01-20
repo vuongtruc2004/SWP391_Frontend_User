@@ -38,14 +38,16 @@ const BlogSlider = () => {
                     height: '6px',
                     borderRadius: '20px',
                     transition: 'all .3s',
+                    background: '#adb5bd'
                 },
                 '.swiper-pagination-bullet-active': {
                     width: '25px',
+                    background: '#60a5fa'
                 },
                 position: 'relative'
             }}
         >
-            <h3 className='text-center font-bold uppercase text-2xl text-blue-950'>Bài viết nổi bật</h3>
+            <h3 className='text-center font-bold uppercase text-2xl text-white'>Bài viết nổi bật</h3>
             <Swiper
                 ref={swiperRef}
                 effect={'coverflow'}
@@ -57,7 +59,7 @@ const BlogSlider = () => {
                     stretch: 0,
                     depth: 150,
                     modifier: 1,
-                    slideShadows: true
+                    slideShadows: false
                 }}
                 autoplay={{
                     delay: 3500,
