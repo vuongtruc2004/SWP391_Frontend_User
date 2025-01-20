@@ -46,7 +46,7 @@ const SingleCourseSlider = (props: IProps) => {
 
             <div className='p-5'>
                 <Link href={"/test"} className='text-black font-semibold hover:underline hover:text-blue-500'>Khóa học Spring Boot từ A-Z</Link>
-                <ul className='flex items-center gap-x-3'>
+                <ul className='flex items-center gap-x-3 mt-1'>
                     <li>
                         <Chip size='small' variant="outlined" color="success" label="Java" />
                     </li>
