@@ -1,0 +1,1 @@
+export const storageUrl = "http://localhost:8386/storage";

@@ -1,0 +1,99 @@
+import Avatar from '@mui/material/Avatar';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import Divider from '@mui/material/Divider';
+import Settings from '@mui/icons-material/Settings';
+import Logout from '@mui/icons-material/Logout';
+import { Button } from '@mui/material';
+import PersonIcon from '@mui/icons-material/Person';
+
+interface IProps {
+    anchorEl: HTMLElement | null;
+    setAnchorEl: React.Dispatch<React.SetStateAction<HTMLElement | null>>;
+}
+export default function AccountMenu(props: IProps) {
+    const { anchorEl, setAnchorEl } = props;
+    const open = Boolean(anchorEl);
+
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
+
+    return (
+        <Menu
+            anchorEl={anchorEl}
+            open={open}
+            onClose={handleClose}
+            onClick={handleClose}
+            slotProps={{
+                paper: {
+                    elevation: 0,
+                    sx: {
+                        overflow: 'visible',
+                        filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
+                        mt: 1.5,
+                        '& .MuiAvatar-root': {
+                            width: 32,
+                            height: 32,
+                            ml: -0.5,
+                            mr: 1,
+                        },
+                        '&::before': {
+                            content: '""',
+                            display: 'block',
+                            position: 'absolute',
+                            top: 0,
+                            right: 14,
+                            width: 10,
+                            height: 10,
+                            bgcolor: 'background.paper',
+                            transform: 'translateY(-50%) rotate(45deg)',
+                            zIndex: 0,
+                        },
+                    },
+                },
+            }}
+            sx={{
+                '.mui-x6cj71-MuiPaper-root-MuiPopover-paper-MuiMenu-paper': {
+                    width: 'max-content',
+                    left: 0,
+                    right: '28px',
+                    paddingInline: '5px'
+                },
+                '.mui-x6cj71-MuiPaper-root-MuiPopover-paper-MuiMenu-paper .MuiAvatar-root': {
+                    width: '45px',
+                    height: '45px',
+                    margin: '0'
+                }
+            }}
+            transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+            anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+        >
+            <div className='flex items-center justify-between py-1.5 px-4 gap-x-5'>
+                <Avatar>
+                    N
+                </Avatar>
+                <div className='min-w-44'>
+                    <p className='text-sm text-gray-500'>Hello, <strong className='text-blue-950'>Nguyen Vuong Truc</strong></p>
+                    <p className='text-sm text-gray-500'>UID: <strong className='text-blue-950'>1</strong></p>
+                </div>
+            </div>
+            <Divider sx={{ marginBlock: '10px' }} />
+            <MenuItem onClick={handleClose}>
+                <ListItemIcon>
+                    <PersonIcon fontSize="small" />
+                </ListItemIcon>
+                Tài khoản
+            </MenuItem>
+            <MenuItem onClick={handleClose}>
+                <ListItemIcon>
+                    <Settings fontSize="small" />
+                </ListItemIcon>
+                Cài đặt
+            </MenuItem>
+            <Divider sx={{ marginBlock: '10px' }} />
+            <Button variant='contained' color='error' startIcon={<Logout />} size='small' fullWidth sx={{ textTransform: 'capitalize' }}>Đăng xuất</Button>
+        </Menu>
+    );
+}
