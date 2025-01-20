@@ -79,7 +79,7 @@ const Header = () => {
                     </form>
                 </div>
 
-                {session ? (
+                {!session ? (
                     <>
                         <Avatar onClick={(event) => setAnchorEl(event.currentTarget)} sx={{ cursor: 'pointer' }}>
                             N
@@ -136,7 +136,7 @@ const Header = () => {
                     display: 'flex',
                     alignItems: 'center',
                     columnGap: '20px',
-                    width: '250px',
+                    width: '300px',
                     bgcolor: 'white',
                     borderRadius: '5px',
                     boxShadow: '2px 2px 5px rgba(0,0,0,0.2)',
@@ -158,7 +158,7 @@ const Header = () => {
                 </div>
                 <div>
                     <ShutterSpeedIcon sx={{ fontSize: '2.5rem' }} />
-                    <p>Tiết kiệm thời gian với các video thời lượng ngắn.</p>
+                    <p>Tiết kiệm thời gian với các video thời lượng ngắn, và nội dung được chia nhỏ.</p>
                 </div>
             </Box>
         </Box >

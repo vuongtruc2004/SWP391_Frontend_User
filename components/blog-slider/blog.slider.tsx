@@ -6,37 +6,41 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/effect-coverflow';
 import 'swiper/css/pagination';
+import 'swiper/css/navigation';
 
 // import required modules
-import { EffectCoverflow, Pagination } from 'swiper/modules';
+import { EffectCoverflow, Navigation, Pagination } from 'swiper/modules';
 import { Box } from '@mui/material';
 import SingleBlogSlider from './single.blog.slider';
 
 const BlogSlider = () => {
     return (
-        <Box sx={{
-            marginTop: '100px',
-            '.swiper': {
-                width: '95%',
-                paddingTop: '40px',
-                paddingBottom: '50px',
-            },
-            '.swiper-slide': {
-                backgroundPosition: 'center',
-                backgroundSize: 'cover',
-                width: '800px',
-                height: '350px',
-            },
-            '.swiper-pagination-bullet': {
-                width: '18px',
-                height: '6px',
-                borderRadius: '20px',
-                transition: 'all .3s'
-            },
-            '.swiper-pagination-bullet-active': {
-                width: '25px'
-            }
-        }}>
+        <Box
+            sx={{
+                marginTop: '100px',
+                '.swiper': {
+                    width: '95%',
+                    maxWidth: '1260px',
+                    paddingTop: '40px',
+                    paddingBottom: '50px',
+                },
+                '.swiper-slide': {
+                    backgroundPosition: 'center',
+                    backgroundSize: 'cover',
+                    width: '800px',
+                    height: '350px',
+                },
+                '.swiper-pagination-bullet': {
+                    width: '18px',
+                    height: '6px',
+                    borderRadius: '20px',
+                    transition: 'all .3s',
+                },
+                '.swiper-pagination-bullet-active': {
+                    width: '25px',
+                }
+            }}
+        >
             <h3 className='text-center font-bold uppercase text-2xl text-blue-950'>Bài viết nổi bật</h3>
             <Swiper
                 effect={'coverflow'}
@@ -53,7 +57,10 @@ const BlogSlider = () => {
                 pagination={{
                     clickable: true,
                 }}
-                modules={[EffectCoverflow, Pagination]}
+                navigation={{
+                    enabled: true
+                }}
+                modules={[EffectCoverflow, Pagination, Navigation]}
                 loop={true}
             >
                 {Array.from({ length: 10 }).map((_, index) => {
@@ -64,7 +71,7 @@ const BlogSlider = () => {
                     )
                 })}
             </Swiper>
-        </Box>
+        </Box >
     )
 }
 

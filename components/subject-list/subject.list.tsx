@@ -10,6 +10,7 @@ const SubjectList = () => {
                 gridTemplateColumns: 'repeat(3, 1fr)',
                 gap: '20px',
                 width: '95%',
+                maxWidth: '1260px',
                 margin: '40px auto 0',
             }}>
                 <div className='flex items-center gap-x-3 rounded-md shadow-md p-3 cursor-pointer'>

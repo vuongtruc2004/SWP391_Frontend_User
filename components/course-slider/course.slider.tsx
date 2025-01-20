@@ -11,6 +11,7 @@ const CourseSlider = () => {
                 gridTemplateColumns: 'repeat(3, 1fr)',
                 gap: '20px',
                 width: '95%',
+                maxWidth: '1260px',
                 margin: '40px auto 0',
             }}>
                 {Array.from({ length: 6 }).map((_, index) => {
