@@ -4,6 +4,7 @@ import { ToastContainer } from "react-toastify";
 import ThemeWrapper from "@/wrapper/theme/theme.wrapper";
 import ProgressBarWrapper from "@/wrapper/progress-bar/progress.bar.wrapper";
 import NextAuthWrapper from '@/wrapper/next-auth/next.auth.wrapper';
+import HorizontalScrollbarWrapper from '@/wrapper/horizontal-scrollbar/horizontal.scrollbar.wrapper';
 
 export default function RootLayout({
   children,
@@ -19,13 +20,15 @@ export default function RootLayout({
           <ThemeWrapper>
 
             <NextAuthWrapper>
-              <ProgressBarWrapper>
+              <HorizontalScrollbarWrapper>
+                <ProgressBarWrapper>
 
-                {children}
+                  {children}
 
-                <ToastContainer />
+                  <ToastContainer />
 
-              </ProgressBarWrapper>
+                </ProgressBarWrapper>
+              </HorizontalScrollbarWrapper>
             </NextAuthWrapper>
 
           </ThemeWrapper>
