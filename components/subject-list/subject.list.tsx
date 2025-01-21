@@ -1,10 +1,16 @@
+'use client'
 import { Box } from '@mui/material'
-import React from 'react'
+import { useRef } from 'react'
+import SubjectListMotion from './subject.list.motion'
+import { useInView } from 'framer-motion';
 
 const SubjectList = () => {
+    const h3Ref = useRef(null);
+    const isInView = useInView(h3Ref, { margin: "-200px" });
+
     return (
         <>
-            <h3 className='text-center font-bold uppercase text-2xl text-white mt-10'>Danh mục được quan tâm nhất</h3>
+            <h3 ref={h3Ref} className='text-center font-bold uppercase text-2xl text-white mt-10'>Danh mục được quan tâm nhất</h3>
             <Box sx={{
                 display: 'grid',
                 gridTemplateColumns: 'repeat(3, 1fr)',
@@ -19,9 +25,12 @@ const SubjectList = () => {
                     '&:hover': {
                         transform: 'scale(1.05)',
                         zIndex: '10',
-                    }
-                }
+                    },
+                    zIndex: 2
+                },
+                position: 'relative'
             }}>
+                <SubjectListMotion isInView={isInView} />
                 <div className='flex items-center gap-x-3 rounded-md p-3 cursor-pointer'>
                     <div className='bg-blue-300 text-blue-500 flex items-center justify-center w-28 h-28 rounded-md flex-none'>
                         <p className='text-sm font-semibold'>JAVA</p>

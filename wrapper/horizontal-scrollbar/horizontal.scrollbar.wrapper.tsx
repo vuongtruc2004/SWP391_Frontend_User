@@ -12,9 +12,9 @@ const HorizontalScrollbarWrapper = ({ children }: { children: React.ReactNode })
         style={{
           scaleX: scrollYProgress,
           x: "-50%",
-          y: '-50%',
           background: scrollbarBackground,
-          height: '5px'
+          height: '5px',
+          zIndex: '100'
         }}
         className='fixed left-1/2 bottom-0 bg-blue-500 w-screen'
       />

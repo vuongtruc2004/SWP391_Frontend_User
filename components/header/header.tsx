@@ -102,7 +102,7 @@ const Header = () => {
                     }
                 }}>
                     <Button variant="outlined" color="secondary">Đăng Nhập</Button>
-                    <Button variant="contained">Đăng Kí</Button>
+                    <Button variant="contained" onClick={() => router.push("/register")}>Đăng Kí</Button>
                 </Box>
             )}
         </Box>
