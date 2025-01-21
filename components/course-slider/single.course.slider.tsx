@@ -1,7 +1,6 @@
 import { Box, Button, Chip } from '@mui/material'
 import GroupsIcon from '@mui/icons-material/Groups';
 import Link from 'next/link'
-import React from 'react'
 import FacebookCircularProgress from './facebook.circular.progress';
 
 interface IProps {

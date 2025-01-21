@@ -6,7 +6,7 @@ import { useInView } from 'framer-motion';
 
 const SubjectList = () => {
     const h3Ref = useRef(null);
-    const isInView = useInView(h3Ref, { margin: "-200px" });
+    const isInView = useInView(h3Ref, { margin: "-200px", once: true });
 
     return (
         <>

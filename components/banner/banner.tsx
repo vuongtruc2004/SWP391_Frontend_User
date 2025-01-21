@@ -1,5 +1,4 @@
 import { Box, Button } from '@mui/material'
-import React from 'react'
 import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 import ConstructionIcon from '@mui/icons-material/Construction';
 import PublicIcon from '@mui/icons-material/Public';

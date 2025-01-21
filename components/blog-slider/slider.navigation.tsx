@@ -2,7 +2,6 @@
 import { Box } from '@mui/material';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import React from 'react'
 import { SwiperRef } from 'swiper/react';
 
 interface IProps {

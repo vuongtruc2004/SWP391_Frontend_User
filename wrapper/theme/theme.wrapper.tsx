@@ -1,5 +1,4 @@
 import { ThemeProvider } from '@mui/material'
-import React from 'react'
 import theme from './theme'
 
 const ThemeWrapper = ({ children }: { children: React.ReactNode }) => {

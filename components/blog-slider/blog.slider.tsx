@@ -1,5 +1,5 @@
 'use client'
-import React, { useRef } from 'react';
+import { useRef } from 'react';
 import { Swiper, SwiperRef, SwiperSlide } from 'swiper/react';
 import { useInView } from "framer-motion";
 import 'swiper/css';
@@ -14,7 +14,7 @@ import BlogSliderMotion from './blog.slider.motion';
 const BlogSlider = () => {
     const swiperRef = useRef<SwiperRef | null>(null);
     const h3Ref = useRef(null);
-    const isInView = useInView(h3Ref, { margin: "-200px" });
+    const isInView = useInView(h3Ref, { margin: "-200px", once: true });
 
     return (
         <Box

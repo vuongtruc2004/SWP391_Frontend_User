@@ -6,7 +6,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 import AccountMenu from "./account.menu";
-import { useSession } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 
 const Header = () => {
     const router = useRouter();
@@ -101,7 +101,7 @@ const Header = () => {
                         width: '120px'
                     }
                 }}>
-                    <Button variant="outlined" color="secondary">Đăng Nhập</Button>
+                    <Button variant="outlined" color="secondary" onClick={() => signIn()}>Đăng Nhập</Button>
                     <Button variant="contained" onClick={() => router.push("/register")}>Đăng Kí</Button>
                 </Box>
             )}

@@ -1,5 +1,4 @@
 import { Avatar, Box, Button } from '@mui/material'
-import React from 'react'
 
 const SingleBlogSlider = () => {
     return (
