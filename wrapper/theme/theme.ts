@@ -15,6 +15,9 @@ const theme = createTheme({
             main: '#f8f9fa'
         }
     },
+    colorSchemes: {
+        dark: true,
+    },
     typography: {
         fontFamily: `${quicksand.style.fontFamily}, sans-serif`,
     },

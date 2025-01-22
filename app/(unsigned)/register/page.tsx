@@ -1,9 +1,14 @@
-import RegisterForm from '@/components/register-form/register.form'
+import Register from '@/components/register-form/register'
 
 const RegisterPage = () => {
     return (
-        <div className='bg-black min-h-screen flex items-center justify-center'>
-            <RegisterForm />
+        <div className='bg-black min-h-screen flex items-center justify-center ' style={{
+            // backgroundImage: 'url(/register-background.jpg)',
+            backgroundPosition: 'center',
+            backgroundSize: 'cover',
+            backgroundRepeat: 'no-repeat'
+        }}>
+            <Register />
         </div>
     )
 }
