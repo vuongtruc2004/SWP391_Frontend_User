@@ -3,60 +3,27 @@ import { Box, Button, Divider, IconButton, InputAdornment, TextField, Tooltip } 
 import OutlinedInput from '@mui/material/OutlinedInput';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import GitHubIcon from '@mui/icons-material/GitHub';
 import { useState } from 'react';
 import Link from 'next/link';
 import { signIn } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
 
 const LoginForm = () => {
     const [showPassword, setShowPassword] = useState(false);
-    const router = useRouter();
-    // const { showToast } = useToast();
-
-    // const handleCredentialLogin = async (e: React.FormEvent<HTMLFormElement>) => {
-    //     e.preventDefault();
-    //     //@ts-ignore
-    //     const username = e.target[0]?.value as string ?? "";
-    //     //@ts-ignore
-    //     const password = e.target[2]?.value as string ?? "";
-
-    //     if (!username || username.trim() === '') {
-
-    //         return;
-    //     }
-    //     if (!password || password.trim() === '') {
-    //         showToast({
-    //             message: "Mật khẩu không được để trống!",
-    //             type: 'error'
-    //         })
-    //         return;
-    //     }
-
-    //     const response = await signIn("credentials", {
-    //         username: username,
-    //         password: password,
-    //         redirect: false
-    //     });
-
-    //     if (response?.error) {
-    //         showToast({
-    //             message: response.error,
-    //             type: 'error'
-    //         })
-    //     } else {
-    //         router.push("/");
-    //     }
-    // }
 
     return (
         <Box sx={{
             width: '100%',
-            padding: '20px',
+            height: '100%',
+            padding: '40px 25px',
+            background: 'linear-gradient(to bottom right, #000814, #15171c)',
+            borderTopRightRadius: '50px',
+            borderBottomRightRadius: '6px',
         }}>
+            <h3 className='font-semibold text-center text-lg text-white mb-3'>Đăng Nhập</h3>
             <form>
-                <h3 className='font-semibold text-center text-lg'>Đăng Nhập</h3>
                 <div className='mb-3'>
-                    <p className='text-black mb-1'>Tài khoản:</p>
+                    <label className="mb-[10px] block text-white"><span className="text-red-500 mr-1">*</span>Tên tài khoản:</label>
                     <TextField
                         placeholder='Nhập tên tài khoản'
                         size='small'
@@ -67,7 +34,7 @@ const LoginForm = () => {
                 </div>
 
                 <div className='mb-1'>
-                    <p className='text-black mb-1'>Mật khẩu:</p>
+                    <label className="mb-[10px] block text-white"><span className="text-red-500 mr-1">*</span>Mật khẩu:</label>
                     <OutlinedInput
                         type={showPassword ? 'text' : 'password'}
                         endAdornment={
@@ -88,12 +55,23 @@ const LoginForm = () => {
                     />
                 </div>
 
-                <Link href={"/password/reset"} className='inline-block transition-all duration-300 text-gray-500 mb-3 text-sm hover:underline hover:text-[#01796F]'>Quên mật khẩu?</Link>
+                <div className='flex justify-end mb-2'>
+                    <Link
+                        href={"/password/reset"}
+                        className='text-gray-400 text-sm hover:underline hover:text-blue-500'>
+                        Quên mật khẩu?
+                    </Link>
+                </div>
 
                 <Button type='submit' variant='contained' color='primary' fullWidth >Đăng Nhập</Button>
+
+                <div className='text-gray-400 text-sm flex items-center mt-2'>
+                    <p>Bạn chưa có tài khoản?</p>
+                    <Link href={"/register"} className='ml-1 text-blue-500 hover:underline'>Đăng kí</Link>
+                </div>
             </form>
 
-            <Divider sx={{ marginBlock: '15px', color: '#6c757d', fontSize: '14px' }}>Hoặc đăng nhập với</Divider>
+            <Divider sx={{ marginBlock: '15px', color: '#ced4da', fontSize: '14px' }}>Hoặc đăng nhập với</Divider>
 
             <Box
                 sx={{
@@ -101,29 +79,28 @@ const LoginForm = () => {
                     alignItems: 'center',
                     justifyContent: 'center',
                     columnGap: '10px',
-                    'img': {
-                        width: '30px',
-                        aspectRatio: 1
+                    'button': {
+                        'img': {
+                            width: '24px',
+                            aspectRatio: 1,
+                            objectFit: 'cover'
+                        },
+                        padding: '6px 25px',
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        columnGap: '10px'
                     }
                 }}
             >
-                <Tooltip title="Github" arrow>
-                    <IconButton color='primary' onClick={() => signIn("github")}>
-                        <img src={`github.png`} alt="github" />
-                    </IconButton>
-                </Tooltip>
-
-                <Tooltip title="Google" arrow>
-                    <IconButton color='primary'>
-                        <img src={`google.png`} alt="google" />
-                    </IconButton>
-                </Tooltip>
-
-                <Tooltip title="Facebook" arrow>
-                    <IconButton color='primary'>
-                        <img src={`facebook.png`} alt="facebook" />
-                    </IconButton>
-                </Tooltip>
+                <Button variant='outlined' fullWidth size='small' onClick={() => signIn('google')}>
+                    <img src={"http://localhost:3000/google-icon.png"} alt="" />
+                    <p>Google</p>
+                </Button>
+                <Button variant='outlined' fullWidth size='small' onClick={() => signIn('github')}>
+                    <GitHubIcon sx={{ color: 'white' }} />
+                    <p>Github</p>
+                </Button>
             </Box>
         </Box>
     )

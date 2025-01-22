@@ -1,40 +1,56 @@
-import NextAuth, { AuthOptions } from "next-auth";
+import { apiUrl } from "@/utils/url";
+import NextAuth, { AuthOptions, User } from "next-auth";
 import GitHubProvider from "next-auth/providers/github";
+import GoogleProvider from "next-auth/providers/google";
+import CredentialsProvider from "next-auth/providers/credentials";
+import { letRefreshToken, shouldRefreshToken } from "@/utils/refresh.token";
 
 export const authOptions: AuthOptions = {
     providers: [
-        // CredentialsProvider({
-        //     name: "Credentials",
-        //     credentials: {
-        //         username: { label: "Username", type: "text" },
-        //         password: { label: "Password", type: "password" }
-        //     },
-        //     async authorize(credentials) {
-        //         const response = await sendRequest<IApiResponse<ILoginResponse>>({
-        //             url: `${apiURL}/auth/login/credentials`,
-        //             method: "POST",
-        //             body: {
-        //                 username: credentials?.username,
-        //                 password: credentials?.password
-        //             },
-        //             useCredentials: true
-        //         });
+        CredentialsProvider({
+            name: "Credentials",
+            credentials: {
+                username: { type: "text" },
+                password: { type: "password" }
+            },
+            async authorize(credentials) {
+                const request: CredentialsLoginRequest = {
+                    username: credentials?.username ?? "",
+                    password: credentials?.password ?? "",
+                }
 
-        //         if (response.status === 200) {
-        //             return response.data as any;
-        //         } else {
-        //             throw new Error(response.message as string);
-        //         }
-        //     }
-        // }),
+                const responseRaw = await fetch(`${apiUrl}/auth/login/credential`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(request)
+                });
+
+                const response: ApiResponse<LoginResponse> = await responseRaw.json();
+
+                if (response.statusCode === 200) {
+                    const user: User = {
+                        id: response.data.user.userId.toString(),
+                        user: response.data.user,
+                        accessToken: response.data.accessToken,
+                        expireAt: response.data.expireAt,
+                        refreshToken: response.data.refreshToken
+                    }
+                    return user;
+                } else {
+                    throw new Error("Sai tên tài khoản hoặc mật khẩu!");
+                }
+            }
+        }),
         GitHubProvider({
             clientId: process.env.GITHUB_ID!,
             clientSecret: process.env.GITHUB_SECRET!
         }),
-        // GoogleProvider({
-        //     clientId: process.env.GOOGLE_ID!,
-        //     clientSecret: process.env.GOOGLE_SECRET!
-        // })
+        GoogleProvider({
+            clientId: process.env.GOOGLE_ID!,
+            clientSecret: process.env.GOOGLE_SECRET!
+        })
     ],
     secret: process.env.NEXTAUTH_SECRET,
     pages: {
@@ -42,51 +58,55 @@ export const authOptions: AuthOptions = {
     },
     callbacks: {
         async jwt({ token, user, account, trigger }) {
-            // if (trigger === 'signIn') {
-            //     if (account?.provider !== 'credentials') {
-            //         const response = await sendRequest<IApiResponse<ILoginResponse>>({
-            //             url: `${apiURL}/auth/login/socials`,
-            //             method: "POST",
-            //             body: {
-            //                 username: user.email,
-            //                 fullname: user.name,
-            //                 avatar: user.image,
-            //                 type: account?.provider.toUpperCase()
-            //             }
-            //         });
+            if (trigger === 'signIn') {
+                if (account?.provider !== 'credentials') {
+                    console.log(">>> check user: ", user);
+                    const request: SocialsLoginRequest = {
+                        username: user.email ?? "",
+                        fullname: user.name ?? "",
+                        avatar: user.image ?? "",
+                        email: user.email ?? "",
+                        accountType: account?.provider.toUpperCase() ?? ""
+                    }
 
-            //         if (response.status === 200) {
-            //             const data = response.data;
-            //             if (data) {
-            //                 token.user = data.user;
-            //                 token.accessToken = data.accessToken;
-            //                 token.expireAt = data.expireAt;
-            //                 token.refreshToken = data.refreshToken;
-            //             }
-            //         }
-            //     } else {
-            //         //@ts-ignore
-            //         token.user = user.user;
-            //         //@ts-ignore
-            //         token.accessToken = user.accessToken;
-            //         //@ts-ignore
-            //         token.expireAt = user.expireAt;
-            //         //@ts-ignore
-            //         token.refreshToken = user.refreshToken;
-            //     }
-            // }
-            // if (shouldRefreshToken(token.expireAt)) {
-            //     return letRefreshToken(token);
-            // }
+                    const responseRaw = await fetch(`${apiUrl}/auth/login/socials`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(request)
+                    });
+
+                    const response: ApiResponse<LoginResponse> = await responseRaw.json();
+
+                    if (response.statusCode === 200) {
+                        const data = response.data;
+                        if (data) {
+                            token.user = data.user;
+                            token.accessToken = data.accessToken;
+                            token.expireAt = data.expireAt;
+                            token.refreshToken = data.refreshToken;
+                        }
+                    }
+                } else {
+                    token.user = user.user;
+                    token.accessToken = user.accessToken;
+                    token.expireAt = user.expireAt;
+                    token.refreshToken = user.refreshToken;
+                }
+            }
+            if (shouldRefreshToken(token.expireAt)) {
+                return letRefreshToken(token);
+            }
             return token;
         },
         async session({ session, token }) {
-            // if (token) {
-            //     session.user = token.user;
-            //     session.accessToken = token.accessToken;
-            //     session.expireAt = token.expireAt;
-            //     session.refreshToken = token.refreshToken;
-            // }
+            if (token) {
+                session.user = token.user;
+                session.accessToken = token.accessToken;
+                session.expireAt = token.expireAt;
+                session.refreshToken = token.refreshToken;
+            }
             return session;
         }
     }

@@ -7,6 +7,7 @@ import Settings from '@mui/icons-material/Settings';
 import Logout from '@mui/icons-material/Logout';
 import { Button } from '@mui/material';
 import PersonIcon from '@mui/icons-material/Person';
+import { useSession } from 'next-auth/react';
 
 interface IProps {
     anchorEl: HTMLElement | null;
@@ -14,8 +15,10 @@ interface IProps {
 }
 export default function AccountMenu(props: IProps) {
     const { anchorEl, setAnchorEl } = props;
+    const { data: session } = useSession();
     const open = Boolean(anchorEl);
 
+    console.log(">>> checksession: ", session);
     const handleClose = () => {
         setAnchorEl(null);
     };
@@ -61,10 +64,13 @@ export default function AccountMenu(props: IProps) {
                     right: '28px',
                     paddingInline: '5px'
                 },
-                '.mui-x6cj71-MuiPaper-root-MuiPopover-paper-MuiMenu-paper .MuiAvatar-root': {
+                '.mui-96xlaj-MuiPaper-root-MuiPopover-paper-MuiMenu-paper .MuiAvatar-root': {
                     width: '45px',
                     height: '45px',
                     margin: '0'
+                },
+                '.mui-1toxriw-MuiList-root-MuiMenu-list': {
+                    padding: '10px'
                 }
             }}
             transformOrigin={{ horizontal: 'right', vertical: 'top' }}
@@ -75,8 +81,8 @@ export default function AccountMenu(props: IProps) {
                     N
                 </Avatar>
                 <div className='min-w-44'>
-                    <p className='text-sm text-gray-500'>Hello, <strong className='text-blue-950'>Nguyen Vuong Truc</strong></p>
-                    <p className='text-sm text-gray-500'>UID: <strong className='text-blue-950'>1</strong></p>
+                    <p className='text-sm text-gray-400'>Hello, <strong className='text-blue-500'>Nguyen Vuong Truc</strong></p>
+                    <p className='text-sm text-gray-400'>UID: <strong className='text-blue-500'>1</strong></p>
                 </div>
             </div>
             <Divider sx={{ marginBlock: '10px' }} />

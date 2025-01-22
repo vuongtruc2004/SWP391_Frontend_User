@@ -22,7 +22,7 @@ export const handleRegister = async (prevState: any, formData: FormData) => {
         body: JSON.stringify(userRequest)
     });
 
-    const response: RestResponse<any> = await responseRaw.json();
+    const response: ApiResponse<any> = await responseRaw.json();
     if (response.statusCode === 201) {
         return {
             path: '/login'
