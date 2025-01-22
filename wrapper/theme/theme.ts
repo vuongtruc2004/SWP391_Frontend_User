@@ -13,7 +13,8 @@ const theme = createTheme({
     palette: {
         secondary: {
             main: '#f8f9fa'
-        }
+        },
+        mode: 'dark'
     },
     colorSchemes: {
         dark: true,

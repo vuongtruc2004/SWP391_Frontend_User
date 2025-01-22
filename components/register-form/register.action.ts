@@ -1,7 +1,5 @@
 'use server'
-
 import { apiUrl } from "@/utils/url";
-
 
 export const handleRegister = async (prevState: any, formData: FormData) => {
     console.log('checkFormData: ', formData)

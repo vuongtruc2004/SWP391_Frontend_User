@@ -1,4 +1,4 @@
-
+import React from 'react'
 
 const RegisterBanner = () => {
     return (
@@ -7,7 +7,6 @@ const RegisterBanner = () => {
             backgroundPosition: 'center',
             backgroundSize: 'cover',
             backgroundRepeat: 'no-repeat',
-            borderRadius: '0 0 50px 0',
             zIndex: 10
         }}>
         </div>
