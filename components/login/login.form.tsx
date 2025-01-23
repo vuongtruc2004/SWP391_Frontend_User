@@ -1,5 +1,5 @@
 'use client'
-import { Box, Button, Divider, IconButton, InputAdornment, TextField, Tooltip } from '@mui/material';
+import { Box, Button, Divider, IconButton, InputAdornment, TextField } from '@mui/material';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
@@ -14,13 +14,9 @@ const LoginForm = () => {
     return (
         <Box sx={{
             width: '100%',
-            height: '100%',
-            padding: '40px 25px',
-            background: 'linear-gradient(to bottom right, #000814, #15171c)',
-            borderTopRightRadius: '50px',
-            borderBottomRightRadius: '6px',
+            height: 'max-content',
         }}>
-            <h3 className='font-semibold text-center text-lg text-white mb-3'>Đăng Nhập</h3>
+            <h3 className='font-semibold text-center text-lg text-white mb-5'>Đăng Nhập</h3>
             <form>
                 <div className='mb-3'>
                     <label className="mb-[10px] block text-white"><span className="text-red-500 mr-1">*</span>Tên tài khoản:</label>
