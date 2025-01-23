@@ -3,6 +3,7 @@
         "Colorlib",
         "Coverflow",
         "NEXTAUTH",
-        "turbopack"
+        "turbopack",
+        "Whatshot"
     ]
 }

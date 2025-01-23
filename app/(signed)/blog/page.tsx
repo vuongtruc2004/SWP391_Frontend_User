@@ -1,5 +1,4 @@
-import Header from '@/components/header/header';
-import { Box } from '@mui/material';
+import Blog from '@/components/blog/blog';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -8,13 +7,7 @@ export const metadata: Metadata = {
 
 const BlogPage = () => {
     return (
-        <div className='min-h-screen bg-black pb-10'>
-            <Box sx={{
-                color: 'white',
-            }}>
-                <Header />
-            </Box>
-        </div>
+        <Blog />
     )
 }
 
