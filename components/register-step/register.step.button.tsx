@@ -17,7 +17,9 @@ const RegisterStepButton = () => {
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
-            width: '100%'
+            width: '100%',
+            position: 'relative',
+            top: '8%'
         }}>
             <Button
                 variant='contained'
@@ -30,9 +32,8 @@ const RegisterStepButton = () => {
             <Button
                 variant='contained'
                 onClick={handlePosStep}
-                disabled={activeStep === 3 ? true : false}
             >
-                Tiếp theo
+                {activeStep === 3 ? 'Đăng kí' : 'Tiếp theo'}
             </Button>
         </Box>
     );

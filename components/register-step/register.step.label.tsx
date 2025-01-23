@@ -9,6 +9,7 @@ import PersonIcon from '@mui/icons-material/Person';
 import DoneAllIcon from '@mui/icons-material/DoneAll';
 import { ColorlibConnector, ColorlibStepIconRoot } from './style';
 import { useRegisterStep } from '@/wrapper/register-step/register.step.wrapper';
+import { Box } from '@mui/material';
 
 function ColorlibStepIcon(props: StepIconProps) {
     const { active, completed, error } = props;
@@ -27,7 +28,7 @@ function ColorlibStepIcon(props: StepIconProps) {
 
 const RegisterStepLabel = () => {
     const { activeStep, setActiveStep } = useRegisterStep();
-    const steps = ['Công việc', 'Thông tin cá nhân', 'Thông tin tài khoản', 'Hoàn thành'];
+    const steps = ['Thông tin cá nhân', 'Thông tin Liên hệ', 'Thông tin tài khoản', 'Xác thực email'];
 
     const handleChangeStep = (index: number) => {
         if (
@@ -43,6 +44,8 @@ const RegisterStepLabel = () => {
             activeStep={activeStep}
             connector={<ColorlibConnector />}
             sx={{
+                position: 'relative',
+                top: '20%',
                 '.mui-1t6afu0-MuiStepLabel-label.MuiStepLabel-alternativeLabel': {
                     marginTop: '10px'
                 },
