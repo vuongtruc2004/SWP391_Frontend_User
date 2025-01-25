@@ -12,16 +12,16 @@ const CoursePage = () => {
             <div className='m-auto w-max h-max text-white'>
                 <h3 className='text-center'>Show me on scroll</h3>
 
-                {/* Hiển thị khi phần tử nằm ở 40% màn hình */}
                 <motion.div
-                    initial={{ opacity: 0, y: 50 }} // Ẩn ban đầu & nằm thấp hơn
-                    whileInView={{ opacity: 1, y: 0 }} // Hiện khi vào viewport
-                    transition={{ duration: 0.8 }} // Hiệu ứng mượt hơn
-                    viewport={{ margin: '-30%' }} // Kích hoạt khi phần tử ở 40% màn hình
+                    initial={{ opacity: 0, y: 50 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8 }}
+                    viewport={{ margin: '-30%' }}
                     style={{
                         backgroundImage: 'url("/planet1.png")',
                         backgroundSize: 'cover',
-                        backgroundPosition: 'center'
+                        backgroundPosition: 'center',
+                        backgroundRepeat: 'no-repeat'
                     }}
                     className='w-32 h-32 rounded-full'
                 />

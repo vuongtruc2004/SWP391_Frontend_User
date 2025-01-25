@@ -1,48 +1,28 @@
 'use client'
-import { Box, Button, Chip, InputAdornment, TextField } from '@mui/material';
+import { Box, Button, InputAdornment, TextField } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
-import WhatshotIcon from '@mui/icons-material/Whatshot';
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
-import BookmarkIcon from '@mui/icons-material/Bookmark';
+import AlignHorizontalLeftIcon from '@mui/icons-material/AlignHorizontalLeft';
 import { useEffect } from 'react';
 
-interface IProps {
-    currentFilter: string;
-    setCurrentFilter: React.Dispatch<React.SetStateAction<string>>;
-}
-const BlogSearch = (props: IProps) => {
-    const { currentFilter, setCurrentFilter } = props;
+const BlogSearch = () => {
 
     const filter: BlogFilter[] = [
         {
             key: 'all',
             name: 'Tất cả',
-            value: 'all'
+            icon: <AlignHorizontalLeftIcon sx={{ color: '#c77dff !important', fontSize: '16px' }} />
         },
         {
             key: 'like',
-            name: 'Lượt thích',
-            value: 'like',
-            icon: <ThumbUpIcon sx={{ color: '#0466c8 !important', marginRight: '2px !important' }} />
+            name: 'Đã thích',
+            icon: <ThumbUpIcon sx={{ color: '#0466c8 !important', fontSize: '16px' }} />
         },
         {
             key: 'comment',
-            name: 'Bình luận',
-            value: 'comment',
-            icon: <ChatBubbleIcon sx={{ color: '#adb5bd !important', marginRight: '2px !important' }} />
-        },
-        {
-            key: 'newest',
-            name: 'Mới nhất',
-            value: 'newest',
-            icon: <WhatshotIcon sx={{ color: '#e36414 !important', marginRight: '2px !important' }} />
-        },
-        {
-            key: 'save',
-            name: 'Đã lưu',
-            value: 'save',
-            icon: <BookmarkIcon sx={{ color: '#38b000 !important', marginRight: '2px !important' }} />
+            name: 'Đã bình luận',
+            icon: <ChatBubbleIcon sx={{ color: '#adb5bd !important', fontSize: '16px' }} />
         }
     ];
 
@@ -53,17 +33,16 @@ const BlogSearch = (props: IProps) => {
         console.log(keyword);
     }
 
-    useEffect(() => {
-        console.log('fetching...');
-    }, [currentFilter]);
+    // useEffect(() => {
+    //     console.log('fetching...');
+    // }, [currentFilter]);
 
     return (
         <Box sx={{
-            paddingTop: '120px'
+            marginBlock: '20px'
         }}>
             <Box sx={{
                 width: '100%',
-                maxWidth: '650px',
             }}>
                 <form style={{
                     display: 'flex',
@@ -87,43 +66,51 @@ const BlogSearch = (props: IProps) => {
                         }}
                         size='small'
                         fullWidth
-                        placeholder='Tìm bài viết'
+                        placeholder='Nhập tiêu đề, nội dung, tác giả,...'
                     />
-                    <Button type='submit' variant='contained' sx={{ height: '40px', textWrap: 'nowrap', paddingInline: '20px' }}>Tìm Kiếm</Button>
+                    <Button type='submit' variant='contained' sx={{ height: '40px', textWrap: 'nowrap', paddingInline: '50px' }}>Tìm Kiếm</Button>
                 </form>
 
                 <Box sx={{
-                    display: 'flex',
+                    display: 'grid',
                     alignItems: 'center',
-                    columnGap: '10px',
+                    gridTemplateColumns: 'repeat(3, 1fr)',
+                    columnGap: '20px',
                     marginTop: '20px'
                 }}>
                     {filter.map((item) => {
                         return (
-                            <Chip
-                                label={item.name}
-                                variant={item.key === currentFilter ? 'filled' : "outlined"}
-                                //@ts-ignore
-                                icon={item.icon}
-                                key={item.key}
-                                size='small'
+                            <Box
                                 sx={{
+                                    width: '100%',
+                                    padding: '10px 20px',
+                                    borderRadius: '15px',
+                                    color: 'white',
+                                    bgcolor: '#17181c',
                                     cursor: 'pointer',
-                                    width: 'max-content',
-                                    height: '28px',
-                                    paddingInline: '15px',
                                     transition: 'all .3s',
-                                    '&:hover': {
-                                        bgcolor: 'rgba(255, 255, 255, 0.16)',
+                                    '&.active, &:hover': {
+                                        bgcolor: '#343a40',
+                                    },
+                                    '&.active': {
+                                        pointerEvents: 'none'
                                     }
                                 }}
-                                onClick={() => setCurrentFilter(item.key)}
-                            />
+                                key={item.key}
+                            // onClick={() => setCurrentFilter(item.key)}
+                            // className={currentFilter === item.key ? 'active' : ''}
+                            >
+                                <div className='flex items-center'>
+                                    {item.icon}
+                                    <p className='text-sm font-semibold ml-2'>{item.name}</p>
+                                </div>
+                                <p className='text-sm text-gray-400 ml-2'>21 bài viết</p>
+                            </Box>
                         )
                     })}
                 </Box>
             </Box>
-        </Box>
+        </Box >
     )
 }
 

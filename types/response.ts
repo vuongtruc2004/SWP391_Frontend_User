@@ -14,7 +14,7 @@ declare global {
         refreshToken: string;
     }
     interface ApiResponse<T> {
-        statusCode: number;
+        status: number;
         errorMessage: string;
         message: object;
         data: T;
@@ -25,5 +25,23 @@ declare global {
         accessToken: string;
         expireAt: string;
         refreshToken: string;
+    }
+
+    interface PageDetailsResponse<T> {
+        currentPage: number;
+        pageSize: number;
+        totalPages: number;
+        totalElements: number;
+        content: T;
+    }
+
+    interface BlogResponse {
+        blogId: string;
+        title: string;
+        content: string;
+        thumbnail: string;
+        createdAt: string;
+        updatedAt: string;
+        user: UserResponse;
     }
 }

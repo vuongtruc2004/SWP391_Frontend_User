@@ -1,21 +1,44 @@
-import { Box } from "@mui/material"
+'use client'
+import { Box, Pagination } from "@mui/material"
 import SingleBlogList from "./single.blog.list"
 
-const BlogList = () => {
+interface IProps {
+    page: PageDetailsResponse<BlogResponse[]>;
+}
+const BlogList = (props: IProps) => {
+    const { page } = props;
+
+    const handleChangePage = (event: React.ChangeEvent<unknown>, value: number) => {
+        console.log(">>> current page: ", value);
+    }
+
     return (
-        <Box sx={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(3, 1fr)',
-            width: '100%%',
-            gap: '20px',
-            marginTop: '50px'
-        }}>
-            {Array.from({ length: 6 }).map((_, index) => {
-                return (
-                    <SingleBlogList key={index} />
-                )
-            })}
-        </Box>
+        <>
+            <Box sx={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(3, 1fr)',
+                width: '100%%',
+                gap: '20px',
+            }}>
+                {page.content.map((blog) => {
+                    return (
+                        <SingleBlogList key={blog.blogId} blog={blog} />
+                    )
+                })}
+            </Box>
+            <Pagination
+                count={page.totalPages}
+                shape="rounded"
+                showFirstButton
+                showLastButton
+                sx={{
+                    display: 'flex',
+                    justifyContent: 'flex-end',
+                    marginTop: '20px',
+                }}
+                onChange={handleChangePage}
+            />
+        </>
     )
 }
 

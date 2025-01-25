@@ -12,7 +12,7 @@ export const SearchIconWrapperStyled = styled('span')({
 })
 
 export const SearchInputStyled = styled('input')({
-    width: '220px',
+    width: '250px',
     height: '36px',
     borderRadius: '0 5px 5px 0',
     fontSize: '1rem',
