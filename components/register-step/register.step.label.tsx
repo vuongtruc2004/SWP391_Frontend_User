@@ -7,6 +7,7 @@ import WorkIcon from '@mui/icons-material/Work';
 import InfoIcon from '@mui/icons-material/Info';
 import PersonIcon from '@mui/icons-material/Person';
 import DoneAllIcon from '@mui/icons-material/DoneAll';
+import ContactsIcon from '@mui/icons-material/Contacts';
 import { ColorlibConnector, ColorlibStepIconRoot } from './style';
 import { useRegisterStep } from '@/wrapper/register-step/register.step.wrapper';
 import { Box } from '@mui/material';
@@ -17,7 +18,8 @@ function ColorlibStepIcon(props: StepIconProps) {
         1: <WorkIcon />,
         2: <InfoIcon />,
         3: <PersonIcon />,
-        4: <DoneAllIcon />
+        4: <ContactsIcon />,
+        5: <DoneAllIcon />
     };
     return (
         <ColorlibStepIconRoot ownerState={{ completed, active, error }} sx={{ cursor: 'pointer' }}>
@@ -28,7 +30,7 @@ function ColorlibStepIcon(props: StepIconProps) {
 
 const RegisterStepLabel = () => {
     const { activeStep, setActiveStep } = useRegisterStep();
-    const steps = ['Thông tin cá nhân', 'Thông tin Liên hệ', 'Thông tin tài khoản', 'Xác thực email'];
+    const steps = ['Công việc', 'Thông tin cá nhân', 'Thông tin Liên hệ', 'Thông tin tài khoản', 'Xác thực email'];
 
     const handleChangeStep = (index: number) => {
         if (

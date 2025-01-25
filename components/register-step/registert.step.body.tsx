@@ -4,6 +4,8 @@ import FirstStep from "./register-all-step/first.step";
 import SecondStep from "./register-all-step/second.step";
 import ThirdStep from "./register-all-step/third.step";
 import FourthStep from "./register-all-step/fourth.step";
+import FifthStep from "./register-all-step/fifth.step";
+
 
 const RegisterStepBody = () => {
     const { activeStep } = useRegisterStep();
@@ -20,9 +22,13 @@ const RegisterStepBody = () => {
         return (
             <ThirdStep />
         )
-    } else {
+    } else if (activeStep === 3) {
         return (
             <FourthStep />
+        )
+    } else {
+        return (
+            <FifthStep />
         )
     }
 

@@ -1,87 +1,101 @@
-import React, { useState } from "react";
-import { Box, TextField } from "@mui/material";
+import { Box, IconButton, InputAdornment, OutlinedInput, TextField } from "@mui/material"
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import { useState } from "react";
 
 const FourthStep = () => {
-    const [otpValues, setOtpValues] = useState(["", "", "", "", "", ""]); // Array for 6 OTP fields
 
-    const handleKeyDown = (e: any, index: any) => {
-        if (e.key === "Backspace" && otpValues[index] === "") {
-            if (index > 0) {
-                const prevInput = document.getElementById(`otp-input-${index - 1}`);
-                prevInput?.focus();
-            }
-        }
-    };
-
-    const handleInputChange = (e: any, index: any) => {
-        const value = e.target.value;
-        const isNumber = /^[0-9]$/.test(value); // Chỉ chấp nhận số 0-9
-
-        if (isNumber || value === "") {
-            const newOtpValues = [...otpValues];
-            newOtpValues[index] = value;
-
-            setOtpValues(newOtpValues);
-
-            // Focus next input if a value is entered
-            if (isNumber && index < otpValues.length - 1) {
-                const nextInput = document.getElementById(`otp-input-${index + 1}`);
-                nextInput?.focus();
-            }
-        }
-    };
+    const [showPassword, setShowPassword] = useState(false);
+    const [showPassword2, setShowPassword2] = useState(false);
 
     return (
-        <Box
-            sx={{
-                padding: "40px 0",
-                ".MuiInputBase-input": {
-                    color: "black",
-                    textAlign: "center",
-                    fontSize: '25px',
-                    fontWeight: 900
-                },
-                form: {
-                    display: "flex",
-                    flexDirection: "row",
-                    justifyContent: "center",
-                    marginTop: "30px",
+        <Box sx={{
 
-                },
-
-            }}
-        >
-            <p className="text-center text-2xl">Nhập mã OTP</p>
-            <p className="text-center">
-                Vui lòng xác thực mã OTP chúng tôi đã gửi đến Email{" "}
-                <span className="text-blue-500">borisdoo8386@gmail.com</span>
-            </p>
-            <form className="flex gap-x-2">
-                {otpValues.map((value, index) => (
+        }}>
+            <form action="" className="flex flex-col gap-y-2">
+                <div className='mb-2'>
+                    <label><span className='text-red-500 mr-1'>*</span>Tên tài khoản:</label>
                     <TextField
-                        key={index}
-                        id={`otp-input-${index}`}
-                        value={value}
-                        onChange={(e) => handleInputChange(e, index)}
-                        onKeyDown={(e) => handleKeyDown(e, index)}
+                        placeholder="Nhập tên tài khoản"
                         size="small"
-                        required
-                        name="otpCode"
-                        inputProps={{
-                            inputMode: "numeric", // Hiển thị bàn phím số trên di động
-                            pattern: "[0-9]*",    // Chỉ chấp nhận số
-                        }}
+                        name="username"
+                        fullWidth
+                        type="text"
                         sx={{
-                            border: "1px solid black",
-                            borderRadius: "10px",
-                            width: "70px",
-                            textAlign: "center",
+                            "& .MuiOutlinedInput-root": {
+                                border: "1px solid black", // Viền mặc định
+                                borderRadius: "10px", // Bo góc
+                                "&:hover": {
+                                    borderColor: "grey", // Màu viền khi hover
+                                },
+                                "&.Mui-focused": {
+                                    borderColor: "grey", // Màu viền khi focus
+                                },
+                            },
+                            "& .MuiOutlinedInput-input": {
+                                color: "grey", // Màu chữ
+                            },
                         }}
                     />
-                ))}
+
+                </div>
+                <div className='mb-2'>
+                    <label><span className='text-red-500 mr-1'>*</span>Mật khẩu:</label>
+                    <OutlinedInput
+                        type={showPassword ? 'text' : 'password'}
+                        sx={{
+                            border: '1px solid black',
+                            borderRadius: '10px',
+                            color: 'grey'
+                        }}
+                        endAdornment={
+                            <InputAdornment position="end">
+                                <IconButton
+                                    onClick={() => setShowPassword(prev => !prev)}
+                                    edge="end"
+                                >
+                                    {showPassword ? <Visibility sx={{ fontSize: '1.2rem', color: '#6c757d' }} /> : <VisibilityOff sx={{ fontSize: '1.2rem', color: '#6c757d' }} />}
+                                </IconButton>
+                            </InputAdornment>
+                        }
+                        placeholder='Nhập mật khẩu'
+                        autoComplete='password'
+                        size='small'
+                        name='password'
+                        fullWidth
+                    />
+                </div>
+
+                <div className='mb-3'>
+                    <label><span className='text-red-500 mr-1'>*</span>Nhập lại mật khẩu:</label>
+                    <OutlinedInput
+                        type={showPassword2 ? 'text' : 'password'}
+                        sx={{
+                            border: '1px solid black',
+                            borderRadius: '10px',
+                            color: 'grey'
+                        }}
+                        endAdornment={
+                            <InputAdornment position="end">
+                                <IconButton
+                                    onClick={() => setShowPassword2(prev => !prev)}
+                                    edge="end"
+                                >
+                                    {showPassword2 ? <Visibility sx={{ fontSize: '1.2rem', color: '#6c757d' }} /> : <VisibilityOff sx={{ fontSize: '1.2rem', color: '#6c757d' }} />}
+                                </IconButton>
+                            </InputAdornment>
+                        }
+                        placeholder='Nhập mật khẩu'
+                        autoComplete='password'
+                        size='small'
+                        name='password'
+                        fullWidth
+                    />
+                </div>
+
             </form>
         </Box>
-    );
-};
+    )
+}
 
-export default FourthStep;
+export default FourthStep

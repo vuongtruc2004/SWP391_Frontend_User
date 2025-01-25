@@ -6,7 +6,7 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
 
 const FirstStep = () => {
-    const [gender, setGender] = useState('male');
+    const [job, setJob] = useState('lecture');
     return (
         <Box sx={{
             position: 'relative',
@@ -16,39 +16,8 @@ const FirstStep = () => {
             },
         }}>
             <form action="" className="flex flex-col gap-y-2">
-                <div>
-                    <label className='mb-2'><span className='text-red-500 mr-1'>*</span>Họ và tên:</label>
-                    <TextField
-                        placeholder="Nhập họ và tên"
-                        size="small"
-                        name="fullname"
-                        fullWidth
-                        type="text"
-                        sx={{
-                            border: '1px solid black',
-                            borderRadius: '10px',
-                        }}
-                    />
-
-                </div>
-                <div className='mb-2'>
-                    <label><span className='text-red-500 mr-1'>*</span>Ngày sinh:</label><br />
-                    <LocalizationProvider dateAdapter={AdapterDayjs}>
-                        <DatePicker name="dob" format="DD/MM/YYYY" sx={{
-                            width: '100%',
-                            border: '1px solid black',
-                            '.mui-mjgnrh-MuiInputBase-root-MuiOutlinedInput-root': { color: 'grey' },
-                            '.mui-8a1qk4-MuiInputBase-input-MuiOutlinedInput-input': {
-                                padding: '10px 0 0 10px'
-                            },
-                            '.mui-1umw9bq-MuiSvgIcon-root': { color: 'black' },
-                            height: '40px',
-                            borderRadius: '10px'
-                        }} />
-                    </LocalizationProvider>
-                </div>
-                <div className='mb-3'>
-                    <label><span className='text-red-500 mr-1'>*</span>Giới tính:</label>
+                <div className='mt-20 mb-20'>
+                    <label><span className='text-red-500 mr-1'>*</span>Công việc hiện tại:</label>
                     <Select
                         name="gender"
                         sx={{
@@ -58,11 +27,11 @@ const FirstStep = () => {
                             borderRadius: '10px'
                         }}
                         fullWidth
-                        value={gender}
-                        onChange={(event) => { setGender(event.target.value) }}
+                        value={job}
+                        onChange={(event) => { setJob(event.target.value) }}
                     >
-                        <MenuItem value={'male'}>Nam</MenuItem>
-                        <MenuItem value={'female'}>Nữ</MenuItem>
+                        <MenuItem value={'lecture'}>Giảng viên/Giáo viên</MenuItem>
+                        <MenuItem value={'student'}>Học sinh/Sinh viên</MenuItem>
                     </Select>
                 </div>
             </form>

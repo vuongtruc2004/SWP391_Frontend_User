@@ -6,7 +6,7 @@ const RegisterStepButton = () => {
     const { activeStep, setActiveStep } = useRegisterStep();
 
     const handlePosStep = () => {
-        setActiveStep(Math.min(activeStep + 1, 3));
+        setActiveStep(Math.min(activeStep + 1, 4));
     };
     const handlePreStep = () => {
         setActiveStep(Math.max(activeStep - 1, 0));
@@ -33,7 +33,7 @@ const RegisterStepButton = () => {
                 variant='contained'
                 onClick={handlePosStep}
             >
-                {activeStep === 3 ? 'Đăng kí' : 'Tiếp theo'}
+                {activeStep === 4 ? 'Đăng kí' : 'Tiếp theo'}
             </Button>
         </Box>
     );
