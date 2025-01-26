@@ -11,7 +11,7 @@ declare global {
         email: string;
         gender: string;
         dob: string;
-        refreshToken: string;
+        accountType: string;
     }
     interface ApiResponse<T> {
         status: number;

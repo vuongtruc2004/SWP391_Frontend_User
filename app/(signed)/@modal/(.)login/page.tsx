@@ -1,6 +1,6 @@
 import LoginModal from "@/components/login/login.modal"
 
-const LoginModalPage = () => {
+const LoginModalPage = async () => {
     return (
         <LoginModal />
     )

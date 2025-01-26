@@ -1,15 +1,44 @@
 'use client'
 import { Box, Button, Divider, IconButton, InputAdornment, TextField } from '@mui/material';
-import OutlinedInput from '@mui/material/OutlinedInput';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import GitHubIcon from '@mui/icons-material/GitHub';
-import { useState } from 'react';
+import { useActionState, useEffect, useState } from 'react';
 import Link from 'next/link';
 import { signIn } from 'next-auth/react';
+import { validateLoginForm, FieldResponse } from './login.action';
+import { useRouter } from 'next/navigation';
 
+const initState: FieldResponse | null = null;
 const LoginForm = () => {
     const [showPassword, setShowPassword] = useState(false);
+    const [error, setError] = useState<string | null | undefined>(null);
+
+    const [state, formAction, pending] = useActionState(validateLoginForm, initState);
+    const router = useRouter();
+
+    useEffect(() => {
+        const credentialsLogin = async () => {
+            if (state) {
+                if (!state.username?.error && !state.password?.error) {
+                    const response = await signIn("credentials", {
+                        username: state.username?.value,
+                        password: state.password?.value,
+                        redirect: false
+                    });
+
+                    if (!response || !response.ok) {
+                        setError(response?.error);
+                    } else {
+                        router.back();
+                    }
+                } else {
+                    setError(null);
+                }
+            }
+        }
+        credentialsLogin();
+    }, [state]);
 
     return (
         <Box sx={{
@@ -17,7 +46,7 @@ const LoginForm = () => {
             height: 'max-content',
         }}>
             <h3 className='font-semibold text-center text-lg text-white mb-5'>Đăng Nhập</h3>
-            <form>
+            <form action={formAction}>
                 <div className='mb-3'>
                     <label className="mb-[10px] block text-white"><span className="text-red-500 mr-1">*</span>Tên tài khoản:</label>
                     <TextField
@@ -26,28 +55,39 @@ const LoginForm = () => {
                         name='username'
                         autoComplete='username'
                         fullWidth
+                        defaultValue={state?.username?.value}
+                        error={state?.username?.error}
+                        helperText={state?.username?.error && state?.username?.message}
                     />
                 </div>
 
                 <div className='mb-1'>
                     <label className="mb-[10px] block text-white"><span className="text-red-500 mr-1">*</span>Mật khẩu:</label>
-                    <OutlinedInput
+                    <TextField
                         type={showPassword ? 'text' : 'password'}
-                        endAdornment={
-                            <InputAdornment position="end">
-                                <IconButton
-                                    onClick={() => setShowPassword(prev => !prev)}
-                                    edge="end"
-                                >
-                                    {showPassword ? <Visibility sx={{ fontSize: '1.2rem', color: '#6c757d' }} /> : <VisibilityOff sx={{ fontSize: '1.2rem', color: '#6c757d' }} />}
-                                </IconButton>
-                            </InputAdornment>
-                        }
+                        slotProps={{
+                            input: {
+                                endAdornment: (
+                                    <InputAdornment position="end">
+                                        <IconButton
+                                            onClick={() => setShowPassword(prev => !prev)}
+                                            edge="end"
+                                        >
+                                            {showPassword ? <Visibility sx={{ fontSize: '1.2rem', color: '#6c757d' }} /> : <VisibilityOff sx={{ fontSize: '1.2rem', color: '#6c757d' }} />}
+                                        </IconButton>
+                                    </InputAdornment>
+                                )
+                            }
+                        }}
                         placeholder='Nhập mật khẩu'
                         autoComplete='password'
                         size='small'
                         name='password'
                         fullWidth
+                        defaultValue={state?.password?.value
+                        }
+                        error={state?.password?.error}
+                        helperText={state?.password?.error && state?.password?.message}
                     />
                 </div>
 
@@ -59,7 +99,9 @@ const LoginForm = () => {
                     </Link>
                 </div>
 
-                <Button type='submit' variant='contained' color='primary' fullWidth >Đăng Nhập</Button>
+                <Button type='submit' variant='contained' color='primary' fullWidth disabled={pending} >Đăng Nhập</Button>
+
+                <p className='text-red-500 text-sm mt-2'>{error}</p>
 
                 <div className='text-gray-400 text-sm flex items-center mt-2'>
                     <p>Bạn chưa có tài khoản?</p>
@@ -98,7 +140,7 @@ const LoginForm = () => {
                     <p>Github</p>
                 </Button>
             </Box>
-        </Box>
+        </Box >
     )
 }
 

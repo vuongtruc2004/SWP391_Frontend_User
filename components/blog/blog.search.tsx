@@ -4,9 +4,13 @@ import SearchIcon from '@mui/icons-material/Search';
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
 import AlignHorizontalLeftIcon from '@mui/icons-material/AlignHorizontalLeft';
-import { useEffect } from 'react';
 
-const BlogSearch = () => {
+interface IProps {
+    category: string;
+    totalElements: number;
+}
+const BlogSearch = (props: IProps) => {
+    const { category, totalElements } = props;
 
     const filter: BlogFilter[] = [
         {
@@ -33,9 +37,9 @@ const BlogSearch = () => {
         console.log(keyword);
     }
 
-    // useEffect(() => {
-    //     console.log('fetching...');
-    // }, [currentFilter]);
+    const handleFilter = (key: string) => {
+        console.log(key);
+    }
 
     return (
         <Box sx={{
@@ -82,8 +86,12 @@ const BlogSearch = () => {
                         return (
                             <Box
                                 sx={{
+                                    display: 'flex',
+                                    justifyContent: 'center',
+                                    flexDirection: 'column',
                                     width: '100%',
-                                    padding: '10px 20px',
+                                    height: '60px',
+                                    paddingInline: '20px',
                                     borderRadius: '15px',
                                     color: 'white',
                                     bgcolor: '#17181c',
@@ -97,14 +105,16 @@ const BlogSearch = () => {
                                     }
                                 }}
                                 key={item.key}
-                            // onClick={() => setCurrentFilter(item.key)}
-                            // className={currentFilter === item.key ? 'active' : ''}
+                                onClick={() => handleFilter(item.key)}
+                                className={category === item.key ? 'active' : ''}
                             >
                                 <div className='flex items-center'>
                                     {item.icon}
                                     <p className='text-sm font-semibold ml-2'>{item.name}</p>
                                 </div>
-                                <p className='text-sm text-gray-400 ml-2'>21 bài viết</p>
+                                {category === item.key && (
+                                    <p className='text-sm text-gray-400 ml-2'>{totalElements} bài viết</p>
+                                )}
                             </Box>
                         )
                     })}

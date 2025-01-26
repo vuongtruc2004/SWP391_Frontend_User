@@ -1,15 +1,21 @@
 'use client'
 import { Box, Pagination } from "@mui/material"
-import SingleBlogList from "./single.blog.list"
+import SingleBlogList from "./single.blog"
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 interface IProps {
     page: PageDetailsResponse<BlogResponse[]>;
 }
 const BlogList = (props: IProps) => {
     const { page } = props;
+    const searchParams = useSearchParams();
+    const router = useRouter();
+    const pathname = usePathname();
 
     const handleChangePage = (event: React.ChangeEvent<unknown>, value: number) => {
-        console.log(">>> current page: ", value);
+        const params = new URLSearchParams(searchParams);
+        params.set('page', value.toString());
+        router.replace(`${pathname}?${params}`);
     }
 
     return (
@@ -22,7 +28,9 @@ const BlogList = (props: IProps) => {
             }}>
                 {page.content.map((blog) => {
                     return (
-                        <SingleBlogList key={blog.blogId} blog={blog} />
+                        <div key={blog.blogId} >
+                            <SingleBlogList blog={blog} lineClamp={2} imageHeight={250} />
+                        </div>
                     )
                 })}
             </Box>

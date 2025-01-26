@@ -7,6 +7,7 @@ import CloseIcon from '@mui/icons-material/Close';
 
 const LoginModal = () => {
     const router = useRouter();
+
     return (
         <Box sx={{
             width: '100%',

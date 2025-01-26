@@ -16,7 +16,7 @@ export const letRefreshToken = async (token: JWT): Promise<JWT> => {
     } else {
         const responseRaw = await fetch(`${apiUrl}/auth/refresh?refresh_token=${token.refreshToken}`);
         const response: ApiResponse<LoginResponse> = await responseRaw.json();
-        if (response.statusCode === 200) {
+        if (response.status === 200) {
             console.log(">>> refresh token successfully!");
             return {
                 ...token,

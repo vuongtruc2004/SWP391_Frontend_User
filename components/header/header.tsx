@@ -7,6 +7,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 import AccountMenu from "./account.menu";
 import { useSession } from "next-auth/react";
+import { storageUrl } from "@/utils/url";
 
 const Header = () => {
     const router = useRouter();
@@ -15,6 +16,9 @@ const Header = () => {
     const { data: session } = useSession();
 
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+
+    const avatarSrc = session?.user.accountType === "CREDENTIALS" ?
+        `${storageUrl}/avatar/${session.user.avatar}` : session?.user.avatar;
 
     return (
         <Box
@@ -31,7 +35,7 @@ const Header = () => {
                     objectFit: 'cover',
                     borderRadius: '50%'
                 },
-                'a': {
+                'ul li a': {
                     position: 'relative',
                     transition: 'all .3s',
                     '&:hover, &.active': {
@@ -57,10 +61,10 @@ const Header = () => {
                 zIndex: 10
             }}>
             <div className="flex items-center justify-center gap-x-6">
-                <div onClick={() => router.push("/home")} className="items-center flex justify-center cursor-pointer gap-x-2 mr-3">
+                <Link href={"/home"} className="items-center flex justify-center cursor-pointer gap-x-2 mr-3">
                     <img src={`/logo.jpg`} alt="app logo" />
                     <p className="font-bold text-xl tracking-wide">LearnGo</p>
-                </div>
+                </Link>
 
                 <ul className="flex items-center gap-x-6">
                     <li>
@@ -86,8 +90,8 @@ const Header = () => {
 
             {session ? (
                 <>
-                    <Avatar onClick={(event) => setAnchorEl(event.currentTarget)} sx={{ cursor: 'pointer' }}>
-                        N
+                    <Avatar onClick={(event) => setAnchorEl(event.currentTarget)} sx={{ cursor: 'pointer' }} src={avatarSrc}>
+                        {session?.user.fullname?.charAt(0).toUpperCase()}
                     </Avatar>
                     <AccountMenu anchorEl={anchorEl} setAnchorEl={setAnchorEl} />
                 </>

@@ -7,7 +7,8 @@ import Settings from '@mui/icons-material/Settings';
 import Logout from '@mui/icons-material/Logout';
 import { Button } from '@mui/material';
 import PersonIcon from '@mui/icons-material/Person';
-import { useSession } from 'next-auth/react';
+import { signOut, useSession } from 'next-auth/react';
+import { apiUrl, storageUrl } from '@/utils/url';
 
 interface IProps {
     anchorEl: HTMLElement | null;
@@ -18,10 +19,17 @@ export default function AccountMenu(props: IProps) {
     const { data: session } = useSession();
     const open = Boolean(anchorEl);
 
-    console.log(">>> checksession: ", session);
+    const avatarSrc = session?.user.accountType === "CREDENTIALS" ?
+        `${storageUrl}/avatar/${session.user.avatar}` : session?.user.avatar;
+
     const handleClose = () => {
         setAnchorEl(null);
     };
+
+    const handleLogout = async () => {
+        await fetch(`${apiUrl}/auth/logout?refresh_token=${session?.refreshToken}`);
+        signOut();
+    }
 
     return (
         <Menu
@@ -77,12 +85,12 @@ export default function AccountMenu(props: IProps) {
             anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
         >
             <div className='flex items-center justify-between py-1.5 px-4 gap-x-5'>
-                <Avatar>
-                    N
+                <Avatar src={avatarSrc}>
+                    {session?.user.fullname?.charAt(0).toUpperCase()}
                 </Avatar>
                 <div className='min-w-44'>
-                    <p className='text-sm text-gray-400'>Hello, <strong className='text-blue-500'>Nguyen Vuong Truc</strong></p>
-                    <p className='text-sm text-gray-400'>UID: <strong className='text-blue-500'>1</strong></p>
+                    <p className='text-sm text-gray-400'>Hello, <strong className='text-blue-500'>{session?.user.fullname}</strong></p>
+                    <p className='text-sm text-gray-400'>UID: <strong className='text-blue-500'>{session?.user.userId}</strong></p>
                 </div>
             </div>
             <Divider sx={{ marginBlock: '10px' }} />
@@ -99,7 +107,7 @@ export default function AccountMenu(props: IProps) {
                 Cài đặt
             </MenuItem>
             <Divider sx={{ marginBlock: '10px' }} />
-            <Button variant='contained' color='error' startIcon={<Logout />} size='small' fullWidth sx={{ textTransform: 'capitalize' }}>Đăng xuất</Button>
+            <Button variant='contained' color='error' startIcon={<Logout />} size='small' fullWidth sx={{ textTransform: 'capitalize' }} onClick={handleLogout}>Đăng xuất</Button>
         </Menu>
     );
 }

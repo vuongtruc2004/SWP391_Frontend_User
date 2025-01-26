@@ -1,28 +1,41 @@
 import { calculateReadingTime, formatCreateDate } from "@/helper/blog.helper";
 import { storageUrl } from "@/utils/url";
 import { Box } from "@mui/material"
+import Image from "next/image";
 import Link from "next/link";
 
 interface IProps {
     blog: BlogResponse;
+    lineClamp: number;
+    imageHeight: number;
 }
 const SingleBlogList = (props: IProps) => {
-    const { blog } = props;
+    const { blog, lineClamp, imageHeight } = props;
 
     return (
-        <Box>
-            <div style={{
+        <>
+            {/* <div style={{
                 background: '#60a5fa',
                 width: '100%',
                 height: '250px',
-                borderRadius: '30px',
+                borderRadius: '20px',
                 cursor: 'pointer',
                 backgroundImage: `url(${storageUrl}/blog/${blog.thumbnail})`,
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
                 backgroundRepeat: 'no-repeat'
-            }} />
-
+            }} /> */}
+            <div style={{
+                width: '100%',
+                height: `${imageHeight}px`,
+                position: 'relative'
+            }}>
+                <Image src={`${storageUrl}/blog/${blog.thumbnail}`} alt={blog.title} fill style={{
+                    objectFit: 'cover',
+                    borderRadius: '20px',
+                    objectPosition: 'center'
+                }} />
+            </div>
             <Box sx={{
                 color: 'white'
             }}>
@@ -39,7 +52,7 @@ const SingleBlogList = (props: IProps) => {
                     textOverflow: "ellipsis",
                     display: "-webkit-box",
                     WebkitBoxOrient: "vertical",
-                    WebkitLineClamp: 2,
+                    WebkitLineClamp: lineClamp,
                     color: '#adb5bd',
                     fontSize: '14px',
                     marginBlock: '4px'
@@ -58,7 +71,7 @@ const SingleBlogList = (props: IProps) => {
                     <p>{calculateReadingTime(blog.content)}</p>
                 </div>
             </Box>
-        </Box>
+        </>
     )
 }
 

@@ -19,7 +19,7 @@ export const authOptions: AuthOptions = {
                     password: credentials?.password ?? "",
                 }
 
-                const responseRaw = await fetch(`${apiUrl}/auth/login/credential`, {
+                const responseRaw = await fetch(`${apiUrl}/auth/login/credentials`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -29,7 +29,7 @@ export const authOptions: AuthOptions = {
 
                 const response: ApiResponse<LoginResponse> = await responseRaw.json();
 
-                if (response.statusCode === 200) {
+                if (response.status === 200) {
                     const user: User = {
                         id: response.data.user.userId.toString(),
                         user: response.data.user,
@@ -60,7 +60,6 @@ export const authOptions: AuthOptions = {
         async jwt({ token, user, account, trigger }) {
             if (trigger === 'signIn') {
                 if (account?.provider !== 'credentials') {
-                    console.log(">>> check user: ", user);
                     const request: SocialsLoginRequest = {
                         username: user.email ?? "",
                         fullname: user.name ?? "",
@@ -79,7 +78,7 @@ export const authOptions: AuthOptions = {
 
                     const response: ApiResponse<LoginResponse> = await responseRaw.json();
 
-                    if (response.statusCode === 200) {
+                    if (response.status === 200) {
                         const data = response.data;
                         if (data) {
                             token.user = data.user;

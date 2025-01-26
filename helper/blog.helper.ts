@@ -1,4 +1,5 @@
 import dayjs from 'dayjs';
+import 'dayjs/locale/vi';
 
 export const calculateReadingTime = (content: string) => {
     const wordsPerMinute = 200;
@@ -8,5 +9,5 @@ export const calculateReadingTime = (content: string) => {
 }
 
 export const formatCreateDate = (createdAt: string) => {
-    return dayjs(createdAt).format('MMMM D, YYYY');
-}
+    return dayjs(createdAt).locale('vi').format('D [thg] M, YYYY');
+};

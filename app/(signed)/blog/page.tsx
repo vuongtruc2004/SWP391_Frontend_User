@@ -1,6 +1,6 @@
 import BlogList from '@/components/blog/blog.list';
 import BlogSearch from '@/components/blog/blog.search';
-import PinBlog from '@/components/blog/pin.blog';
+import SingleBlogList from '@/components/blog/single.blog';
 import { apiUrl } from '@/utils/url';
 import { Box } from '@mui/material';
 import { Metadata } from 'next';
@@ -21,22 +21,25 @@ const BlogPage = async (props: {
     const filter = searchParams.filter;
     const page = searchParams.page;
     const size = searchParams.size
-    const category = searchParams.category;
+    const category = searchParams.category || 'all';
 
     const queryParams = new URLSearchParams({
         filter: filter || '',
         page: page || '1',
         size: size || '6',
-        category: category || 'all'
+        category: category
     }).toString();
 
-    const responseRaw = await fetch(`${apiUrl}/blogs?${queryParams}`)
-    const response: ApiResponse<PageDetailsResponse<BlogResponse[]>> = await responseRaw.json();
+    const blogListRawResponse = await fetch(`${apiUrl}/blogs?${queryParams}`);
+    const blogListResponse: ApiResponse<PageDetailsResponse<BlogResponse[]>> = await blogListRawResponse.json();
 
-    if (response.status === 200) {
+    if (blogListResponse.status === 200) {
     } else {
         throw new Error("Không thể lấy dữ liệu các bài viết!");
     }
+
+    const pinnedBlogRawResponse = await fetch(`${apiUrl}/blogs/pinned`);
+    const pinnedBlogResponse: ApiResponse<BlogResponse> = await pinnedBlogRawResponse.json();
 
     return (
         <Box sx={{
@@ -44,9 +47,17 @@ const BlogPage = async (props: {
             maxWidth: '1200px',
             margin: '0 auto'
         }}>
-            <PinBlog />
-            <BlogSearch />
-            <BlogList page={response.data} />
+            <Box sx={{
+                display: 'grid',
+                gridTemplateColumns: '2fr 1fr',
+                alignItems: 'center',
+                columnGap: '20px',
+                paddingTop: '120px'
+            }}>
+                {pinnedBlogResponse.status === 200 && <SingleBlogList blog={pinnedBlogResponse.data} lineClamp={5} imageHeight={300} />}
+            </Box>
+            <BlogSearch category={category} totalElements={blogListResponse.data.totalElements} />
+            <BlogList page={blogListResponse.data} />
         </Box>
     )
 }
