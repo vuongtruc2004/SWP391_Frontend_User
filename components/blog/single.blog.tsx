@@ -8,32 +8,23 @@ interface IProps {
     blog: BlogResponse;
     lineClamp: number;
     imageHeight: number;
+    priority: boolean;
 }
 const SingleBlogList = (props: IProps) => {
-    const { blog, lineClamp, imageHeight } = props;
+    const { blog, lineClamp, imageHeight, priority } = props;
 
     return (
         <>
-            {/* <div style={{
-                background: '#60a5fa',
-                width: '100%',
-                height: '250px',
-                borderRadius: '20px',
-                cursor: 'pointer',
-                backgroundImage: `url(${storageUrl}/blog/${blog.thumbnail})`,
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-                backgroundRepeat: 'no-repeat'
-            }} /> */}
             <div style={{
                 width: '100%',
                 height: `${imageHeight}px`,
-                position: 'relative'
+                position: 'relative',
             }}>
-                <Image src={`${storageUrl}/blog/${blog.thumbnail}`} alt={blog.title} fill style={{
+                <Image src={`${storageUrl}/blog/${blog.thumbnail}`} alt={blog.title} fill sizes="(max-width: 1000px) 100vw" priority={priority} style={{
                     objectFit: 'cover',
                     borderRadius: '20px',
-                    objectPosition: 'center'
+                    objectPosition: 'center',
+                    cursor: 'pointer'
                 }} />
             </div>
             <Box sx={{

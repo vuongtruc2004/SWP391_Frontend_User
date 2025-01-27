@@ -5,9 +5,10 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import { useActionState, useEffect, useState } from 'react';
 import Link from 'next/link';
-import { signIn } from 'next-auth/react';
+import { LiteralUnion, signIn } from 'next-auth/react';
 import { validateLoginForm, FieldResponse } from './login.action';
 import { useRouter } from 'next/navigation';
+import { BuiltInProviderType } from 'next-auth/providers/index';
 
 const initState: FieldResponse | null = null;
 const LoginForm = () => {
@@ -16,6 +17,12 @@ const LoginForm = () => {
 
     const [state, formAction, pending] = useActionState(validateLoginForm, initState);
     const router = useRouter();
+
+    const socialsLogin = async (provider: LiteralUnion<BuiltInProviderType> | undefined) => {
+        await signIn(provider, {
+            callbackUrl: "/home"
+        });
+    }
 
     useEffect(() => {
         const credentialsLogin = async () => {
@@ -123,7 +130,7 @@ const LoginForm = () => {
                             aspectRatio: 1,
                             objectFit: 'cover'
                         },
-                        padding: '6px 25px',
+                        padding: '8px 25px',
                         display: 'flex',
                         justifyContent: 'center',
                         alignItems: 'center',
@@ -131,11 +138,11 @@ const LoginForm = () => {
                     }
                 }}
             >
-                <Button variant='outlined' fullWidth size='small' onClick={() => signIn('google')}>
+                <Button variant='outlined' fullWidth size='small' onClick={() => socialsLogin('google')}>
                     <img src={"http://localhost:3000/google-icon.png"} alt="" />
                     <p>Google</p>
                 </Button>
-                <Button variant='outlined' fullWidth size='small' onClick={() => signIn('github')}>
+                <Button variant='outlined' fullWidth size='small' onClick={() => socialsLogin('github')}>
                     <GitHubIcon sx={{ color: 'white' }} />
                     <p>Github</p>
                 </Button>

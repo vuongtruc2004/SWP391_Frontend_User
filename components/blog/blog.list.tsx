@@ -2,6 +2,7 @@
 import { Box, Pagination } from "@mui/material"
 import SingleBlogList from "./single.blog"
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import BlogListEmpty from "./blog.list.empty";
 
 interface IProps {
     page: PageDetailsResponse<BlogResponse[]>;
@@ -20,32 +21,38 @@ const BlogList = (props: IProps) => {
 
     return (
         <>
-            <Box sx={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(3, 1fr)',
-                width: '100%%',
-                gap: '20px',
-            }}>
-                {page.content.map((blog) => {
-                    return (
-                        <div key={blog.blogId} >
-                            <SingleBlogList blog={blog} lineClamp={2} imageHeight={250} />
-                        </div>
-                    )
-                })}
-            </Box>
-            <Pagination
-                count={page.totalPages}
-                shape="rounded"
-                showFirstButton
-                showLastButton
-                sx={{
-                    display: 'flex',
-                    justifyContent: 'flex-end',
-                    marginTop: '20px',
-                }}
-                onChange={handleChangePage}
-            />
+            {(page.content && page.content.length) ? (
+                <>
+                    <Box sx={{
+                        display: 'grid',
+                        gridTemplateColumns: 'repeat(3, 1fr)',
+                        width: '100%%',
+                        gap: '20px',
+                    }}>
+                        {page.content.map((blog) => {
+                            return (
+                                <div key={blog.blogId} >
+                                    <SingleBlogList blog={blog} lineClamp={2} imageHeight={250} priority={false} />
+                                </div>
+                            )
+                        })}
+                    </Box>
+                    <Pagination
+                        count={page.totalPages}
+                        shape="rounded"
+                        showFirstButton
+                        showLastButton
+                        sx={{
+                            display: 'flex',
+                            justifyContent: 'flex-end',
+                            marginTop: '20px',
+                        }}
+                        onChange={handleChangePage}
+                    />
+                </>
+            ) : (
+                <BlogListEmpty />
+            )}
         </>
     )
 }

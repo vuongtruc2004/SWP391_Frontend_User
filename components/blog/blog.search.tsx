@@ -4,6 +4,8 @@ import SearchIcon from '@mui/icons-material/Search';
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
 import AlignHorizontalLeftIcon from '@mui/icons-material/AlignHorizontalLeft';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { useSession } from 'next-auth/react';
 
 interface IProps {
     category: string;
@@ -11,6 +13,11 @@ interface IProps {
 }
 const BlogSearch = (props: IProps) => {
     const { category, totalElements } = props;
+
+    const router = useRouter();
+    const pathname = usePathname();
+    const searchParams = useSearchParams();
+    const { data: session } = useSession();
 
     const filter: BlogFilter[] = [
         {
@@ -35,10 +42,18 @@ const BlogSearch = (props: IProps) => {
         //@ts-ignore
         const keyword = e.target[0].value;
         console.log(keyword);
+        const params = new URLSearchParams(searchParams);
+        params.set('filter', `title ~ '${keyword}' or content ~ '${keyword}' or user.fullname ~ '${keyword}'`);
+        router.replace(`${pathname}?${params}`);
     }
 
     const handleFilter = (key: string) => {
-        console.log(key);
+        if (key !== 'all' && !session) {
+            return router.push("/login");
+        }
+        const params = new URLSearchParams(searchParams);
+        params.set('category', key);
+        router.replace(`${pathname}?${params}`);
     }
 
     return (

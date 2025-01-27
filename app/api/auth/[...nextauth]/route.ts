@@ -61,7 +61,7 @@ export const authOptions: AuthOptions = {
             if (trigger === 'signIn') {
                 if (account?.provider !== 'credentials') {
                     const request: SocialsLoginRequest = {
-                        username: user.email ?? "",
+                        username: `${user.email ?? ""}_${Date.now()}`,
                         fullname: user.name ?? "",
                         avatar: user.image ?? "",
                         email: user.email ?? "",
@@ -86,6 +86,8 @@ export const authOptions: AuthOptions = {
                             token.expireAt = data.expireAt;
                             token.refreshToken = data.refreshToken;
                         }
+                    } else {
+                        throw new Error("Đăng nhập không thành công!");
                     }
                 } else {
                     token.user = user.user;
