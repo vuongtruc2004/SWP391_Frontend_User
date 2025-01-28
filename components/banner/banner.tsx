@@ -1,8 +1,9 @@
-import { Box, Button } from '@mui/material'
+import { Box } from '@mui/material';
 import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 import ConstructionIcon from '@mui/icons-material/Construction';
 import PublicIcon from '@mui/icons-material/Public';
 import ShutterSpeedIcon from '@mui/icons-material/ShutterSpeed';
+import Link from 'next/link';
 
 const Banner = () => {
     return (
@@ -34,7 +35,7 @@ const Banner = () => {
                     Học mọi lúc, mọi nơi, nâng cao kỹ năng ngay hôm nay!
                     Chinh phục công nghệ và mở ra cơ hội nghề nghiệp mới cùng chúng tôi.
                 </p>
-                <Button color="primary" variant="contained">Bắt Đầu</Button>
+                <Link href={"/course"} className='transition-all duration-300 bg-[#90caf9] hover:bg-blue-400 px-8 py-2 rounded-md text-[#000000de]'>Bắt Đầu</Link>
             </Box>
 
             <Box sx={{

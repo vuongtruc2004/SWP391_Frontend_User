@@ -42,6 +42,8 @@ declare global {
         thumbnail: string;
         createdAt: string;
         updatedAt: string;
+        totalLikes: number;
+        totalComments: number;
         user: UserResponse;
     }
 }

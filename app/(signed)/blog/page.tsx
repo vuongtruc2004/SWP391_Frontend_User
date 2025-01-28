@@ -55,7 +55,6 @@ const BlogPage = async (props: {
     const [blogListData, pinnedBlogData] = await Promise.all([blogListResponse, pinnedBlogResponse]);
 
     if (blogListData.status !== 200) {
-        console.log(">>> check response: ", blogListData);
         throw new Error("Không thể lấy dữ liệu các bài viết!");
     }
 

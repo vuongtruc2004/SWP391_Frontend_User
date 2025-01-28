@@ -6,11 +6,12 @@ import GitHubIcon from '@mui/icons-material/GitHub';
 import { useActionState, useEffect, useState } from 'react';
 import Link from 'next/link';
 import { LiteralUnion, signIn } from 'next-auth/react';
-import { validateLoginForm, FieldResponse } from './login.action';
+import { validateLoginForm, LoginFieldResponse } from './login.action';
 import { useRouter } from 'next/navigation';
 import { BuiltInProviderType } from 'next-auth/providers/index';
+import ErrorOutlineRoundedIcon from '@mui/icons-material/ErrorOutlineRounded';
 
-const initState: FieldResponse | null = null;
+const initState: LoginFieldResponse | null = null;
 const LoginForm = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [error, setError] = useState<string | null | undefined>(null);
@@ -62,9 +63,14 @@ const LoginForm = () => {
                         name='username'
                         autoComplete='username'
                         fullWidth
-                        defaultValue={state?.username?.value}
-                        error={state?.username?.error}
-                        helperText={state?.username?.error && state?.username?.message}
+                        defaultValue={state?.username.value}
+                        error={state?.username.error}
+                        helperText={state?.username.error && (
+                            <span className="flex items-center gap-x-1">
+                                <ErrorOutlineRoundedIcon sx={{ fontSize: '16px' }} />
+                                {state?.username.message}
+                            </span>
+                        )}
                     />
                 </div>
 
@@ -91,10 +97,14 @@ const LoginForm = () => {
                         size='small'
                         name='password'
                         fullWidth
-                        defaultValue={state?.password?.value
-                        }
-                        error={state?.password?.error}
-                        helperText={state?.password?.error && state?.password?.message}
+                        defaultValue={state?.password.value}
+                        error={state?.password.error}
+                        helperText={state?.password.error && (
+                            <span className="flex items-center gap-x-1">
+                                <ErrorOutlineRoundedIcon sx={{ fontSize: '16px' }} />
+                                {state?.password.message}
+                            </span>
+                        )}
                     />
                 </div>
 
@@ -108,7 +118,12 @@ const LoginForm = () => {
 
                 <Button type='submit' variant='contained' color='primary' fullWidth disabled={pending} >Đăng Nhập</Button>
 
-                <p className='text-red-500 text-sm mt-2'>{error}</p>
+                {error && (
+                    <p className='text-red-500 text-sm mt-2 flex items-center gap-x-1'>
+                        <ErrorOutlineRoundedIcon sx={{ fontSize: '16px' }} />
+                        {error}
+                    </p>
+                )}
 
                 <div className='text-gray-400 text-sm flex items-center mt-2'>
                     <p>Bạn chưa có tài khoản?</p>

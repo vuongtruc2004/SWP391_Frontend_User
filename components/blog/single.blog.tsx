@@ -15,7 +15,8 @@ const SingleBlogList = (props: IProps) => {
 
     return (
         <>
-            <div style={{
+            <Link href={`/blog/${blog.blogId}`} style={{
+                display: 'block',
                 width: '100%',
                 height: `${imageHeight}px`,
                 position: 'relative',
@@ -26,11 +27,11 @@ const SingleBlogList = (props: IProps) => {
                     objectPosition: 'center',
                     cursor: 'pointer'
                 }} />
-            </div>
+            </Link>
             <Box sx={{
                 color: 'white'
             }}>
-                <Link href={"/home"} className="block font-semibold mt-2 hover:underline" style={{
+                <Link href={`/blog/${blog.blogId}`} className="block font-semibold mt-2 hover:underline" style={{
                     overflow: "hidden",
                     textOverflow: "ellipsis",
                     display: "-webkit-box",
@@ -38,7 +39,7 @@ const SingleBlogList = (props: IProps) => {
                     WebkitLineClamp: 1,
                 }}>{blog.title}</Link>
 
-                <p style={{
+                <div style={{
                     overflow: "hidden",
                     textOverflow: "ellipsis",
                     display: "-webkit-box",
@@ -47,9 +48,9 @@ const SingleBlogList = (props: IProps) => {
                     color: '#adb5bd',
                     fontSize: '14px',
                     marginBlock: '4px'
-                }}>
-                    {blog.content}
-                </p>
+                }}
+                    dangerouslySetInnerHTML={{ __html: blog.content }}
+                />
 
                 <div className="flex items-center gap-x-2 text-blue-500 text-sm">
                     <p className="text-green-400">Đăng bởi:</p>
@@ -61,7 +62,7 @@ const SingleBlogList = (props: IProps) => {
                     <p>•</p>
                     <p>{calculateReadingTime(blog.content)}</p>
                 </div>
-            </Box>
+            </Box >
         </>
     )
 }

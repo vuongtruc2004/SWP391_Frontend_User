@@ -9,5 +9,5 @@ export const calculateReadingTime = (content: string) => {
 }
 
 export const formatCreateDate = (createdAt: string) => {
-    return dayjs(createdAt).locale('vi').format('D [thg] M, YYYY');
+    return dayjs(createdAt).locale('vi').format('D [tháng] M, YYYY');
 };

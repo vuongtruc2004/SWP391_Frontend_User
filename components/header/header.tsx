@@ -74,7 +74,7 @@ const Header = () => {
                         <Link href={"/course"} className={pathname === "/course" ? "active" : ""}>Khóa học</Link>
                     </li>
                     <li>
-                        <Link href={"/blog"} className={pathname === "/blog" ? "active" : ""}>Bài viết</Link>
+                        <Link href={"/blog"} className={pathname.startsWith("/blog") ? "active" : ""}>Bài viết</Link>
                     </li>
                 </ul>
 

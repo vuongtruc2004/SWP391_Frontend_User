@@ -31,7 +31,7 @@ const BlogList = (props: IProps) => {
                     }}>
                         {page.content.map((blog) => {
                             return (
-                                <div key={blog.blogId} >
+                                <div key={blog.blogId}>
                                     <SingleBlogList blog={blog} lineClamp={2} imageHeight={250} priority={false} />
                                 </div>
                             )

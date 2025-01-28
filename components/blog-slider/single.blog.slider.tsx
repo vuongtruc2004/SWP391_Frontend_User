@@ -1,6 +1,13 @@
-import { Avatar, Box, Button } from '@mui/material'
+import { formatCreateDate } from '@/helper/blog.helper';
+import { Box, Button } from '@mui/material'
+import { useRouter } from 'next/navigation';
 
-const SingleBlogSlider = () => {
+interface IProps {
+    blog: BlogResponse;
+}
+const SingleBlogSlider = (props: IProps) => {
+    const { blog } = props;
+    const { push } = useRouter();
     return (
         <Box sx={{
             color: 'white',
@@ -12,16 +19,28 @@ const SingleBlogSlider = () => {
             borderRadius: '6px',
         }}>
             <div className='max-w-96 p-10'>
-                <div className='flex items-center gap-x-5'>
-                    <Avatar>
-                        N
-                    </Avatar>
-                    <p>Nguyen Vuong Truc</p>
-                </div>
-                <p className='mt-2 mb-6'>
-                    Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ipsam nemo voluptas cumque at? Officiis excepturi reiciendis nulla, optio qui et?
-                </p>
-                <Button variant='contained' color='primary'>Xem chi tiết</Button>
+                <p className="font-semibold mt-2" style={{
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    display: "-webkit-box",
+                    WebkitBoxOrient: "vertical",
+                    WebkitLineClamp: 1,
+                }}>{blog.title}</p>
+
+                <div style={{
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    display: "-webkit-box",
+                    WebkitBoxOrient: "vertical",
+                    WebkitLineClamp: 4,
+                    color: '#adb5bd',
+                    fontSize: '14px',
+                    marginTop: '10px'
+                }}
+                    dangerouslySetInnerHTML={{ __html: blog.content }}
+                />
+                <p className='text-sm italic text-purple-300 mt-2 mb-5 text-right'>--{formatCreateDate(blog.createdAt)}</p>
+                <Button variant='contained' color='primary' onClick={() => push(`/blog/${blog.blogId}`)}>Xem chi tiết</Button>
             </div>
         </Box>
     )

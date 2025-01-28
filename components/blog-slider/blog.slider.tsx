@@ -11,7 +11,11 @@ import SingleBlogSlider from './single.blog.slider';
 import SliderNavigation from './slider.navigation';
 import BlogSliderMotion from './blog.slider.motion';
 
-const BlogSlider = () => {
+interface IProps {
+    blogList: BlogResponse[];
+}
+const BlogSlider = (props: IProps) => {
+    const { blogList } = props;
     const swiperRef = useRef<SwiperRef | null>(null);
     const h3Ref = useRef(null);
     const isInView = useInView(h3Ref, { margin: "-200px", once: true });
@@ -57,7 +61,7 @@ const BlogSlider = () => {
             <div className='relative flex items-center justify-center'>
                 <BlogSliderMotion isInView={isInView} />
                 <h3 ref={h3Ref} className='text-center font-bold uppercase text-2xl text-white'>
-                    Bài viết nổi bật
+                    Bài viết mới nhất
                 </h3>
             </div>
 
@@ -73,9 +77,9 @@ const BlogSlider = () => {
                 modules={[EffectCoverflow, Pagination, Autoplay]}
                 loop={true}
             >
-                {Array.from({ length: 10 }).map((_, index) => (
-                    <SwiperSlide key={index}>
-                        <SingleBlogSlider />
+                {blogList?.map((blog) => (
+                    <SwiperSlide key={blog.blogId}>
+                        <SingleBlogSlider blog={blog} />
                     </SwiperSlide>
                 ))}
             </Swiper>
