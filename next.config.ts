@@ -12,7 +12,11 @@ const nextConfig: NextConfig = {
     ]
   },
   images: {
-    domains: ["localhost"],
+    remotePatterns: [
+      {
+        hostname: 'localhost'
+      }
+    ]
   },
 };
 
