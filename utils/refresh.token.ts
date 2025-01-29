@@ -2,6 +2,8 @@ import dayjs from "dayjs"
 import { JWT } from "next-auth/jwt";
 import { redirect } from "next/navigation";
 import { apiUrl } from "./url";
+import { sendRequest } from "./fetch.api";
+import { signOut } from "next-auth/react";
 
 export const shouldRefreshToken = (expireAt: string) => {
     const expirationTime = dayjs(expireAt);
@@ -14,8 +16,12 @@ export const letRefreshToken = async (token: JWT): Promise<JWT> => {
     if (!token) {
         redirect("/login");
     } else {
-        const responseRaw = await fetch(`${apiUrl}/auth/refresh?refresh_token=${token.refreshToken}`);
-        const response: ApiResponse<LoginResponse> = await responseRaw.json();
+        const response = await sendRequest<ApiResponse<LoginResponse>>({
+            url: `${apiUrl}/auth/refresh`,
+            queryParams: {
+                refresh_token: token.refreshToken
+            }
+        })
         if (response.status === 200) {
             console.log(">>> refresh token successfully!");
             return {
@@ -25,7 +31,13 @@ export const letRefreshToken = async (token: JWT): Promise<JWT> => {
                 refreshToken: response.data.refreshToken
             }
         } else {
-            await fetch(`${apiUrl}/auth/logout`)
+            await sendRequest({
+                url: `${apiUrl}/auth/logout`,
+                queryParams: {
+                    refresh_token: token?.refreshToken
+                }
+            });
+            signOut();
             redirect("/login");
         }
     }

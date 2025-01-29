@@ -1,16 +1,21 @@
+'use client'
 import { calculateReadingTime, formatCreateDate } from "@/helper/blog.helper";
 import { storageUrl } from "@/utils/url";
-import { Avatar, Box, Divider } from "@mui/material";
+import { Avatar, Box, Button, Divider } from "@mui/material";
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import LocalLibraryOutlinedIcon from '@mui/icons-material/LocalLibraryOutlined';
+import ReplyAllOutlinedIcon from '@mui/icons-material/ReplyAllOutlined';
+import AlignHorizontalLeftOutlinedIcon from '@mui/icons-material/AlignHorizontalLeftOutlined';
 import Link from "next/link";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 interface IProps {
     blog: BlogResponse;
 }
 const BlogDetails = (props: IProps) => {
     const { blog } = props;
+    const router = useRouter();
     const avatarSrc = blog?.user.accountType === "CREDENTIALS" ?
         `${storageUrl}/avatar/${blog.user.avatar}` : blog?.user.avatar;
 
@@ -20,8 +25,12 @@ const BlogDetails = (props: IProps) => {
             borderRadius: '6px',
             padding: '40px 20px'
         }}>
-            <Link href={"/blog"} className="transition-all duration-300 bg-[#dd397b] hover:bg-rose-600 px-4 py-2 rounded-md">Xem tất cả bài viết</Link>
-            <h1 className="text-2xl font-semibold mt-5">{blog.title}</h1>
+            <div className="flex items-center justify-between">
+                <Button onClick={() => router.back()} sx={{ textTransform: 'none' }} variant="contained" startIcon={<ReplyAllOutlinedIcon />}>Trở lại</Button>
+                <Button onClick={() => router.push("/blog")} sx={{ textTransform: 'none' }} variant="contained" startIcon={<AlignHorizontalLeftOutlinedIcon />}>Xem tất cả bài viết</Button>
+            </div>
+
+            <h1 className="text-2xl font-semibold mt-10">{blog.title}</h1>
             <Box sx={{
                 display: 'flex',
                 alignItems: 'center',

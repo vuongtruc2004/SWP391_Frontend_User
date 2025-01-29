@@ -1,8 +1,8 @@
 'use client'
 import { Box } from "@mui/material"
 import { useRouter } from "next/navigation"
-import LoginForm from "./login.form";
 import CloseIcon from '@mui/icons-material/Close';
+import LoginForm from "@/features/login/login.form";
 
 const LoginModal = () => {
     const router = useRouter();

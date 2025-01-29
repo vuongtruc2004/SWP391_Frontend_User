@@ -4,6 +4,7 @@ import GitHubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { letRefreshToken, shouldRefreshToken } from "@/utils/refresh.token";
+import { sendRequest } from "@/utils/fetch.api";
 
 export const authOptions: AuthOptions = {
     providers: [
@@ -19,23 +20,22 @@ export const authOptions: AuthOptions = {
                     password: credentials?.password ?? "",
                 }
 
-                const responseRaw = await fetch(`${apiUrl}/auth/login/credentials`, {
+                const credentialsLoginResponse = await sendRequest<ApiResponse<LoginResponse>>({
                     method: 'POST',
+                    url: `${apiUrl}/auth/login/credentials`,
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify(request)
-                });
+                    body: request
+                })
 
-                const response: ApiResponse<LoginResponse> = await responseRaw.json();
-
-                if (response.status === 200) {
+                if (credentialsLoginResponse.status === 200) {
                     const user: User = {
-                        id: response.data.user.userId.toString(),
-                        user: response.data.user,
-                        accessToken: response.data.accessToken,
-                        expireAt: response.data.expireAt,
-                        refreshToken: response.data.refreshToken
+                        id: credentialsLoginResponse.data.user.userId.toString(),
+                        user: credentialsLoginResponse.data.user,
+                        accessToken: credentialsLoginResponse.data.accessToken,
+                        expireAt: credentialsLoginResponse.data.expireAt,
+                        refreshToken: credentialsLoginResponse.data.refreshToken
                     }
                     return user;
                 } else {
@@ -68,18 +68,17 @@ export const authOptions: AuthOptions = {
                         accountType: account?.provider.toUpperCase() ?? ""
                     }
 
-                    const responseRaw = await fetch(`${apiUrl}/auth/login/socials`, {
+                    const socialsLoginResponse = await sendRequest<ApiResponse<LoginResponse>>({
                         method: 'POST',
+                        url: `${apiUrl}/auth/login/socials`,
                         headers: {
                             'Content-Type': 'application/json'
                         },
-                        body: JSON.stringify(request)
-                    });
+                        body: request
+                    })
 
-                    const response: ApiResponse<LoginResponse> = await responseRaw.json();
-
-                    if (response.status === 200) {
-                        const data = response.data;
+                    if (socialsLoginResponse.status === 200) {
+                        const data = socialsLoginResponse.data;
                         if (data) {
                             token.user = data.user;
                             token.accessToken = data.accessToken;

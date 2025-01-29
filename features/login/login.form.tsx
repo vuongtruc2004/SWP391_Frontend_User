@@ -6,10 +6,10 @@ import GitHubIcon from '@mui/icons-material/GitHub';
 import { useActionState, useEffect, useState } from 'react';
 import Link from 'next/link';
 import { LiteralUnion, signIn } from 'next-auth/react';
-import { validateLoginForm, LoginFieldResponse } from './login.action';
 import { useRouter } from 'next/navigation';
 import { BuiltInProviderType } from 'next-auth/providers/index';
 import ErrorOutlineRoundedIcon from '@mui/icons-material/ErrorOutlineRounded';
+import { LoginFieldResponse, validateLoginForm } from './login.action';
 
 const initState: LoginFieldResponse | null = null;
 const LoginForm = () => {

@@ -3,11 +3,13 @@ import { Box } from '@mui/material'
 import { useRef } from 'react'
 import SubjectListMotion from './subject.list.motion'
 import { useInView } from 'framer-motion';
+import * as motion from "motion/react-client"
 
 const SubjectList = () => {
     const h3Ref = useRef(null);
     const isInView = useInView(h3Ref, { margin: "-200px", once: true });
 
+    const subjects = ["java", "javascript", "python", "c++", "typescript", "css"];
     return (
         <>
             <h3 ref={h3Ref} className='text-center font-bold uppercase text-2xl text-white mt-10'>Danh mục được quan tâm nhất</h3>
@@ -19,7 +21,7 @@ const SubjectList = () => {
                 maxWidth: '1200px',
                 margin: '40px auto 0',
                 'div:has(div)': {
-                    background: '#15171c',
+                    background: 'black',
                     color: 'white',
                     transition: 'all .3s',
                     '&:hover': {
@@ -31,65 +33,28 @@ const SubjectList = () => {
                 position: 'relative'
             }}>
                 <SubjectListMotion isInView={isInView} />
-                <div className='flex items-center gap-x-3 rounded-md p-3 cursor-pointer'>
-                    <div className='bg-blue-300 text-blue-500 flex items-center justify-center w-28 h-28 rounded-md flex-none'>
-                        <p className='text-sm font-semibold'>JAVA</p>
-                    </div>
-                    <div>
-                        <p className='font-semibold'>Lorem ipsum dolor sit amet consectetur.</p>
-                        <p className='text-gray-500 text-sm'>100+ Java course</p>
-                    </div>
-                </div>
-
-                <div className='flex items-center gap-x-3 rounded-md p-3 cursor-pointer'>
-                    <div className='bg-orange-200 text-orange-500 flex items-center justify-center w-28 h-28 rounded-md flex-none'>
-                        <p className='text-sm font-semibold'>JAVASCRIPT</p>
-                    </div>
-                    <div>
-                        <p className='font-semibold'>Lorem ipsum dolor sit amet consectetur.</p>
-                        <p className='text-gray-500 text-sm'>100+ Java course</p>
-                    </div>
-                </div>
-
-                <div className='flex items-center gap-x-3 rounded-md p-3 cursor-pointer'>
-                    <div className='bg-green-200 text-green-500 flex items-center justify-center w-28 h-28 rounded-md grow-0 shrink-0'>
-                        <p className='text-sm font-semibold'>PYTHON</p>
-                    </div>
-                    <div>
-                        <p className='font-semibold'>Lorem ipsum dolor sit amet consectetur.</p>
-                        <p className='text-gray-500 text-sm'>100+ Java course</p>
-                    </div>
-                </div>
-
-                <div className='flex items-center gap-x-3 rounded-md p-3 cursor-pointer'>
-                    <div className='bg-purple-200 text-purple-600 flex items-center justify-center w-28 h-28 rounded-md flex-none'>
-                        <p className='text-sm font-semibold'>C++</p>
-                    </div>
-                    <div>
-                        <p className='font-semibold'>Lorem ipsum dolor sit amet consectetur.</p>
-                        <p className='text-gray-500 text-sm'>100+ Java course</p>
-                    </div>
-                </div>
-
-                <div className='flex items-center gap-x-3 rounded-md p-3 cursor-pointer'>
-                    <div className='bg-teal-200 text-teal-600 flex items-center justify-center w-28 h-28 rounded-md flex-none'>
-                        <p className='text-sm font-semibold'>TYPESCRIPT</p>
-                    </div>
-                    <div>
-                        <p className='font-semibold'>Lorem ipsum dolor sit amet consectetur.</p>
-                        <p className='text-gray-500 text-sm'>100+ Java course</p>
-                    </div>
-                </div>
-
-                <div className='flex items-center gap-x-3 rounded-md p-3 cursor-pointer'>
-                    <div className='bg-red-200 text-red-500 flex items-center justify-center w-28 h-28 rounded-md flex-none'>
-                        <p className='text-sm font-semibold'>CSS</p>
-                    </div>
-                    <div>
-                        <p className='font-semibold'>Lorem ipsum dolor sit amet consectetur.</p>
-                        <p className='text-gray-500 text-sm'>100+ Java course</p>
-                    </div>
-                </div>
+                {subjects.map((item, index) => {
+                    return (
+                        <motion.div
+                            className='flex items-center gap-x-3 rounded-md p-3 cursor-pointer'
+                            key={index}
+                            whileHover={{ scale: 1.15 }}
+                            whileTap={{ scale: 0.6 }}
+                            transition={{
+                                duration: 0.1,
+                                ease: "easeOut",
+                            }}
+                        >
+                            <div className='bg-blue-300 text-blue-500 flex items-center justify-center w-28 h-28 rounded-md flex-none'>
+                                <p className='text-sm font-semibold uppercase'>{item}</p>
+                            </div>
+                            <div>
+                                <p className='font-semibold'>Lorem ipsum dolor sit amet consectetur.</p>
+                                <p className='text-gray-500 text-sm'>100+ {item} course</p>
+                            </div>
+                        </motion.div>
+                    )
+                })}
             </Box>
         </>
     )

@@ -1,4 +1,4 @@
-import BlogSuggest from "@/components/blog-details/blog.suggest";
+import BlogSuggest from "@/features/blog-details/blog.suggest";
 import { sendRequest } from "@/utils/fetch.api";
 import { apiUrl } from "@/utils/url";
 
@@ -13,12 +13,12 @@ const SuggestPage = async ({
         queryParams: {
             blogId: id,
             page: 1,
-            size: 3,
+            size: 5,
             sort: 'createdAt,asc'
         }
     });
     return (
-        <BlogSuggest blogList={blogListResponse.data.content} />
+        <BlogSuggest blogList={blogListResponse.data.content} currentId={Number(id)} />
     )
 }
 

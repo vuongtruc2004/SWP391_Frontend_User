@@ -2,6 +2,7 @@ import Avatar from '@mui/material/Avatar';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
+import AutoStoriesIcon from '@mui/icons-material/AutoStories';
 import Divider from '@mui/material/Divider';
 import Settings from '@mui/icons-material/Settings';
 import Logout from '@mui/icons-material/Logout';
@@ -9,6 +10,7 @@ import { Button } from '@mui/material';
 import PersonIcon from '@mui/icons-material/Person';
 import { signOut, useSession } from 'next-auth/react';
 import { apiUrl, storageUrl } from '@/utils/url';
+import { sendRequest } from '@/utils/fetch.api';
 
 interface IProps {
     anchorEl: HTMLElement | null;
@@ -27,7 +29,12 @@ export default function AccountMenu(props: IProps) {
     };
 
     const handleLogout = async () => {
-        await fetch(`${apiUrl}/auth/logout?refresh_token=${session?.refreshToken}`);
+        await sendRequest({
+            url: `${apiUrl}/auth/logout`,
+            queryParams: {
+                refresh_token: session?.refreshToken
+            }
+        })
         signOut();
     }
 
@@ -99,6 +106,12 @@ export default function AccountMenu(props: IProps) {
                     <PersonIcon fontSize="small" />
                 </ListItemIcon>
                 Tài khoản
+            </MenuItem>
+            <MenuItem onClick={handleClose}>
+                <ListItemIcon>
+                    <AutoStoriesIcon fontSize="small" />
+                </ListItemIcon>
+                Khóa học của tôi
             </MenuItem>
             <MenuItem onClick={handleClose}>
                 <ListItemIcon>

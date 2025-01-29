@@ -2,7 +2,7 @@ import queryString from "query-string";
 
 interface IProps {
     url: string;
-    method?: string;
+    method?: "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
     body?: { [key: string]: any };
     queryParams?: any;
     useCredentials?: boolean;

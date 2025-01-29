@@ -1,6 +1,6 @@
 import { authOptions } from '@/app/api/auth/[...nextauth]/route';
-import BlogList from '@/components/blog/blog.list';
-import BlogSearch from '@/components/blog/blog.search';
+import BlogList from '@/features/blog/blog.list';
+import BlogSearch from '@/features/blog/blog.search';
 import SingleBlogList from '@/components/blog/single.blog';
 import { sendRequest } from '@/utils/fetch.api';
 import { apiUrl } from '@/utils/url';
@@ -14,24 +14,25 @@ export const metadata: Metadata = {
 
 const BlogPage = async (props: {
     searchParams: Promise<{
-        filter?: string;
+        keyword?: string;
         page?: string;
-        size?: string;
         category?: string;
+        tag_name: string;
     }>
 }) => {
     const session = await getServerSession(authOptions);
     const searchParams = await props.searchParams;
-    const filter = searchParams.filter;
+    const keyword = searchParams.keyword || ""
     const page = searchParams.page;
-    const size = searchParams.size
     const category = searchParams.category || 'all';
+    const tagNameList = searchParams.tag_name;
 
     const queryParams = new URLSearchParams({
-        filter: filter || '',
+        filter: `title ~ '${keyword}' or plainContent ~ '${keyword}' or user.fullname ~ '${keyword}'`,
         page: page || '1',
-        size: size || '6',
-        category: category
+        size: '6',
+        category: category,
+        tag_name: tagNameList || ""
     }).toString();
 
     let blogListResponse;
@@ -73,7 +74,12 @@ const BlogPage = async (props: {
             }}>
                 {pinnedBlogData.status === 200 && <SingleBlogList blog={pinnedBlogData.data} lineClamp={5} imageHeight={300} priority={true} />}
             </Box>
-            <BlogSearch category={category} totalElements={blogListData.data.totalElements ?? 0} />
+            <BlogSearch
+                category={category}
+                keyword={keyword}
+                tag_name={tagNameList}
+                totalElements={blogListData.data.totalElements ?? 0}
+            />
             <BlogList page={blogListData.data} />
         </Box>
     )

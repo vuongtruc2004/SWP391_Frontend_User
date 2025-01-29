@@ -36,7 +36,7 @@ declare global {
     }
 
     interface BlogResponse {
-        blogId: string;
+        blogId: number;
         title: string;
         content: string;
         thumbnail: string;
@@ -45,5 +45,11 @@ declare global {
         totalLikes: number;
         totalComments: number;
         user: UserResponse;
+        hashtags: HashtagResponse[];
+    }
+
+    interface HashtagResponse {
+        tagId: number;
+        tagName: string;
     }
 }

@@ -58,7 +58,7 @@ const Header = () => {
                 position: 'fixed',
                 top: 0,
                 left: 0,
-                zIndex: 10
+                zIndex: 15
             }}>
             <div className="flex items-center justify-center gap-x-6">
                 <Link href={"/home"} className="items-center flex justify-center cursor-pointer gap-x-2 mr-3">

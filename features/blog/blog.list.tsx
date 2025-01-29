@@ -1,8 +1,8 @@
 'use client'
 import { Box, Pagination } from "@mui/material"
-import SingleBlogList from "./single.blog"
+import SingleBlogList from "../../components/blog/single.blog"
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import BlogListEmpty from "./blog.list.empty";
+import BlogListEmpty from "../../components/blog/blog.list.empty";
 
 interface IProps {
     page: PageDetailsResponse<BlogResponse[]>;

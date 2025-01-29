@@ -1,17 +1,26 @@
+'use client'
 import { formatCreateDate } from "@/helper/blog.helper";
 import { storageUrl } from "@/utils/url";
 import { Box, Button } from "@mui/material"
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 interface IProps {
     blogList: BlogResponse[];
+    currentId: number;
 }
 const BlogSuggest = (props: IProps) => {
-    const { blogList } = props;
+    const { blogList, currentId } = props;
+    const router = useRouter();
+    const suggestList: BlogResponse[] = blogList.filter(blog => blog.blogId !== currentId);
+    const hashtags: HashtagResponse[] = blogList.find(blog => blog.blogId === currentId)?.hashtags || [];
+
+    const findBlogsByHashtag = (tagName: string) => {
+        router.push(`/blog?tag_name=${tagName}`);
+    }
+
     return (
         <Box sx={{
             display: 'flex',
@@ -19,9 +28,32 @@ const BlogSuggest = (props: IProps) => {
             rowGap: '20px',
         }}>
             <div className="bg-black px-5 py-10 rounded-md">
+                <h1 className="text-lg font-semibold mb-5">Hashtags</h1>
+                <ul className="flex flex-wrap items-center gap-1">
+                    {hashtags.map(tag => {
+                        return (
+                            <Button
+                                variant="outlined"
+                                color="secondary"
+                                size="small"
+                                sx={{
+                                    fontSize: '14px',
+                                    paddingInline: '16px'
+                                }}
+                                key={tag.tagId}
+                                onClick={() => findBlogsByHashtag(tag.tagName)}
+                            >
+                                {tag.tagName}
+                            </Button>
+                        )
+                    })}
+                </ul>
+            </div>
+
+            <div className="bg-black px-5 py-10 rounded-md">
                 <h1 className="text-lg font-semibold mb-5">Xem thêm các bài viết của tác giả</h1>
                 <ul className="flex flex-col gap-y-5">
-                    {blogList?.map(blog => {
+                    {suggestList?.map(blog => {
                         return (
                             <li key={blog.blogId} className="flex items-center gap-x-3">
                                 <Link href={`/blog/${blog.blogId}`} style={{
@@ -49,11 +81,6 @@ const BlogSuggest = (props: IProps) => {
                         )
                     })}
                 </ul>
-            </div>
-
-            <div className="bg-black p-5 rounded-md flex items-center justify-center gap-x-5">
-                <Button variant="text" color="primary" startIcon={<ChevronLeftIcon />}>Bài viết trước</Button>
-                <Button variant="text" color="primary" endIcon={<ChevronRightIcon />}>Bài viết tiếp</Button>
             </div>
         </Box>
     )

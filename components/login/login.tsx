@@ -1,9 +1,9 @@
 'use client'
 import { Box, IconButton } from '@mui/material';
-import LoginForm from './login.form'
 import LoginBanner from './login.banner'
 import FirstPageOutlinedIcon from '@mui/icons-material/FirstPageOutlined';
 import { useRouter } from 'next/navigation';
+import LoginForm from '@/features/login/login.form';
 
 const Login = () => {
     const router = useRouter();

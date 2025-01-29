@@ -1,4 +1,4 @@
-import InteractOnBlog from "@/components/blog-interact/interact.on.blog";
+import InteractOnBlog from "@/features/blog-interact/interact.on.blog";
 import { sendRequest } from "@/utils/fetch.api";
 import { apiUrl } from "@/utils/url";
 
@@ -11,7 +11,6 @@ const InteractPage = async ({
     const blogResponse = await sendRequest<ApiResponse<BlogResponse>>({
         url: `${apiUrl}/blogs/${id}`
     });
-    console.log(">>> check response: ", blogResponse);
     return (
         <InteractOnBlog blog={blogResponse.data} />
     )
