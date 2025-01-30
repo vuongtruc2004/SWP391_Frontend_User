@@ -3,7 +3,6 @@ import { JWT } from "next-auth/jwt";
 import { redirect } from "next/navigation";
 import { apiUrl } from "./url";
 import { sendRequest } from "./fetch.api";
-import { signOut } from "next-auth/react";
 
 export const shouldRefreshToken = (expireAt: string) => {
     const expirationTime = dayjs(expireAt);
@@ -30,15 +29,7 @@ export const letRefreshToken = async (token: JWT): Promise<JWT> => {
                 expireAt: response.data.expireAt,
                 refreshToken: response.data.refreshToken
             }
-        } else {
-            await sendRequest({
-                url: `${apiUrl}/auth/logout`,
-                queryParams: {
-                    refresh_token: token?.refreshToken
-                }
-            });
-            signOut();
-            redirect("/login");
         }
+        return token;
     }
 }

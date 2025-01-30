@@ -1,14 +1,13 @@
-import Banner from '@/components/banner/banner';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
     title: "Trang chủ",
 };
 
-const HomeLayout = ({ blog, subject, course }: { blog: React.ReactNode, subject: React.ReactNode, course: React.ReactNode }) => {
+const HomeLayout = ({ children, blog, subject, course }: { children: React.ReactNode, blog: React.ReactNode, subject: React.ReactNode, course: React.ReactNode }) => {
     return (
         <>
-            <Banner />
+            {children}
             {blog}
             {subject}
             {course}

@@ -1,80 +1,88 @@
-import { Box } from '@mui/material';
-import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
-import ConstructionIcon from '@mui/icons-material/Construction';
-import PublicIcon from '@mui/icons-material/Public';
-import ShutterSpeedIcon from '@mui/icons-material/ShutterSpeed';
+import { Box, Typography } from '@mui/material';
 import Link from 'next/link';
+import SubjectSlider from './subject.slider';
 
-const Banner = () => {
+interface IProps {
+    subjectList: SubjectResponse[];
+}
+const Banner = (props: IProps) => {
+    const { subjectList } = props;
+
     return (
         <Box sx={{
+            display: 'flex',
+            justifyContent: 'flex-end',
             height: '60vh',
-            minHeight: '500px',
-            backgroundImage: `url(/banner.jpg)`,
-            backgroundPosition: 'top',
-            backgroundRepeat: 'no-repeat',
-            backgroundSize: 'cover',
+            minHeight: '550px',
             position: 'relative',
-            color: 'white'
+            color: 'white',
+            bgcolor: 'black'
         }}>
             <Box sx={{
-                width: '550px',
-                '.mui-lxrpex-MuiButtonBase-root-MuiButton-root': {
-                    fontSize: '14px',
-                    textTransform: 'capitalize',
-                    padding: '5px 30px'
-                },
+                width: 'max-content',
                 position: 'absolute',
                 top: '50%',
-                left: '50px',
-                transform: 'translateY(-50%)',
+                left: '60px',
+                transform: 'translateY(-46%)',
+                zIndex: 2
             }}>
-                <p className="text-3xl font-bold">HỌC. THỰC HÀNH. THÀNH CÔNG.</p>
-                <p className="mb-6 mt-2">
+                <Typography sx={{
+                    fontSize: '56px',
+                    lineHeight: '0.98em',
+                    fontWeight: 'bold'
+                }}>
+                    HỌC. THỰC HÀNH.
+                    <br />
+                    THÀNH CÔNG.
+                </Typography>
+                <p className="mb-6 mt-3 w-[525px] text-[#adb5bd] font-semibold">
                     Học lập trình dễ dàng với các khóa học chất lượng, lộ trình rõ ràng, bài bản cùng với các dự án thực tế.
                     Học mọi lúc, mọi nơi, nâng cao kỹ năng ngay hôm nay!
-                    Chinh phục công nghệ và mở ra cơ hội nghề nghiệp mới cùng chúng tôi.
                 </p>
-                <Link href={"/course"} className='transition-all duration-300 bg-[#90caf9] hover:bg-blue-400 px-8 py-2 rounded-md text-[#000000de]'>Bắt Đầu</Link>
+
+                <div className='flex items-center gap-x-3'>
+                    <Link
+                        href={"/course"}
+                        className='transition-all duration-300 bg-[#90caf9] hover:bg-blue-400 px-8 py-2 rounded-md text-[#000000de]'
+                    >
+                        Bắt đầu học
+                    </Link>
+                    <Link
+                        href={"/blog"}
+                        className='transition-all duration-300 border border-white hover:border-gray-400 hover:text-gray-400  px-8 py-2 rounded-md text-white'
+                    >
+                        Khám phá bài viết
+                    </Link>
+                </div>
             </Box>
 
             <Box sx={{
-                position: 'absolute',
-                bottom: 0,
-                left: '50%',
-                transform: 'translate(-50%, 50%)',
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                columnGap: '20px',
-                'div': {
-                    display: 'flex',
-                    alignItems: 'center',
-                    columnGap: '20px',
-                    width: '280px',
-                    background: 'linear-gradient(to bottom right, #010009, #15171c)',
-                    borderRadius: '6px',
-                    padding: '20px',
-                    color: 'white',
+                width: '65%',
+                position: 'relative',
+                mask: 'linear-gradient(270deg, #000000 0%, rgba(0, 0, 0, .76) 60%, rgba(0, 0, 0, 0) 100%) add',
+                '&::after': {
+                    content: '""',
+                    position: 'absolute',
+                    bottom: 0,
+                    left: 0,
+                    width: '100%',
+                    height: '100px',
+                    background: 'linear-gradient(to bottom, rgba(0,0,0,0), rgba(0,0,0,0.8))',
                 }
             }}>
-                <div>
-                    <PublicIcon sx={{ fontSize: '2.5rem' }} />
-                    <p>Khám phá 100+ khóa học khác nhau với đa dạng đề tài.</p>
-                </div>
-                <div>
-                    <EmojiEventsIcon sx={{ fontSize: '2.5rem' }} />
-                    <p>Đội ngũ giảng dạy chuyên nghiệp, dày dặn kinh nghiệm.</p>
-                </div>
-                <div>
-                    <ConstructionIcon sx={{ fontSize: '2.5rem' }} />
-                    <p>Xây dựng dự án thực tế, làm bài kiểm tra trong các khóa học.</p>
-                </div>
-                <div>
-                    <ShutterSpeedIcon sx={{ fontSize: '2.5rem' }} />
-                    <p>Tiết kiệm thời gian với các video thời lượng ngắn.</p>
-                </div>
+                <video loop autoPlay preload="auto" muted style={{
+                    width: '100%',
+                    height: '100%',
+                    display: 'block',
+                    objectFit: 'cover',
+                    backgroundColor: 'rgba(0,0,0,0)',
+                    objectPosition: '50% 50%'
+                }}>
+                    <source src="/background.mp4" type="video/mp4" />
+                </video>
             </Box>
+
+            <SubjectSlider subjectList={subjectList} />
         </Box >
     )
 }

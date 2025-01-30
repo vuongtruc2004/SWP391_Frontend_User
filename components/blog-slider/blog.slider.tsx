@@ -1,7 +1,6 @@
 'use client'
 import { useRef } from 'react';
 import { Swiper, SwiperRef, SwiperSlide } from 'swiper/react';
-import { useInView } from "framer-motion";
 import 'swiper/css';
 import 'swiper/css/effect-coverflow';
 import 'swiper/css/pagination';
@@ -9,7 +8,6 @@ import { Autoplay, EffectCoverflow, Pagination } from 'swiper/modules';
 import { Box } from '@mui/material';
 import SingleBlogSlider from './single.blog.slider';
 import SliderNavigation from './slider.navigation';
-import BlogSliderMotion from './blog.slider.motion';
 
 interface IProps {
     blogList: BlogResponse[];
@@ -17,13 +15,11 @@ interface IProps {
 const BlogSlider = (props: IProps) => {
     const { blogList } = props;
     const swiperRef = useRef<SwiperRef | null>(null);
-    const h3Ref = useRef(null);
-    const isInView = useInView(h3Ref, { margin: "-200px", once: true });
 
     return (
         <Box
             sx={{
-                marginTop: '100px',
+                marginTop: '40px',
                 '.swiper': { width: '95%', maxWidth: '1200px', paddingTop: '40px', paddingBottom: '50px' },
                 '.swiper-slide': {
                     backgroundPosition: 'center',
@@ -59,8 +55,7 @@ const BlogSlider = (props: IProps) => {
             }}
         >
             <div className='relative flex items-center justify-center'>
-                <BlogSliderMotion isInView={isInView} />
-                <h3 ref={h3Ref} className='text-center font-bold uppercase text-2xl text-white'>
+                <h3 className='text-center font-bold uppercase text-2xl text-white'>
                     Bài viết mới nhất
                 </h3>
             </div>

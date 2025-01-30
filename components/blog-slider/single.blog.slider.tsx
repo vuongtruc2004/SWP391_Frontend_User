@@ -1,6 +1,7 @@
 import { formatCreateDate } from '@/helper/blog.helper';
 import { Box, Button } from '@mui/material'
 import { useRouter } from 'next/navigation';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 
 interface IProps {
     blog: BlogResponse;
@@ -19,13 +20,7 @@ const SingleBlogSlider = (props: IProps) => {
             borderRadius: '6px',
         }}>
             <div className='max-w-96 p-10'>
-                <p className="font-semibold mt-2" style={{
-                    overflow: "hidden",
-                    textOverflow: "ellipsis",
-                    display: "-webkit-box",
-                    WebkitBoxOrient: "vertical",
-                    WebkitLineClamp: 1,
-                }}>{blog.title}</p>
+                <p className="font-semibold mt-2">{blog.title}</p>
 
                 <div style={{
                     overflow: "hidden",
@@ -40,7 +35,14 @@ const SingleBlogSlider = (props: IProps) => {
                     dangerouslySetInnerHTML={{ __html: blog.content }}
                 />
                 <p className='text-sm italic text-purple-300 mt-2 mb-5 text-right'>--{formatCreateDate(blog.createdAt)}</p>
-                <Button variant='contained' color='primary' onClick={() => push(`/blog/${blog.blogId}`)}>Xem chi tiết</Button>
+                <Button
+                    variant='contained'
+                    color='primary'
+                    onClick={() => push(`/blog/${blog.blogId}`)}
+                    endIcon={<ChevronRightIcon />}
+                >
+                    Đọc tiếp
+                </Button>
             </div>
         </Box>
     )

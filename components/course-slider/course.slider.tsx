@@ -2,7 +2,12 @@
 import { Box } from '@mui/material';
 import SingleCourseSlider from './single.course.slider'
 
-const CourseSlider = () => {
+interface IProps {
+    courseList: CourseResponse[];
+}
+const CourseSlider = (props: IProps) => {
+    const { courseList } = props;
+
     return (
         <>
             <h3 className='text-center font-bold uppercase text-2xl text-white mt-10'>Khóa học phổ biến</h3>
@@ -14,9 +19,9 @@ const CourseSlider = () => {
                 maxWidth: '1200px',
                 margin: '40px auto 0'
             }}>
-                {Array.from({ length: 6 }).map((_, index) => {
+                {courseList?.map((item) => {
                     return (
-                        <SingleCourseSlider key={index} index={index} />
+                        <SingleCourseSlider key={item.courseId} course={item} />
                     )
                 })}
             </Box>

@@ -52,4 +52,60 @@ declare global {
         tagId: number;
         tagName: string;
     }
+
+    interface CourseResponse {
+        courseId: number;
+        courseName: string;
+        description: string;
+        objectives: string[];
+        thumbnail: string;
+        price: number;
+        accepted: boolean;
+        createdAt: string;
+        updatedAt: string;
+        subjects: SubjectResponse[];
+        lessons: LessonResponse[];
+        expert: ExpertResponse;
+        totalPurchased: number;
+        totalLikes: number;
+        totalComments: number;
+    }
+
+    interface DocumentResponse {
+        documentId: number;
+        title: string
+        content: string
+        plainContent: string;
+        createdAt: string;
+        updatedAt: string;
+    }
+
+    interface ExpertResponse {
+        expertId: number;
+        diploma: string;
+        yearOfExperience: string;
+        user: UserResponse;
+    }
+
+    interface VideoResponse {
+        videoId: number;
+        title: string;
+        description: string;
+        videoUrl: string;
+        createdAt: string;
+        updatedAt: string;
+    }
+    interface LessonResponse {
+        lessonId: number;
+        title: string;
+        description: string;
+        videos: VideoResponse[];
+        documents: DocumentResponse[];
+    }
+
+    interface SubjectResponse {
+        subjectId: number;
+        subjectName: string;
+        description: string;
+    }
 }

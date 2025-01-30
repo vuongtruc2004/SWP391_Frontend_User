@@ -1,18 +1,16 @@
 'use client'
 import { Box } from '@mui/material'
-import { useRef } from 'react'
-import SubjectListMotion from './subject.list.motion'
-import { useInView } from 'framer-motion';
 import * as motion from "motion/react-client"
 
-const SubjectList = () => {
-    const h3Ref = useRef(null);
-    const isInView = useInView(h3Ref, { margin: "-200px", once: true });
+interface IProps {
+    subjectList: SubjectResponse[];
+}
+const SubjectList = (props: IProps) => {
+    const { subjectList } = props;
 
-    const subjects = ["java", "javascript", "python", "c++", "typescript", "css"];
     return (
         <>
-            <h3 ref={h3Ref} className='text-center font-bold uppercase text-2xl text-white mt-10'>Danh mục được quan tâm nhất</h3>
+            <h3 className='text-center font-bold uppercase text-2xl text-white mt-10'>Danh mục được quan tâm nhất</h3>
             <Box sx={{
                 display: 'grid',
                 gridTemplateColumns: 'repeat(3, 1fr)',
@@ -32,12 +30,11 @@ const SubjectList = () => {
                 },
                 position: 'relative'
             }}>
-                <SubjectListMotion isInView={isInView} />
-                {subjects.map((item, index) => {
+                {subjectList?.map((subject) => {
                     return (
                         <motion.div
                             className='flex items-center gap-x-3 rounded-md p-3 cursor-pointer'
-                            key={index}
+                            key={subject.subjectId}
                             whileHover={{ scale: 1.15 }}
                             whileTap={{ scale: 0.6 }}
                             transition={{
@@ -46,11 +43,11 @@ const SubjectList = () => {
                             }}
                         >
                             <div className='bg-blue-300 text-blue-500 flex items-center justify-center w-28 h-28 rounded-md flex-none'>
-                                <p className='text-sm font-semibold uppercase'>{item}</p>
+                                <p className='text-sm font-semibold uppercase'>{subject.subjectName}</p>
                             </div>
                             <div>
                                 <p className='font-semibold'>Lorem ipsum dolor sit amet consectetur.</p>
-                                <p className='text-gray-500 text-sm'>100+ {item} course</p>
+                                <p className='text-gray-500 text-sm'>100+ {subject.subjectName} course</p>
                             </div>
                         </motion.div>
                     )
