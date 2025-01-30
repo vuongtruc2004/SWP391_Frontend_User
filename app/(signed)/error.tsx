@@ -4,7 +4,6 @@ import { useEffect } from 'react'
 
 export default function Error({
     error,
-    reset,
 }: {
     error: Error & { digest?: string }
     reset: () => void
@@ -21,7 +20,7 @@ export default function Error({
                     <Divider orientation="vertical" sx={{ borderColor: '#6c757d', height: '30px', marginInline: '10px' }} variant="middle" flexItem />
                     <h2 className='text-lg'>{error.message}</h2>
                 </div>
-                <Button onClick={() => reset()} variant='contained' color='error'>
+                <Button onClick={() => window.location.reload()} variant='contained' color='error'>
                     Try again
                 </Button>
             </div>

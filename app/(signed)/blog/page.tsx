@@ -7,6 +7,7 @@ import { apiUrl } from '@/utils/url';
 import { Box } from '@mui/material';
 import { Metadata } from 'next';
 import { getServerSession } from 'next-auth';
+import { redirect } from 'next/navigation';
 
 export const metadata: Metadata = {
     title: "Bài viết",
@@ -56,7 +57,10 @@ const BlogPage = async (props: {
     const [blogListData, pinnedBlogData] = await Promise.all([blogListResponse, pinnedBlogResponse]);
 
     if (blogListData.status !== 200) {
-        throw new Error("Không thể lấy dữ liệu các bài viết!");
+        if (blogListData.status === 401) {
+            redirect("/blog");
+        }
+        throw new Error(blogListData.message.toString());
     }
 
     return (

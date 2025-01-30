@@ -26,7 +26,7 @@ const BlogList = (props: IProps) => {
                     <Box sx={{
                         display: 'grid',
                         gridTemplateColumns: 'repeat(3, 1fr)',
-                        width: '100%%',
+                        width: '100%',
                         gap: '20px',
                     }}>
                         {page.content.map((blog) => {

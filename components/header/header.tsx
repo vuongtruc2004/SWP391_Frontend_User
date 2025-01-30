@@ -1,7 +1,7 @@
 'use client'
-import { Avatar, Box, Button } from "@mui/material";
+import { Avatar, Badge, Box, Button, IconButton, InputAdornment, TextField, Tooltip } from "@mui/material";
 import SearchIcon from '@mui/icons-material/Search';
-import { LabelStyled, SearchIconWrapperStyled, SearchInputStyled } from "./style";
+import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
@@ -79,22 +79,47 @@ const Header = () => {
                 </ul>
 
                 <form action="">
-                    <LabelStyled>
-                        <SearchIconWrapperStyled>
-                            <SearchIcon />
-                        </SearchIconWrapperStyled>
-                        <SearchInputStyled placeholder='Tìm kiếm khóa học' name='keyword' />
-                    </LabelStyled>
+                    <TextField
+                        variant="outlined"
+                        slotProps={{
+                            input: {
+                                startAdornment: (
+                                    <InputAdornment position="start">
+                                        <SearchIcon />
+                                    </InputAdornment>
+                                ),
+                            },
+                        }}
+                        size='small'
+                        placeholder='Tìm kiếm khóa học'
+                        name='keyword'
+                        sx={{
+                            width: '280px',
+                            transition: 'all .3s',
+                            '&:focus-within': {
+                                width: '350px'
+                            }
+                        }}
+                    />
                 </form>
             </div>
 
             {session ? (
-                <>
+                <div className="flex items-center gap-x-5">
+                    <Tooltip title="Thông báo" arrow>
+                        <Link href={"/notification"}>
+                            <IconButton color="secondary">
+                                <Badge color="error" overlap="circular" badgeContent={5}>
+                                    <NotificationsNoneIcon sx={{ color: pathname === "/notification" ? "#60a5fa" : "#dee2e6" }} />
+                                </Badge>
+                            </IconButton></Link>
+                    </Tooltip>
+
                     <Avatar onClick={(event) => setAnchorEl(event.currentTarget)} sx={{ cursor: 'pointer' }} src={avatarSrc}>
                         {session?.user.fullname?.charAt(0).toUpperCase()}
                     </Avatar>
                     <AccountMenu anchorEl={anchorEl} setAnchorEl={setAnchorEl} />
-                </>
+                </div>
             ) : (
                 <Box sx={{
                     display: 'flex',

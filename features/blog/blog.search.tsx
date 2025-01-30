@@ -4,10 +4,12 @@ import SearchIcon from '@mui/icons-material/Search';
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
 import AlignHorizontalLeftIcon from '@mui/icons-material/AlignHorizontalLeft';
+import LibraryAddIcon from '@mui/icons-material/LibraryAdd';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import AutoAwesomeOutlinedIcon from '@mui/icons-material/AutoAwesomeOutlined';
+import AddIcon from '@mui/icons-material/Add';
 import { useRef } from 'react';
 
 interface IProps {
@@ -30,6 +32,11 @@ const BlogSearch = (props: IProps) => {
             key: 'all',
             name: 'Tất cả',
             icon: <AlignHorizontalLeftIcon sx={{ color: '#c77dff !important', fontSize: '16px' }} />
+        },
+        {
+            key: 'post',
+            name: 'Đã đăng',
+            icon: <LibraryAddIcon sx={{ color: '#38b000 !important', fontSize: '16px' }} />
         },
         {
             key: 'like',
@@ -125,6 +132,17 @@ const BlogSearch = (props: IProps) => {
                         >
                             Làm mới bộ lọc
                         </Button>
+                        <Button
+                            variant='contained'
+                            color='success'
+                            sx={{ height: '40px', textWrap: 'nowrap', paddingInline: '50px' }}
+                            onClick={() => {
+                                router.push("/blog/post")
+                            }}
+                            startIcon={<AddIcon />}
+                        >
+                            Đăng bài
+                        </Button>
                     </div>
                 </form>
 
@@ -132,7 +150,7 @@ const BlogSearch = (props: IProps) => {
                     <Box sx={{
                         display: 'grid',
                         alignItems: 'center',
-                        gridTemplateColumns: 'repeat(3, 1fr)',
+                        gridTemplateColumns: 'repeat(4, 1fr)',
                         columnGap: '20px',
                         flexShrink: 0,
                         flex: 1
