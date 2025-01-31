@@ -1,0 +1,86 @@
+'use client'
+import { useRef } from 'react';
+import { Swiper, SwiperRef, SwiperSlide } from 'swiper/react';
+import 'swiper/css';
+import 'swiper/css/effect-coverflow';
+import 'swiper/css/pagination';
+import { Autoplay, EffectCoverflow, Pagination } from 'swiper/modules';
+import { Box } from '@mui/material';
+import SingleBlogSlider from './single.blog.slider';
+import SliderNavigation from './slider.navigation';
+
+interface IProps {
+    blogList: BlogResponse[];
+}
+const BlogSlider = (props: IProps) => {
+    const { blogList } = props;
+    const swiperRef = useRef<SwiperRef | null>(null);
+
+    return (
+        <Box
+            sx={{
+                marginTop: '40px',
+                '.swiper': { width: '95%', maxWidth: '1200px', paddingTop: '40px', paddingBottom: '50px' },
+                '.swiper-slide': {
+                    backgroundPosition: 'center',
+                    backgroundSize: 'cover',
+                    height: '350px',
+                    opacity: 0.5,
+                    transition: 'all .3s',
+                },
+                '.swiper-slide-active': {
+                    position: 'relative',
+                    opacity: 1,
+                    '&::after, &::before': {
+                        content: "''",
+                        position: 'absolute',
+                        bgcolor: 'white',
+                        width: '50px',
+                        aspectRatio: 1,
+                        zIndex: -1,
+                        borderRadius: '6px'
+                    },
+                    '&::after': {
+                        top: '-1px',
+                        right: '-1px',
+                    },
+                    '&::before': {
+                        left: '-1px',
+                        bottom: '-1px'
+                    }
+                },
+                '.swiper-pagination-bullet': { width: '18px', height: '6px', borderRadius: '20px', transition: 'all .3s', background: '#adb5bd' },
+                '.swiper-pagination-bullet-active': { width: '25px', background: '#60a5fa' },
+                position: 'relative'
+            }}
+        >
+            <div className='relative flex items-center justify-center'>
+                <h3 className='text-center font-bold uppercase text-2xl text-white'>
+                    Bài viết mới nhất
+                </h3>
+            </div>
+
+            <Swiper
+                ref={swiperRef}
+                effect={'coverflow'}
+                grabCursor={true}
+                centeredSlides={true}
+                slidesPerView={3}
+                coverflowEffect={{ rotate: 30, stretch: 0, depth: 150, modifier: 1, slideShadows: false }}
+                autoplay={{ delay: 3500, disableOnInteraction: true, waitForTransition: true }}
+                pagination={{ clickable: true }}
+                modules={[EffectCoverflow, Pagination, Autoplay]}
+                loop={true}
+            >
+                {blogList?.map((blog) => (
+                    <SwiperSlide key={blog.blogId}>
+                        <SingleBlogSlider blog={blog} />
+                    </SwiperSlide>
+                ))}
+            </Swiper>
+            <SliderNavigation swiperRef={swiperRef} />
+        </Box>
+    );
+};
+
+export default BlogSlider;
