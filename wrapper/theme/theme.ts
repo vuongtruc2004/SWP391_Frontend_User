@@ -1,12 +1,19 @@
 'use client';
 import { createTheme } from '@mui/material/styles';
-import { Quicksand } from 'next/font/google';
+import { Poppins, Quicksand } from 'next/font/google';
 
 const quicksand = Quicksand({
     subsets: ['latin'],
     weight: ['300', '400', '500', '600', '700'],
     display: 'swap',
     variable: '--font-quicksand'
+});
+
+export const poppins = Poppins({
+    subsets: ['latin'],
+    weight: ['400', '500', '600', '700', '800', '900'],
+    display: 'swap',
+    variable: '--font-great-vibes'
 });
 
 const theme = createTheme({

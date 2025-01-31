@@ -1,5 +1,5 @@
 'use client'
-import { Box, CircularProgress, circularProgressClasses, CircularProgressProps } from "@mui/material";
+import { Box, CircularProgress, circularProgressClasses, CircularProgressProps, LinearProgress, linearProgressClasses, styled } from "@mui/material";
 
 interface CircularProgressPropsExpand extends CircularProgressProps {
     width?: number;
@@ -36,3 +36,15 @@ export default function FacebookCircularProgress(props: CircularProgressPropsExp
         </Box>
     );
 }
+
+export const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
+    height: 10,
+    borderRadius: 5,
+    [`&.${linearProgressClasses.colorPrimary}`]: {
+        backgroundColor: theme.palette.grey[800],
+    },
+    [`& .${linearProgressClasses.bar}`]: {
+        borderRadius: 5,
+        backgroundColor: '#c27aff',
+    },
+}));

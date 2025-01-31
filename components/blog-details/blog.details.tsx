@@ -27,7 +27,9 @@ const BlogDetails = (props: IProps) => {
         }}>
             <div className="flex items-center justify-between">
                 <Button onClick={() => router.back()} sx={{ textTransform: 'none' }} variant="contained" startIcon={<ReplyAllOutlinedIcon />}>Trở lại</Button>
-                <Button onClick={() => router.push("/blog")} sx={{ textTransform: 'none' }} variant="contained" startIcon={<AlignHorizontalLeftOutlinedIcon />}>Xem tất cả bài viết</Button>
+                <Link href={"/blog"}>
+                    <Button sx={{ textTransform: 'none' }} variant="contained" startIcon={<AlignHorizontalLeftOutlinedIcon />}>Xem tất cả bài viết</Button>
+                </Link>
             </div>
 
             <h1 className="text-2xl font-semibold mt-10">{blog.title}</h1>

@@ -3,22 +3,63 @@ import { Avatar, Badge, Box, Button, IconButton, InputAdornment, TextField, Tool
 import SearchIcon from '@mui/icons-material/Search';
 import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
-import { useState } from "react";
+import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 import AccountMenu from "./account.menu";
 import { useSession } from "next-auth/react";
 import { storageUrl } from "@/utils/url";
+import { motion } from 'framer-motion';
 
 const Header = () => {
-    const router = useRouter();
     const pathname = usePathname();
-
     const { data: session } = useSession();
-
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-
     const avatarSrc = session?.user.accountType === "CREDENTIALS" ?
         `${storageUrl}/avatar/${session.user.avatar}` : session?.user.avatar;
+
+    const links = [
+        {
+            key: 'home',
+            link: '/home',
+            name: 'Trang chủ',
+        },
+        {
+            key: 'course',
+            link: '/course',
+            name: 'Khóa học',
+        },
+        {
+            key: 'blog',
+            link: '/blog',
+            name: 'Bài viết',
+        }
+    ]
+    const [position, setPosition] = useState({
+        left: 0,
+        width: 0,
+        opacity: 0
+    });
+
+    useEffect(() => {
+        const activeLink = links.find(item => pathname.startsWith(item.link));
+        if (activeLink) {
+            const ref = document.querySelector(`a[data-key="${activeLink.key}"]`) as HTMLAnchorElement;
+            if (ref) {
+                const { width } = ref.getBoundingClientRect();
+                setPosition({
+                    width,
+                    left: ref.offsetLeft,
+                    opacity: 1
+                });
+            }
+        } else {
+            setPosition({
+                width: 0,
+                left: 0,
+                opacity: 0
+            });
+        }
+    }, [pathname]);
 
     return (
         <Box
@@ -28,32 +69,15 @@ const Header = () => {
                 justifyContent: 'space-between',
                 columnGap: '20px',
                 width: '100%',
-                padding: '15px 20px',
+                paddingInline: '20px',
                 'img': {
                     width: '40px',
                     height: '40px',
                     objectFit: 'cover',
                     borderRadius: '50%'
                 },
-                'ul li a': {
-                    position: 'relative',
-                    transition: 'all .3s',
-                    '&:hover, &.active': {
-                        color: '#60a5fa',
-                        '&::after': {
-                            content: '""',
-                            width: '100%',
-                            height: '3px',
-                            borderRadius: '6px',
-                            bgcolor: '#60a5fa',
-                            position: 'absolute',
-                            left: 0,
-                            bottom: '-25px'
-                        }
-                    },
-                },
-                bgcolor: 'rgba(0,0,0,0.5)',
-                backdropFilter: 'blur(20px)',
+                bgcolor: 'rgba(0,0,0,0.4)',
+                backdropFilter: 'blur(30px)',
                 color: 'white',
                 position: 'fixed',
                 top: 0,
@@ -63,20 +87,28 @@ const Header = () => {
             <div className="flex items-center justify-center gap-x-6">
                 <Link href={"/home"} className="items-center flex justify-center cursor-pointer gap-x-2 mr-3">
                     <img src={`/logo.jpg`} alt="app logo" />
-                    <p className="font-bold text-xl tracking-wide">LearnGo</p>
+                    <p className="font-semibold text-2xl tracking-wide">LearnGo</p>
                 </Link>
 
-                <ul className="flex items-center gap-x-6">
-                    <li>
-                        <Link href={"/home"} className={pathname === "/home" ? "active" : ""}>Trang chủ</Link>
-                    </li>
-                    <li>
-                        <Link href={"/course"} className={pathname === "/course" ? "active" : ""}>Khóa học</Link>
-                    </li>
-                    <li>
-                        <Link href={"/blog"} className={pathname.startsWith("/blog") ? "active" : ""}>Bài viết</Link>
-                    </li>
-                </ul>
+                <div className="flex items-center gap-x-6 relative h-[70px]">
+                    {links.map(item => {
+                        return (
+                            <Link
+                                href={item.link}
+                                className={`flex items-center h-full transition-all duration-200 hover:text-blue-500 ${pathname.startsWith(item.link) ? "text-blue-500" : ""}`}
+                                key={item.key}
+                                data-key={item.key}
+                            >
+                                {item.name}
+                            </Link>
+                        )
+                    })}
+
+                    <motion.div
+                        animate={position}
+                        className="absolute bottom-0 h-1 rounded-sm bg-blue-500"
+                    />
+                </div>
 
                 <form action="">
                     <TextField
@@ -95,7 +127,7 @@ const Header = () => {
                         name='keyword'
                         sx={{
                             width: '280px',
-                            transition: 'all .3s',
+                            transition: 'all .5s',
                             '&:focus-within': {
                                 width: '350px'
                             }
@@ -130,8 +162,12 @@ const Header = () => {
                         width: '120px'
                     }
                 }}>
-                    <Button variant="outlined" color="secondary" onClick={() => router.push("/login")}>Đăng Nhập</Button>
-                    <Button variant="contained" onClick={() => router.push("/register")}>Đăng Kí</Button>
+                    <Link href={"/login"}>
+                        <Button variant="outlined" color="secondary">Đăng Nhập</Button>
+                    </Link>
+                    <Link href={"/register"}>
+                        <Button variant="contained" color="primary">Đăng Kí</Button>
+                    </Link>
                 </Box>
             )}
         </Box>

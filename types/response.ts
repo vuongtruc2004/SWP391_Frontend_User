@@ -107,5 +107,7 @@ declare global {
         subjectId: number;
         subjectName: string;
         description: string;
+        thumbnail: string;
+        totalCourses: number;
     }
 }

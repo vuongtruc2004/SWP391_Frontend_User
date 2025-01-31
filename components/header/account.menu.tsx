@@ -1,8 +1,10 @@
+'use client'
 import Avatar from '@mui/material/Avatar';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import AutoStoriesIcon from '@mui/icons-material/AutoStories';
+import DynamicFeedOutlinedIcon from '@mui/icons-material/DynamicFeedOutlined';
 import Divider from '@mui/material/Divider';
 import Settings from '@mui/icons-material/Settings';
 import Logout from '@mui/icons-material/Logout';
@@ -11,6 +13,7 @@ import PersonIcon from '@mui/icons-material/Person';
 import { signOut, useSession } from 'next-auth/react';
 import { apiUrl, storageUrl } from '@/utils/url';
 import { sendRequest } from '@/utils/fetch.api';
+import { useRouter } from 'next/navigation';
 
 interface IProps {
     anchorEl: HTMLElement | null;
@@ -20,6 +23,7 @@ export default function AccountMenu(props: IProps) {
     const { anchorEl, setAnchorEl } = props;
     const { data: session } = useSession();
     const open = Boolean(anchorEl);
+    const router = useRouter();
 
     const avatarSrc = session?.user.accountType === "CREDENTIALS" ?
         `${storageUrl}/avatar/${session.user.avatar}` : session?.user.avatar;
@@ -112,6 +116,15 @@ export default function AccountMenu(props: IProps) {
                     <AutoStoriesIcon fontSize="small" />
                 </ListItemIcon>
                 Khóa học của tôi
+            </MenuItem>
+            <MenuItem onClick={() => {
+                handleClose();
+                router.push("/blog?category=post")
+            }}>
+                <ListItemIcon>
+                    <DynamicFeedOutlinedIcon fontSize="small" />
+                </ListItemIcon>
+                Bài đăng của tôi
             </MenuItem>
             <MenuItem onClick={handleClose}>
                 <ListItemIcon>

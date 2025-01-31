@@ -1,29 +1,23 @@
-import { Box, Typography } from '@mui/material';
+import { Box, Button, Typography } from '@mui/material';
 import Link from 'next/link';
-import SubjectSlider from './subject.slider';
 
-interface IProps {
-    subjectList: SubjectResponse[];
-}
-const Banner = (props: IProps) => {
-    const { subjectList } = props;
-
+const Banner = () => {
     return (
         <Box sx={{
             display: 'flex',
             justifyContent: 'flex-end',
-            height: '60vh',
-            minHeight: '550px',
+            height: '62vh',
+            minHeight: '600px',
             position: 'relative',
             color: 'white',
-            bgcolor: 'black'
+            bgcolor: 'black',
         }}>
             <Box sx={{
                 width: 'max-content',
                 position: 'absolute',
                 top: '50%',
                 left: '60px',
-                transform: 'translateY(-46%)',
+                transform: 'translateY(-45%)',
                 zIndex: 2
             }}>
                 <Typography sx={{
@@ -41,17 +35,15 @@ const Banner = (props: IProps) => {
                 </p>
 
                 <div className='flex items-center gap-x-3'>
-                    <Link
-                        href={"/course"}
-                        className='transition-all duration-300 bg-[#90caf9] hover:bg-blue-400 px-8 py-2 rounded-md text-[#000000de]'
-                    >
-                        Bắt đầu học
+                    <Link href={"/course"}>
+                        <Button variant='contained' color='primary'>
+                            Bắt đầu học
+                        </Button>
                     </Link>
-                    <Link
-                        href={"/blog"}
-                        className='transition-all duration-300 border border-white hover:border-gray-400 hover:text-gray-400  px-8 py-2 rounded-md text-white'
-                    >
-                        Khám phá bài viết
+                    <Link href={"/blog"}>
+                        <Button variant='outlined' color='secondary'>
+                            Khám phá bài viết
+                        </Button>
                     </Link>
                 </div>
             </Box>
@@ -82,7 +74,6 @@ const Banner = (props: IProps) => {
                 </video>
             </Box>
 
-            <SubjectSlider subjectList={subjectList} />
         </Box >
     )
 }

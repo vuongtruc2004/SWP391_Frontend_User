@@ -1,14 +1,13 @@
 import { formatCreateDate } from '@/helper/blog.helper';
 import { Box, Button } from '@mui/material'
-import { useRouter } from 'next/navigation';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import Link from 'next/link';
 
 interface IProps {
     blog: BlogResponse;
 }
 const SingleBlogSlider = (props: IProps) => {
     const { blog } = props;
-    const { push } = useRouter();
     return (
         <Box sx={{
             color: 'white',
@@ -35,14 +34,15 @@ const SingleBlogSlider = (props: IProps) => {
                     dangerouslySetInnerHTML={{ __html: blog.content }}
                 />
                 <p className='text-sm italic text-purple-300 mt-2 mb-5 text-right'>--{formatCreateDate(blog.createdAt)}</p>
-                <Button
-                    variant='contained'
-                    color='primary'
-                    onClick={() => push(`/blog/${blog.blogId}`)}
-                    endIcon={<ChevronRightIcon />}
-                >
-                    Đọc tiếp
-                </Button>
+                <Link href={`/blog/${blog.blogId}`}>
+                    <Button
+                        variant='contained'
+                        color='primary'
+                        endIcon={<ChevronRightIcon />}
+                    >
+                        Đọc tiếp
+                    </Button>
+                </Link>
             </div>
         </Box>
     )

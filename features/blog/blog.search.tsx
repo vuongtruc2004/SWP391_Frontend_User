@@ -11,6 +11,7 @@ import RefreshIcon from '@mui/icons-material/Refresh';
 import AutoAwesomeOutlinedIcon from '@mui/icons-material/AutoAwesomeOutlined';
 import AddIcon from '@mui/icons-material/Add';
 import { useRef } from 'react';
+import Link from 'next/link';
 
 interface IProps {
     category: string;
@@ -132,17 +133,16 @@ const BlogSearch = (props: IProps) => {
                         >
                             Làm mới bộ lọc
                         </Button>
-                        <Button
-                            variant='contained'
-                            color='success'
-                            sx={{ height: '40px', textWrap: 'nowrap', paddingInline: '50px' }}
-                            onClick={() => {
-                                router.push("/blog/post")
-                            }}
-                            startIcon={<AddIcon />}
-                        >
-                            Đăng bài
-                        </Button>
+                        <Link href={"/blog/post"}>
+                            <Button
+                                variant='contained'
+                                color='success'
+                                sx={{ height: '40px', textWrap: 'nowrap', paddingInline: '50px' }}
+                                startIcon={<AddIcon />}
+                            >
+                                Đăng bài
+                            </Button>
+                        </Link>
                     </div>
                 </form>
 

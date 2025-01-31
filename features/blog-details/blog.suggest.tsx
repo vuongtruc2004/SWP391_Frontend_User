@@ -1,11 +1,9 @@
-'use client'
 import { formatCreateDate } from "@/helper/blog.helper";
 import { storageUrl } from "@/utils/url";
 import { Box, Button } from "@mui/material"
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 
 interface IProps {
     blogList: BlogResponse[];
@@ -13,13 +11,8 @@ interface IProps {
 }
 const BlogSuggest = (props: IProps) => {
     const { blogList, currentId } = props;
-    const router = useRouter();
     const suggestList: BlogResponse[] = blogList.filter(blog => blog.blogId !== currentId);
     const hashtags: HashtagResponse[] = blogList.find(blog => blog.blogId === currentId)?.hashtags || [];
-
-    const findBlogsByHashtag = (tagName: string) => {
-        router.push(`/blog?tag_name=${tagName}`);
-    }
 
     return (
         <Box sx={{
@@ -32,19 +25,19 @@ const BlogSuggest = (props: IProps) => {
                 <ul className="flex flex-wrap items-center gap-1">
                     {hashtags.map(tag => {
                         return (
-                            <Button
-                                variant="outlined"
-                                color="secondary"
-                                size="small"
-                                sx={{
-                                    fontSize: '14px',
-                                    paddingInline: '16px'
-                                }}
-                                key={tag.tagId}
-                                onClick={() => findBlogsByHashtag(tag.tagName)}
-                            >
-                                {tag.tagName}
-                            </Button>
+                            <Link href={`/blog?tag_name=${tag.tagName}`} key={tag.tagId}>
+                                <Button
+                                    variant="outlined"
+                                    color="secondary"
+                                    size="small"
+                                    sx={{
+                                        fontSize: '14px',
+                                        paddingInline: '16px'
+                                    }}
+                                >
+                                    {tag.tagName}
+                                </Button>
+                            </Link>
                         )
                     })}
                 </ul>
