@@ -35,11 +35,6 @@ const BlogSearch = (props: IProps) => {
             icon: <AlignHorizontalLeftIcon sx={{ color: '#c77dff !important', fontSize: '16px' }} />
         },
         {
-            key: 'post',
-            name: 'Đã đăng',
-            icon: <LibraryAddIcon sx={{ color: '#38b000 !important', fontSize: '16px' }} />
-        },
-        {
             key: 'like',
             name: 'Đã thích',
             icon: <ThumbUpIcon sx={{ color: '#0466c8 !important', fontSize: '16px' }} />
@@ -48,7 +43,12 @@ const BlogSearch = (props: IProps) => {
             key: 'comment',
             name: 'Đã bình luận',
             icon: <ChatBubbleIcon sx={{ color: '#adb5bd !important', fontSize: '16px' }} />
-        }
+        },
+        {
+            key: 'owner',
+            name: 'Bài viết của tôi',
+            icon: <LibraryAddIcon sx={{ color: '#38b000 !important', fontSize: '16px' }} />
+        },
     ];
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
