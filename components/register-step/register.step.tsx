@@ -6,7 +6,9 @@ import RegisterStepButton from './register.step.button'
 const RegisterStep = () => {
     return (
         <Box sx={{
-            padding: '20px'
+            padding: '20px',
+            height: '70vh',
+            display: 'grid'
         }}>
             <RegisterStepLabel />
             <RegisterStepBody />

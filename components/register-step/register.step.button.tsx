@@ -6,7 +6,7 @@ const RegisterStepButton = () => {
     const { activeStep, setActiveStep } = useRegisterStep();
 
     const handlePosStep = () => {
-        setActiveStep(Math.min(activeStep + 1, 3));
+        setActiveStep(Math.min(activeStep + 1, 4));
     };
     const handlePreStep = () => {
         setActiveStep(Math.max(activeStep - 1, 0));
@@ -17,7 +17,9 @@ const RegisterStepButton = () => {
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
-            width: '100%'
+            width: '100%',
+            position: 'relative',
+            top: '8%'
         }}>
             <Button
                 variant='contained'
@@ -30,9 +32,8 @@ const RegisterStepButton = () => {
             <Button
                 variant='contained'
                 onClick={handlePosStep}
-                disabled={activeStep === 3 ? true : false}
             >
-                Tiếp theo
+                {activeStep === 4 ? 'Đăng kí' : 'Tiếp theo'}
             </Button>
         </Box>
     );
