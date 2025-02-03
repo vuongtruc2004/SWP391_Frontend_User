@@ -17,6 +17,10 @@ const SuggestPage = async ({
             sort: 'createdAt,asc'
         }
     });
+
+    if (blogListResponse.status !== 200) {
+        return <div />;
+    }
     return (
         <BlogSuggest blogList={blogListResponse.data.content} currentId={Number(id)} />
     )

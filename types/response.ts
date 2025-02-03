@@ -20,6 +20,12 @@ declare global {
         data: T;
     }
 
+    interface ErrorResponse {
+        error: boolean;
+        value: string;
+        message?: string;
+    }
+
     interface LoginResponse {
         user: UserResponse;
         accessToken: string;
@@ -42,6 +48,8 @@ declare global {
         thumbnail: string;
         createdAt: string;
         updatedAt: string;
+        published: boolean;
+        accepted: boolean;
         totalLikes: number;
         totalComments: number;
         user: UserResponse;

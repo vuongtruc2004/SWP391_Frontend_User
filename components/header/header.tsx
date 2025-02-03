@@ -162,9 +162,14 @@ const Header = () => {
                         width: '120px'
                     }
                 }}>
-                    <Link href={"/login"}>
+                    <Link href={"/login"} onClick={() => {
+                        if (!window.location.pathname.includes("/login")) {
+                            sessionStorage.setItem("prevUrl", window.location.pathname);
+                        }
+                    }}>
                         <Button variant="outlined" color="secondary">Đăng Nhập</Button>
                     </Link>
+
                     <Link href={"/register"}>
                         <Button variant="contained" color="primary">Đăng Kí</Button>
                     </Link>

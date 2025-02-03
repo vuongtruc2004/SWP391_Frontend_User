@@ -15,13 +15,14 @@ const initState: LoginFieldResponse | null = null;
 const LoginForm = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [error, setError] = useState<string | null | undefined>(null);
+    const prevUrl = sessionStorage.getItem("prevUrl") || "/home";
 
     const [state, formAction, pending] = useActionState(validateLoginForm, initState);
     const router = useRouter();
 
     const socialsLogin = async (provider: LiteralUnion<BuiltInProviderType> | undefined) => {
         await signIn(provider, {
-            callbackUrl: "/home"
+            callbackUrl: prevUrl
         });
     }
 
@@ -38,7 +39,7 @@ const LoginForm = () => {
                     if (!response || !response.ok) {
                         setError(response?.error);
                     } else {
-                        router.back();
+                        router.push(prevUrl);
                     }
                 } else {
                     setError(null);
@@ -110,13 +111,13 @@ const LoginForm = () => {
 
                 <div className='flex justify-end mb-2'>
                     <Link
-                        href={"/password/reset"}
-                        className='text-gray-400 text-sm hover:underline hover:text-blue-500'>
+                        href={"/forgot/password"}
+                        className='text-blue-500 hover:underline text-sm'>
                         Quên mật khẩu?
                     </Link>
                 </div>
 
-                <Button type='submit' variant='contained' color='primary' fullWidth disabled={pending} >Đăng Nhập</Button>
+                <Button type='submit' variant='contained' color='primary' fullWidth loading={pending} >Đăng Nhập</Button>
 
                 {error && (
                     <p className='text-red-500 text-sm mt-2 flex items-center gap-x-1'>

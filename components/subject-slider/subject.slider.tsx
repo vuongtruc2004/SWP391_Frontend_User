@@ -12,7 +12,7 @@ const SubjectSlider = (props: IProps) => {
     const { subjectList } = props;
     const itemWidth = 200;
     const itemHeight = 80;
-    const animationTime = 60;
+    const animationTime = 65;
     const autoRun = keyframes`
                     to {
                         left: -${itemWidth}px;

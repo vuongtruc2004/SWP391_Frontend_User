@@ -9,7 +9,7 @@ const InteractPage = async ({
 }) => {
     const id = (await params).id;
     const blogResponse = await sendRequest<ApiResponse<BlogResponse>>({
-        url: `${apiUrl}/blogs/${id}`
+        url: `${apiUrl}/blogs/${id}`,
     });
     return (
         <InteractOnBlog blog={blogResponse.data} />

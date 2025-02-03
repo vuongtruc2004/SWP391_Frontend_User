@@ -4,14 +4,11 @@ import SearchIcon from '@mui/icons-material/Search';
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
 import AlignHorizontalLeftIcon from '@mui/icons-material/AlignHorizontalLeft';
-import LibraryAddIcon from '@mui/icons-material/LibraryAdd';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import AutoAwesomeOutlinedIcon from '@mui/icons-material/AutoAwesomeOutlined';
-import AddIcon from '@mui/icons-material/Add';
 import { useRef } from 'react';
-import Link from 'next/link';
 
 interface IProps {
     category: string;
@@ -43,12 +40,7 @@ const BlogSearch = (props: IProps) => {
             key: 'comment',
             name: 'Đã bình luận',
             icon: <ChatBubbleIcon sx={{ color: '#adb5bd !important', fontSize: '16px' }} />
-        },
-        {
-            key: 'owner',
-            name: 'Bài viết của tôi',
-            icon: <LibraryAddIcon sx={{ color: '#38b000 !important', fontSize: '16px' }} />
-        },
+        }
     ];
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -133,16 +125,6 @@ const BlogSearch = (props: IProps) => {
                         >
                             Làm mới bộ lọc
                         </Button>
-                        <Link href={"/blog/post"}>
-                            <Button
-                                variant='contained'
-                                color='success'
-                                sx={{ height: '40px', textWrap: 'nowrap', paddingInline: '50px' }}
-                                startIcon={<AddIcon />}
-                            >
-                                Đăng bài
-                            </Button>
-                        </Link>
                     </div>
                 </form>
 
@@ -150,7 +132,7 @@ const BlogSearch = (props: IProps) => {
                     <Box sx={{
                         display: 'grid',
                         alignItems: 'center',
-                        gridTemplateColumns: 'repeat(4, 1fr)',
+                        gridTemplateColumns: 'repeat(3, 1fr)',
                         columnGap: '20px',
                         flexShrink: 0,
                         flex: 1

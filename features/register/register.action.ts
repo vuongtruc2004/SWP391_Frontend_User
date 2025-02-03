@@ -2,7 +2,6 @@
 import { apiUrl } from "@/utils/url";
 
 export const handleRegister = async (prevState: any, formData: FormData) => {
-    console.log('checkFormData: ', formData)
     const userRequest: UserRequest = {
         fullname: formData.get('fullname')?.toString()!,
         dob: formData.get('dob')?.toString()!,
@@ -42,9 +41,4 @@ export const handleRegister = async (prevState: any, formData: FormData) => {
         },
 
     }
-
-    // console.log('Check Response: ', response)
-
-    // console.log('checkRequest: ', userRequest)
-    // await new Promise(res => setTimeout(res, 5000))
 }

@@ -9,7 +9,7 @@ const DetailsPage = async ({
 }) => {
     const id = (await params).id;
     const blogResponse = await sendRequest<ApiResponse<BlogResponse>>({
-        url: `${apiUrl}/blogs/${id}`
+        url: `${apiUrl}/blogs/${id}`,
     });
     return (
         <BlogDetails blog={blogResponse.data} />
