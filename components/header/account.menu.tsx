@@ -4,7 +4,6 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import AutoStoriesIcon from '@mui/icons-material/AutoStories';
-import DynamicFeedOutlinedIcon from '@mui/icons-material/DynamicFeedOutlined';
 import Divider from '@mui/material/Divider';
 import Settings from '@mui/icons-material/Settings';
 import Logout from '@mui/icons-material/Logout';
@@ -44,6 +43,7 @@ export default function AccountMenu(props: IProps) {
 
     return (
         <Menu
+            aria-hidden
             anchorEl={anchorEl}
             open={open}
             onClose={handleClose}
@@ -111,20 +111,14 @@ export default function AccountMenu(props: IProps) {
                 </ListItemIcon>
                 Tài khoản
             </MenuItem>
-            <MenuItem onClick={handleClose}>
+            <MenuItem onClick={() => {
+                handleClose();
+                router.push("/my-course")
+            }}>
                 <ListItemIcon>
                     <AutoStoriesIcon fontSize="small" />
                 </ListItemIcon>
                 Khóa học của tôi
-            </MenuItem>
-            <MenuItem onClick={() => {
-                handleClose();
-                router.push("/blog?category=post")
-            }}>
-                <ListItemIcon>
-                    <DynamicFeedOutlinedIcon fontSize="small" />
-                </ListItemIcon>
-                Bài đăng của tôi
             </MenuItem>
             <MenuItem onClick={handleClose}>
                 <ListItemIcon>

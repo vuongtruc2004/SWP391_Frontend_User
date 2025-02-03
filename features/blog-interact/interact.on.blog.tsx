@@ -72,7 +72,7 @@ const InteractOnBlog = (props: IProps) => {
                     )}
                 />
                 <Button
-                    disabled={pending || !session}
+                    loading={pending || !session}
                     variant="contained"
                     color="primary"
                     sx={{ textTransform: 'none', marginTop: '20px' }}

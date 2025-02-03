@@ -25,4 +25,14 @@ declare global {
         email: string;
         accountType: string;
     }
+
+    interface ChangePasswordRequest {
+        code: string;
+        password: string;
+        rePassword: string;
+    }
+
+    interface EmailRequest {
+        email: string;
+    }
 }

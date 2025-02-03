@@ -17,6 +17,8 @@ const SubjectList = (props: IProps) => {
                 width: '95%',
                 maxWidth: '1200px',
                 margin: '40px auto 0',
+                position: 'relative',
+                zIndex: 1
             }}>
                 {subjectList?.map((subject) => {
                     return (

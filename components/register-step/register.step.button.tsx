@@ -24,7 +24,7 @@ const RegisterStepButton = () => {
             <Button
                 variant='contained'
                 onClick={handlePreStep}
-                disabled={activeStep === 0 ? true : false}
+                loading={activeStep === 0 ? true : false}
             >
                 Trở lại
             </Button>
