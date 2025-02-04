@@ -1,47 +1,44 @@
 'use server'
 
-export interface LoginFieldResponse {
-    username: {
-        error: boolean;
-        value: string;
-        message?: string;
-    },
-    password: {
-        error: boolean;
-        value: string;
-        message?: string;
-    }
+interface LoginFieldResponse {
+    email: ErrorResponse;
+    password: ErrorResponse;
 }
 export const validateLoginForm = async (prev: any, formData: FormData): Promise<LoginFieldResponse> => {
-    const username = formData.get('username')?.toString();
-    const password = formData.get('password')?.toString();
+    const email = formData.get('email')?.toString() || "";
+    const password = formData.get('password')?.toString() || "";
 
-    const fieldResponse: LoginFieldResponse = {
-        username: {
+    const result: LoginFieldResponse = {
+        email: {
             error: false,
-            value: username || "",
+            value: email,
         },
         password: {
             error: false,
-            value: password || "",
+            value: password,
         }
     };
 
-    if (!username || username.trim().length === 0) {
-        fieldResponse.username = {
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+    if (email.trim().length === 0) {
+        result.email = {
             error: true,
-            value: username || "",
-            message: 'Vui lòng không để trống tên tài khoản!'
+            value: email,
+            message: 'Vui lòng không để trống email!'
         };
+    } else if (!emailRegex.test(email)) {
+        result.email.error = true;
+        result.email.message = "Email không đúng định dạng!";
     }
 
-    if (!password || password.trim().length === 0) {
-        fieldResponse.password = {
+    if (password.trim().length === 0) {
+        result.password = {
             error: true,
-            value: password || "",
+            value: password,
             message: 'Vui lòng không để trống mật khẩu!'
         };
     }
 
-    return fieldResponse;
+    return result;
 };

@@ -105,9 +105,6 @@ const ResetPassword = () => {
                 </Link>
 
                 <Box sx={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
                     position: 'absolute',
                     left: 0,
                     bottom: '0',

@@ -9,15 +9,14 @@ import { LiteralUnion, signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { BuiltInProviderType } from 'next-auth/providers/index';
 import ErrorOutlineRoundedIcon from '@mui/icons-material/ErrorOutlineRounded';
-import { LoginFieldResponse, validateLoginForm } from './login.action';
+import { validateLoginForm } from './login.action';
 
-const initState: LoginFieldResponse | null = null;
 const LoginForm = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [error, setError] = useState<string | null | undefined>(null);
     const prevUrl = sessionStorage.getItem("prevUrl") || "/home";
 
-    const [state, formAction, pending] = useActionState(validateLoginForm, initState);
+    const [state, formAction, pending] = useActionState(validateLoginForm, null);
     const router = useRouter();
 
     const socialsLogin = async (provider: LiteralUnion<BuiltInProviderType> | undefined) => {
@@ -29,9 +28,9 @@ const LoginForm = () => {
     useEffect(() => {
         const credentialsLogin = async () => {
             if (state) {
-                if (!state.username?.error && !state.password?.error) {
+                if (!state.email?.error && !state.password?.error) {
                     const response = await signIn("credentials", {
-                        username: state.username?.value,
+                        email: state.email?.value,
                         password: state.password?.value,
                         redirect: false
                     });
@@ -57,19 +56,19 @@ const LoginForm = () => {
             <h3 className='font-semibold text-center text-lg text-white mb-5'>Đăng Nhập</h3>
             <form action={formAction}>
                 <div className='mb-3'>
-                    <label className="mb-[10px] block text-white"><span className="text-red-500 mr-1">*</span>Tên tài khoản:</label>
+                    <label className="mb-[10px] block text-white"><span className="text-red-500 mr-1">*</span>Email:</label>
                     <TextField
-                        placeholder='Nhập tên tài khoản'
+                        placeholder='Nhập email'
                         size='small'
-                        name='username'
-                        autoComplete='username'
+                        name='email'
+                        autoComplete='email'
                         fullWidth
-                        defaultValue={state?.username.value}
-                        error={state?.username.error}
-                        helperText={state?.username.error && (
+                        defaultValue={state?.email.value}
+                        error={state?.email.error}
+                        helperText={state?.email.error && (
                             <span className="flex items-center gap-x-1">
                                 <ErrorOutlineRoundedIcon sx={{ fontSize: '16px' }} />
-                                {state?.username.message}
+                                {state?.email.message}
                             </span>
                         )}
                     />

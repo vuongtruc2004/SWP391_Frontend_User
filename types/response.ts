@@ -2,7 +2,6 @@ export { }
 declare global {
     interface UserResponse {
         userId: number;
-        username: string;
         password: string;
         rePassword: string;
         phone: string;

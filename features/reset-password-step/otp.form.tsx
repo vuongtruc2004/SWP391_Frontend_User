@@ -31,8 +31,8 @@ const OtpForm = (props: {
     };
 
     const handleResendEmail = async () => {
-        if (countdown > 0) return; // Nếu còn thời gian, không gửi yêu cầu mới
-        setCountdown(60); // Đặt thời gian chờ là 60 giây
+        if (countdown > 0) return;
+        setCountdown(60);
         await sendRequest<ApiResponse<void>>({
             url: `${apiUrl}/users/request_change_password`,
             method: 'POST',

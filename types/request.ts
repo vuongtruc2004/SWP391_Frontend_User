@@ -2,24 +2,23 @@ export { }
 declare global {
     interface UserRequest {
         userId?: number;
-        username: string;
         password?: string;
         rePassword?: string;
         phone?: string;
         avatar?: string;
-        fullname: string;
-        email: string;
+        fullname?: string;
+        email?: string;
         gender?: string;
+        job?: string;
         dob?: string;
     }
 
     interface CredentialsLoginRequest {
-        username: string;
+        email: string;
         password: string;
     }
 
     interface SocialsLoginRequest {
-        username: string;
         fullname: string;
         avatar: string;
         email: string;

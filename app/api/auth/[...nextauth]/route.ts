@@ -11,12 +11,12 @@ export const authOptions: AuthOptions = {
         CredentialsProvider({
             name: "Credentials",
             credentials: {
-                username: { type: "text" },
+                email: { type: "text" },
                 password: { type: "password" }
             },
             async authorize(credentials) {
                 const request: CredentialsLoginRequest = {
-                    username: credentials?.username ?? "",
+                    email: credentials?.email ?? "",
                     password: credentials?.password ?? "",
                 }
 
@@ -61,10 +61,9 @@ export const authOptions: AuthOptions = {
             if (trigger === 'signIn') {
                 if (account?.provider !== 'credentials') {
                     const request: SocialsLoginRequest = {
-                        username: `${user.email ?? ""}_${Date.now()}`,
+                        email: user.email ?? "",
                         fullname: user.name ?? "",
                         avatar: user.image ?? "",
-                        email: user.email ?? "",
                         accountType: account?.provider.toUpperCase() ?? ""
                     }
 
