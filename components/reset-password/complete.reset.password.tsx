@@ -4,8 +4,8 @@ const CompleteResetPassword = () => {
     return (
         <>
             <div className="flex justify-center mb-2">
-                <span className="inline-flex items-center justify-center w-[60px] h-[60px] rounded-[15px] border border-gray-500">
-                    <CheckIcon sx={{ fontSize: '2.25rem' }} />
+                <span className="inline-flex items-center justify-center w-[60px] h-[60px] rounded-[15px] border border-green-500">
+                    <CheckIcon sx={{ fontSize: '2.25rem', color: '#22c55e ' }} />
                 </span>
             </div>
 

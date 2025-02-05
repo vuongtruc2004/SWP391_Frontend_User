@@ -9,7 +9,6 @@ declare global {
         fullname?: string;
         email?: string;
         gender?: string;
-        job?: string;
         dob?: string;
     }
 
@@ -33,5 +32,11 @@ declare global {
 
     interface EmailRequest {
         email: string;
+    }
+
+    interface RegisterRequest {
+        fullname: string;
+        email: string;
+        password: string;
     }
 }

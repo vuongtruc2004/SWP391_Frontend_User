@@ -170,7 +170,11 @@ const Header = () => {
                         <Button variant="outlined" color="secondary">Đăng Nhập</Button>
                     </Link>
 
-                    <Link href={"/register"}>
+                    <Link href={"/register"} onClick={() => {
+                        if (!window.location.pathname.includes("/register")) {
+                            sessionStorage.setItem("prevUrl", window.location.pathname);
+                        }
+                    }}>
                         <Button variant="contained" color="primary">Đăng Kí</Button>
                     </Link>
                 </Box>

@@ -71,9 +71,14 @@ export const sendChangePasswordRequest = async (code: string, prev: any, formDat
         ok: false
     }
 
+    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+
     if (password.trim() === "") {
         result.password.error = true;
         result.password.message = "Vui lòng không để trống mật khẩu!";
+    } else if (!passwordRegex.test(password)) {
+        result.password.error = true;
+        result.password.message = "Mật khẩu phải chứa ít nhất 8 kí tự, bao gồm chữ cái và số!";
     }
 
     if (rePassword.trim() === "") {
@@ -85,16 +90,9 @@ export const sendChangePasswordRequest = async (code: string, prev: any, formDat
         return result;
     }
 
-    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
-    if (!passwordRegex.test(password)) {
-        result.password.error = true;
-        result.password.message = "Mật khẩu phải chứa ít nhất 8 kí tự, bao gồm chữ cái và số!";
-        return result;
-    }
-
     if (password !== rePassword) {
-        result.password.error = true;
-        result.password.message = "Mật khẩu không trùng khớp!";
+        result.rePassword.error = true;
+        result.rePassword.message = "Mật khẩu không trùng khớp!";
         return result;
     }
 

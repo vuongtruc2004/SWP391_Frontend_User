@@ -43,7 +43,6 @@ export default function AccountMenu(props: IProps) {
 
     return (
         <Menu
-            aria-hidden
             anchorEl={anchorEl}
             open={open}
             onClose={handleClose}

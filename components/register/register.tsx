@@ -1,73 +1,117 @@
 'use client'
-import { Box, Button } from '@mui/material';
-import { useState } from 'react';
-import RegisterStepper from './register.stepper';
-import SelectJob from '@/features/register-step/select.job';
+import { Box, IconButton, Tooltip } from '@mui/material';
 import Link from 'next/link';
+import FirstPageOutlinedIcon from '@mui/icons-material/FirstPageOutlined';
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
-import UserInfoForm from '@/features/register-step/user.info.form';
+import RegisterForm from '@/features/register/register.form';
+import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import OtpForm from '@/features/register/otp.form';
+import { motion } from 'framer-motion';
+import CompleteRegister from './complete.register';
+import { RegisterFieldResponse } from '@/features/register/action';
 
 const Register = () => {
     const [step, setStep] = useState(1);
-    const [userRequest, setUserRequest] = useState<UserRequest>({});
+    const router = useRouter();
+    const [stepWidth, setStepWidth] = useState(500 / 3);
+    const [isBackToStepOne, setIsBackToStepOne] = useState(false);
+    const [registerField, setRegisterField] = useState<RegisterFieldResponse | null>(null);
+
+    useEffect(() => {
+        switch (step) {
+            case 1:
+                setStepWidth(500 / 3);
+                break;
+            case 2:
+                setStepWidth(500 / 3 * 2);
+                break;
+            case 3:
+                setStepWidth(500 / 3 * 3);
+                break;
+            default:
+                setStepWidth(500 / 3);
+        }
+    }, [step]);
 
     return (
         <Box sx={{
-            bgcolor: '#101010',
-            minHeight: '100vh',
-            color: 'white',
+            width: '100%',
+            height: '100vh',
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
-            flexDirection: 'column',
+            bgcolor: '#101010',
+            color: 'white'
         }}>
             <Box sx={{
                 width: '100%',
-                maxWidth: '600px',
+                maxWidth: '500px',
+                height: 'max-content',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                padding: '65px 25px 40px',
                 bgcolor: 'black',
-                padding: '40px 20px 30px',
                 position: 'relative',
-                borderRadius: '6px',
-                borderTopLeftRadius: '0'
+                borderRadius: '6px 6px 0 0'
             }}>
-                <RegisterStepper step={step} setStep={setStep} />
-                <div className='px-10 pt-10'>
+                <div className='w-full'>
                     {step === 1 && (
-                        <SelectJob setStep={setStep} userRequest={userRequest} setUserRequest={setUserRequest} />
+                        <RegisterForm setIsBackToStepOne={setIsBackToStepOne} isBackToStepOne={isBackToStepOne} setStep={setStep} registerField={registerField} setRegisterField={setRegisterField} />
                     )}
                     {step === 2 && (
-                        <UserInfoForm setStep={setStep} userRequest={userRequest} setUserRequest={setUserRequest} />
+                        <OtpForm setIsBackToStepOne={setIsBackToStepOne} setStep={setStep} registerField={registerField} />
+                    )}
+                    {step === 3 && (
+                        <CompleteRegister />
                     )}
                 </div>
 
-                <div className='bg-black absolute left-0 -top-[44px] px-6 py-3 rounded-tl-md rounded-tr-md flex-shrink-0'>
-                    <Link href={"/home"} className='text-sm text-blue-500 hover:underline flex items-center gap-x-1'>
-                        <HomeOutlinedIcon sx={{ fontSize: '1.25rem' }} />
-                        Về trang chủ
-                    </Link>
+                <div className='flex items-center justify-between absolute top-[12px] w-full px-5'>
+                    <Tooltip title="Về trang trước" arrow placement='top'>
+                        <IconButton sx={{
+                            '&:hover': {
+                                color: '#60a5fa'
+                            }
+                        }}
+                            onClick={() => router.back()}
+                        >
+                            <FirstPageOutlinedIcon />
+                        </IconButton>
+                    </Tooltip>
+                    <Tooltip title="Về trang chủ" arrow placement='top'>
+                        <Link href={"/home"}>
+                            <IconButton sx={{
+                                '&:hover': {
+                                    color: '#60a5fa'
+                                }
+                            }}>
+                                <HomeOutlinedIcon />
+                            </IconButton>
+                        </Link>
+                    </Tooltip>
                 </div>
 
-            </Box>
-
-            {/* Nút điều hướng */}
-            <Box sx={{ display: 'flex', gap: 2, marginTop: 4 }}>
-                <Button
-                    variant='contained'
-                    onClick={() => setStep(prev => prev - 1)}
-                    disabled={step === 1} // Vô hiệu hóa nút "Prev" khi ở bước 1
-                >
-                    Prev
-                </Button>
-                <Button
-                    variant='contained'
-                    onClick={() => setStep(prev => prev + 1)}
-                    disabled={step === 4} // Vô hiệu hóa nút "Next" khi ở bước cuối
-                >
-                    Next
-                </Button>
+                <Box sx={{
+                    position: 'absolute',
+                    left: 0,
+                    bottom: '0',
+                    width: '100%',
+                    backgroundColor: '#6c757d ',
+                    height: '5px'
+                }}>
+                    <motion.div
+                        animate={{
+                            width: stepWidth
+                        }}
+                        transition={{ type: 'spring', stiffness: 100 }}
+                        className="absolute bottom-0 h-[5px] bg-blue-500"
+                    />
+                </Box>
             </Box>
         </Box>
-    );
+    )
 }
 
 export default Register;

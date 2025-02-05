@@ -1,23 +1,29 @@
-'use client'
 import { Box, Button, Divider, IconButton, InputAdornment, TextField } from '@mui/material';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import GitHubIcon from '@mui/icons-material/GitHub';
-import { useActionState, useEffect, useState } from 'react';
+import { SetStateAction, useActionState, useEffect, useState } from 'react';
 import Link from 'next/link';
 import { LiteralUnion, signIn } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
 import { BuiltInProviderType } from 'next-auth/providers/index';
 import ErrorOutlineRoundedIcon from '@mui/icons-material/ErrorOutlineRounded';
-import { validateLoginForm } from './action';
+import ArrowRightIcon from '@mui/icons-material/ArrowRight';
+import { RegisterFieldResponse, validateRegisterForm } from './action';
 
-const LoginForm = () => {
+const RegisterForm = (props: {
+    setIsBackToStepOne: React.Dispatch<SetStateAction<boolean>>;
+    isBackToStepOne: boolean;
+    setStep: React.Dispatch<SetStateAction<number>>;
+    registerField: RegisterFieldResponse | null;
+    setRegisterField: React.Dispatch<SetStateAction<RegisterFieldResponse | null>>;
+}) => {
+    const { setIsBackToStepOne, isBackToStepOne, setStep, registerField, setRegisterField } = props;
+
     const [showPassword, setShowPassword] = useState(false);
-    const [error, setError] = useState<string | null | undefined>(null);
+    const [showRePassword, setShowRePassword] = useState(false);
     const prevUrl = typeof window !== "undefined" ? sessionStorage.getItem("prevUrl") || "/home" : "/home";
 
-    const [state, formAction, pending] = useActionState(validateLoginForm, null);
-    const router = useRouter();
+    const [state, formAction, pending] = useActionState(validateRegisterForm, registerField);
 
     const socialsLogin = async (provider: LiteralUnion<BuiltInProviderType> | undefined) => {
         await signIn(provider, {
@@ -26,26 +32,13 @@ const LoginForm = () => {
     }
 
     useEffect(() => {
-        const credentialsLogin = async () => {
-            if (state) {
-                if (!state.email?.error && !state.password?.error) {
-                    const response = await signIn("credentials", {
-                        email: state.email?.value,
-                        password: state.password?.value,
-                        redirect: false
-                    });
-
-                    if (!response || !response.ok) {
-                        setError(response?.error);
-                    } else {
-                        router.push(prevUrl);
-                    }
-                } else {
-                    setError(null);
-                }
-            }
+        if (state?.ok && !isBackToStepOne) {
+            setStep(prev => prev + 1);
+            setRegisterField(state);
         }
-        credentialsLogin();
+        if (isBackToStepOne) {
+            setIsBackToStepOne(false);
+        }
     }, [state]);
 
     return (
@@ -53,8 +46,27 @@ const LoginForm = () => {
             width: '100%',
             height: 'max-content',
         }}>
-            <h3 className='font-semibold text-center text-lg text-white mb-5'>Đăng Nhập</h3>
+            <h3 className='font-semibold text-center text-lg text-white mb-5'>Đăng Kí</h3>
+
             <form action={formAction}>
+                <div className='mb-3'>
+                    <label className="mb-[10px] block text-white"><span className="text-red-500 mr-1">*</span>Họ và tên:</label>
+                    <TextField
+                        placeholder='Nhập họ và tên'
+                        size='small'
+                        name='fullname'
+                        autoComplete='fullname'
+                        fullWidth
+                        defaultValue={state?.fullname.value}
+                        error={state?.fullname.error}
+                        helperText={state?.fullname.error && (
+                            <span className="flex items-center gap-x-1">
+                                <ErrorOutlineRoundedIcon sx={{ fontSize: '16px' }} />
+                                {state?.fullname.message}
+                            </span>
+                        )}
+                    />
+                </div>
                 <div className='mb-3'>
                     <label className="mb-[10px] block text-white"><span className="text-red-500 mr-1">*</span>Email:</label>
                     <TextField
@@ -74,7 +86,7 @@ const LoginForm = () => {
                     />
                 </div>
 
-                <div className='mb-1'>
+                <div className='mb-3'>
                     <label className="mb-[10px] block text-white"><span className="text-red-500 mr-1">*</span>Mật khẩu:</label>
                     <TextField
                         type={showPassword ? 'text' : 'password'}
@@ -108,26 +120,55 @@ const LoginForm = () => {
                     />
                 </div>
 
-                <div className='flex justify-end mb-2'>
-                    <Link
-                        href={"/forgot/password"}
-                        className='text-blue-500 hover:underline text-sm'>
-                        Quên mật khẩu?
-                    </Link>
+                <div className='mb-3'>
+                    <label className="mb-[10px] block text-white"><span className="text-red-500 mr-1">*</span>Nhập lại mật khẩu:</label>
+                    <TextField
+                        type={showRePassword ? 'text' : 'password'}
+                        slotProps={{
+                            input: {
+                                endAdornment: (
+                                    <InputAdornment position="end">
+                                        <IconButton
+                                            onClick={() => setShowRePassword(prev => !prev)}
+                                            edge="end"
+                                        >
+                                            {showRePassword ? <Visibility sx={{ fontSize: '1.2rem', color: '#6c757d' }} /> : <VisibilityOff sx={{ fontSize: '1.2rem', color: '#6c757d' }} />}
+                                        </IconButton>
+                                    </InputAdornment>
+                                )
+                            }
+                        }}
+                        placeholder='Nhập lại mật khẩu'
+                        autoComplete='rePassword'
+                        size='small'
+                        name='rePassword'
+                        fullWidth
+                        defaultValue={state?.rePassword.value}
+                        error={state?.rePassword.error}
+                        helperText={state?.rePassword.error && (
+                            <span className="flex items-center gap-x-1">
+                                <ErrorOutlineRoundedIcon sx={{ fontSize: '16px' }} />
+                                {state.rePassword.message}
+                            </span>
+                        )}
+                    />
                 </div>
 
-                <Button type='submit' variant='contained' color='primary' fullWidth loading={pending} >Đăng Nhập</Button>
-
-                {error && (
-                    <p className='text-red-500 text-sm mt-2 flex items-center gap-x-1'>
-                        <ErrorOutlineRoundedIcon sx={{ fontSize: '16px' }} />
-                        {error}
-                    </p>
-                )}
+                <Button
+                    variant="contained"
+                    color="primary"
+                    fullWidth
+                    endIcon={<ArrowRightIcon />}
+                    sx={{ textTransform: 'none' }}
+                    type='submit'
+                    loading={pending}
+                >
+                    Tiếp tục
+                </Button>
 
                 <div className='text-gray-400 text-sm flex items-center mt-2'>
-                    <p>Bạn chưa có tài khoản?</p>
-                    <Link href={"/register"} className='ml-1 text-blue-500 hover:underline'>Đăng kí</Link>
+                    <p>Bạn đã có tài khoản?</p>
+                    <Link href={"/login"} className='ml-1 text-blue-500 hover:underline'>Đăng nhập</Link>
                 </div>
             </form>
 
@@ -166,4 +207,4 @@ const LoginForm = () => {
     )
 }
 
-export default LoginForm
+export default RegisterForm

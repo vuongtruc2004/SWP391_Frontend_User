@@ -67,8 +67,8 @@ const SubjectSlider = (props: IProps) => {
                             <Image
                                 src={`${storageUrl}/subject/${item.thumbnail}`}
                                 alt={item.subjectName}
-                                width={100}
-                                height={50}
+                                width={0}
+                                height={0}
                                 sizes="(max-width: 1000px) 100vw"
                                 style={{
                                     objectFit: 'cover',

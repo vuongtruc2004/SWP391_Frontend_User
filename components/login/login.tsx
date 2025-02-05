@@ -16,8 +16,7 @@ const Login = () => {
             justifyContent: 'center',
             alignItems: 'center',
             bgcolor: '#101010'
-        }}
-        >
+        }}>
             <Box sx={{
                 width: '100%',
                 maxWidth: '500px',

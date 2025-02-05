@@ -39,8 +39,8 @@ const SingleSubjectList = (props: IProps) => {
                     <Image
                         src={`${storageUrl}/subject/${subject.thumbnail}`}
                         alt={subject.subjectName}
-                        width={50}
-                        height={80}
+                        width={0}
+                        height={0}
                         sizes="(max-width: 1000px) 100vw"
                         style={{
                             objectFit: 'cover',
