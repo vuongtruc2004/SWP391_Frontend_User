@@ -25,7 +25,7 @@ const EmailForm = (props: { setStep: React.Dispatch<SetStateAction<number>>, set
             </div>
 
             <h1 className="text-2xl text-center font-semibold">Quên mật khẩu?</h1>
-            <p className="text-center text-gray-300 mb-5">Lorem ipsum dolor sit amet consectetur adipisicing elit. Officia, excepturi!</p>
+            <p className="text-center text-gray-300 mb-5">Vui lòng nhập email để tìm kiếm tài khoản.</p>
 
             <form action={formAction}>
                 <div className="mb-5">
