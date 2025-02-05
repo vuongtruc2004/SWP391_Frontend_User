@@ -41,7 +41,7 @@ const SingleCourseSlider = (props: IProps) => {
             </Link>
 
             <div className='p-5'>
-                <h1 className='text-xl font-semibold'>{course.courseName}</h1>
+                <Link href={`/course`} className='transition-all duration-150 text-xl font-semibold hover:underline hover:text-blue-500'>{course.courseName}</Link>
                 {displayProgressbar(status)}
                 <p
                     className='text-gray-400 my-1'
@@ -55,7 +55,7 @@ const SingleCourseSlider = (props: IProps) => {
                     {course.description}
                 </p>
 
-                <div className='text-[15px]'>
+                <div className='text-sm'>
                     <div className="flex items-center gap-x-2 text-blue-500">
                         <p className="text-green-400">Giảng viên:</p>
                         <Link href={"/home"} className="hover:underline">{course.expert.user.fullname}</Link>

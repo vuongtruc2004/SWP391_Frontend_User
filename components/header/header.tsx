@@ -77,7 +77,7 @@ const Header = () => {
                     borderRadius: '50%'
                 },
                 bgcolor: 'rgba(0,0,0,0.4)',
-                backdropFilter: 'blur(30px)',
+                backdropFilter: 'blur(25px)',
                 color: 'white',
                 position: 'fixed',
                 top: 0,

@@ -116,7 +116,9 @@ const LoginForm = () => {
                     </Link>
                 </div>
 
-                <Button type='submit' variant='contained' color='primary' fullWidth loading={pending} >Đăng Nhập</Button>
+                <Button type='submit' variant='contained' color='primary' fullWidth loading={pending}>
+                    Đăng Nhập
+                </Button>
 
                 {error && (
                     <p className='text-red-500 text-sm mt-2 flex items-center gap-x-1'>

@@ -5,7 +5,7 @@ export const metadata: Metadata = {
     title: "Khóa học",
 };
 
-const CourseLayout = ({ course, search }: { course: React.ReactNode, search: React.ReactNode }) => {
+const CourseLayout = ({ course, subject, expert }: { course: React.ReactNode, subject: React.ReactNode, expert: React.ReactNode }) => {
     return (
         <Box sx={{
             width: '100%',
@@ -16,13 +16,21 @@ const CourseLayout = ({ course, search }: { course: React.ReactNode, search: Rea
         }}>
             <Box sx={{
                 display: 'grid',
-                gridTemplateColumns: '1fr 2fr',
+                gridTemplateColumns: '30% 70%',
                 gap: '20px',
                 width: '100%',
                 maxWidth: '1200px',
                 margin: '0 auto',
             }}>
-                {search}
+                <Box sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '20px',
+                    width: '100%'
+                }}>
+                    {subject}
+                    {expert}
+                </Box>
                 {course}
             </Box>
         </Box>
