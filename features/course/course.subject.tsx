@@ -1,9 +1,41 @@
-import { Box, InputAdornment, TextField } from "@mui/material";
+'use client'
+import { Box, Button, Checkbox, FormControlLabel, FormGroup, IconButton, InputAdornment, TextField, Tooltip } from "@mui/material";
 import SearchIcon from '@mui/icons-material/Search';
+import SortByAlphaOutlinedIcon from '@mui/icons-material/SortByAlphaOutlined';
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import RefreshIcon from '@mui/icons-material/Refresh';
+import { useRef } from "react";
 
 const CourseSubject = (props: {
     subjectList: SubjectResponse[];
 }) => {
+    const { subjectList } = props;
+    const pathname = usePathname();
+    const searchParams = useSearchParams();
+    const router = useRouter();
+    const formRef = useRef<HTMLFormElement | null>(null);
+
+    const currentKeyword = searchParams.get('keyword') || "";
+
+    const handleSortSubject = () => {
+        const currentSort = searchParams.get('sortSubject') || 'asc';
+        const newSort = currentSort === "asc" ? "desc" : "asc";
+
+        const newSearchParams = new URLSearchParams(searchParams);
+        newSearchParams.set('sortSubject', newSort);
+        router.replace(`${pathname}?${newSearchParams}`);
+    }
+
+    const handleSubmitKeyword = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        //@ts-ignore
+        const keyword = e.target[0].value;
+        const newSearchParams = new URLSearchParams(searchParams);
+        newSearchParams.set('keyword', keyword);
+        newSearchParams.set('page', '1');
+        router.replace(`${pathname}?${newSearchParams}`);
+    }
+
     return (
         <Box sx={{
             width: '100%',
@@ -11,7 +43,9 @@ const CourseSubject = (props: {
             borderRadius: '6px',
             padding: '30px 20px'
         }}>
-            <form action="">
+            <h1 className="text-lg font-semibold mb-3">Tìm kiếm</h1>
+
+            <form ref={formRef} onSubmit={handleSubmitKeyword} className="flex items-center justify-center gap-x-1">
                 <TextField
                     variant="outlined"
                     slotProps={{
@@ -24,11 +58,86 @@ const CourseSubject = (props: {
                         },
                     }}
                     size='small'
-                    placeholder='Nhập tên khóa học, tác giả,...'
+                    placeholder='Nhập tên khóa học, mô tả'
                     name='keyword'
+                    defaultValue={currentKeyword}
                     fullWidth
                 />
+
+                <Tooltip title="Làm mới bộ lọc" arrow placement="top">
+                    <Button
+                        variant="contained"
+                        color='info'
+                        onClick={() => {
+                            formRef.current?.reset();
+                            router.push("/course")
+                        }}
+                        sx={{
+                            width: '40px',
+                            minWidth: '40px',
+                            aspectRatio: 1,
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center'
+                        }}
+                    >
+                        <RefreshIcon />
+                    </Button>
+                </Tooltip>
             </form>
+
+            <div className="flex items-center justify-between mb-3 mt-5">
+                <h1 className="text-lg font-semibold">Môn học</h1>
+                <IconButton color="primary" onClick={handleSortSubject}>
+                    <SortByAlphaOutlinedIcon />
+                </IconButton>
+            </div>
+
+            <FormGroup sx={{
+                maxHeight: '228px',
+                overflow: 'auto',
+                '&::-webkit-scrollbar': {
+                    display: 'block',
+                    width: '3px',
+                    borderRadius: '6px',
+                },
+                '&::-webkit-scrollbar-track': {
+                    background: '#495057',
+                    borderRadius: '6px',
+                },
+                '&::-webkit-scrollbar-thumb': {
+                    background: '#60a5fa',
+                    borderRadius: '6px',
+                },
+                '&::-webkit-scrollbar-thumb:hover': {
+                    background: '#1976D2',
+                },
+                flexWrap: 'nowrap'
+            }}>
+                {subjectList?.map(item => {
+                    return (
+                        <FormControlLabel
+                            label={
+                                <div className='flex items-center justify-between w-full'>
+                                    <p>{item.subjectName}</p>
+                                    <p>({item.totalCourses})</p>
+                                </div>
+                            }
+                            key={item.subjectId}
+                            control={
+                                <Checkbox size="small" />
+                            }
+                            sx={{
+                                margin: 0,
+                                'span:last-child': {
+                                    flex: 1
+                                },
+                                paddingRight: '20px'
+                            }}
+                        />
+                    )
+                })}
+            </FormGroup>
         </Box>
     )
 }

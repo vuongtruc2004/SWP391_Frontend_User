@@ -1,12 +1,34 @@
 'use client'
-import { Box, MenuItem, Select, Tooltip } from "@mui/material";
+import { Box, Button, MenuItem, Select, SelectChangeEvent, Tooltip } from "@mui/material";
 import Image from "next/image";
-import Link from "next/link";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 
-const CourseFilter = (props: { totalElements: number }) => {
-    const { totalElements } = props;
-    const [orderBy, setOrderby] = useState("id");
+const CourseSort = (props: {
+    totalElements: number,
+    courseSort: string;
+    direction: string;
+}) => {
+    const { totalElements, courseSort, direction } = props;
+    const [orderBy, setOrderby] = useState(courseSort);
+    const router = useRouter();
+    const pathname = usePathname();
+    const searchParams = useSearchParams();
+
+    const handleChangeSortOption = (e: SelectChangeEvent<string>) => {
+        const value = e.target.value;
+
+        setOrderby(value);
+        const newSearchParams = new URLSearchParams(searchParams);
+        newSearchParams.set('courseSort', value);
+        router.replace(`${pathname}?${newSearchParams}`);
+    }
+
+    const handleChangeDirection = (direction: string) => {
+        const newSearchParams = new URLSearchParams(searchParams);
+        newSearchParams.set('direction', direction);
+        router.replace(`${pathname}?${newSearchParams}`);
+    }
 
     return (
         <Box sx={{
@@ -17,17 +39,21 @@ const CourseFilter = (props: { totalElements: number }) => {
             justifyContent: 'space-between',
             padding: '15px 25px',
             borderRadius: '6px',
-            'a': {
-                borderColor: '#343a40',
-                '&:hover': {
-                    borderColor: '#e5e7eb',
-                },
+            'button': {
+                width: '40px',
+                minWidth: '40px',
+                padding: 0,
+                height: '40px',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
                 '&.active': {
-                    borderColor: '#90caf9',
+                    borderWidth: '2px',
+                    borderColor: '#90caf9'
                 }
             }
         }}>
-            <p>{totalElements} khóa học</p>
+            <p><strong className="text-blue-500 text-lg">{totalElements}</strong> khóa học</p>
 
             <div className="flex items-center gap-x-10">
                 <label>Sắp xếp theo:</label>
@@ -35,18 +61,22 @@ const CourseFilter = (props: { totalElements: number }) => {
                 <div className="flex items-center gap-x-3">
                     <Select
                         value={orderBy}
-                        onChange={(e) => setOrderby(e.target.value)}
+                        onChange={handleChangeSortOption}
                         size="small"
                     >
-                        <MenuItem value={"id"}>Mặc định</MenuItem>
+                        <MenuItem value={"default"}>Mặc định</MenuItem>
                         <MenuItem value={"price"}>Giá</MenuItem>
+                        <MenuItem value={"updatedAt"}>Mới nhất</MenuItem>
                         <MenuItem value={"purchaser"}>Số lượt mua</MenuItem>
                         <MenuItem value={"like"}>Số lượt thích</MenuItem>
                     </Select>
 
                     <Tooltip title="Tăng dần" placement="top" arrow>
-                        <Link href={`/course`}
-                            className="active transition-all duration-200 border rounded-sm w-[40px] h-[40px] flex items-center justify-center"
+                        <Button
+                            variant="outlined"
+                            onClick={() => handleChangeDirection("asc")}
+                            color={direction === "asc" ? 'primary' : 'secondary'}
+                            className={`${direction === "asc" ? "active" : ""}`}
                         >
                             <Image
                                 src={`/asc.png`}
@@ -63,12 +93,15 @@ const CourseFilter = (props: { totalElements: number }) => {
                                     transition: 'all .5s',
                                 }}
                             />
-                        </Link>
+                        </Button>
                     </Tooltip>
 
                     <Tooltip title="Giảm dần" placement="top" arrow>
-                        <Link href={`/course`}
-                            className="transition-all duration-200 border rounded-sm w-[40px] h-[40px] flex items-center justify-center"
+                        <Button
+                            variant="outlined"
+                            onClick={() => handleChangeDirection("desc")}
+                            color={direction === "desc" ? 'primary' : 'secondary'}
+                            className={`${direction === "desc" ? "active" : ""}`}
                         >
                             <Image
                                 src={`/desc.png`}
@@ -85,12 +118,12 @@ const CourseFilter = (props: { totalElements: number }) => {
                                     transition: 'all .5s',
                                 }}
                             />
-                        </Link>
+                        </Button>
                     </Tooltip>
                 </div>
             </div>
-        </Box>
+        </Box >
     )
 }
 
-export default CourseFilter
+export default CourseSort

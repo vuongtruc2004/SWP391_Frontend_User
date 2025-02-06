@@ -3,7 +3,7 @@ import { Avatar, Badge, Box, Button, IconButton, InputAdornment, TextField, Tool
 import SearchIcon from '@mui/icons-material/Search';
 import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import AccountMenu from "./account.menu";
 import { useSession } from "next-auth/react";
@@ -12,6 +12,8 @@ import { motion } from 'framer-motion';
 
 const Header = () => {
     const pathname = usePathname();
+    const router = useRouter();
+    const searchParams = useSearchParams();
     const { data: session } = useSession();
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const avatarSrc = session?.user.accountType === "CREDENTIALS" ?
@@ -39,6 +41,23 @@ const Header = () => {
         width: 0,
         opacity: 0
     });
+
+
+    const handleSubmitKeyword = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        const formData = new FormData(e.currentTarget);
+        const keyword = formData.get('keyword')?.toString() || "";
+        const newSearchParams = new URLSearchParams(searchParams);
+        newSearchParams.set('keyword', keyword);
+        newSearchParams.set('page', '1');
+
+        e.currentTarget.reset();
+        if (pathname.startsWith("/course")) {
+            router.replace(`${pathname}?${newSearchParams}`);
+        } else {
+            router.push(`/course?${newSearchParams}`);
+        }
+    }
 
     useEffect(() => {
         const activeLink = links.find(item => pathname.startsWith(item.link));
@@ -74,7 +93,8 @@ const Header = () => {
                     width: '40px',
                     height: '40px',
                     objectFit: 'cover',
-                    borderRadius: '50%'
+                    borderRadius: '50%',
+                    bgcolor: 'black'
                 },
                 bgcolor: 'rgba(0,0,0,0.4)',
                 backdropFilter: 'blur(25px)',
@@ -86,7 +106,7 @@ const Header = () => {
             }}>
             <div className="flex items-center justify-center gap-x-6">
                 <Link href={"/home"} className="items-center flex justify-center cursor-pointer gap-x-2 mr-3">
-                    <img src={`/logo.jpg`} alt="app logo" />
+                    <img src={`/logo.png`} alt="app logo" />
                     <p className="font-semibold text-2xl tracking-wide">LearnGo</p>
                 </Link>
 
@@ -110,7 +130,7 @@ const Header = () => {
                     />
                 </div>
 
-                <form action="">
+                <form onSubmit={handleSubmitKeyword}>
                     <TextField
                         variant="outlined"
                         slotProps={{

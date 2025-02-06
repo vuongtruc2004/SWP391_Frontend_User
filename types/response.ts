@@ -91,6 +91,7 @@ declare global {
         expertId: number;
         diploma: string;
         yearOfExperience: string;
+        totalCourses: number;
         user: UserResponse;
     }
 

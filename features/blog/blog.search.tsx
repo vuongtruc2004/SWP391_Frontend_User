@@ -50,10 +50,11 @@ const BlogSearch = (props: IProps) => {
         //@ts-ignore
         const tagNameList = e.target[2].value;
 
-        const params = new URLSearchParams(searchParams);
-        params.set('keyword', keyword);
-        params.set('tag_name', tagNameList);
-        router.replace(`${pathname}?${params}`);
+        const newSearchParams = new URLSearchParams(searchParams);
+        newSearchParams.set('keyword', keyword);
+        newSearchParams.set('tag_name', tagNameList);
+        newSearchParams.set('page', '1');
+        router.replace(`${pathname}?${newSearchParams}`);
     }
 
     const handleFilter = (key: string) => {

@@ -9,6 +9,19 @@ export const formatPrice = (price: number): string => {
     return price.toLocaleString('vi-VN');
 };
 
+export const getInputPrice = (price: any): string => {
+    if (!price || price.trim() === "") {
+        return "";
+    }
+    const cleanedPrice = price.replace(/[.,]/g, '');
+
+    if (!/^\d+$/.test(cleanedPrice)) {
+        return "";
+    }
+
+    return cleanedPrice + "000";
+}
+
 export const getOriginalPrice = (price: number): string => {
     const originalPrice = price + price * 30 / 100;
     return originalPrice.toLocaleString('vi-VN');

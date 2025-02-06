@@ -27,7 +27,7 @@ const SingleCourseSlider = (props: IProps) => {
                 height: `220px`,
                 position: 'relative',
             }}>
-                <Image src={`${storageUrl}/course/${course.thumbnail}`} alt={course.courseName} fill sizes="(max-width: 1000px) 100vw" style={{
+                <Image src={`${storageUrl}/course/${course.thumbnail}`} alt={course.courseName} priority fill sizes="(max-width: 1000px) 100vw" style={{
                     objectFit: 'cover',
                     borderRadius: '4px',
                     objectPosition: 'center',
@@ -49,10 +49,11 @@ const SingleCourseSlider = (props: IProps) => {
                         overflow: 'hidden',
                         display: '-webkit-box',
                         WebkitBoxOrient: 'vertical',
-                        WebkitLineClamp: 4,
+                        WebkitLineClamp: 2,
                     }}
                 >
                     {course.description}
+                    Lorem ipsum dolor, sit amet consectetur adipisicing elit. Hic commodi enim facere ullam corrupti nisi tenetur doloremque aliquam ratione quod.
                 </p>
 
                 <div className='text-sm'>
@@ -60,9 +61,12 @@ const SingleCourseSlider = (props: IProps) => {
                         <p className="text-green-400">Giảng viên:</p>
                         <Link href={"/home"} className="hover:underline">{course.expert.user.fullname}</Link>
                     </div>
-                    <div className='flex items-center gap-x-2'>
-                        <p className='text-gray-300'>Cập nhật lần cuối:</p>
-                        <p className='text-purple-300'>{formatCreateDate(course.updatedAt ?? course.createdAt)}</p>
+                    <div className='flex items-center justify-between'>
+                        <div className='flex items-center gap-x-2'>
+                            <p className='text-gray-300'>Cập nhật lần cuối:</p>
+                            <p className='text-purple-300'>{formatCreateDate(course.updatedAt ?? course.createdAt)}</p>
+                        </div>
+                        <p className='text-gray-300 italic'>(10{course.totalLikes} lượt thích)</p>
                     </div>
                 </div>
 

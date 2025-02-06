@@ -1,14 +1,151 @@
-import { Box } from '@mui/material'
-import React from 'react'
+'use client'
+import { Box, Button, Checkbox, FormControlLabel, FormGroup, IconButton, InputAdornment, TextField } from '@mui/material';
+import SortByAlphaOutlinedIcon from '@mui/icons-material/SortByAlphaOutlined';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
 const CourseExpert = (props: { expertList: ExpertResponse[] }) => {
+    const { expertList } = props;
+
+    const pathname = usePathname();
+    const searchParams = useSearchParams();
+    const router = useRouter();
+
+    const handleSortExpert = () => {
+        const currentSort = searchParams.get('sortExpert') || 'asc';
+        const newSort = currentSort === "asc" ? "desc" : "asc";
+
+        const newSearchParams = new URLSearchParams(searchParams);
+        newSearchParams.set('sortExpert', newSort);
+        router.replace(`${pathname}?${newSearchParams}`);
+    }
+
+    const handleSubmitPrice = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+
+        const formData = new FormData(e.currentTarget);
+
+        const priceFrom = formData.get('priceFrom')?.toString() || "";
+        const priceTo = formData.get('priceTo')?.toString() || "";
+
+        const newSearchParams = new URLSearchParams(searchParams);
+        newSearchParams.set('priceFrom', priceFrom);
+        newSearchParams.set('priceTo', priceTo);
+        newSearchParams.set('page', '1');
+        router.replace(`${pathname}?${newSearchParams}`);
+    }
+
     return (
         <Box sx={{
             bgcolor: 'black',
-            padding: '20px',
+            padding: '30px 20px',
             borderRadius: '6px'
         }}>
+            <div className="flex items-center justify-between mb-3">
+                <h1 className="text-lg font-semibold">Giảng viên</h1>
+                <IconButton color="primary" onClick={handleSortExpert}>
+                    <SortByAlphaOutlinedIcon />
+                </IconButton>
+            </div>
 
+            <FormGroup sx={{
+                maxHeight: '228px',
+                overflow: 'auto',
+                '&::-webkit-scrollbar': {
+                    display: 'block',
+                    width: '3px',
+                    borderRadius: '6px',
+                },
+                '&::-webkit-scrollbar-track': {
+                    background: '#495057',
+                    borderRadius: '6px',
+                },
+                '&::-webkit-scrollbar-thumb': {
+                    background: '#60a5fa',
+                    borderRadius: '6px',
+                },
+                '&::-webkit-scrollbar-thumb:hover': {
+                    background: '#1976D2',
+                },
+            }}>
+                {expertList?.map(item => {
+                    return (
+                        <FormControlLabel
+                            label={
+                                <div className='flex items-center justify-between w-full'>
+                                    <p>{item.user.fullname}</p>
+                                    <p>({item.totalCourses})</p>
+                                </div>
+                            }
+                            key={item.expertId}
+                            control={
+                                <Checkbox size="small" />
+                            }
+                            sx={{
+                                margin: 0,
+                                'span:last-child': {
+                                    flex: 1
+                                },
+                                paddingRight: '20px'
+                            }}
+                        />
+                    )
+                })}
+            </FormGroup>
+
+            <h1 className="text-lg font-semibold mb-3 mt-5">Khoảng giá</h1>
+
+            <form onSubmit={handleSubmitPrice}>
+                <div className='flex items-center justify-center gap-x-3 mb-3'>
+                    <TextField
+                        slotProps={{
+                            input: {
+                                endAdornment: (
+                                    <InputAdornment position="end">
+                                        .000₫
+                                    </InputAdornment>
+                                ),
+                            },
+                        }}
+                        variant="outlined"
+                        size='small'
+                        name='priceFrom'
+                        placeholder='Từ'
+                        defaultValue={''}
+                        fullWidth
+                    />
+
+                    <TextField
+                        slotProps={{
+                            input: {
+                                endAdornment: (
+                                    <InputAdornment position="end">
+                                        .000₫
+                                    </InputAdornment>
+                                ),
+                            },
+                        }}
+                        variant="outlined"
+                        size='small'
+                        name='priceTo'
+                        placeholder='Đến'
+                        defaultValue={''}
+                        fullWidth
+                    />
+                </div>
+                <Button
+                    variant='contained'
+                    fullWidth
+                    type='submit'
+                    sx={{
+                        textTransform: 'none',
+                        bgcolor: '#4ade80',
+                        '&:hover': {
+                            bgcolor: '#00c951'
+                        }
+                    }}>
+                    Áp Dụng
+                </Button>
+            </form>
         </Box>
     )
 }

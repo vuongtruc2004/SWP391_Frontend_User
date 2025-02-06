@@ -24,16 +24,16 @@ const BlogPage = async (props: {
     const session = await getServerSession(authOptions);
     const searchParams = await props.searchParams;
     const keyword = searchParams.keyword || ""
-    const page = searchParams.page;
+    const page = searchParams.page || "1";
     const category = searchParams.category || 'all';
-    const tagNameList = searchParams.tag_name;
+    const tagNameList = searchParams.tag_name || "";
 
     const queryParams = new URLSearchParams({
         filter: `title ~ '${keyword}' or plainContent ~ '${keyword}' or user.fullname ~ '${keyword}'`,
-        page: page || '1',
+        page: page,
         size: '6',
         category: category,
-        tag_name: tagNameList || ""
+        tag_name: tagNameList
     }).toString();
 
     let blogListResponse;
