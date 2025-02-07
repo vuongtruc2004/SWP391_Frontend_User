@@ -41,6 +41,11 @@ export default function AccountMenu(props: IProps) {
         signOut();
     }
 
+    const handleNavigating = (link: string) => {
+        handleClose();
+        router.push(link);
+    }
+
     return (
         <Menu
             anchorEl={anchorEl}
@@ -104,22 +109,19 @@ export default function AccountMenu(props: IProps) {
                 </div>
             </div>
             <Divider sx={{ marginBlock: '10px' }} />
-            <MenuItem onClick={handleClose}>
+            <MenuItem onClick={() => handleNavigating("/user/profile")}>
                 <ListItemIcon>
                     <PersonIcon fontSize="small" />
                 </ListItemIcon>
-                Tài khoản
+                Tài khoản của tôi
             </MenuItem>
-            <MenuItem onClick={() => {
-                handleClose();
-                router.push("/my-course")
-            }}>
+            <MenuItem onClick={() => handleNavigating("/user/my-course")}>
                 <ListItemIcon>
                     <AutoStoriesIcon fontSize="small" />
                 </ListItemIcon>
                 Khóa học của tôi
             </MenuItem>
-            <MenuItem onClick={handleClose}>
+            <MenuItem onClick={() => handleNavigating("/user/settings")}>
                 <ListItemIcon>
                     <Settings fontSize="small" />
                 </ListItemIcon>

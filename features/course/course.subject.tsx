@@ -4,12 +4,18 @@ import SearchIcon from '@mui/icons-material/Search';
 import SortByAlphaOutlinedIcon from '@mui/icons-material/SortByAlphaOutlined';
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import RefreshIcon from '@mui/icons-material/Refresh';
-import { useRef } from "react";
+import { ChangeEvent, useRef } from "react";
+import { useCourseListContext } from "@/wrapper/course-list/course.list.wrapper";
 
 const CourseSubject = (props: {
     subjectList: SubjectResponse[];
+    subjectIds: string;
 }) => {
-    const { subjectList } = props;
+    const { subjectList, subjectIds } = props;
+    const { priceFormRef, setOrderby } = useCourseListContext();
+
+    const subjectIdArray = subjectIds.split(",");
+
     const pathname = usePathname();
     const searchParams = useSearchParams();
     const router = useRouter();
@@ -34,6 +40,34 @@ const CourseSubject = (props: {
         newSearchParams.set('keyword', keyword);
         newSearchParams.set('page', '1');
         router.replace(`${pathname}?${newSearchParams}`);
+    }
+
+    const handleChangeSubject = (e: ChangeEvent<HTMLInputElement>, value: string) => {
+        const newSearchParams = new URLSearchParams(searchParams);
+        let subjectIds = newSearchParams.get('subjectIds')?.split(",").filter(id => id) || [];
+
+        if (e.target.checked) {
+            subjectIds.push(value);
+        } else {
+            subjectIds = subjectIds.filter(item => item !== value);
+        }
+
+        newSearchParams.set('page', '1');
+
+        if (subjectIds.length) {
+            newSearchParams.set('subjectIds', subjectIds.join(","));
+        } else {
+            newSearchParams.delete('subjectIds');
+        }
+
+        router.replace(`${pathname}?${newSearchParams}`);
+    }
+
+    const handleResetFilter = () => {
+        formRef.current?.reset();
+        priceFormRef.current?.reset();
+        setOrderby("default");
+        router.push("/course");
     }
 
     return (
@@ -68,10 +102,7 @@ const CourseSubject = (props: {
                     <Button
                         variant="contained"
                         color='info'
-                        onClick={() => {
-                            formRef.current?.reset();
-                            router.push("/course")
-                        }}
+                        onClick={handleResetFilter}
                         sx={{
                             width: '40px',
                             minWidth: '40px',
@@ -115,6 +146,8 @@ const CourseSubject = (props: {
                 flexWrap: 'nowrap'
             }}>
                 {subjectList?.map(item => {
+                    const isCheck = subjectIdArray.some(id => id === item.subjectId.toString());
+
                     return (
                         <FormControlLabel
                             label={
@@ -123,9 +156,10 @@ const CourseSubject = (props: {
                                     <p>({item.totalCourses})</p>
                                 </div>
                             }
+                            checked={isCheck}
                             key={item.subjectId}
                             control={
-                                <Checkbox size="small" />
+                                <Checkbox size="small" onChange={(e) => handleChangeSubject(e, item.subjectId.toString())} />
                             }
                             sx={{
                                 margin: 0,

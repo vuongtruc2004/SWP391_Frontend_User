@@ -2,9 +2,19 @@
 import { Box, Button, Checkbox, FormControlLabel, FormGroup, IconButton, InputAdornment, TextField } from '@mui/material';
 import SortByAlphaOutlinedIcon from '@mui/icons-material/SortByAlphaOutlined';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { ChangeEvent } from 'react';
+import { useCourseListContext } from '@/wrapper/course-list/course.list.wrapper';
 
-const CourseExpert = (props: { expertList: ExpertResponse[] }) => {
-    const { expertList } = props;
+const CourseExpert = (props: {
+    expertList: ExpertResponse[],
+    priceFrom: string;
+    priceTo: string;
+    expertIds: string;
+}) => {
+    const { expertList, priceFrom, priceTo, expertIds } = props;
+    const { priceFormRef } = useCourseListContext();
+
+    const expertIdArray = expertIds.split(",");
 
     const pathname = usePathname();
     const searchParams = useSearchParams();
@@ -31,6 +41,27 @@ const CourseExpert = (props: { expertList: ExpertResponse[] }) => {
         newSearchParams.set('priceFrom', priceFrom);
         newSearchParams.set('priceTo', priceTo);
         newSearchParams.set('page', '1');
+        router.replace(`${pathname}?${newSearchParams}`);
+    }
+
+    const handleChangeExpert = (e: ChangeEvent<HTMLInputElement>, value: string) => {
+        const newSearchParams = new URLSearchParams(searchParams);
+        let expertIds = newSearchParams.get('expertIds')?.split(",").filter(id => id) || [];
+
+        if (e.target.checked) {
+            expertIds.push(value);
+        } else {
+            expertIds = expertIds.filter(item => item !== value);
+        }
+
+        newSearchParams.set('page', '1');
+
+        if (expertIds.length) {
+            newSearchParams.set('expertIds', expertIds.join(","));
+        } else {
+            newSearchParams.delete('expertIds');
+        }
+
         router.replace(`${pathname}?${newSearchParams}`);
     }
 
@@ -68,6 +99,8 @@ const CourseExpert = (props: { expertList: ExpertResponse[] }) => {
                 },
             }}>
                 {expertList?.map(item => {
+                    const isCheck = expertIdArray.some(id => id === item.expertId.toString());
+
                     return (
                         <FormControlLabel
                             label={
@@ -76,9 +109,10 @@ const CourseExpert = (props: { expertList: ExpertResponse[] }) => {
                                     <p>({item.totalCourses})</p>
                                 </div>
                             }
+                            checked={isCheck}
                             key={item.expertId}
                             control={
-                                <Checkbox size="small" />
+                                <Checkbox size="small" onChange={(e) => handleChangeExpert(e, item.expertId.toString())} />
                             }
                             sx={{
                                 margin: 0,
@@ -94,7 +128,7 @@ const CourseExpert = (props: { expertList: ExpertResponse[] }) => {
 
             <h1 className="text-lg font-semibold mb-3 mt-5">Khoảng giá</h1>
 
-            <form onSubmit={handleSubmitPrice}>
+            <form onSubmit={handleSubmitPrice} ref={priceFormRef}>
                 <div className='flex items-center justify-center gap-x-3 mb-3'>
                     <TextField
                         slotProps={{
@@ -110,7 +144,7 @@ const CourseExpert = (props: { expertList: ExpertResponse[] }) => {
                         size='small'
                         name='priceFrom'
                         placeholder='Từ'
-                        defaultValue={''}
+                        defaultValue={priceFrom}
                         fullWidth
                     />
 
@@ -128,7 +162,7 @@ const CourseExpert = (props: { expertList: ExpertResponse[] }) => {
                         size='small'
                         name='priceTo'
                         placeholder='Đến'
-                        defaultValue={''}
+                        defaultValue={priceTo}
                         fullWidth
                     />
                 </div>

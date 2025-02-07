@@ -22,6 +22,20 @@ export const getInputPrice = (price: any): string => {
     return cleanedPrice + "000";
 }
 
+export const getCourseSort = (courseSort: string): string => {
+    if (!courseSort ||
+        (courseSort !== "default" &&
+            courseSort !== "price" &&
+            courseSort !== "updatedAt" &&
+            courseSort !== "purchaser" &&
+            courseSort !== "like" &&
+            courseSort !== "comment")
+    ) {
+        return "default";
+    }
+    return courseSort;
+}
+
 export const getOriginalPrice = (price: number): string => {
     const originalPrice = price + price * 30 / 100;
     return originalPrice.toLocaleString('vi-VN');

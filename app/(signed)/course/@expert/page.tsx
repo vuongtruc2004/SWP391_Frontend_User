@@ -4,12 +4,18 @@ import { apiUrl } from "@/utils/url"
 
 const ExpertPage = async (props: {
     searchParams: Promise<{
-        sortExpert?: string;
+        sortExpert: string;
+        priceFrom: string;
+        priceTo: string;
+        expertIds: string;
     }>
 }) => {
     const searchParams = await props.searchParams;
-    let sortExpert = searchParams.sortExpert;
+    const priceFrom = searchParams.priceFrom || "";
+    const priceTo = searchParams.priceTo || "";
+    const expertIds = searchParams.expertIds || "";
 
+    let sortExpert = searchParams.sortExpert;
     if (!sortExpert || (sortExpert !== "asc" && sortExpert !== "desc")) {
         sortExpert = "asc";
     }
@@ -24,7 +30,12 @@ const ExpertPage = async (props: {
     });
 
     return (
-        <CourseExpert expertList={expertPageResponse.data.content} />
+        <CourseExpert
+            expertList={expertPageResponse.data.content}
+            priceFrom={priceFrom}
+            priceTo={priceTo}
+            expertIds={expertIds}
+        />
     )
 }
 

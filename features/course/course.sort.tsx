@@ -1,8 +1,9 @@
 'use client'
+import { useCourseListContext } from "@/wrapper/course-list/course.list.wrapper";
 import { Box, Button, MenuItem, Select, SelectChangeEvent, Tooltip } from "@mui/material";
 import Image from "next/image";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { useEffect } from "react";
 
 const CourseSort = (props: {
     totalElements: number,
@@ -10,7 +11,7 @@ const CourseSort = (props: {
     direction: string;
 }) => {
     const { totalElements, courseSort, direction } = props;
-    const [orderBy, setOrderby] = useState(courseSort);
+    const { orderBy, setOrderby } = useCourseListContext();
     const router = useRouter();
     const pathname = usePathname();
     const searchParams = useSearchParams();
@@ -29,6 +30,10 @@ const CourseSort = (props: {
         newSearchParams.set('direction', direction);
         router.replace(`${pathname}?${newSearchParams}`);
     }
+
+    useEffect(() => {
+        setOrderby(courseSort);
+    }, []);
 
     return (
         <Box sx={{
@@ -69,6 +74,7 @@ const CourseSort = (props: {
                         <MenuItem value={"updatedAt"}>Mới nhất</MenuItem>
                         <MenuItem value={"purchaser"}>Số lượt mua</MenuItem>
                         <MenuItem value={"like"}>Số lượt thích</MenuItem>
+                        <MenuItem value={"comment"}>Số lượt bình luận</MenuItem>
                     </Select>
 
                     <Tooltip title="Tăng dần" placement="top" arrow>

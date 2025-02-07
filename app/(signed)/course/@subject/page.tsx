@@ -4,10 +4,12 @@ import { apiUrl } from "@/utils/url"
 
 const SubjectPage = async (props: {
     searchParams: Promise<{
-        sortSubject?: string;
+        sortSubject: string;
+        subjectIds: string;
     }>
 }) => {
     const searchParams = await props.searchParams;
+    const subjectIds = searchParams.subjectIds || "";
     let sortSubject = searchParams.sortSubject;
 
     if (!sortSubject || (sortSubject !== "asc" && sortSubject !== "desc")) {
@@ -24,7 +26,10 @@ const SubjectPage = async (props: {
     });
 
     return (
-        <CourseSubject subjectList={subjectPageResponse.data.content} />
+        <CourseSubject
+            subjectList={subjectPageResponse.data.content}
+            subjectIds={subjectIds}
+        />
     )
 }
 

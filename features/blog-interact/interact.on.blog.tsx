@@ -22,6 +22,7 @@ const InteractOnBlog = (props: IProps) => {
 
     const redirectToLogin = () => {
         if (!session) {
+            sessionStorage.setItem('prevUrl', `/blog/${blog.blogId}`);
             router.push("/login");
         }
     }
@@ -72,7 +73,7 @@ const InteractOnBlog = (props: IProps) => {
                     )}
                 />
                 <Button
-                    loading={pending || !session}
+                    disabled={pending || !session}
                     variant="contained"
                     color="primary"
                     sx={{ textTransform: 'none', marginTop: '20px' }}

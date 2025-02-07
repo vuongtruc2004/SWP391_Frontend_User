@@ -1,3 +1,4 @@
+import CourseListWrapper from "@/wrapper/course-list/course.list.wrapper";
 import { Box } from "@mui/material";
 import { Metadata } from "next";
 
@@ -14,25 +15,27 @@ const CourseLayout = ({ course, subject, expert }: { course: React.ReactNode, su
             color: 'white',
             paddingTop: '120px'
         }}>
-            <Box sx={{
-                display: 'grid',
-                gridTemplateColumns: '30% 70%',
-                gap: '20px',
-                width: '100%',
-                maxWidth: '1200px',
-                margin: '0 auto',
-            }}>
+            <CourseListWrapper>
                 <Box sx={{
-                    display: 'flex',
-                    flexDirection: 'column',
+                    display: 'grid',
+                    gridTemplateColumns: '30% 70%',
                     gap: '20px',
-                    width: '100%'
+                    width: '100%',
+                    maxWidth: '1200px',
+                    margin: '0 auto',
                 }}>
-                    {subject}
-                    {expert}
+                    <Box sx={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: '20px',
+                        width: '100%'
+                    }}>
+                        {subject}
+                        {expert}
+                    </Box>
+                    {course}
                 </Box>
-                {course}
-            </Box>
+            </CourseListWrapper>
         </Box>
     )
 }

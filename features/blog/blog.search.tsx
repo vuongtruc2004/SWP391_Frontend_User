@@ -59,6 +59,7 @@ const BlogSearch = (props: IProps) => {
 
     const handleFilter = (key: string) => {
         if (key !== 'all' && !session) {
+            sessionStorage.setItem('prevUrl', `${pathname}?${searchParams}`);
             return router.push("/login");
         }
         const params = new URLSearchParams(searchParams);

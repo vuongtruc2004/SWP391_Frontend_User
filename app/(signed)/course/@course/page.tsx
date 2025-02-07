@@ -1,7 +1,7 @@
 import CourseListEmpty from "@/components/course/course.list.empty";
 import CourseList from "@/features/course/course.list";
 import CourseSort from "@/features/course/course.sort";
-import { getInputPrice } from "@/helper/course.helper";
+import { getCourseSort, getInputPrice } from "@/helper/course.helper";
 import { sendRequest } from "@/utils/fetch.api";
 import { apiUrl } from "@/utils/url";
 import { Box } from "@mui/material";
@@ -14,6 +14,8 @@ const CoursePage = async (props: {
         priceTo: string;
         courseSort: string;
         direction: string;
+        expertIds: string;
+        subjectIds: string;
     }>
 }) => {
     const searchParams = await props.searchParams;
@@ -21,8 +23,10 @@ const CoursePage = async (props: {
     const keyword = searchParams.keyword || "";
     const priceFrom = getInputPrice(searchParams.priceFrom);
     const priceTo = getInputPrice(searchParams.priceTo);
-    let courseSort = searchParams.courseSort || 'default';
-    const direction = searchParams.direction || 'asc';
+    const courseSort = getCourseSort(searchParams.courseSort);
+    const direction = (!searchParams.direction || (searchParams.direction !== "asc" && searchParams.direction !== "desc")) ? "asc" : searchParams.direction;
+    const expertIds = searchParams.expertIds || "";
+    const subjectIds = searchParams.subjectIds || "";
 
     let filter = `(courseName ~ '${keyword}' or description ~ '${keyword}')`;
 
@@ -37,24 +41,23 @@ const CoursePage = async (props: {
         page: page,
         size: 4,
         filter: filter,
+        expertIds: expertIds,
+        subjectIds: subjectIds
     };
 
-    if (courseSort === "default") {
-        queryParams.sort = `courseId,${direction}`;
-    } else if (["price", "updatedAt"].includes(courseSort)) {
+    if (["price", "updatedAt"].includes(courseSort)) {
         queryParams.sort = `${courseSort},${direction}`;
-    } else if (["purchaser", "like"].includes(courseSort)) {
+    } else if (["purchaser", "like", "comment"].includes(courseSort)) {
         queryParams.specialSort = `${courseSort},${direction}`;
+    } else {
+        queryParams.sort = `courseId,${direction}`;
     }
 
-    console.log(">>> check filter: ", filter);
 
     const coursePageResponse = await sendRequest<ApiResponse<PageDetailsResponse<CourseResponse[]>>>({
         url: `${apiUrl}/courses`,
         queryParams: queryParams
     });
-
-    // console.log(">>> check rs: ", coursePageResponse.data.content);
 
     return (
         <Box sx={{
@@ -64,7 +67,7 @@ const CoursePage = async (props: {
             width: '100%'
         }}>
             <CourseSort
-                totalElements={coursePageResponse.data.totalElements}
+                totalElements={coursePageResponse.data?.totalElements || 0}
                 courseSort={courseSort}
                 direction={direction}
             />
