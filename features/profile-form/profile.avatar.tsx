@@ -13,8 +13,7 @@ const ProfileAvatar = (props: {
 }) => {
     const { avatar } = props;
     const { data: session, update } = useSession();
-    const avatarSrc = session?.user.accountType === "CREDENTIALS" ?
-        `${storageUrl}/avatar/${avatar}` : avatar;
+    const avatarSrc = avatar.startsWith("http") ? avatar : `${storageUrl}/avatar/${avatar}`
 
     const router = useRouter();
     const inputRef = useRef<HTMLInputElement>(null);

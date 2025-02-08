@@ -24,8 +24,7 @@ export default function AccountMenu(props: IProps) {
     const open = Boolean(anchorEl);
     const router = useRouter();
 
-    const avatarSrc = session?.user.accountType === "CREDENTIALS" ?
-        `${storageUrl}/avatar/${session.user.avatar}` : session?.user.avatar;
+    const avatarSrc = session?.user.avatar.startsWith("http") ? session?.user.avatar : `${storageUrl}/avatar/${session?.user.avatar}`
 
     const handleClose = () => {
         setAnchorEl(null);
