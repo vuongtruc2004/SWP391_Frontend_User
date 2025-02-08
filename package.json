@@ -20,7 +20,6 @@
     "@mui/x-date-pickers": "^7.24.0",
     "dayjs": "^1.11.13",
     "framer-motion": "^12.0.0",
-    "motion": "^12.0.0",
     "mui-one-time-password-input": "^3.0.2",
     "next": "15.1.4",
     "next-auth": "^4.24.11",
@@ -28,8 +27,6 @@
     "query-string": "^9.1.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "react-toastify": "^11.0.2",
-    "sass": "^1.83.4",
     "swiper": "^11.2.1",
     "user-ui": "file:"
   },

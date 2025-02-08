@@ -5,15 +5,11 @@ import 'swiper/css';
 import 'swiper/css/effect-coverflow';
 import 'swiper/css/pagination';
 import { Autoplay, EffectCoverflow, Pagination } from 'swiper/modules';
-import { Box } from '@mui/material';
+import Box from "@mui/material/Box";
 import SingleBlogSlider from './single.blog.slider';
 import SliderNavigation from './slider.navigation';
 
-interface IProps {
-    blogList: BlogResponse[];
-}
-const BlogSlider = (props: IProps) => {
-    const { blogList } = props;
+const BlogSlider = ({ blogList }: { blogList: BlogResponse[]; }) => {
     const swiperRef = useRef<SwiperRef | null>(null);
 
     return (
@@ -55,9 +51,9 @@ const BlogSlider = (props: IProps) => {
             }}
         >
             <div className='relative flex items-center justify-center'>
-                <h3 className='text-center font-bold uppercase text-2xl text-white'>
+                <h1 className='text-center font-bold uppercase text-2xl text-white'>
                     Bài viết mới nhất
-                </h3>
+                </h1>
             </div>
 
             <Swiper

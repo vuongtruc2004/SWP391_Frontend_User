@@ -1,16 +1,10 @@
-'use client'
-import { Box } from '@mui/material';
+import Box from "@mui/material/Box";
 import SingleCourseSlider from './single.course.slider'
 
-interface IProps {
-    courseList: CourseResponse[];
-}
-const CourseSlider = (props: IProps) => {
-    const { courseList } = props;
-
+const CourseSlider = ({ courseList }: { courseList: CourseResponse[]; }) => {
     return (
         <>
-            <h3 className='text-center font-bold uppercase text-2xl text-white mt-10'>Khóa học phổ biến</h3>
+            <h1 className='text-center font-bold uppercase text-2xl text-white mt-10'>Khóa học phổ biến</h1>
             <Box sx={{
                 display: 'grid',
                 gridTemplateColumns: 'repeat(3, 1fr)',

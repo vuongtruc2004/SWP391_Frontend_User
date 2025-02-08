@@ -1,13 +1,10 @@
 import { formatCreateDate } from '@/helper/blog.helper';
-import { Box, Button } from '@mui/material'
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import Link from 'next/link';
 
-interface IProps {
-    blog: BlogResponse;
-}
-const SingleBlogSlider = (props: IProps) => {
-    const { blog } = props;
+const SingleBlogSlider = ({ blog }: { blog: BlogResponse; }) => {
     return (
         <Box sx={{
             color: 'white',

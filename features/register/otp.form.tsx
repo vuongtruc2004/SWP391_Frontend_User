@@ -3,18 +3,17 @@ import DraftsOutlinedIcon from '@mui/icons-material/DraftsOutlined';
 import ErrorOutlineRoundedIcon from '@mui/icons-material/ErrorOutlineRounded';
 import ArrowLeftIcon from '@mui/icons-material/ArrowLeft';
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
-import { Button } from "@mui/material";
+import Button from "@mui/material/Button";
 import { MuiOtpInput } from 'mui-one-time-password-input';
 import { sendRequest } from '@/utils/fetch.api';
 import { apiUrl } from '@/utils/url';
 import { RegisterFieldResponse } from './action';
 
-const OtpForm = (props: {
+const OtpForm = ({ setIsBackToStepOne, registerField, setStep }: {
     setIsBackToStepOne: React.Dispatch<SetStateAction<boolean>>,
     registerField: RegisterFieldResponse | null,
     setStep: React.Dispatch<SetStateAction<number>>
 }) => {
-    const { setIsBackToStepOne, registerField, setStep } = props;
     const [otp, setOtp] = useState<string>('');
     const [errorMessage, setErrorMessage] = useState<string>("");
     const [countdown, setCountdown] = useState<number>(0);

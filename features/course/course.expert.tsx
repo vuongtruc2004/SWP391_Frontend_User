@@ -1,19 +1,24 @@
 'use client'
-import { Box, Button, Checkbox, FormControlLabel, FormGroup, IconButton, InputAdornment, TextField } from '@mui/material';
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Checkbox from "@mui/material/Checkbox";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import FormGroup from "@mui/material/FormGroup";
+import IconButton from "@mui/material/IconButton";
+import InputAdornment from "@mui/material/InputAdornment";
+import TextField from "@mui/material/TextField";
 import SortByAlphaOutlinedIcon from '@mui/icons-material/SortByAlphaOutlined';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { ChangeEvent } from 'react';
 import { useCourseListContext } from '@/wrapper/course-list/course.list.wrapper';
 
-const CourseExpert = (props: {
+const CourseExpert = ({ expertList, priceFrom, priceTo, expertIds }: {
     expertList: ExpertResponse[],
     priceFrom: string;
     priceTo: string;
     expertIds: string;
 }) => {
-    const { expertList, priceFrom, priceTo, expertIds } = props;
     const { priceFormRef } = useCourseListContext();
-
     const expertIdArray = expertIds.split(",");
 
     const pathname = usePathname();

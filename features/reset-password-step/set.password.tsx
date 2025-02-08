@@ -1,4 +1,7 @@
-import { Button, IconButton, InputAdornment, TextField } from "@mui/material";
+import Button from "@mui/material/Button";
+import IconButton from "@mui/material/IconButton";
+import InputAdornment from "@mui/material/InputAdornment";
+import TextField from "@mui/material/TextField";
 import KeyboardAltOutlinedIcon from '@mui/icons-material/KeyboardAltOutlined';
 import RestartAltOutlinedIcon from '@mui/icons-material/RestartAltOutlined';
 import { SetStateAction, useActionState, useEffect, useState } from "react";
@@ -7,9 +10,7 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import ErrorOutlineRoundedIcon from '@mui/icons-material/ErrorOutlineRounded';
 import { sendChangePasswordRequest } from "./action";
 
-const SetPassword = (props: { setStep: React.Dispatch<SetStateAction<number>>, code: string }) => {
-    const { setStep, code } = props;
-
+const SetPassword = ({ setStep, code }: { setStep: React.Dispatch<SetStateAction<number>>, code: string }) => {
     const [showPassword, setShowPassword] = useState(false);
     const [showRePassword, setShowRePassword] = useState(false);
 

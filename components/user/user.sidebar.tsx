@@ -1,5 +1,5 @@
 'use client'
-import { Box } from "@mui/material"
+import Box from "@mui/material/Box";
 import Link from "next/link"
 import { useEffect, useState } from "react";
 import { motion } from 'framer-motion';

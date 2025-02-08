@@ -1,5 +1,6 @@
 'use client'
-import { Box, Divider } from '@mui/material'
+import Box from "@mui/material/Box";
+import Divider from "@mui/material/Divider";
 import Link from 'next/link'
 import { storageUrl } from '@/utils/url';
 import Image from 'next/image';
@@ -8,11 +9,7 @@ import { formatCreateDate } from '@/helper/blog.helper';
 import HowToRegIcon from '@mui/icons-material/HowToReg';
 import { useState } from 'react';
 
-interface IProps {
-    course: CourseResponse;
-}
-const SingleCourseSlider = (props: IProps) => {
-    const { course } = props;
+const SingleCourseSlider = ({ course }: { course: CourseResponse }) => {
     const [status, setStatus] = useState<'not buy' | 'not start' | 'studying' | 'completed'>('not buy');
 
     return (

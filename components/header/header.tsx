@@ -1,5 +1,12 @@
 'use client'
-import { Avatar, Badge, Box, Button, IconButton, InputAdornment, TextField, Tooltip } from "@mui/material";
+import Avatar from "@mui/material/Avatar";
+import Badge from "@mui/material/Badge";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import IconButton from "@mui/material/IconButton";
+import InputAdornment from "@mui/material/InputAdornment";
+import TextField from "@mui/material/TextField";
+import Tooltip from "@mui/material/Tooltip";
 import SearchIcon from '@mui/icons-material/Search';
 import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 import Link from "next/link";
@@ -9,6 +16,7 @@ import AccountMenu from "./account.menu";
 import { useSession } from "next-auth/react";
 import { storageUrl } from "@/utils/url";
 import { motion } from 'framer-motion';
+import Image from "next/image";
 
 const Header = () => {
     const pathname = usePathname();
@@ -55,6 +63,12 @@ const Header = () => {
             router.replace(`${pathname}?${newSearchParams}`);
         } else {
             router.push(`/course?${newSearchParams}`);
+        }
+    }
+
+    const handleSavePrevUrl = (linkTo: string) => {
+        if (!window.location.pathname.includes(linkTo)) {
+            sessionStorage.setItem("prevUrl", window.location.pathname);
         }
     }
 
@@ -105,7 +119,7 @@ const Header = () => {
             }}>
             <div className="flex items-center justify-center gap-x-6">
                 <Link href={"/home"} className="items-center flex justify-center cursor-pointer gap-x-2 mr-3">
-                    <img src={`/logo.png`} alt="app logo" />
+                    <Image src={`/logo.webp`} alt="app logo" width={40} height={40} />
                     <p className="font-semibold text-2xl tracking-wide">LearnGo</p>
                 </Link>
 
@@ -163,10 +177,11 @@ const Header = () => {
                                 <Badge color="error" overlap="circular" badgeContent={5}>
                                     <NotificationsNoneIcon sx={{ color: pathname === "/notification" ? "#60a5fa" : "#dee2e6" }} />
                                 </Badge>
-                            </IconButton></Link>
+                            </IconButton>
+                        </Link>
                     </Tooltip>
 
-                    <Avatar onClick={(event) => setAnchorEl(event.currentTarget)} sx={{ cursor: 'pointer' }} src={session ? avatarSrc : ""}>
+                    <Avatar alt="avatar" onClick={(event) => setAnchorEl(event.currentTarget)} sx={{ cursor: 'pointer' }} src={session ? avatarSrc : ""}>
                         {session?.user.fullname?.charAt(0).toUpperCase()}
                     </Avatar>
                     <AccountMenu anchorEl={anchorEl} setAnchorEl={setAnchorEl} />
@@ -181,19 +196,11 @@ const Header = () => {
                         width: '120px'
                     }
                 }}>
-                    <Link href={"/login"} onClick={() => {
-                        if (!window.location.pathname.includes("/login")) {
-                            sessionStorage.setItem("prevUrl", window.location.pathname);
-                        }
-                    }}>
+                    <Link href={"/login"} onClick={() => handleSavePrevUrl("/login")}>
                         <Button variant="outlined" color="secondary">Đăng Nhập</Button>
                     </Link>
 
-                    <Link href={"/register"} onClick={() => {
-                        if (!window.location.pathname.includes("/register")) {
-                            sessionStorage.setItem("prevUrl", window.location.pathname);
-                        }
-                    }}>
+                    <Link href={"/register"} onClick={() => handleSavePrevUrl("/register")}>
                         <Button variant="contained" color="primary">Đăng Kí</Button>
                     </Link>
                 </Box>

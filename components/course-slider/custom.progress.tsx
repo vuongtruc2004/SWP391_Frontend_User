@@ -1,5 +1,11 @@
 'use client'
-import { Box, CircularProgress, circularProgressClasses, CircularProgressProps, LinearProgress, LinearProgressClasses, linearProgressClasses, styled } from "@mui/material";
+import Box from "@mui/material/Box";
+import CircularProgress from "@mui/material/CircularProgress";
+import { circularProgressClasses } from "@mui/material/CircularProgress";
+import { CircularProgressProps } from "@mui/material/CircularProgress";
+import LinearProgress from "@mui/material/LinearProgress";
+import { linearProgressClasses } from "@mui/material/LinearProgress";
+import { styled } from "@mui/material/styles";
 
 interface CircularProgressPropsExpand extends CircularProgressProps {
     width?: number;

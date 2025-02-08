@@ -1,16 +1,10 @@
 import { storageUrl } from "@/utils/url";
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import { Box } from "@mui/material";
+import Box from "@mui/material/Box";
 import Image from "next/image";
 import Link from "next/link";
 
-interface IProps {
-    subject: SubjectResponse;
-}
-
-const SingleSubjectList = (props: IProps) => {
-    const { subject } = props;
-
+const SingleSubjectList = ({ subject }: { subject: SubjectResponse; }) => {
     return (
         <Link href={`/course?subjectIds=${subject.subjectId}`}>
             <Box sx={{
@@ -53,7 +47,7 @@ const SingleSubjectList = (props: IProps) => {
                     />
                 </div>
                 <h1 className="text-2xl font-semibold my-2 transition-all duration-300">{subject.subjectName}</h1>
-                <p className="text-gray-400 mb-5 h-[55px]">{subject.description}</p>
+                <p className="text-gray-400 h-[55px]">{subject.description}</p>
                 <div className="flex items-center">
                     <p>
                         Xem các khóa học {subject.subjectName}

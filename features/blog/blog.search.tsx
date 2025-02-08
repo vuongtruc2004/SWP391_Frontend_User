@@ -1,5 +1,8 @@
 'use client'
-import { Box, Button, InputAdornment, TextField } from '@mui/material';
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import InputAdornment from "@mui/material/InputAdornment";
+import TextField from "@mui/material/TextField";
 import SearchIcon from '@mui/icons-material/Search';
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
@@ -10,15 +13,12 @@ import RefreshIcon from '@mui/icons-material/Refresh';
 import AutoAwesomeOutlinedIcon from '@mui/icons-material/AutoAwesomeOutlined';
 import { useRef } from 'react';
 
-interface IProps {
+const BlogSearch = ({ category, keyword, tag_name, totalElements }: {
     category: string;
     keyword: string;
     tag_name: string;
     totalElements: number;
-}
-const BlogSearch = (props: IProps) => {
-    const { category, keyword, tag_name, totalElements } = props;
-
+}) => {
     const router = useRouter();
     const pathname = usePathname();
     const searchParams = useSearchParams();

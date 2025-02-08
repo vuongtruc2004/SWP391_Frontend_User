@@ -1,7 +1,10 @@
 'use client'
 import { calculateReadingTime, formatCreateDate } from "@/helper/blog.helper";
 import { storageUrl } from "@/utils/url";
-import { Avatar, Box, Button, Divider } from "@mui/material";
+import Avatar from "@mui/material/Avatar";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Divider from "@mui/material/Divider";
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import LocalLibraryOutlinedIcon from '@mui/icons-material/LocalLibraryOutlined';
 import ReplyAllOutlinedIcon from '@mui/icons-material/ReplyAllOutlined';
@@ -10,14 +13,9 @@ import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
-interface IProps {
-    blog: BlogResponse;
-}
-const BlogDetails = (props: IProps) => {
-    const { blog } = props;
+const BlogDetails = ({ blog }: { blog: BlogResponse }) => {
     const router = useRouter();
-    const avatarSrc = blog?.user.accountType === "CREDENTIALS" ?
-        `${storageUrl}/avatar/${blog.user.avatar}` : blog?.user.avatar;
+    const avatarSrc = blog?.user.avatar.startsWith("http") ? blog?.user.avatar : `${storageUrl}/avatar/${blog?.user.avatar}`;
 
     return (
         <Box sx={{
@@ -49,7 +47,7 @@ const BlogDetails = (props: IProps) => {
                 marginBlock: '10px 28px'
             }}>
                 <section>
-                    <Avatar src={avatarSrc} sx={{ width: '24px', height: '24px' }}>
+                    <Avatar src={avatarSrc} sx={{ width: '24px', height: '24px' }} alt="avatar">
                         {blog.user.fullname?.charAt(0).toUpperCase() || "N"}
                     </Avatar>
                     <p>Đăng bởi <Link href={"/"} className="text-[#e9ecef] font-bold hover:underline">{blog.user.fullname}</Link></p>

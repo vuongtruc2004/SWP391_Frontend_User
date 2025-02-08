@@ -1,15 +1,10 @@
 'use client'
-import { Box } from '@mui/material';
+import Box from "@mui/material/Box";
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import { SwiperRef } from 'swiper/react';
 
-interface IProps {
-    swiperRef: React.RefObject<SwiperRef | null>;
-}
-const SliderNavigation = (props: IProps) => {
-    const { swiperRef } = props;
-
+const SliderNavigation = ({ swiperRef }: { swiperRef: React.RefObject<SwiperRef | null> }) => {
     return (
         <Box sx={{
             display: 'flex',

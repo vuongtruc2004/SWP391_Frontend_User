@@ -1,16 +1,15 @@
 import { formatCreateDate } from "@/helper/blog.helper";
 import { storageUrl } from "@/utils/url";
-import { Box, Button } from "@mui/material"
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import Image from "next/image";
 import Link from "next/link";
 
-interface IProps {
+const BlogSuggest = ({ blogList, currentId }: {
     blogList: BlogResponse[];
     currentId: number;
-}
-const BlogSuggest = (props: IProps) => {
-    const { blogList, currentId } = props;
+}) => {
     const suggestList: BlogResponse[] = blogList.filter(blog => blog.blogId !== currentId);
     const hashtags: HashtagResponse[] = blogList.find(blog => blog.blogId === currentId)?.hashtags || [];
 

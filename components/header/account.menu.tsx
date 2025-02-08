@@ -7,23 +7,19 @@ import AutoStoriesIcon from '@mui/icons-material/AutoStories';
 import Divider from '@mui/material/Divider';
 import Settings from '@mui/icons-material/Settings';
 import Logout from '@mui/icons-material/Logout';
-import { Button } from '@mui/material';
+import Button from "@mui/material/Button";
 import PersonIcon from '@mui/icons-material/Person';
 import { signOut, useSession } from 'next-auth/react';
 import { apiUrl, storageUrl } from '@/utils/url';
 import { sendRequest } from '@/utils/fetch.api';
-import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
-interface IProps {
+export default function AccountMenu({ anchorEl, setAnchorEl }: {
     anchorEl: HTMLElement | null;
     setAnchorEl: React.Dispatch<React.SetStateAction<HTMLElement | null>>;
-}
-export default function AccountMenu(props: IProps) {
-    const { anchorEl, setAnchorEl } = props;
+}) {
     const { data: session } = useSession();
     const open = Boolean(anchorEl);
-    const router = useRouter();
-
     const avatarSrc = session?.user.avatar.startsWith("http") ? session?.user.avatar : `${storageUrl}/avatar/${session?.user.avatar}`
 
     const handleClose = () => {
@@ -38,11 +34,6 @@ export default function AccountMenu(props: IProps) {
             }
         })
         signOut();
-    }
-
-    const handleNavigating = (link: string) => {
-        handleClose();
-        router.push(link);
     }
 
     return (
@@ -94,13 +85,13 @@ export default function AccountMenu(props: IProps) {
                 },
                 '.mui-1toxriw-MuiList-root-MuiMenu-list': {
                     padding: '10px'
-                }
+                },
             }}
             transformOrigin={{ horizontal: 'right', vertical: 'top' }}
             anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
         >
             <div className='flex items-center justify-between py-1.5 px-4 gap-x-5'>
-                <Avatar src={session ? avatarSrc : ""}>
+                <Avatar src={session ? avatarSrc : ""} alt='avatar'>
                     {session?.user.fullname?.charAt(0).toUpperCase()}
                 </Avatar>
                 <div className='min-w-44'>
@@ -108,25 +99,63 @@ export default function AccountMenu(props: IProps) {
                     <p className='text-sm text-gray-400'>UID: <strong className='text-blue-500'>{session?.user.userId}</strong></p>
                 </div>
             </div>
+
             <Divider sx={{ marginBlock: '10px' }} />
-            <MenuItem onClick={() => handleNavigating("/user/profile")}>
-                <ListItemIcon>
-                    <PersonIcon fontSize="small" />
-                </ListItemIcon>
-                Tài khoản của tôi
+
+            <MenuItem sx={{
+                padding: 0,
+                marginBottom: '2px',
+                'a': {
+                    display: 'flex',
+                    alignItems: 'center',
+                    width: '100%',
+                    padding: '6px 16px',
+                }
+            }}>
+                <Link href={"/user/profile"}>
+                    <ListItemIcon>
+                        <PersonIcon fontSize="small" />
+                    </ListItemIcon>
+                    <p>Tài khoản của tôi</p>
+                </Link>
             </MenuItem>
-            <MenuItem onClick={() => handleNavigating("/user/my-course")}>
-                <ListItemIcon>
-                    <AutoStoriesIcon fontSize="small" />
-                </ListItemIcon>
-                Khóa học của tôi
+
+            <MenuItem sx={{
+                padding: 0,
+                marginBottom: '2px',
+                'a': {
+                    display: 'flex',
+                    alignItems: 'center',
+                    width: '100%',
+                    padding: '6px 16px',
+                }
+            }}>
+                <Link href={"/user/my-course"}>
+                    <ListItemIcon>
+                        <AutoStoriesIcon fontSize="small" />
+                    </ListItemIcon>
+                    <p>Khóa học của tôi</p>
+                </Link>
             </MenuItem>
-            <MenuItem onClick={() => handleNavigating("/user/settings")}>
-                <ListItemIcon>
-                    <Settings fontSize="small" />
-                </ListItemIcon>
-                Cài đặt
+
+            <MenuItem sx={{
+                padding: 0,
+                marginBottom: '2px',
+                'a': {
+                    display: 'flex',
+                    alignItems: 'center',
+                    width: '100%',
+                    padding: '6px 16px',
+                }
+            }}>
+                <Link href={"/user/settings"}>
+                    <ListItemIcon>
+                        <Settings fontSize="small" />
+                    </ListItemIcon>
+                    <p>Cài đặt</p>
+                </Link>
             </MenuItem>
+
             <Divider sx={{ marginBlock: '10px' }} />
             <Button variant='contained' color='error' startIcon={<Logout />} size='small' fullWidth sx={{ textTransform: 'capitalize' }} onClick={handleLogout}>Đăng xuất</Button>
         </Menu>

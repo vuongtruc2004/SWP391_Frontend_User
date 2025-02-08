@@ -1,5 +1,6 @@
 'use client'
-import { Button, Divider } from '@mui/material'
+import Button from "@mui/material/Button";
+import Divider from "@mui/material/Divider";
 import { useEffect } from 'react'
 
 export default function Error({

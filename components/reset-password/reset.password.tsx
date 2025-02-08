@@ -1,6 +1,9 @@
 'use client'
 import EmailForm from "@/features/reset-password-step/email.form";
-import { Box, Button, IconButton, Tooltip } from "@mui/material";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import IconButton from "@mui/material/IconButton";
+import Tooltip from "@mui/material/Tooltip";
 import { motion } from 'framer-motion';
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import PersonAddOutlinedIcon from '@mui/icons-material/PersonAddOutlined';

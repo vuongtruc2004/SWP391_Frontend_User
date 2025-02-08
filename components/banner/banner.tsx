@@ -1,4 +1,5 @@
-import { Box, Button, Typography } from '@mui/material';
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
 import Link from 'next/link';
 
 const Banner = () => {
@@ -20,7 +21,7 @@ const Banner = () => {
                 transform: 'translateY(-45%)',
                 zIndex: 2
             }}>
-                <Typography sx={{
+                <h1 style={{
                     fontSize: '56px',
                     lineHeight: '0.98em',
                     fontWeight: 'bold'
@@ -28,7 +29,7 @@ const Banner = () => {
                     HỌC. THỰC HÀNH.
                     <br />
                     THÀNH CÔNG.
-                </Typography>
+                </h1>
                 <p className="mb-6 mt-3 w-[525px] text-[#adb5bd] font-semibold">
                     Học lập trình dễ dàng với các khóa học chất lượng, lộ trình rõ ràng, bài bản cùng với các dự án thực tế.
                     Học mọi lúc, mọi nơi, nâng cao kỹ năng ngay hôm nay!

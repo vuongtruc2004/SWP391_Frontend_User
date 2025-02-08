@@ -1,15 +1,10 @@
-import { Box } from '@mui/material'
+import Box from "@mui/material/Box";
 import SingleSubjectList from './single.subject.list';
 
-interface IProps {
-    subjectList: SubjectResponse[];
-}
-const SubjectList = (props: IProps) => {
-    const { subjectList } = props;
-
+const SubjectList = ({ subjectList }: { subjectList: SubjectResponse[] }) => {
     return (
         <>
-            <h3 className='text-center font-bold uppercase text-2xl text-white mt-10'>Danh mục phổ biến</h3>
+            <h1 className='text-center font-bold uppercase text-2xl text-white mt-10'>Danh mục phổ biến</h1>
             <Box sx={{
                 display: 'grid',
                 gridTemplateColumns: 'repeat(3, 1fr)',

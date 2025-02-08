@@ -1,5 +1,11 @@
 'use client'
-import { Box, Button, MenuItem, Select, TextField } from "@mui/material";
+import Alert from "@mui/material/Alert";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import MenuItem from "@mui/material/MenuItem";
+import Select from "@mui/material/Select";
+import Snackbar from "@mui/material/Snackbar";
+import TextField from "@mui/material/TextField";
 import dayjs from 'dayjs';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -12,10 +18,9 @@ import { sendRequest } from "@/utils/fetch.api";
 import { apiUrl } from "@/utils/url";
 import { useSession } from "next-auth/react";
 
-const ProfileForm = (props: {
+const ProfileForm = ({ user }: {
     user: UserResponse;
 }) => {
-    const { user } = props;
     const { data: session, update } = useSession();
 
     const [gender, setGender] = useState(user.gender ? user.gender : "none");
@@ -23,6 +28,7 @@ const ProfileForm = (props: {
     const [dob, setDob] = useState(user.dob ? dayjs(user.dob) : null);
     const [fullNameError, setFullnameError] = useState("");
     const [dobError, setDobError] = useState("");
+    const [open, setOpen] = useState(false);
 
     const router = useRouter();
 
@@ -100,132 +106,154 @@ const ProfileForm = (props: {
                         gender: updatedUser.gender,
                     }
                 });
+                setOpen(true);
             }
             router.refresh();
         }
     };
 
     return (
-        <form onSubmit={handleSubmitForm}>
-            <Box sx={{
-                width: '100%',
-                display: 'grid',
-                alignItems: 'center',
-                gap: '20px',
-                gridTemplateColumns: '20% 1fr',
-                marginBottom: '12px'
-            }}>
-                <div>
-                    <label className="mb-[10px] block text-white"><span className="text-red-500 mr-1">*</span>UID:</label>
-                    <TextField
-                        variant="outlined"
-                        size='small'
-                        name='userId'
-                        defaultValue={user.userId}
-                        fullWidth
-                        disabled
-                    />
-                </div>
-                <div>
-                    <label className="mb-[10px] block text-white"><span className="text-red-500 mr-1">*</span>Email:</label>
-                    <TextField
-                        variant="outlined"
-                        size='small'
-                        name='email'
-                        defaultValue={user.email}
-                        fullWidth
-                        disabled
-                    />
-                </div>
-            </Box>
-
-            <div className="mb-3">
-                <label className="mb-[10px] block text-white"><span className="text-red-500 mr-1">*</span>Họ và tên:</label>
-                <TextField
-                    variant="outlined"
-                    size='small'
-                    placeholder='Nhập họ và tên'
-                    value={fullname}
-                    onChange={(e) => setFullname(e.target.value)}
-                    name='fullname'
-                    fullWidth
-                    error={fullNameError !== ""}
-                    helperText={fullNameError !== "" && (
-                        <span className="flex items-center gap-x-1">
-                            <ErrorOutlineRoundedIcon sx={{ fontSize: '16px' }} />
-                            {fullNameError}
-                        </span>
-                    )}
-                />
-            </div>
-
-            <Box sx={{
-                display: 'grid',
-                gridTemplateColumns: '50% 1fr',
-                columnGap: '20px',
-                alignItems: 'start',
-                '.mui-mjgnrh-MuiInputBase-root-MuiOutlinedInput-root': {
-                    height: '40px'
-                },
-                '.mui-1b1fjlj-MuiFormControl-root-MuiTextField-root': {
-                    width: '100%'
-                },
-                marginBottom: '12px'
-            }}>
-                <div>
-                    <label className="mb-[10px] block text-white">Ngày sinh:</label>
-                    <LocalizationProvider dateAdapter={AdapterDayjs}>
-                        <DatePicker
-                            value={dob}
-                            onChange={(newValue) => setDob(newValue)}
-                            format="DD/MM/YYYY"
-                            slotProps={{
-                                textField: {
-                                    error: dobError !== "",
-                                    helperText: dobError !== "" && (
-                                        <span className="flex items-center gap-x-1">
-                                            <ErrorOutlineRoundedIcon sx={{ fontSize: '16px' }} />
-                                            {dobError}
-                                        </span>
-                                    ),
-                                },
-                            }}
-                        />
-                    </LocalizationProvider>
-                </div>
-
-                <div>
-                    <label className="mb-[10px] block text-white">Giới tính:</label>
-                    <Select
-                        value={gender}
-                        onChange={(e) => setGender(e.target.value)}
-                        size="small"
-                        name="gender"
-                        fullWidth
-                    >
-                        <MenuItem value={"none"}>Chưa thiết lập</MenuItem>
-                        <MenuItem value={"MALE"}>Nam</MenuItem>
-                        <MenuItem value={"FEMALE"}>Nữ</MenuItem>
-                    </Select>
-                </div>
-            </Box>
-
-            <div className="flex items-center gap-x-5">
-                <Button variant="outlined" color="secondary" sx={{ textTransform: 'none' }} onClick={handleResetForm}>
-                    Hủy bỏ thay đổi
-                </Button>
-
-                <Button type="submit" variant="contained" startIcon={<AutorenewIcon />} sx={{
-                    textTransform: 'none',
-                    bgcolor: '#4ade80',
-                    '&:hover': {
-                        bgcolor: '#00c951'
-                    }
+        <>
+            <form onSubmit={handleSubmitForm}>
+                <Box sx={{
+                    width: '100%',
+                    display: 'grid',
+                    alignItems: 'center',
+                    gap: '20px',
+                    gridTemplateColumns: '20% 1fr',
+                    marginBottom: '12px'
                 }}>
-                    Cập nhật thông tin
-                </Button>
-            </div>
-        </form>
+                    <div>
+                        <label className="mb-[10px] block text-white"><span className="text-red-500 mr-1">*</span>UID:</label>
+                        <TextField
+                            variant="outlined"
+                            size='small'
+                            name='userId'
+                            defaultValue={user.userId}
+                            fullWidth
+                            disabled
+                        />
+                    </div>
+                    <div>
+                        <label className="mb-[10px] block text-white"><span className="text-red-500 mr-1">*</span>Email:</label>
+                        <TextField
+                            variant="outlined"
+                            size='small'
+                            name='email'
+                            defaultValue={user.email}
+                            fullWidth
+                            disabled
+                        />
+                    </div>
+                </Box>
+
+                <div className="mb-3">
+                    <label className="mb-[10px] block text-white"><span className="text-red-500 mr-1">*</span>Họ và tên:</label>
+                    <TextField
+                        variant="outlined"
+                        size='small'
+                        placeholder='Nhập họ và tên'
+                        value={fullname}
+                        onChange={(e) => setFullname(e.target.value)}
+                        name='fullname'
+                        fullWidth
+                        error={fullNameError !== ""}
+                        helperText={fullNameError !== "" && (
+                            <span className="flex items-center gap-x-1">
+                                <ErrorOutlineRoundedIcon sx={{ fontSize: '16px' }} />
+                                {fullNameError}
+                            </span>
+                        )}
+                    />
+                </div>
+
+                <Box sx={{
+                    display: 'grid',
+                    gridTemplateColumns: '50% 1fr',
+                    columnGap: '20px',
+                    alignItems: 'start',
+                    '.mui-mjgnrh-MuiInputBase-root-MuiOutlinedInput-root': {
+                        height: '40px'
+                    },
+                    '.mui-1b1fjlj-MuiFormControl-root-MuiTextField-root': {
+                        width: '100%'
+                    },
+                    marginBottom: '12px'
+                }}>
+                    <div>
+                        <label className="mb-[10px] block text-white">Ngày sinh:</label>
+                        <LocalizationProvider dateAdapter={AdapterDayjs}>
+                            <DatePicker
+                                value={dob}
+                                onChange={(newValue) => setDob(newValue)}
+                                format="DD/MM/YYYY"
+                                slotProps={{
+                                    textField: {
+                                        error: dobError !== "",
+                                        helperText: dobError !== "" && (
+                                            <span className="flex items-center gap-x-1">
+                                                <ErrorOutlineRoundedIcon sx={{ fontSize: '16px' }} />
+                                                {dobError}
+                                            </span>
+                                        ),
+                                    },
+                                }}
+                            />
+                        </LocalizationProvider>
+                    </div>
+
+                    <div>
+                        <label className="mb-[10px] block text-white">Giới tính:</label>
+                        <Select
+                            value={gender}
+                            onChange={(e) => setGender(e.target.value)}
+                            size="small"
+                            name="gender"
+                            fullWidth
+                        >
+                            <MenuItem value={"none"}>Chưa thiết lập</MenuItem>
+                            <MenuItem value={"MALE"}>Nam</MenuItem>
+                            <MenuItem value={"FEMALE"}>Nữ</MenuItem>
+                        </Select>
+                    </div>
+                </Box>
+
+                <div className="flex items-center gap-x-5">
+                    <Button variant="outlined" color="secondary" sx={{ textTransform: 'none' }} onClick={handleResetForm}>
+                        Hủy bỏ thay đổi
+                    </Button>
+
+                    <Button type="submit" variant="contained" startIcon={<AutorenewIcon />} sx={{
+                        textTransform: 'none',
+                        bgcolor: '#4ade80',
+                        '&:hover': {
+                            bgcolor: '#00c951'
+                        }
+                    }}>
+                        Cập nhật thông tin
+                    </Button>
+                </div>
+            </form>
+
+            <Snackbar
+                open={open}
+                autoHideDuration={3000}
+                onClose={() => setOpen(false)}
+                anchorOrigin={{
+                    vertical: 'top',
+                    horizontal: 'center'
+                }}
+            >
+                <Alert
+                    severity="success"
+                    onClose={() => setOpen(false)}
+                    sx={{ width: '100%', color: 'white' }}
+                    variant="filled"
+                >
+                    Cập nhật thành công!
+                </Alert>
+            </Snackbar>
+        </>
     )
 }
 

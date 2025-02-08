@@ -1,16 +1,20 @@
 'use client'
 import { useCourseListContext } from "@/wrapper/course-list/course.list.wrapper";
-import { Box, Button, MenuItem, Select, SelectChangeEvent, Tooltip } from "@mui/material";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import MenuItem from "@mui/material/MenuItem";
+import Select from "@mui/material/Select";
+import { SelectChangeEvent } from "@mui/material/Select";
+import Tooltip from "@mui/material/Tooltip";
 import Image from "next/image";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 
-const CourseSort = (props: {
+const CourseSort = ({ totalElements, courseSort, direction }: {
     totalElements: number,
     courseSort: string;
     direction: string;
 }) => {
-    const { totalElements, courseSort, direction } = props;
     const { orderBy, setOrderby } = useCourseListContext();
     const router = useRouter();
     const pathname = usePathname();
@@ -85,7 +89,7 @@ const CourseSort = (props: {
                             className={`${direction === "asc" ? "active" : ""}`}
                         >
                             <Image
-                                src={`/asc.png`}
+                                src={`/asc.webp`}
                                 alt={"ascending icon"}
                                 width={0}
                                 height={0}
@@ -110,7 +114,7 @@ const CourseSort = (props: {
                             className={`${direction === "desc" ? "active" : ""}`}
                         >
                             <Image
-                                src={`/desc.png`}
+                                src={`/desc.webp`}
                                 alt={"descending icon"}
                                 width={0}
                                 height={0}

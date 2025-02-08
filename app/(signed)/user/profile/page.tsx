@@ -3,7 +3,8 @@ import ProfileAvatar from "@/features/profile-form/profile.avatar";
 import ProfileForm from "@/features/profile-form/profile.form";
 import { sendRequest } from "@/utils/fetch.api";
 import { apiUrl } from "@/utils/url";
-import { Box, Divider } from "@mui/material";
+import Box from "@mui/material/Box";
+import Divider from "@mui/material/Divider";
 import { Metadata } from "next";
 import { getServerSession } from "next-auth";
 

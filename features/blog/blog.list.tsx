@@ -1,14 +1,11 @@
 'use client'
-import { Box, Pagination } from "@mui/material"
+import Box from "@mui/material/Box";
+import Pagination from "@mui/material/Pagination";
 import SingleBlogList from "../../components/blog/single.blog"
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import BlogListEmpty from "../../components/blog/blog.list.empty";
 
-interface IProps {
-    page: PageDetailsResponse<BlogResponse[]>;
-}
-const BlogList = (props: IProps) => {
-    const { page } = props;
+const BlogList = ({ page }: { page: PageDetailsResponse<BlogResponse[]> }) => {
     const searchParams = useSearchParams();
     const router = useRouter();
     const pathname = usePathname();

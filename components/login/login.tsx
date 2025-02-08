@@ -1,5 +1,7 @@
 'use client'
-import { Box, IconButton, Tooltip } from '@mui/material';
+import Box from "@mui/material/Box";
+import IconButton from "@mui/material/IconButton";
+import Tooltip from "@mui/material/Tooltip";
 import FirstPageOutlinedIcon from '@mui/icons-material/FirstPageOutlined';
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import { useRouter } from 'next/navigation';

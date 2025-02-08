@@ -1,15 +1,11 @@
 'use client'
 import { storageUrl } from "@/utils/url";
-import { Box } from "@mui/material";
+import Box from "@mui/material/Box";
 import { keyframes } from '@emotion/react';
 import Image from "next/image";
 import Link from "next/link";
 
-interface IProps {
-    subjectList: SubjectResponse[];
-}
-const SubjectSlider = (props: IProps) => {
-    const { subjectList } = props;
+const SubjectSlider = ({ subjectList }: { subjectList: SubjectResponse[] }) => {
     const itemWidth = 200;
     const itemHeight = 80;
     const animationTime = 65;
@@ -66,7 +62,7 @@ const SubjectSlider = (props: IProps) => {
                         >
                             <Image
                                 src={`${storageUrl}/subject/${item.thumbnail}`}
-                                alt={item.subjectName}
+                                alt={item.subjectName + " logo"}
                                 width={0}
                                 height={0}
                                 sizes="(max-width: 1000px) 100vw"

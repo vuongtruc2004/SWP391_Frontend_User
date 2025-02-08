@@ -1,5 +1,5 @@
 import CourseListWrapper from "@/wrapper/course-list/course.list.wrapper";
-import { Box } from "@mui/material";
+import Box from "@mui/material/Box";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {

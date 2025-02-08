@@ -1,5 +1,9 @@
 'use client'
-import { Box, Button, IconButton, TextField, Tooltip } from "@mui/material";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import IconButton from "@mui/material/IconButton";
+import TextField from "@mui/material/TextField";
+import Tooltip from "@mui/material/Tooltip";
 import ThumbUpOutlinedIcon from '@mui/icons-material/ThumbUpOutlined';
 import ChatBubbleOutlineOutlinedIcon from '@mui/icons-material/ChatBubbleOutlineOutlined';
 import { useActionState, useRef } from "react";
@@ -8,15 +12,11 @@ import { useSession } from "next-auth/react";
 import { comment, CommentFieldResponse } from "./blog.interact.action";
 import ErrorOutlineRoundedIcon from '@mui/icons-material/ErrorOutlineRounded';
 
-interface IProps {
-    blog: BlogResponse;
-}
 const initState: CommentFieldResponse | null = null;
-const InteractOnBlog = (props: IProps) => {
-    const { blog } = props;
+const InteractOnBlog = ({ blog }: { blog: BlogResponse }) => {
     const { data: session } = useSession();
     const router = useRouter();
-    const inputRef = useRef<HTMLInputElement | null>(null);
+    const inputRef = useRef<HTMLInputElement>(null);
 
     const [state, formAction, pending] = useActionState(comment, initState);
 

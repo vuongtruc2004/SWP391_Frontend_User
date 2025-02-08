@@ -4,7 +4,7 @@ import CourseSort from "@/features/course/course.sort";
 import { getCourseSort, getInputPrice } from "@/helper/course.helper";
 import { sendRequest } from "@/utils/fetch.api";
 import { apiUrl } from "@/utils/url";
-import { Box } from "@mui/material";
+import Box from "@mui/material/Box";
 
 const CoursePage = async (props: {
     searchParams: Promise<{

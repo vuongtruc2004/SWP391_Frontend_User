@@ -1,4 +1,5 @@
 import Header from "@/components/header/header"
+import MessengerIcon from "@/components/messenger-icon/messenger.icon"
 
 const SignedLayout = ({ children, modal }: { children: React.ReactNode, modal: React.ReactNode }) => {
     return (
@@ -6,6 +7,7 @@ const SignedLayout = ({ children, modal }: { children: React.ReactNode, modal: R
             <Header />
             {children}
             {modal}
+            <MessengerIcon />
         </div>
     )
 }

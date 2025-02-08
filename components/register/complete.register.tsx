@@ -1,5 +1,5 @@
 import CheckIcon from '@mui/icons-material/Check';
-import { Button } from '@mui/material';
+import Button from "@mui/material/Button";
 import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
 import Link from 'next/link';
 

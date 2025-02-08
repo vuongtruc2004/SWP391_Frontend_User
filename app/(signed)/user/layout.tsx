@@ -1,5 +1,5 @@
 import UserSidebar from "@/components/user/user.sidebar"
-import { Box } from "@mui/material"
+import Box from "@mui/material/Box";
 
 const UserLayout = ({ children }: { children: React.ReactNode }) => {
     return (

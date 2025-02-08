@@ -1,17 +1,17 @@
 'use client'
-import { Avatar, Box, Button } from "@mui/material";
+import Avatar from "@mui/material/Avatar";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
 import EditIcon from '@mui/icons-material/Edit';
-import { VisuallyHiddenInput } from "./style";
 import { ChangeEvent, useRef } from "react";
 import { sendRequest } from "@/utils/fetch.api";
 import { apiUrl, storageUrl } from "@/utils/url";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 
-const ProfileAvatar = (props: {
+const ProfileAvatar = ({ avatar }: {
     avatar: string;
 }) => {
-    const { avatar } = props;
     const { data: session, update } = useSession();
     const avatarSrc = avatar.startsWith("http") ? avatar : `${storageUrl}/avatar/${avatar}`
 
@@ -51,16 +51,20 @@ const ProfileAvatar = (props: {
         }}>
             <h1>Ảnh đại diện</h1>
             <div className="relative w-max">
-                <Avatar sx={{
-                    width: '200px',
-                    height: 'auto',
-                    aspectRatio: 1,
-                    marginTop: '20px',
-                    fontSize: '3rem',
-                }}
-                    src={session ? avatarSrc : ""}>
-                    N
+                <Avatar
+                    sx={{
+                        width: '200px',
+                        height: 'auto',
+                        aspectRatio: 1,
+                        marginTop: '20px',
+                        fontSize: '3rem',
+                    }}
+                    src={session ? avatarSrc : ""}
+                    alt="avatar"
+                >
+                    {session?.user.fullname.charAt(0).toUpperCase() || 'N'}
                 </Avatar>
+
                 <Button startIcon={<EditIcon />} variant="contained" onClick={() => {
                     if (inputRef.current) {
                         inputRef.current.click();
@@ -72,10 +76,21 @@ const ProfileAvatar = (props: {
                 }}>
                     Chỉnh sửa
                 </Button>
-                <VisuallyHiddenInput
+
+                <input
                     type="file"
                     onChange={handleUploadFile}
                     ref={inputRef}
+                    style={{
+                        position: 'absolute',
+                        bottom: 0,
+                        left: 0,
+                        whiteSpace: 'nowrap',
+                        width: '100%',
+                        height: '100%',
+                        opacity: 0,
+                        cursor: 'pointer'
+                    }}
                 />
             </div>
         </Box >

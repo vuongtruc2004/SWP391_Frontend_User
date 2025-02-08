@@ -2,17 +2,16 @@ import React, { SetStateAction, useEffect, useState } from 'react';
 import DraftsOutlinedIcon from '@mui/icons-material/DraftsOutlined';
 import ErrorOutlineRoundedIcon from '@mui/icons-material/ErrorOutlineRounded';
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
-import { Button } from "@mui/material";
+import Button from "@mui/material/Button";
 import { MuiOtpInput } from 'mui-one-time-password-input';
 import { sendRequest } from '@/utils/fetch.api';
 import { apiUrl } from '@/utils/url';
 
-const OtpForm = (props: {
+const OtpForm = ({ setStep, setCode, email }: {
     setStep: React.Dispatch<SetStateAction<number>>,
     setCode: React.Dispatch<SetStateAction<string>>,
     email: string
 }) => {
-    const { setStep, setCode, email } = props;
     const [otp, setOtp] = useState<string>('');
     const [errorMessage, setErrorMessage] = useState<string>("");
     const [countdown, setCountdown] = useState<number>(0);

@@ -1,4 +1,9 @@
-import { Box, Button, Divider, IconButton, InputAdornment, TextField } from '@mui/material';
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Divider from "@mui/material/Divider";
+import IconButton from "@mui/material/IconButton";
+import InputAdornment from "@mui/material/InputAdornment";
+import TextField from "@mui/material/TextField";
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import GitHubIcon from '@mui/icons-material/GitHub';
@@ -9,16 +14,15 @@ import { BuiltInProviderType } from 'next-auth/providers/index';
 import ErrorOutlineRoundedIcon from '@mui/icons-material/ErrorOutlineRounded';
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import { RegisterFieldResponse, validateRegisterForm } from './action';
+import Image from "next/image";
 
-const RegisterForm = (props: {
+const RegisterForm = ({ setIsBackToStepOne, isBackToStepOne, setStep, registerField, setRegisterField }: {
     setIsBackToStepOne: React.Dispatch<SetStateAction<boolean>>;
     isBackToStepOne: boolean;
     setStep: React.Dispatch<SetStateAction<number>>;
     registerField: RegisterFieldResponse | null;
     setRegisterField: React.Dispatch<SetStateAction<RegisterFieldResponse | null>>;
 }) => {
-    const { setIsBackToStepOne, isBackToStepOne, setStep, registerField, setRegisterField } = props;
-
     const [showPassword, setShowPassword] = useState(false);
     const [showRePassword, setShowRePassword] = useState(false);
     const prevUrl = typeof window !== "undefined" ? sessionStorage.getItem("prevUrl") || "/home" : "/home";
@@ -181,11 +185,6 @@ const RegisterForm = (props: {
                     justifyContent: 'center',
                     columnGap: '10px',
                     'button': {
-                        'img': {
-                            width: '24px',
-                            aspectRatio: 1,
-                            objectFit: 'cover'
-                        },
                         padding: '8px 25px',
                         display: 'flex',
                         justifyContent: 'center',
@@ -195,7 +194,7 @@ const RegisterForm = (props: {
                 }}
             >
                 <Button variant='outlined' fullWidth size='small' onClick={() => socialsLogin('google')}>
-                    <img src={"http://localhost:3000/google-icon.png"} alt="" />
+                    <Image src={"/google-icon.webp"} alt="google icon" width={23} height={23} style={{ objectFit: 'cover', objectPosition: 'center' }} />
                     <p>Google</p>
                 </Button>
                 <Button variant='outlined' fullWidth size='small' onClick={() => socialsLogin('github')}>

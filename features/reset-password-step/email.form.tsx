@@ -1,12 +1,15 @@
-import { Button, TextField } from "@mui/material";
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
 import LockResetOutlinedIcon from '@mui/icons-material/LockResetOutlined';
 import ErrorOutlineRoundedIcon from '@mui/icons-material/ErrorOutlineRounded';
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import { SetStateAction, useActionState, useEffect } from "react";
 import { sendEmail } from "./action";
 
-const EmailForm = (props: { setStep: React.Dispatch<SetStateAction<number>>, setEmail: React.Dispatch<SetStateAction<string>> }) => {
-    const { setStep, setEmail } = props;
+const EmailForm = ({ setStep, setEmail }: {
+    setStep: React.Dispatch<SetStateAction<number>>,
+    setEmail: React.Dispatch<SetStateAction<string>>
+}) => {
     const [state, formAction, pending] = useActionState(sendEmail, null);
 
     useEffect(() => {

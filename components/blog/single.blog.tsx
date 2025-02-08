@@ -1,13 +1,13 @@
 import { calculateReadingTime, formatCreateDate } from "@/helper/blog.helper";
 import { storageUrl } from "@/utils/url";
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import { Box, Button, Divider } from "@mui/material"
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Divider from "@mui/material/Divider";
 import Image from "next/image";
 import Link from "next/link";
 
-const SingleBlogList = (props: { blog: BlogResponse }) => {
-    const { blog } = props;
-
+const SingleBlogList = ({ blog }: { blog: BlogResponse }) => {
     return (
         <Box sx={{
             bgcolor: 'black',
@@ -30,7 +30,7 @@ const SingleBlogList = (props: { blog: BlogResponse }) => {
                 color: 'white',
                 padding: '20px'
             }}>
-                <Link href={`/blog/${blog.blogId}`} className="block font-semibold hover:underline" style={{
+                <Link href={`/blog/${blog.blogId}`} className="block transition-all duration-200 font-semibold hover:underline hover:text-blue-500" style={{
                     overflow: "hidden",
                     textOverflow: "ellipsis",
                     display: "-webkit-box",

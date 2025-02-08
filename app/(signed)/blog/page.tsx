@@ -1,10 +1,9 @@
 import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 import BlogList from '@/features/blog/blog.list';
 import BlogSearch from '@/features/blog/blog.search';
-import SingleBlogList from '@/components/blog/single.blog';
 import { sendRequest } from '@/utils/fetch.api';
 import { apiUrl } from '@/utils/url';
-import { Box } from '@mui/material';
+import Box from '@mui/material/Box';
 import { Metadata } from 'next';
 import { getServerSession } from 'next-auth';
 import { redirect } from 'next/navigation';

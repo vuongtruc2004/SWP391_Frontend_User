@@ -1,9 +1,16 @@
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter';
 import "./globals.css";
-import { ToastContainer } from "react-toastify";
 import ThemeWrapper from "@/wrapper/theme/theme.wrapper";
 import ProgressBarWrapper from "@/wrapper/progress-bar/progress.bar.wrapper";
 import NextAuthWrapper from '@/wrapper/next-auth/next.auth.wrapper';
+import { Quicksand } from 'next/font/google';
+
+export const quicksand = Quicksand({
+  subsets: ['latin'],
+  weight: ['300', '400', '500', '600', '700'],
+  display: 'swap',
+  variable: '--font-quicksand'
+});
 
 export default function RootLayout({
   children,
@@ -12,7 +19,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body>
+      <body className={quicksand.className}>
 
         <AppRouterCacheProvider>
 
@@ -22,8 +29,6 @@ export default function RootLayout({
               <ProgressBarWrapper>
 
                 {children}
-
-                <ToastContainer />
 
               </ProgressBarWrapper>
             </NextAuthWrapper>

@@ -1,12 +1,12 @@
 'use client'
 import SingleCourseSlider from "@/components/course-slider/single.course.slider";
-import { Box, Pagination } from "@mui/material";
+import Box from "@mui/material/Box";
+import Pagination from "@mui/material/Pagination";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
-const CourseList = (props: {
+const CourseList = ({ coursePage }: {
     coursePage: PageDetailsResponse<CourseResponse[]>
 }) => {
-    const { coursePage } = props;
     const searchParams = useSearchParams();
     const router = useRouter();
     const pathname = usePathname();
