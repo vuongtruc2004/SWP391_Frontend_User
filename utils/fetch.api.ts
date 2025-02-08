@@ -25,7 +25,7 @@ export const sendRequest = async <T>(props: IProps) => {
         headers: {
             ...headers
         },
-        body: body ? JSON.stringify(body) : null,
+        body: body instanceof FormData ? body : body ? JSON.stringify(body) : null,
         ...nextOption
     };
 

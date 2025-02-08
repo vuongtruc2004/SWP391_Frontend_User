@@ -12,7 +12,7 @@ const SingleSubjectList = (props: IProps) => {
     const { subject } = props;
 
     return (
-        <Link href={`/course?subject=${subject.subjectId}`}>
+        <Link href={`/course?subjectIds=${subject.subjectId}`}>
             <Box sx={{
                 bgcolor: 'black',
                 color: 'white',

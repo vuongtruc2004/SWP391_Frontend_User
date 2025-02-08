@@ -48,6 +48,7 @@ export default function AccountMenu(props: IProps) {
 
     return (
         <Menu
+            aria-hidden={false}
             anchorEl={anchorEl}
             open={open}
             onClose={handleClose}
@@ -100,7 +101,7 @@ export default function AccountMenu(props: IProps) {
             anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
         >
             <div className='flex items-center justify-between py-1.5 px-4 gap-x-5'>
-                <Avatar src={avatarSrc}>
+                <Avatar src={session ? avatarSrc : ""}>
                     {session?.user.fullname?.charAt(0).toUpperCase()}
                 </Avatar>
                 <div className='min-w-44'>

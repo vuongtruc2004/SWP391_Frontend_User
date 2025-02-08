@@ -167,7 +167,7 @@ const Header = () => {
                             </IconButton></Link>
                     </Tooltip>
 
-                    <Avatar onClick={(event) => setAnchorEl(event.currentTarget)} sx={{ cursor: 'pointer' }} src={avatarSrc}>
+                    <Avatar onClick={(event) => setAnchorEl(event.currentTarget)} sx={{ cursor: 'pointer' }} src={session ? avatarSrc : ""}>
                         {session?.user.fullname?.charAt(0).toUpperCase()}
                     </Avatar>
                     <AccountMenu anchorEl={anchorEl} setAnchorEl={setAnchorEl} />

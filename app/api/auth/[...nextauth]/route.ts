@@ -27,7 +27,7 @@ export const authOptions: AuthOptions = {
                         'Content-Type': 'application/json'
                     },
                     body: request
-                })
+                });
 
                 if (credentialsLoginResponse.status === 200) {
                     const user: User = {
@@ -57,7 +57,7 @@ export const authOptions: AuthOptions = {
         signIn: '/login'
     },
     callbacks: {
-        async jwt({ token, user, account, trigger }) {
+        async jwt({ token, user, account, trigger, session }) {
             if (trigger === 'signIn') {
                 if (account?.provider !== 'credentials') {
                     const request: SocialsLoginRequest = {
@@ -93,18 +93,34 @@ export const authOptions: AuthOptions = {
                     token.expireAt = user.expireAt;
                     token.refreshToken = user.refreshToken;
                 }
+            } else if (trigger === "update") {
+                if (session) {
+                    token.user.fullname = session.user.fullname;
+                    token.user.dob = session.user.dob;
+                    token.user.gender = session.user.gender;
+                    token.user.avatar = session.user.avatar;
+                }
             }
+
             if (shouldRefreshToken(token.expireAt)) {
                 return letRefreshToken(token);
             }
             return token;
         },
-        async session({ session, token }) {
+        async session({ session, token, trigger, newSession }) {
             if (token) {
                 session.user = token.user;
                 session.accessToken = token.accessToken;
                 session.expireAt = token.expireAt;
                 session.refreshToken = token.refreshToken;
+            }
+            if (trigger === "update") {
+                if (newSession) {
+                    session.user.fullname = newSession.user.fullname;
+                    session.user.dob = newSession.user.dob;
+                    session.user.gender = newSession.user.gender;
+                    session.user.avatar = newSession.user.avatar;
+                }
             }
             return session;
         }

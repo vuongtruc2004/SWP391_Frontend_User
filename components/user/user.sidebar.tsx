@@ -63,7 +63,8 @@ const UserSidebar = () => {
             padding: '40px 20px',
             borderRadius: '6px',
             bgcolor: 'black',
-            color: 'white'
+            color: 'white',
+            height: 'max-content'
         }}>
             <Box sx={{
                 display: 'flex',

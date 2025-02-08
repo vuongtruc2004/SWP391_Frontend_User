@@ -12,6 +12,13 @@ declare global {
         dob?: string;
     }
 
+    interface UpdateUserRequest {
+        userId: number,
+        fullname: string,
+        dob: string | null,
+        gender: string | null,
+    }
+
     interface CredentialsLoginRequest {
         email: string;
         password: string;

@@ -69,7 +69,7 @@ const BlogSearch = (props: IProps) => {
 
     return (
         <Box sx={{
-            marginBlock: '20px'
+            marginBlock: '30px',
         }}>
             <Box sx={{
                 width: '100%',
@@ -149,7 +149,7 @@ const BlogSearch = (props: IProps) => {
                                         width: '100%',
                                         height: '60px',
                                         paddingInline: '20px',
-                                        borderRadius: '15px',
+                                        borderRadius: '6px',
                                         color: 'white',
                                         bgcolor: '#17181c',
                                         cursor: 'pointer',

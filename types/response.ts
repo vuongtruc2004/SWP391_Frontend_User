@@ -11,6 +11,8 @@ declare global {
         gender: string;
         dob: string;
         accountType: string;
+        createdAt: string;
+        updatedAt: string;
     }
     interface ApiResponse<T> {
         status: number;

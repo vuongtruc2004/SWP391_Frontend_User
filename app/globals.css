@@ -17,3 +17,7 @@
   background: #60a5fa;
   border-radius: 10px;
 }
+
+:root {
+  --toastify-color-light: #242c32;
+}

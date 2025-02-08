@@ -8,6 +8,7 @@ import { Box } from '@mui/material';
 import { Metadata } from 'next';
 import { getServerSession } from 'next-auth';
 import { redirect } from 'next/navigation';
+import PinnedBlog from '@/components/blog/pinned.blog';
 
 export const metadata: Metadata = {
     title: "Bài viết",
@@ -76,7 +77,7 @@ const BlogPage = async (props: {
                 columnGap: '20px',
                 paddingTop: '120px'
             }}>
-                {pinnedBlogData.status === 200 && <SingleBlogList blog={pinnedBlogData.data} lineClamp={5} imageHeight={300} priority={true} />}
+                {pinnedBlogData.status === 200 && <PinnedBlog blog={pinnedBlogData.data} />}
             </Box>
             <BlogSearch
                 category={category}

@@ -5,7 +5,7 @@ import { apiUrl } from '@/utils/url';
 
 const HomePage = async () => {
     const subjectResponse = await sendRequest<ApiResponse<PageDetailsResponse<SubjectResponse[]>>>({
-        url: `${apiUrl}/subjects`,
+        url: `${apiUrl}/subjects/courses`,
         queryParams: {
             page: 1,
             size: 25

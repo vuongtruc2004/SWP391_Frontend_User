@@ -57,7 +57,7 @@ const SubjectSlider = (props: IProps) => {
                 {subjectList?.map((item, index) => {
                     return (
                         <Link
-                            href={"/course"}
+                            href={`/course?subjectIds=${item.subjectId}`}
                             key={index}
                             style={{
                                 animationDelay: `${animationTime / subjectList.length * (subjectList.length - index - 1) * -1}s`

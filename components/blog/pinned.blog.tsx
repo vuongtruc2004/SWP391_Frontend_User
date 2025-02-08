@@ -5,18 +5,15 @@ import { Box, Button, Divider } from "@mui/material"
 import Image from "next/image";
 import Link from "next/link";
 
-const SingleBlogList = (props: { blog: BlogResponse }) => {
+const PinnedBlog = (props: { blog: BlogResponse }) => {
     const { blog } = props;
 
     return (
-        <Box sx={{
-            bgcolor: 'black',
-            borderRadius: '6px'
-        }}>
+        <>
             <Link href={`/blog/${blog.blogId}`} style={{
                 display: 'block',
                 width: '100%',
-                height: `220px`,
+                height: `300px`,
                 position: 'relative',
             }}>
                 <Image src={`${storageUrl}/blog/${blog.thumbnail}`} alt={blog.title} fill sizes="(max-width: 1000px) 100vw" priority={true} style={{
@@ -33,17 +30,19 @@ const SingleBlogList = (props: { blog: BlogResponse }) => {
                 <Link href={`/blog/${blog.blogId}`} className="block font-semibold hover:underline" style={{
                     overflow: "hidden",
                     textOverflow: "ellipsis",
-                    display: "-webkit-box",
                     WebkitBoxOrient: "vertical",
                     WebkitLineClamp: 1,
-                }}>{blog.title}</Link>
+                }}>
+                    📌
+                    {blog.title}
+                </Link>
 
                 <div style={{
                     overflow: "hidden",
                     textOverflow: "ellipsis",
                     display: "-webkit-box",
                     WebkitBoxOrient: "vertical",
-                    WebkitLineClamp: 2,
+                    WebkitLineClamp: 5,
                     color: '#adb5bd',
                     fontSize: '14px',
                     marginBlock: '4px'
@@ -70,8 +69,8 @@ const SingleBlogList = (props: { blog: BlogResponse }) => {
                     </Button>
                 </Link>
             </Box >
-        </Box>
+        </>
     )
 }
 
-export default SingleBlogList
+export default PinnedBlog
