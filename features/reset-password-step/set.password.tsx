@@ -32,7 +32,7 @@ const SetPassword = ({ setStep, code }: { setStep: React.Dispatch<SetStateAction
             </div>
 
             <h1 className="text-2xl text-center font-semibold">Mật khẩu mới</h1>
-            <p className="text-center text-gray-300 mb-5">Lorem ipsum dolor sit amet consectetur adipisicing elit. Officia, excepturi!</p>
+            <p className="text-center text-gray-300 mb-5">Vui lòng nhập mật khẩu mới của bạn!</p>
 
             <form action={formAction}>
                 <div className="mb-5">
