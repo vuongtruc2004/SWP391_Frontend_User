@@ -24,7 +24,7 @@ const Header = () => {
     const searchParams = useSearchParams();
     const { data: session } = useSession();
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-    const avatarSrc = session?.user.avatar.startsWith("http") ? session?.user.avatar : `${storageUrl}/avatar/${session?.user.avatar}`
+    const avatarSrc = session?.user?.avatar?.startsWith("http") ? session?.user?.avatar : `${storageUrl}/avatar/${session?.user?.avatar}`
 
     const links = [
         {

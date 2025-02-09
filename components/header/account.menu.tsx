@@ -20,7 +20,7 @@ export default function AccountMenu({ anchorEl, setAnchorEl }: {
 }) {
     const { data: session } = useSession();
     const open = Boolean(anchorEl);
-    const avatarSrc = session?.user.avatar.startsWith("http") ? session?.user.avatar : `${storageUrl}/avatar/${session?.user.avatar}`
+    const avatarSrc = session?.user?.avatar?.startsWith("http") ? session?.user?.avatar : `${storageUrl}/avatar/${session?.user?.avatar}`
 
     const handleClose = () => {
         setAnchorEl(null);

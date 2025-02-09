@@ -15,7 +15,7 @@ import { useRouter } from "next/navigation";
 
 const BlogDetails = ({ blog }: { blog: BlogResponse }) => {
     const router = useRouter();
-    const avatarSrc = blog?.user.avatar.startsWith("http") ? blog?.user.avatar : `${storageUrl}/avatar/${blog?.user.avatar}`;
+    const avatarSrc = blog?.user?.avatar?.startsWith("http") ? blog?.user?.avatar : `${storageUrl}/avatar/${blog?.user?.avatar}`;
 
     return (
         <Box sx={{

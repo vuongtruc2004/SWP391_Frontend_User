@@ -30,6 +30,7 @@ const PinnedBlog = ({ blog }: { blog: BlogResponse }) => {
                 <Link href={`/blog/${blog.blogId}`} className="block transition-all duration-200 font-semibold hover:underline hover:text-blue-500" style={{
                     overflow: "hidden",
                     textOverflow: "ellipsis",
+                    display: "-webkit-box",
                     WebkitBoxOrient: "vertical",
                     WebkitLineClamp: 1,
                 }}>

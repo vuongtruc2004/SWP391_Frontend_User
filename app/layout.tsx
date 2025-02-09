@@ -3,14 +3,7 @@ import "./globals.css";
 import ThemeWrapper from "@/wrapper/theme/theme.wrapper";
 import ProgressBarWrapper from "@/wrapper/progress-bar/progress.bar.wrapper";
 import NextAuthWrapper from '@/wrapper/next-auth/next.auth.wrapper';
-import { Quicksand } from 'next/font/google';
-
-export const quicksand = Quicksand({
-  subsets: ['latin'],
-  weight: ['300', '400', '500', '600', '700'],
-  display: 'swap',
-  variable: '--font-quicksand'
-});
+import { quicksand } from '@/wrapper/theme/theme';
 
 export default function RootLayout({
   children,

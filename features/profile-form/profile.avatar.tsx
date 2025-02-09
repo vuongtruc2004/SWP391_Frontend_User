@@ -13,7 +13,7 @@ const ProfileAvatar = ({ avatar }: {
     avatar: string;
 }) => {
     const { data: session, update } = useSession();
-    const avatarSrc = avatar.startsWith("http") ? avatar : `${storageUrl}/avatar/${avatar}`
+    const avatarSrc = avatar?.startsWith("http") ? avatar : `${storageUrl}/avatar/${avatar}`
 
     const router = useRouter();
     const inputRef = useRef<HTMLInputElement>(null);

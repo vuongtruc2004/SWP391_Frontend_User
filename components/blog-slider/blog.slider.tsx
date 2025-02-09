@@ -18,32 +18,8 @@ const BlogSlider = ({ blogList }: { blogList: BlogResponse[]; }) => {
                 marginTop: '40px',
                 '.swiper': { width: '95%', maxWidth: '1200px', paddingTop: '40px', paddingBottom: '50px' },
                 '.swiper-slide': {
-                    backgroundPosition: 'center',
-                    backgroundSize: 'cover',
-                    height: '350px',
-                    opacity: 0.5,
-                    transition: 'all .3s',
-                },
-                '.swiper-slide-active': {
-                    position: 'relative',
-                    opacity: 1,
-                    '&::after, &::before': {
-                        content: "''",
-                        position: 'absolute',
-                        bgcolor: 'white',
-                        width: '50px',
-                        aspectRatio: 1,
-                        zIndex: -1,
-                        borderRadius: '6px'
-                    },
-                    '&::after': {
-                        top: '-1px',
-                        right: '-1px',
-                    },
-                    '&::before': {
-                        left: '-1px',
-                        bottom: '-1px'
-                    }
+                    width: 'max-content',
+                    borderRadius: '6px'
                 },
                 '.swiper-pagination-bullet': { width: '18px', height: '6px', borderRadius: '20px', transition: 'all .3s', background: '#adb5bd' },
                 '.swiper-pagination-bullet-active': { width: '25px', background: '#60a5fa' },
@@ -61,7 +37,7 @@ const BlogSlider = ({ blogList }: { blogList: BlogResponse[]; }) => {
                 effect={'coverflow'}
                 grabCursor={true}
                 centeredSlides={true}
-                slidesPerView={3}
+                slidesPerView={'auto'}
                 coverflowEffect={{ rotate: 30, stretch: 0, depth: 150, modifier: 1, slideShadows: false }}
                 autoplay={{ delay: 3500, disableOnInteraction: true, waitForTransition: true }}
                 pagination={{ clickable: true }}
