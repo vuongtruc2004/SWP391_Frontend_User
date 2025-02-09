@@ -44,7 +44,7 @@ export const sendEmail = async (prev: any, formData: FormData): Promise<EmailFie
     if (emailResponse.status === 200) {
         result.ok = true;
     } else {
-        result.message = emailResponse.errorMessage;
+        result.message = emailResponse.message.toString();
     }
     return result;
 }
