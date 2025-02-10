@@ -15,9 +15,9 @@ export const metadata: Metadata = {
 
 const BlogPage = async (props: {
     searchParams: Promise<{
-        keyword?: string;
-        page?: string;
-        category?: string;
+        keyword: string;
+        page: string;
+        category: string;
         tag_name: string;
     }>
 }) => {
