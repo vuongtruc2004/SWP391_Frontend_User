@@ -35,8 +35,12 @@ const LoginForm = () => {
         const credentialsLogin = async () => {
             if (state) {
                 if (!state.email?.error && !state.password?.error) {
+                    let emailInput = state.email.value;
+                    if (!emailInput.includes("@")) {
+                        emailInput += "@gmail.com";
+                    }
                     const response = await signIn("credentials", {
-                        email: state.email?.value,
+                        email: emailInput,
                         password: state.password?.value,
                         redirect: false
                     });
