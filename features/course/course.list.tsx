@@ -18,11 +18,7 @@ const CourseList = ({ coursePage }: {
     }
 
     return (
-        <Box sx={{
-            bgcolor: 'black',
-            padding: '20px',
-            borderRadius: '6px',
-        }}>
+        <div>
             <Box sx={{
                 display: 'grid',
                 gridTemplateColumns: 'repeat(2, 1fr)',
@@ -46,7 +42,7 @@ const CourseList = ({ coursePage }: {
                 }}
                 onChange={handleChangePage}
             />
-        </Box>
+        </div>
     )
 }
 

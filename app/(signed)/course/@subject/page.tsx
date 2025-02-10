@@ -20,7 +20,7 @@ const SubjectPage = async (props: {
         url: `${apiUrl}/subjects`,
         queryParams: {
             page: 1,
-            size: 100,
+            size: 50,
             sort: `subjectName,${sortSubject}`
         }
     });

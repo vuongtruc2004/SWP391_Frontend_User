@@ -172,13 +172,7 @@ const ProfileForm = ({ user }: {
                     gridTemplateColumns: '50% 1fr',
                     columnGap: '20px',
                     alignItems: 'start',
-                    '.mui-mjgnrh-MuiInputBase-root-MuiOutlinedInput-root': {
-                        height: '40px'
-                    },
-                    '.mui-1b1fjlj-MuiFormControl-root-MuiTextField-root': {
-                        width: '100%'
-                    },
-                    marginBottom: '12px'
+                    marginBottom: '15px'
                 }}>
                     <div>
                         <label className="mb-[10px] block text-white">Ngày sinh:</label>
@@ -197,6 +191,12 @@ const ProfileForm = ({ user }: {
                                             </span>
                                         ),
                                     },
+                                }}
+                                sx={{
+                                    height: '40px',
+                                    'div': {
+                                        height: '40px'
+                                    }
                                 }}
                             />
                         </LocalizationProvider>

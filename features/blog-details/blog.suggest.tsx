@@ -1,3 +1,4 @@
+'use client'
 import { formatCreateDate } from "@/helper/blog.helper";
 import { storageUrl } from "@/utils/url";
 import Box from "@mui/material/Box";
@@ -5,11 +6,13 @@ import Button from "@mui/material/Button";
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import Image from "next/image";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 
 const BlogSuggest = ({ blogList, currentId }: {
     blogList: BlogResponse[];
     currentId: number;
 }) => {
+    const searchParams = useSearchParams();
     const suggestList: BlogResponse[] = blogList.filter(blog => blog.blogId !== currentId);
     const hashtags: HashtagResponse[] = blogList.find(blog => blog.blogId === currentId)?.hashtags || [];
 
@@ -23,8 +26,12 @@ const BlogSuggest = ({ blogList, currentId }: {
                 <h1 className="text-lg font-semibold mb-5">Hashtags</h1>
                 <ul className="flex flex-wrap items-center gap-1">
                     {hashtags.map(tag => {
+                        const newSearchParams = new URLSearchParams(searchParams);
+                        newSearchParams.set('page', '1');
+                        newSearchParams.set('tag_name', tag.tagName);
+
                         return (
-                            <Link href={`/blog?tag_name=${tag.tagName}`} key={tag.tagId}>
+                            <Link href={`/blog?${newSearchParams}`} key={tag.tagId}>
                                 <Button
                                     variant="outlined"
                                     color="secondary"

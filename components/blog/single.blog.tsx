@@ -11,7 +11,8 @@ const SingleBlogList = ({ blog }: { blog: BlogResponse }) => {
     return (
         <Box sx={{
             bgcolor: 'black',
-            borderRadius: '6px'
+            borderRadius: '6px',
+            boxShadow: '2px 2px 5px rgba(0,0,0,0.5)'
         }}>
             <Link href={`/blog/${blog.blogId}`} style={{
                 display: 'block',

@@ -14,11 +14,11 @@ const SingleSubjectList = ({ subject }: { subject: SubjectResponse; }) => {
                 borderRadius: '6px',
                 position: 'relative',
                 overflow: 'hidden',
-                transition: 'box-shadow 0.3s ease',
+                transition: 'all 0.3s ease',
+                boxShadow: '2px 2px 5px rgba(0,0,0,0.5)',
                 '&:hover': {
-                    boxShadow: '0 2px 0px rgba(96, 165, 250, 0.7)',
                     'span': {
-                        marginLeft: '20px',
+                        marginLeft: '30px',
                         color: '#60a5fa'
                     },
                     'img': {

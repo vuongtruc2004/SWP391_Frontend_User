@@ -14,9 +14,10 @@ const SingleCourseSlider = ({ course }: { course: CourseResponse }) => {
 
     return (
         <Box sx={{
-            borderRadius: '4px',
+            borderRadius: '6px',
             bgcolor: 'black',
             color: 'white',
+            boxShadow: '2px 2px 5px rgba(0,0,0,0.5)'
         }}>
             <Link href={`/course/${course.courseId}`} style={{
                 display: 'block',
@@ -26,12 +27,12 @@ const SingleCourseSlider = ({ course }: { course: CourseResponse }) => {
             }}>
                 <Image src={`${storageUrl}/course/${course.thumbnail}`} alt={course.courseName} priority fill sizes="(max-width: 1000px) 100vw" style={{
                     objectFit: 'cover',
-                    borderRadius: '4px',
+                    borderRadius: '6px',
                     objectPosition: 'center',
                     cursor: 'pointer',
                 }} />
-                <div className='bg-black absolute top-0 right-0 w-[100px] h-[50px] rounded-sm rounded-bl-[30px]' />
-                <div className='bg-green-800 absolute top-0 right-0 w-[95px] h-[45px] rounded-sm rounded-bl-[26px] flex items-center justify-center gap-x-1'>
+                <div className='bg-black absolute top-0 right-0 w-[100px] h-[50px] rounded-md rounded-bl-[30px]' />
+                <div className='bg-green-800 absolute top-0 right-0 w-[95px] h-[45px] rounded-md rounded-bl-[26px] flex items-center justify-center gap-x-1'>
                     <HowToRegIcon sx={{ fontSize: '1.25rem' }} />
                     10{course.totalPurchased}
                 </div>
@@ -58,12 +59,9 @@ const SingleCourseSlider = ({ course }: { course: CourseResponse }) => {
                         <p className="text-green-400">Giảng viên:</p>
                         <Link href={"/home"} className="hover:underline">{course.expert.user.fullname}</Link>
                     </div>
-                    <div className='flex items-center justify-between'>
-                        <div className='flex items-center gap-x-2'>
-                            <p className='text-gray-300'>Cập nhật lần cuối:</p>
-                            <p className='text-purple-300'>{formatCreateDate(course.updatedAt ?? course.createdAt)}</p>
-                        </div>
-                        <p className='text-gray-300 italic'>(10{course.totalLikes} lượt thích)</p>
+                    <div className='flex items-center gap-x-2'>
+                        <p className='text-gray-300'>Cập nhật lần cuối:</p>
+                        <p className='text-purple-300'>{formatCreateDate(course.updatedAt ?? course.createdAt)}</p>
                     </div>
                 </div>
 

@@ -23,11 +23,17 @@ const theme = createTheme({
         fontFamily: quicksand.style.fontFamily
     },
     components: {
-
         MuiButton: {
             styleOverrides: {
                 root: {
                     textTransform: 'capitalize',
+                },
+            },
+        },
+        MuiSkeleton: {
+            styleOverrides: {
+                root: {
+                    backgroundColor: '#252525',
                 },
             },
         },

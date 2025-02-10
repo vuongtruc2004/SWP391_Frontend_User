@@ -68,16 +68,17 @@ const OtpForm = ({ setIsBackToStepOne, registerField, setStep }: {
 
     return (
         <>
-            <div className="flex justify-center mb-2">
+            <div className="flex justify-center">
                 <span className="inline-flex items-center justify-center w-[60px] h-[60px] rounded-[15px] border border-gray-500">
                     <DraftsOutlinedIcon sx={{ fontSize: '2.25rem' }} />
                 </span>
             </div>
 
-            <h1 className="text-2xl text-center font-semibold">Nhập mã OTP</h1>
-            <p className="text-center text-gray-300 mb-5">
-                Vui lòng nhập mã OTP đã được gửi đến email của bạn.
-            </p>
+            <h1 className="text-2xl text-center font-semibold my-2">Nhập mã OTP</h1>
+            <div className='mb-5 text-center'>
+                <p className="text-gray-300">Vui lòng nhập mã OTP đã được gửi đến email:</p>
+                <p>{registerField?.email.value}</p>
+            </div>
 
             <div className="mb-3">
                 {React.createElement(MuiOtpInput as any, {
