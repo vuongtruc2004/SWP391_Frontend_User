@@ -51,8 +51,8 @@ const ProfileForm = ({ user }: {
         }
         const today = dayjs();
         const age = today.diff(value, 'year');
-        if (age < 7) {
-            setDobError("Người dùng phải ít nhất 7 tuổi.");
+        if (age < 6) {
+            setDobError("Người dùng phải ít nhất 6 tuổi.");
             return false;
         }
         setDobError("");
