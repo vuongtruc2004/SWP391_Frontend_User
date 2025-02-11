@@ -1,11 +1,6 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
 /* width */
 ::-webkit-scrollbar {
   display: none;
-}
-
-:root {
-  --toastify-color-light: #242c32;
 }

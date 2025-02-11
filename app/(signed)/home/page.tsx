@@ -8,7 +8,7 @@ const HomePage = async () => {
         url: `${apiUrl}/subjects/courses`,
         queryParams: {
             page: 1,
-            size: 25
+            size: 30
         }
     });
     return (

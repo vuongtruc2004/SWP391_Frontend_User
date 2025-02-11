@@ -25,7 +25,7 @@ const RegisterForm = ({ setIsBackToStepOne, isBackToStepOne, setStep, registerFi
 }) => {
     const [showPassword, setShowPassword] = useState(false);
     const [showRePassword, setShowRePassword] = useState(false);
-    const prevUrl = typeof window !== "undefined" ? sessionStorage.getItem("prevUrl") || "/home" : "/home";
+    const [prevUrl, setPrevUrl] = useState("/home");
 
     const [state, formAction, pending] = useActionState(validateRegisterForm, registerField);
 
@@ -34,6 +34,13 @@ const RegisterForm = ({ setIsBackToStepOne, isBackToStepOne, setStep, registerFi
             callbackUrl: prevUrl
         });
     }
+
+    useEffect(() => {
+        let storedUrl = sessionStorage.getItem("prevUrl");
+        if (storedUrl) {
+            setPrevUrl(storedUrl);
+        }
+    }, []);
 
     useEffect(() => {
         if (state?.ok && !isBackToStepOne) {

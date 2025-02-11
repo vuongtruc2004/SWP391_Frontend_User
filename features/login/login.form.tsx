@@ -1,4 +1,3 @@
-'use client'
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
@@ -20,7 +19,7 @@ import Image from "next/image";
 const LoginForm = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [error, setError] = useState<string | null | undefined>(null);
-    const prevUrl = typeof window !== "undefined" ? sessionStorage.getItem("prevUrl") || "/home" : "/home";
+    const [prevUrl, setPrevUrl] = useState("/home");
 
     const [state, formAction, pending] = useActionState(validateLoginForm, null);
     const router = useRouter();
@@ -30,6 +29,13 @@ const LoginForm = () => {
             callbackUrl: prevUrl
         });
     }
+
+    useEffect(() => {
+        let storedUrl = sessionStorage.getItem("prevUrl");
+        if (storedUrl) {
+            setPrevUrl(storedUrl);
+        }
+    }, []);
 
     useEffect(() => {
         const credentialsLogin = async () => {
