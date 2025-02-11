@@ -53,10 +53,8 @@ const OtpForm = ({ setIsBackToStepOne, registerField, setStep }: {
 
     const handleSubmit = async () => {
         const activeResponse = await sendRequest<ApiResponse<void>>({
-            url: `${apiUrl}/users/active`,
-            queryParams: {
-                code: otp
-            }
+            url: `${apiUrl}/users/active/${otp}`,
+
         });
 
         if (activeResponse.status === 200) {
