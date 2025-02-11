@@ -7,7 +7,7 @@ const Banner = () => {
         <Box sx={{
             display: 'flex',
             justifyContent: 'flex-end',
-            height: '62vh',
+            height: '70vh',
             minHeight: '600px',
             position: 'relative',
             color: 'white',

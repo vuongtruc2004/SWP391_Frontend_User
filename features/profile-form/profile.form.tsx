@@ -193,7 +193,7 @@ const ProfileForm = ({ user }: {
                                     },
                                 }}
                                 sx={{
-                                    height: '40px',
+                                    // height: '40px',
                                     'div': {
                                         height: '40px'
                                     }
