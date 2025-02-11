@@ -19,6 +19,7 @@ import { motion } from 'framer-motion';
 import Image from "next/image";
 
 const Header = () => {
+    /// ok
     const pathname = usePathname();
     const router = useRouter();
     const searchParams = useSearchParams();
