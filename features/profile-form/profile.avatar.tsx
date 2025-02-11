@@ -3,11 +3,12 @@ import Avatar from "@mui/material/Avatar";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import EditIcon from '@mui/icons-material/Edit';
-import { ChangeEvent, useRef } from "react";
+import { ChangeEvent, useRef, useState } from "react";
 import { sendRequest } from "@/utils/fetch.api";
 import { apiUrl, storageUrl } from "@/utils/url";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { Alert, Snackbar } from "@mui/material";
 
 const ProfileAvatar = ({ avatar }: {
     avatar: string;
@@ -17,6 +18,10 @@ const ProfileAvatar = ({ avatar }: {
 
     const router = useRouter();
     const inputRef = useRef<HTMLInputElement>(null);
+    const [uploadError, setUploadError] = useState({
+        error: false,
+        message: ''
+    });
 
     const handleUploadFile = async (e: ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files[0]) {
@@ -41,6 +46,14 @@ const ProfileAvatar = ({ avatar }: {
                     }
                 });
                 router.refresh();
+            } else {
+                if (inputRef.current) {
+                    inputRef.current.value = '';
+                }
+                setUploadError({
+                    error: true,
+                    message: imageResponse.message.toString()
+                })
             }
         }
     }
@@ -93,6 +106,31 @@ const ProfileAvatar = ({ avatar }: {
                     }}
                 />
             </div>
+
+            <Snackbar
+                open={uploadError.error}
+                autoHideDuration={3000}
+                onClose={() => setUploadError({
+                    error: false,
+                    message: ''
+                })}
+                anchorOrigin={{
+                    vertical: 'top',
+                    horizontal: 'center'
+                }}
+            >
+                <Alert
+                    severity="error"
+                    onClose={() => setUploadError({
+                        error: false,
+                        message: ''
+                    })}
+                    sx={{ width: '100%', color: 'white' }}
+                    variant="filled"
+                >
+                    {uploadError.message}
+                </Alert>
+            </Snackbar>
         </Box >
     )
 }
