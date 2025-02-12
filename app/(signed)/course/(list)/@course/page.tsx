@@ -1,7 +1,7 @@
 import CourseListEmpty from "@/components/course/course.list.empty";
 import CourseList from "@/features/course/course.list";
 import CourseSort from "@/features/course/course.sort";
-import { getCourseSort, getInputPrice } from "@/helper/course.helper";
+import { getCourseSort, getInputPrice } from "@/helper/course.list.helper";
 import { sendRequest } from "@/utils/fetch.api";
 import { apiUrl } from "@/utils/url";
 import Box from "@mui/material/Box";

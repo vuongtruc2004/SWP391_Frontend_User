@@ -102,6 +102,7 @@ declare global {
         title: string;
         description: string;
         videoUrl: string;
+        duration: number;
         createdAt: string;
         updatedAt: string;
     }

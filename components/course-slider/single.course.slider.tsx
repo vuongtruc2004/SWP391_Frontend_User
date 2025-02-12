@@ -4,7 +4,7 @@ import Divider from "@mui/material/Divider";
 import Link from 'next/link'
 import { storageUrl } from '@/utils/url';
 import Image from 'next/image';
-import { displayPrice, displayProgressbar } from '@/helper/course.helper';
+import { displayPrice, displayProgressbar } from '@/helper/course.list.helper';
 import { formatCreateDate } from '@/helper/blog.helper';
 import HowToRegIcon from '@mui/icons-material/HowToReg';
 import { useState } from 'react';

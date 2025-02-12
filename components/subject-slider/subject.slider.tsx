@@ -54,7 +54,7 @@ const SubjectSlider = ({ subjectList }: { subjectList: SubjectResponse[] }) => {
                     return (
                         <Link
                             href={`/course?subjectIds=${item.subjectId}`}
-                            key={index}
+                            key={item.subjectId}
                             style={{
                                 animationDelay: `${animationTime / subjectList.length * (subjectList.length - index - 1) * -1}s`
                             }}
