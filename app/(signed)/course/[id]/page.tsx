@@ -15,7 +15,6 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
 const CourseDetails = async ({ params }: { params: Promise<{ id: string }> }) => {
     const id = (await params).id
     const courseResponse = await getCourseById(id);
-    console.log(">>> check: ", courseResponse);
 
     return (
         <Box sx={{
@@ -27,7 +26,6 @@ const CourseDetails = async ({ params }: { params: Promise<{ id: string }> }) =>
             display: 'grid',
             gridTemplateColumns: '2fr 1fr',
             gap: '20px',
-            position: 'relative'
         }}>
             <CourseIntroduce course={courseResponse.data} />
             <CoursePurchase course={courseResponse.data} />
