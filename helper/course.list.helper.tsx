@@ -9,6 +9,11 @@ export const formatPrice = (price: number): string => {
     return price.toLocaleString('vi-VN');
 };
 
+export const getSalePercent = (course: CourseResponse): number => {
+    const percent = (course.originalPrice - course.salePrice) / course.originalPrice * 100;
+    return Math.round(percent);
+}
+
 export const getInputPrice = (price: any): string => {
     if (!price || price.trim() === "") {
         return "";
@@ -25,7 +30,7 @@ export const getInputPrice = (price: any): string => {
 export const getCourseSort = (courseSort: string): string => {
     if (!courseSort ||
         (courseSort !== "default" &&
-            courseSort !== "price" &&
+            courseSort !== "salePrice" &&
             courseSort !== "updatedAt" &&
             courseSort !== "purchaser" &&
             courseSort !== "like" &&
@@ -34,11 +39,6 @@ export const getCourseSort = (courseSort: string): string => {
         return "default";
     }
     return courseSort;
-}
-
-export const getOriginalPrice = (price: number): string => {
-    const originalPrice = price + price * 30 / 100;
-    return originalPrice.toLocaleString('vi-VN');
 }
 
 export const displayProgressbar = (status: 'not buy' | 'not start' | 'studying' | 'completed'): React.ReactNode => {
@@ -86,12 +86,16 @@ export const displayPrice = (course: CourseResponse, status: 'not buy' | 'not st
         return (
             <>
                 <div className='flex items-center justify-between mt-2'>
-                    <p>Giảm giá 30%</p>
+                    {course.salePrice !== course.originalPrice && (
+                        <p>Giảm giá {getSalePercent(course)}%</p>
+                    )}
                     <div className='flex items-end gap-x-2'>
-                        <p className='text-sm line-through text-red-500 italic'>{getOriginalPrice(course.price)}đ</p>
-                        <h1 className='text-xl font-semibold'>{formatPrice(course.price)}đ</h1>
+                        {course.salePrice !== course.originalPrice && (
+                            <p className='text-sm line-through text-red-500 italic'>{formatPrice(course.originalPrice)}đ</p>
+                        )}
+                        <h1 className='text-xl font-semibold'>{formatPrice(course.salePrice)}đ</h1>
                     </div>
-                </div>
+                </div >
                 <Link href={"/course"} className="block mt-2">
                     <Button variant="outlined" startIcon={<ShoppingCartIcon />} fullWidth>
                         Mua ngay

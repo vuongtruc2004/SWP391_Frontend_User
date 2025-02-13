@@ -66,16 +66,21 @@ declare global {
         courseId: number;
         courseName: string;
         description: string;
-        objectives: string[];
         thumbnail: string;
-        price: number;
-        accepted: boolean;
-        createdAt: string;
-        updatedAt: string;
-        subjects: SubjectResponse[];
-        lessons: LessonResponse[];
+        introduction: string;
+        originalPrice: number;
+        salePrice: number;
         expert: ExpertResponse;
         totalPurchased: number;
+        createdAt: string;
+        updatedAt: string;
+    }
+
+    interface CourseDetailsResponse extends CourseResponse {
+        objectives: string[];
+        accepted: boolean;
+        subjects: SubjectResponse[];
+        lessons: LessonResponse[];
         totalLikes: number;
         totalComments: number;
     }

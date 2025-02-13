@@ -1,5 +1,7 @@
 import CourseIntroduce from "@/components/course-details/course.introduce";
 import CoursePurchase from "@/components/course-details/course.purchase";
+import CourseContent from "@/components/course-tabs/course.content";
+import CourseTabs from "@/components/course-tabs/course.tabs";
 import { getCourseById } from "@/helper/course.details.helper";
 import Box from "@mui/material/Box";
 import { Metadata } from "next";
@@ -16,6 +18,7 @@ const CourseDetails = async ({ params }: { params: Promise<{ id: string }> }) =>
     const id = (await params).id
     const courseResponse = await getCourseById(id);
 
+    console.log(courseResponse);
     return (
         <Box sx={{
             paddingTop: '120px',
@@ -24,10 +27,13 @@ const CourseDetails = async ({ params }: { params: Promise<{ id: string }> }) =>
             margin: '0 auto',
             color: 'white',
             display: 'grid',
-            gridTemplateColumns: '2fr 1fr',
+            gridTemplateColumns: '5fr 3fr',
             gap: '20px',
         }}>
-            <CourseIntroduce course={courseResponse.data} />
+            <div>
+                <CourseIntroduce course={courseResponse.data} />
+                <CourseContent course={courseResponse.data} />
+            </div>
             <CoursePurchase course={courseResponse.data} />
         </Box>
     )

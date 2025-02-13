@@ -31,10 +31,10 @@ const CoursePage = async (props: {
     let filter = `(courseName ~ '${keyword}' or description ~ '${keyword}')`;
 
     if (priceFrom !== "") {
-        filter += ` and price >: ${priceFrom}`
+        filter += ` and salePrice >: ${priceFrom}`
     }
     if (priceTo !== "") {
-        filter += ` and price <: ${priceTo}`
+        filter += ` and salePrice <: ${priceTo}`
     }
 
     const queryParams: Record<string, any> = {
@@ -45,7 +45,7 @@ const CoursePage = async (props: {
         subjectIds: subjectIds
     };
 
-    if (["price", "updatedAt"].includes(courseSort)) {
+    if (["salePrice", "updatedAt"].includes(courseSort)) {
         queryParams.sort = `${courseSort},${direction}`;
     } else if (["purchaser", "like", "comment"].includes(courseSort)) {
         queryParams.specialSort = `${courseSort},${direction}`;

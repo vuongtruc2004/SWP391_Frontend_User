@@ -39,7 +39,7 @@ const SingleCourseSlider = ({ course }: { course: CourseResponse }) => {
             </Link>
 
             <div className='p-5'>
-                <Link href={`/course`} className='transition-all duration-150 text-xl font-semibold hover:underline hover:text-blue-500'>{course.courseName}</Link>
+                <Link href={`/course/${course.courseId}`} className='transition-all duration-150 text-xl font-semibold hover:underline hover:text-blue-500'>{course.courseName}</Link>
                 {displayProgressbar(status)}
                 <p
                     className='text-gray-400 my-1'

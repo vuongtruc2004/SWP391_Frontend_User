@@ -74,7 +74,7 @@ const CourseSort = ({ totalElements, courseSort, direction }: {
                         size="small"
                     >
                         <MenuItem value={"default"}>Mặc định</MenuItem>
-                        <MenuItem value={"price"}>Giá</MenuItem>
+                        <MenuItem value={"salePrice"}>Giá</MenuItem>
                         <MenuItem value={"updatedAt"}>Mới nhất</MenuItem>
                         <MenuItem value={"purchaser"}>Số lượt mua</MenuItem>
                         <MenuItem value={"like"}>Số lượt thích</MenuItem>
