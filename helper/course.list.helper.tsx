@@ -95,7 +95,7 @@ export const displayPrice = (course: CourseResponse, status: 'not buy' | 'not st
                         )}
                         <h1 className='text-xl font-semibold'>{formatPrice(course.salePrice)}đ</h1>
                     </div>
-                </div >
+                </div>
                 <Link href={"/course"} className="block mt-2">
                     <Button variant="outlined" startIcon={<ShoppingCartIcon />} fullWidth>
                         Mua ngay

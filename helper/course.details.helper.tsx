@@ -38,3 +38,32 @@ export const convertSecondToTime = (second: number): string => {
 
     return arr.map(unit => unit.toString().padStart(2, '0')).join(':');
 };
+
+export const countTotalTime = (course: CourseDetailsResponse): string => {
+    let totalMinutes = 0;
+    const wordsPerMinute = 200;
+
+    for (const lesson of course.lessons) {
+        // Tính tổng thời lượng video
+        for (const video of lesson.videos) {
+            totalMinutes += Math.ceil(video.duration / 60);
+        }
+
+        // Tính tổng thời gian đọc tài liệu
+        for (const doc of lesson.documents) {
+            const wordCount = doc.content.split(/\s+/).length;
+            totalMinutes += Math.ceil(wordCount / wordsPerMinute);
+        }
+    }
+
+    const days = Math.floor(totalMinutes / 1440);
+    const hours = Math.floor((totalMinutes % 1440) / 60);
+    const minutes = totalMinutes % 60;
+
+    let result = "";
+    if (days > 0) result += `${days} ngày `;
+    if (hours > 0) result += `${hours} giờ `;
+    if (minutes > 0 || result === "") result += `${minutes} phút`;
+
+    return result.trim();
+};

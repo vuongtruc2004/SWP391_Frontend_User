@@ -34,7 +34,7 @@ const SingleCourseSlider = ({ course }: { course: CourseResponse }) => {
                 <div className='bg-black absolute top-0 right-0 w-[100px] h-[50px] rounded-md rounded-bl-[30px]' />
                 <div className='bg-green-800 absolute top-0 right-0 w-[95px] h-[45px] rounded-md rounded-bl-[26px] flex items-center justify-center gap-x-1'>
                     <HowToRegIcon sx={{ fontSize: '1.25rem' }} />
-                    10{course.totalPurchased}
+                    {course.totalPurchased}
                 </div>
             </Link>
 

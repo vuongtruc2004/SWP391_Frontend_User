@@ -1,10 +1,11 @@
 import CourseIntroduce from "@/components/course-details/course.introduce";
 import CoursePurchase from "@/components/course-details/course.purchase";
-import CourseContent from "@/components/course-tabs/course.content";
-import CourseTabs from "@/components/course-tabs/course.tabs";
+import CourseContent from "@/components/course-content/course.content";
+import CourseTabs from "@/components/course-content/course.tabs";
 import { getCourseById } from "@/helper/course.details.helper";
 import Box from "@mui/material/Box";
 import { Metadata } from "next";
+import CourseVideoIntro from "@/components/course-details/course.intro.video";
 
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
     const id = (await params).id
@@ -34,7 +35,10 @@ const CourseDetails = async ({ params }: { params: Promise<{ id: string }> }) =>
                 <CourseIntroduce course={courseResponse.data} />
                 <CourseContent course={courseResponse.data} />
             </div>
-            <CoursePurchase course={courseResponse.data} />
+            <div>
+                <CourseVideoIntro course={courseResponse.data} />
+                <CoursePurchase course={courseResponse.data} />
+            </div>
         </Box>
     )
 }
