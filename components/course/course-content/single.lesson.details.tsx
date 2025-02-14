@@ -34,7 +34,7 @@ const SingleLessonDetails = ({ lesson, index, lessonsExpand, toggleLesson }: {
                             display: 'flex',
                             alignItems: 'center',
                             justifyContent: 'space-between',
-                            gap: '20px',
+                            columnGap: '50px',
                             padding: '15px 20px',
                         }} key={video.videoId + "_" + video.title}>
                             <div className="flex items-center">
@@ -51,7 +51,7 @@ const SingleLessonDetails = ({ lesson, index, lessonsExpand, toggleLesson }: {
                             display: 'flex',
                             alignItems: 'center',
                             justifyContent: 'space-between',
-                            gap: '20px',
+                            columnGap: '50px',
                             padding: '15px 20px',
                         }} key={document.documentId + "_" + document.title}>
                             <div className="flex items-center">

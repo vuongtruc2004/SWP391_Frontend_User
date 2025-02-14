@@ -77,8 +77,10 @@ declare global {
     }
 
     interface CourseDetailsResponse extends CourseResponse {
+        introduction: string;
         objectives: string[];
         accepted: boolean;
+        expert: ExpertDetailsResponse;
         subjects: SubjectResponse[];
         lessons: LessonResponse[];
         totalLikes: number;
@@ -96,10 +98,16 @@ declare global {
 
     interface ExpertResponse {
         expertId: number;
-        diploma: string;
+        user: UserResponse;
+    }
+
+    interface ExpertDetailsResponse extends ExpertResponse {
+        achievement: string;
+        job: string;
+        description: string;
         yearOfExperience: string;
         totalCourses: number;
-        user: UserResponse;
+        totalStudents: number;
     }
 
     interface VideoResponse {

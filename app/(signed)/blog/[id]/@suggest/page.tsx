@@ -1,4 +1,4 @@
-import BlogSuggest from "@/features/blog-details/blog.suggest";
+import BlogSuggest from "@/features/blog/blog-details/blog.suggest";
 import { sendRequest } from "@/utils/fetch.api";
 import { apiUrl } from "@/utils/url";
 

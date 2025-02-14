@@ -12,8 +12,14 @@ const CourseContent = ({ course }: { course: CourseDetailsResponse }) => {
             const newSet = new Set(prev);
             if (newSet.has(id)) {
                 newSet.delete(id);
+                if (newSet.size === 0) {
+                    setAllExpand(false);
+                }
             } else {
                 newSet.add(id);
+                if (newSet.size === course?.lessons.length) {
+                    setAllExpand(true);
+                }
             }
             return newSet;
         });
@@ -31,7 +37,7 @@ const CourseContent = ({ course }: { course: CourseDetailsResponse }) => {
 
     return (
         <>
-            <h1 className="text-2xl font-semibold mt-5 mb-1">Nội dung khóa học</h1>
+            <h1 className="text-xl font-semibold mt-5 mb-1">Nội dung khóa học</h1>
             <div className="flex items-center justify-between text-gray-300 mb-4 px-1 text-sm">
                 <p><strong className="text-white">{course?.lessons.length}</strong> chương • <strong className="text-white">{getNumberOfVideos(course)}</strong> bài giảng • <strong className="text-white">{getNumberOfDocuments(course)}</strong> bài đọc • <strong className="text-white">{12}</strong> bài kiểm tra</p>
                 <p className="text-blue-500 hover:text-blue-700 cursor-pointer font-semibold" onClick={toggleAllLessons}>

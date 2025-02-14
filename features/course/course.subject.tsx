@@ -124,7 +124,7 @@ const CourseSubject = ({ subjectList, subjectIds }: {
             </form>
 
             <div className="flex items-center justify-between mb-3 mt-5">
-                <h1 className="text-lg font-semibold">Môn học</h1>
+                <h1 className="text-lg font-semibold">Công nghệ sử dụng</h1>
                 <IconButton color="primary" onClick={handleSortSubject}>
                     <SortByAlphaOutlinedIcon />
                 </IconButton>

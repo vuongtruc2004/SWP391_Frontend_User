@@ -36,28 +36,11 @@ const SingleBlogSlider = ({ blog }: { blog: BlogResponse; }) => {
                 color: 'white',
                 padding: '20px'
             }}>
-                <Link href={`/blog/${blog.blogId}`} className="block transition-all duration-200 font-semibold hover:underline hover:text-blue-500" style={{
-                    overflow: "hidden",
-                    display: "-webkit-box",
-                    textOverflow: "ellipsis",
-                    WebkitBoxOrient: "vertical",
-                    WebkitLineClamp: 1,
-                }}>
+                <Link href={`/blog/${blog.blogId}`} className="transition-all duration-200 font-semibold hover:underline hover:text-blue-500 line-clamp-1">
                     {blog.title}
                 </Link>
 
-                <div style={{
-                    overflow: "hidden",
-                    textOverflow: "ellipsis",
-                    display: "-webkit-box",
-                    WebkitBoxOrient: "vertical",
-                    WebkitLineClamp: 3,
-                    color: '#adb5bd',
-                    fontSize: '14px',
-                    marginBlock: '4px'
-                }}
-                    dangerouslySetInnerHTML={{ __html: blog.content }}
-                />
+                <div className="line-clamp-3 text-sm my-1 text-gray-300" dangerouslySetInnerHTML={{ __html: blog.content }} />
 
                 <div className="flex items-center gap-x-2 text-blue-500 text-sm">
                     <p className="text-green-400">Đăng bởi:</p>

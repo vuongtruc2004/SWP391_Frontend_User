@@ -1,4 +1,4 @@
-import CourseSlider from "@/components/course-slider/course.slider"
+import CourseSlider from "@/components/course/course-slider/course.slider"
 import { sendRequest } from "@/utils/fetch.api"
 import { apiUrl } from "@/utils/url"
 

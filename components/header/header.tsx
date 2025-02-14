@@ -16,6 +16,7 @@ import AccountMenu from "./account.menu";
 import { useSession } from "next-auth/react";
 import { storageUrl } from "@/utils/url";
 import { motion } from 'framer-motion';
+import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import Image from "next/image";
 
 const Header = () => {
@@ -176,6 +177,16 @@ const Header = () => {
                             <IconButton color="secondary">
                                 <Badge color="error" overlap="circular" badgeContent={5}>
                                     <NotificationsNoneIcon sx={{ color: pathname === "/notification" ? "#60a5fa" : "#dee2e6" }} />
+                                </Badge>
+                            </IconButton>
+                        </Link>
+                    </Tooltip>
+
+                    <Tooltip title="Giỏ hàng" arrow>
+                        <Link href={"/notification"}>
+                            <IconButton color="secondary">
+                                <Badge color="error" overlap="circular" badgeContent={5}>
+                                    <ShoppingCartOutlinedIcon sx={{ color: pathname === "/notification" ? "#60a5fa" : "#dee2e6" }} />
                                 </Badge>
                             </IconButton>
                         </Link>

@@ -18,7 +18,7 @@ export async function generateMetadata({
     }
 }
 
-const BlogDetailsLayout = ({ details, interact, suggest }: { details: React.ReactNode, interact: React.ReactNode, suggest: React.ReactNode }) => {
+const BlogDetailsLayout = ({ details, suggest }: { details: React.ReactNode, suggest: React.ReactNode }) => {
     return (
         <div style={{
             display: 'grid',
@@ -31,10 +31,7 @@ const BlogDetailsLayout = ({ details, interact, suggest }: { details: React.Reac
             color: 'white',
             margin: '0 auto'
         }}>
-            <div className="flex flex-col gap-y-5">
-                {details}
-                {interact}
-            </div>
+            {details}
             {suggest}
         </div>
     )

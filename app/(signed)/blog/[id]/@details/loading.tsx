@@ -20,7 +20,9 @@ const LoadingDetails = () => {
             </Box>
             <Skeleton variant="rounded" width={'100%'} height={250} animation='wave' />
             <Skeleton variant="text" sx={{ fontSize: '16px' }} width={'100%'} />
-            <Skeleton variant="text" sx={{ fontSize: '16px' }} width={'80%%'} />
+            <Skeleton variant="text" sx={{ fontSize: '16px', marginBottom: '20px' }} width={'80%%'} />
+
+            <Skeleton variant="rounded" width={'100%'} height={250} animation='wave' />
         </Box>
     )
 }

@@ -1,5 +1,5 @@
 'use client'
-import SingleCourseSlider from "@/components/course-slider/single.course.slider";
+import SingleCourseSlider from "@/components/course/course-slider/single.course.slider";
 import Box from "@mui/material/Box";
 import Pagination from "@mui/material/Pagination";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";

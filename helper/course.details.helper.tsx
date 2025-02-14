@@ -66,4 +66,4 @@ export const countTotalTime = (course: CourseDetailsResponse): string => {
     if (minutes > 0 || result === "") result += `${minutes} phút`;
 
     return result.trim();
-};
+}

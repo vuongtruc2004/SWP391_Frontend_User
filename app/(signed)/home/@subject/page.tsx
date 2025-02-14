@@ -1,4 +1,4 @@
-import SubjectList from "@/components/subject-list/subject.list"
+import SubjectList from "@/components/subject/subject-list/subject.list"
 import { sendRequest } from "@/utils/fetch.api"
 import { apiUrl } from "@/utils/url"
 

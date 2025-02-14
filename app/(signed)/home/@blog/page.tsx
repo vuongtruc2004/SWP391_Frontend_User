@@ -1,4 +1,4 @@
-import BlogSlider from '@/components/blog-slider/blog.slider'
+import BlogSlider from '@/components/blog/blog-slider/blog.slider'
 import { sendRequest } from '@/utils/fetch.api'
 import { apiUrl } from '@/utils/url'
 

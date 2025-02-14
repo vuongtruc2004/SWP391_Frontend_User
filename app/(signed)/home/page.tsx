@@ -1,5 +1,5 @@
 import Banner from '@/components/banner/banner';
-import SubjectSlider from '@/components/subject-slider/subject.slider';
+import SubjectSlider from '@/components/subject/subject-slider/subject.slider';
 import { sendRequest } from '@/utils/fetch.api';
 import { apiUrl } from '@/utils/url';
 

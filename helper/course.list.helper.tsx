@@ -1,6 +1,6 @@
 import Link from "next/link";
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
-import { BorderLinearProgress } from "@/components/course-slider/custom.progress";
+import { BorderLinearProgress } from "@/components/course/course-slider/custom.progress";
 import DoneAllIcon from '@mui/icons-material/DoneAll';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { Box, Button } from "@mui/material";
