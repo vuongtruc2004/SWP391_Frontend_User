@@ -47,7 +47,7 @@ const CoursePage = async (props: {
 
     if (["salePrice", "updatedAt"].includes(courseSort)) {
         queryParams.sort = `${courseSort},${direction}`;
-    } else if (["purchaser", "like", "comment"].includes(courseSort)) {
+    } else if (["purchaser", "rate"].includes(courseSort)) {
         queryParams.specialSort = `${courseSort},${direction}`;
     } else {
         queryParams.sort = `courseId,${direction}`;

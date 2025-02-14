@@ -1,21 +1,18 @@
 import { formatPrice, getSalePercent } from "@/helper/course.list.helper";
-import { Button } from "@mui/material";
+import { Button, Divider } from "@mui/material";
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import { formatCreateDate } from "@/helper/blog.helper";
-import HowToRegOutlinedIcon from '@mui/icons-material/HowToRegOutlined';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
-import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
 import LoopIcon from '@mui/icons-material/Loop';
 import { countTotalTime } from "@/helper/course.details.helper";
 import LocalMallOutlinedIcon from '@mui/icons-material/LocalMallOutlined';
-import PlayLessonOutlinedIcon from '@mui/icons-material/PlayLessonOutlined';
 import StayCurrentPortraitOutlinedIcon from '@mui/icons-material/StayCurrentPortraitOutlined';
 import AllInclusiveOutlinedIcon from '@mui/icons-material/AllInclusiveOutlined';
-import { AnimationCounter } from "@/components/course/course-content/animation.counter";
+import HowToRegOutlinedIcon from '@mui/icons-material/HowToRegOutlined';
 
 const CoursePurchase = ({ course }: { course: CourseDetailsResponse }) => {
     return (
-        <>
+        <div className="bg-black rounded-md p-5">
             <div className="flex items-center justify-between">
                 <div className="flex items-end gap-x-2">
                     <h1 className='text-3xl font-semibold'>{formatPrice(course.salePrice)}<span className="text-sm">đ</span></h1>
@@ -28,31 +25,14 @@ const CoursePurchase = ({ course }: { course: CourseDetailsResponse }) => {
                 )}
             </div>
 
-            <ul className="grid grid-cols-3 my-3 text-sm">
-                <li className="flex items-center gap-x-2 px-3 rounded-tl-lg rounded-bl-lg border border-[#343a40] py-1.5">
-                    <PlayLessonOutlinedIcon sx={{ fontSize: '1.25rem' }} />
-                    <div>
-                        <p className="text-gray-300">Chương</p>
-                        <AnimationCounter from={0} to={course.lessons.length} />
-                    </div>
-                </li>
-                <li className="flex items-center gap-x-2 px-3 border-t border-b border-[#343a40] py-1.5">
-                    <HowToRegOutlinedIcon sx={{ fontSize: '1.25rem' }} />
-                    <div>
-                        <p className="text-gray-300">Đăng kí</p>
-                        <AnimationCounter from={0} to={course.totalPurchased} />
-                    </div>
-                </li>
-                <li className="flex items-center gap-x-2 px-3 rounded-tr-lg rounded-br-lg border border-[#343a40] py-1.5">
-                    <ThumbUpOffAltIcon sx={{ fontSize: '1.25rem' }} />
-                    <div>
-                        <p className="text-gray-300">Lượt thích</p>
-                        <AnimationCounter from={0} to={course.totalLikes} />
-                    </div>
-                </li>
-            </ul>
+            <Divider sx={{ marginBlock: '10px' }} />
 
+            <h2 className="font-semibold text-lg">Về khóa học</h2>
             <ul className="text-sm">
+                <li className="flex items-center gap-x-2 py-1.5">
+                    <HowToRegOutlinedIcon sx={{ fontSize: '1.2rem' }} />
+                    <p>Tổng người đăng kí học: <span className="font-semibold text-blue-400">{course.totalPurchased}</span></p>
+                </li>
                 <li className="flex items-center gap-x-2 py-1.5">
                     <StayCurrentPortraitOutlinedIcon sx={{ fontSize: '1.2rem' }} />
                     <p>Truy cập trên thiết bị di động và TV</p>
@@ -80,7 +60,7 @@ const CoursePurchase = ({ course }: { course: CourseDetailsResponse }) => {
             <Button variant="contained" color="primary" fullWidth startIcon={<LocalMallOutlinedIcon />}>
                 Mua ngay
             </Button>
-        </>
+        </div>
     )
 }
 

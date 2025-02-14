@@ -1,4 +1,4 @@
-import CourseSubject from "@/features/course/course.subject";
+import CourseSubjectFilter from "@/features/course/course.subject.filter";
 import { sendRequest } from "@/utils/fetch.api"
 import { apiUrl } from "@/utils/url"
 
@@ -26,7 +26,7 @@ const SubjectPage = async (props: {
     });
 
     return (
-        <CourseSubject
+        <CourseSubjectFilter
             subjectList={subjectPageResponse.data.content}
             subjectIds={subjectIds}
         />

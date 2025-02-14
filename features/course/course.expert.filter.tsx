@@ -12,7 +12,7 @@ import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { ChangeEvent } from 'react';
 import { useCourseListContext } from '@/wrapper/course-list/course.list.wrapper';
 
-const CourseExpert = ({ expertList, priceFrom, priceTo, expertIds }: {
+const CourseExpertFilter = ({ expertList, priceFrom, priceTo, expertIds }: {
     expertList: ExpertResponse[],
     priceFrom: string;
     priceTo: string;
@@ -189,4 +189,4 @@ const CourseExpert = ({ expertList, priceFrom, priceTo, expertIds }: {
     )
 }
 
-export default CourseExpert
+export default CourseExpertFilter

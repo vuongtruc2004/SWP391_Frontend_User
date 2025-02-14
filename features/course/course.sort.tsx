@@ -77,8 +77,7 @@ const CourseSort = ({ totalElements, courseSort, direction }: {
                         <MenuItem value={"salePrice"}>Giá</MenuItem>
                         <MenuItem value={"updatedAt"}>Mới nhất</MenuItem>
                         <MenuItem value={"purchaser"}>Số lượt mua</MenuItem>
-                        <MenuItem value={"like"}>Số lượt thích</MenuItem>
-                        <MenuItem value={"comment"}>Số lượt bình luận</MenuItem>
+                        <MenuItem value={"rate"}>Đánh giá</MenuItem>
                     </Select>
 
                     <Tooltip title="Tăng dần" placement="top" arrow>

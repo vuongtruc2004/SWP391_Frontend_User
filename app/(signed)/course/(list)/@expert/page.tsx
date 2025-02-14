@@ -1,4 +1,4 @@
-import CourseExpert from "@/features/course/course.expert";
+import CourseExpertFilter from "@/features/course/course.expert.filter";
 import { sendRequest } from "@/utils/fetch.api"
 import { apiUrl } from "@/utils/url"
 
@@ -21,7 +21,7 @@ const ExpertPage = async (props: {
     }
 
     const expertPageResponse = await sendRequest<ApiResponse<PageDetailsResponse<ExpertResponse[]>>>({
-        url: `${apiUrl}/users/experts`,
+        url: `${apiUrl}/experts`,
         queryParams: {
             page: 1,
             size: 100,
@@ -30,7 +30,7 @@ const ExpertPage = async (props: {
     });
 
     return (
-        <CourseExpert
+        <CourseExpertFilter
             expertList={expertPageResponse.data.content}
             priceFrom={priceFrom}
             priceTo={priceTo}

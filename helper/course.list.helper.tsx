@@ -33,8 +33,7 @@ export const getCourseSort = (courseSort: string): string => {
             courseSort !== "salePrice" &&
             courseSort !== "updatedAt" &&
             courseSort !== "purchaser" &&
-            courseSort !== "like" &&
-            courseSort !== "comment")
+            courseSort !== "rate")
     ) {
         return "default";
     }

@@ -14,7 +14,7 @@ import ErrorOutlineRoundedIcon from '@mui/icons-material/ErrorOutlineRounded';
 
 const initState: CommentFieldResponse | null = null;
 const InteractOnBlog = ({ blog }: { blog: BlogResponse }) => {
-    const { data: session } = useSession();
+    const { data: session, status } = useSession();
     const router = useRouter();
     const inputRef = useRef<HTMLInputElement>(null);
 
@@ -71,9 +71,10 @@ const InteractOnBlog = ({ blog }: { blog: BlogResponse }) => {
                             {state?.comment.message}
                         </span>
                     )}
+                    disabled={status !== "authenticated"}
                 />
                 <Button
-                    disabled={pending || !session}
+                    disabled={pending || status !== "authenticated"}
                     variant="contained"
                     color="primary"
                     sx={{ textTransform: 'none', marginTop: '20px' }}

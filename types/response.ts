@@ -83,8 +83,8 @@ declare global {
         expert: ExpertDetailsResponse;
         subjects: SubjectResponse[];
         lessons: LessonResponse[];
-        totalLikes: number;
-        totalComments: number;
+        averageRating: number;
+        totalRating: number;
     }
 
     interface DocumentResponse {
@@ -99,6 +99,7 @@ declare global {
     interface ExpertResponse {
         expertId: number;
         user: UserResponse;
+        totalCourses: number;
     }
 
     interface ExpertDetailsResponse extends ExpertResponse {
@@ -106,7 +107,6 @@ declare global {
         job: string;
         description: string;
         yearOfExperience: string;
-        totalCourses: number;
         totalStudents: number;
     }
 
@@ -125,6 +125,15 @@ declare global {
         description: string;
         videos: VideoResponse[];
         documents: DocumentResponse[];
+    }
+
+    interface RateResponse {
+        rateId: number;
+        content: string;
+        stars: number;
+        createdAt: string;
+        updatedAt: string;
+        user: UserResponse;
     }
 
     interface SubjectResponse {

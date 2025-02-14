@@ -2,13 +2,14 @@
 import { animate, KeyframeOptions, useInView, useIsomorphicLayoutEffect } from "framer-motion";
 import { useRef } from "react";
 
-export const AnimationCounter = ({ from, to, animationOptions }: {
+export const AnimationCounter = ({ from, to, fixedAt, animationOptions }: {
     from: number,
     to: number,
+    fixedAt: number,
     animationOptions?: KeyframeOptions
 }) => {
     const ref = useRef<HTMLSpanElement>(null);
-    const inView = useInView(ref);
+    const inView = useInView(ref, { once: true });
     const duration = to <= 10 ? 0.5 : 1.5;
 
     useIsomorphicLayoutEffect(() => {
@@ -21,7 +22,7 @@ export const AnimationCounter = ({ from, to, animationOptions }: {
             ease: 'easeOut',
             ...animationOptions,
             onUpdate(value) {
-                element.textContent = value.toFixed(0);
+                element.textContent = value.toFixed(fixedAt);
             }
         });
 

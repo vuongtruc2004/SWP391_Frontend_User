@@ -3,18 +3,13 @@ import { calculateReadingTime, formatCreateDate } from "@/helper/blog.helper";
 import { storageUrl } from "@/utils/url";
 import Avatar from "@mui/material/Avatar";
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import LocalLibraryOutlinedIcon from '@mui/icons-material/LocalLibraryOutlined';
-import ReplyAllOutlinedIcon from '@mui/icons-material/ReplyAllOutlined';
-import AlignHorizontalLeftOutlinedIcon from '@mui/icons-material/AlignHorizontalLeftOutlined';
 import Link from "next/link";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 
 const BlogDetails = ({ blog }: { blog: BlogResponse }) => {
-    const router = useRouter();
     const avatarSrc = blog?.user?.avatar?.startsWith("http") ? blog?.user?.avatar : `${storageUrl}/avatar/${blog?.user?.avatar}`;
 
     return (
@@ -23,14 +18,7 @@ const BlogDetails = ({ blog }: { blog: BlogResponse }) => {
             borderRadius: '6px',
             padding: '40px 20px'
         }}>
-            <div className="flex items-center justify-between">
-                <Button onClick={() => router.back()} sx={{ textTransform: 'none' }} variant="contained" startIcon={<ReplyAllOutlinedIcon />}>Trở lại</Button>
-                <Link href={"/blog"}>
-                    <Button sx={{ textTransform: 'none' }} variant="contained" startIcon={<AlignHorizontalLeftOutlinedIcon />}>Xem tất cả bài viết</Button>
-                </Link>
-            </div>
-
-            <h1 className="text-2xl font-semibold mt-10">{blog.title}</h1>
+            <h1 className="text-2xl font-semibold">{blog.title}</h1>
             <Box sx={{
                 display: 'flex',
                 alignItems: 'center',

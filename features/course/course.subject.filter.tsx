@@ -15,7 +15,7 @@ import RefreshIcon from '@mui/icons-material/Refresh';
 import { ChangeEvent, useRef } from "react";
 import { useCourseListContext } from "@/wrapper/course-list/course.list.wrapper";
 
-const CourseSubject = ({ subjectList, subjectIds }: {
+const CourseSubjectFilter = ({ subjectList, subjectIds }: {
     subjectList: SubjectResponse[];
     subjectIds: string;
 }) => {
@@ -182,4 +182,4 @@ const CourseSubject = ({ subjectList, subjectIds }: {
     )
 }
 
-export default CourseSubject
+export default CourseSubjectFilter

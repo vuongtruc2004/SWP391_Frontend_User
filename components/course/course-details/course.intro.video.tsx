@@ -32,6 +32,7 @@ const CourseVideoIntro = ({ course }: { course: CourseDetailsResponse }) => {
                     height: '100%',
                     bgcolor: 'rgba(0,0,0,0.5)',
                     transition: 'bottom 0.4s ease-in-out',
+                    borderRadius: '6px'
                 },
                 'img': {
                     height: 'auto',
@@ -39,6 +40,7 @@ const CourseVideoIntro = ({ course }: { course: CourseDetailsResponse }) => {
                     objectFit: 'cover',
                     maskImage: 'linear-gradient(to bottom, rgba(0,0,0,3) 60%, rgba(0,0,0,0.4) 85%, rgba(0,0,0,0) 100%)',
                     objectPosition: 'center',
+                    borderRadius: '6px'
                 },
                 '&:hover': {
                     '&::after': {
@@ -63,7 +65,7 @@ const CourseVideoIntro = ({ course }: { course: CourseDetailsResponse }) => {
                 />
 
                 <div className="transition-all duration-500 flex items-center justify-center gap-x-1 absolute bottom-3 left-1/2 -translate-x-1/2 z-[2] font-semibold">
-                    <p className="text-sm">Xem giới thiệu khóa học</p>
+                    <p className="text-sm">Xem video giới thiệu khóa học</p>
                     <ChevronRightOutlinedIcon sx={{ fontSize: '16px' }} />
                 </div>
             </Box>
