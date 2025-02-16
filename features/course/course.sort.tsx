@@ -48,6 +48,7 @@ const CourseSort = ({ totalElements, courseSort, direction }: {
             justifyContent: 'space-between',
             padding: '15px 25px',
             borderRadius: '6px',
+            boxShadow: '2px 2px 5px rgba(0, 0, 0, 0.5)',
             'button': {
                 width: '40px',
                 minWidth: '40px',

@@ -16,14 +16,15 @@ import AccountMenu from "./account.menu";
 import { useSession } from "next-auth/react";
 import { storageUrl } from "@/utils/url";
 import { motion } from 'framer-motion';
-import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import Image from "next/image";
+import CartButton from "@/features/cart/cart.button";
 
 const Header = () => {
     const pathname = usePathname();
     const router = useRouter();
     const searchParams = useSearchParams();
     const { data: session } = useSession();
+
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const avatarSrc = session?.user?.avatar?.startsWith("http") ? session?.user?.avatar : `${storageUrl}/avatar/${session?.user?.avatar}`
 
@@ -170,52 +171,38 @@ const Header = () => {
                 </form>
             </div>
 
-            {session ? (
-                <div className="flex items-center gap-x-5">
-                    <Tooltip title="Thông báo" arrow>
-                        <Link href={"/notification"}>
-                            <IconButton color="secondary">
-                                <Badge color="error" overlap="circular" badgeContent={5}>
-                                    <NotificationsNoneIcon sx={{ color: pathname === "/notification" ? "#60a5fa" : "#dee2e6" }} />
-                                </Badge>
-                            </IconButton>
+            <div className="flex items-center gap-x-3">
+                <CartButton />
+
+                {session ? (
+                    <>
+                        <Tooltip title="Thông báo" arrow>
+                            <Link href={"/notification"}>
+                                <IconButton color="secondary">
+                                    <Badge color="error" overlap="circular" badgeContent={5}>
+                                        <NotificationsNoneIcon sx={{ color: pathname === "/notification" ? "#60a5fa" : "#dee2e6" }} />
+                                    </Badge>
+                                </IconButton>
+                            </Link>
+                        </Tooltip>
+
+                        <Avatar alt="avatar" onClick={(event) => setAnchorEl(event.currentTarget)} sx={{ cursor: 'pointer' }} src={session ? avatarSrc : ""}>
+                            {session?.user.fullname?.charAt(0).toUpperCase()}
+                        </Avatar>
+                        <AccountMenu anchorEl={anchorEl} setAnchorEl={setAnchorEl} />
+                    </>
+                ) : (
+                    <>
+                        <Link href={"/login"} onClick={() => handleSavePrevUrl("/login")}>
+                            <Button sx={{ width: '110px' }} variant="outlined" color="secondary">Đăng Nhập</Button>
                         </Link>
-                    </Tooltip>
 
-                    <Tooltip title="Giỏ hàng" arrow>
-                        <Link href={"/notification"}>
-                            <IconButton color="secondary">
-                                <Badge color="error" overlap="circular" badgeContent={5}>
-                                    <ShoppingCartOutlinedIcon sx={{ color: pathname === "/notification" ? "#60a5fa" : "#dee2e6" }} />
-                                </Badge>
-                            </IconButton>
+                        <Link href={"/register"} onClick={() => handleSavePrevUrl("/register")}>
+                            <Button sx={{ width: '110px' }} variant="contained" color="primary">Đăng Kí</Button>
                         </Link>
-                    </Tooltip>
-
-                    <Avatar alt="avatar" onClick={(event) => setAnchorEl(event.currentTarget)} sx={{ cursor: 'pointer' }} src={session ? avatarSrc : ""}>
-                        {session?.user.fullname?.charAt(0).toUpperCase()}
-                    </Avatar>
-                    <AccountMenu anchorEl={anchorEl} setAnchorEl={setAnchorEl} />
-                </div>
-            ) : (
-                <Box sx={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    columnGap: '20px',
-                    'button': {
-                        textTransform: 'capitalize',
-                        width: '120px'
-                    }
-                }}>
-                    <Link href={"/login"} onClick={() => handleSavePrevUrl("/login")}>
-                        <Button variant="outlined" color="secondary">Đăng Nhập</Button>
-                    </Link>
-
-                    <Link href={"/register"} onClick={() => handleSavePrevUrl("/register")}>
-                        <Button variant="contained" color="primary">Đăng Kí</Button>
-                    </Link>
-                </Box>
-            )}
+                    </>
+                )}
+            </div>
         </Box>
     )
 }

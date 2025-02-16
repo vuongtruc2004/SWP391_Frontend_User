@@ -1,14 +1,13 @@
-import CourseIntroduce from "@/components/course/course-details/course.introduce";
 import CourseContent from "@/components/course/course-content/course.content";
 import { getCourseById } from "@/helper/course.details.helper";
 import Box from "@mui/material/Box";
 import { Metadata } from "next";
-import CourseVideoIntro from "@/components/course/course-details/course.intro.video";
 import CourseSubject from "@/components/course/course-details/course.subject";
 import CourseExpert from "@/components/course/course-details/course.expert";
 import CoursePurchase from "@/features/course/course-details/course.purchase";
 import CourseRate from "@/features/course/course-details/course.rate";
-import CourseTabs from "@/features/course/course-details/course.tabs";
+import CourseObjectives from "@/components/course/course-details/course.objectives";
+import CourseIntroduction from "@/features/course/course-introduction/course.introduction";
 
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
     const id = (await params).id
@@ -30,12 +29,12 @@ const CourseDetails = async ({ params }: { params: Promise<{ id: string }> }) =>
             margin: '0 auto',
             color: 'white',
             display: 'grid',
-            gridTemplateColumns: '2fr 1fr',
+            gridTemplateColumns: '2.25fr 1fr',
         }}>
-            <div className="mr-12">
-                <CourseVideoIntro course={courseResponse.data} />
+            <div className="mr-10">
+                <CourseIntroduction course={courseResponse.data} />
                 <div className="px-5">
-                    <CourseIntroduce course={courseResponse.data} />
+                    <CourseObjectives course={courseResponse.data} />
                     <CourseSubject course={courseResponse.data} />
                     <CourseContent course={courseResponse.data} />
                 </div>

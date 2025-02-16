@@ -9,8 +9,8 @@ export const formatPrice = (price: number): string => {
     return price.toLocaleString('vi-VN');
 };
 
-export const getSalePercent = (course: CourseResponse): number => {
-    const percent = (course.originalPrice - course.salePrice) / course.originalPrice * 100;
+export const getSalePercent = (originalPrice: number, salePrice: number): number => {
+    const percent = (originalPrice - salePrice) / originalPrice * 100;
     return Math.round(percent);
 }
 
@@ -86,13 +86,13 @@ export const displayPrice = (course: CourseResponse, status: 'not buy' | 'not st
             <>
                 <div className='flex items-center justify-between mt-2'>
                     {course.salePrice !== course.originalPrice && (
-                        <p>Giảm giá {getSalePercent(course)}%</p>
+                        <p>Giảm giá {getSalePercent(course.originalPrice, course.salePrice)}%</p>
                     )}
                     <div className='flex items-end gap-x-2'>
                         {course.salePrice !== course.originalPrice && (
-                            <p className='text-sm line-through text-red-500 italic'>{formatPrice(course.originalPrice)}đ</p>
+                            <p className='text-sm line-through text-red-500 italic'>{formatPrice(course.originalPrice)}₫</p>
                         )}
-                        <h1 className='text-xl font-semibold'>{formatPrice(course.salePrice)}đ</h1>
+                        <h1 className='text-xl font-semibold'>{formatPrice(course.salePrice)}₫</h1>
                     </div>
                 </div>
                 <Link href={"/course"} className="block mt-2">

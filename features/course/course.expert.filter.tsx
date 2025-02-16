@@ -74,9 +74,10 @@ const CourseExpertFilter = ({ expertList, priceFrom, priceTo, expertIds }: {
         <Box sx={{
             bgcolor: 'black',
             padding: '30px 20px',
-            borderRadius: '6px'
+            borderRadius: '6px',
+            boxShadow: '2px 2px 5px rgba(0, 0, 0, 0.5)',
         }}>
-            <div className="flex items-center justify-between mb-3">
+            <div className="flex items-center justify-between">
                 <h1 className="text-lg font-semibold">Giảng viên</h1>
                 <IconButton color="primary" onClick={handleSortExpert}>
                     <SortByAlphaOutlinedIcon />

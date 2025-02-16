@@ -1,12 +1,12 @@
 import Box from "@mui/material/Box";
 import CheckIcon from '@mui/icons-material/Check';
 
-const CourseIntroduce = ({ course }: { course: CourseDetailsResponse }) => {
+const CourseObjectives = ({ course }: { course: CourseDetailsResponse }) => {
     return (
         <>
             <h1 className="text-3xl font-semibold mb-2">{course.courseName}</h1>
             <p className="text-gray-300">{course.description}</p>
-            <h2 className="text-xl font-semibold mt-5 mb-1">Mục tiêu của khóa học</h2>
+            <h2 className="text-xl font-semibold mt-5 mb-1 flex items-center gap-x-1">I. Mục tiêu của khóa học</h2>
 
             <Box sx={{
                 display: 'grid',
@@ -29,4 +29,4 @@ const CourseIntroduce = ({ course }: { course: CourseDetailsResponse }) => {
     )
 }
 
-export default CourseIntroduce
+export default CourseObjectives

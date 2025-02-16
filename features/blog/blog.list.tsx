@@ -3,7 +3,7 @@ import Box from "@mui/material/Box";
 import Pagination from "@mui/material/Pagination";
 import SingleBlogList from "../../components/blog/single.blog"
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import BlogListEmpty from "../../components/blog/blog.list.empty";
+import ListEmpty from "@/components/empty/list.empty";
 
 const BlogList = ({ page }: { page: PageDetailsResponse<BlogResponse[]> }) => {
     const searchParams = useSearchParams();
@@ -34,6 +34,7 @@ const BlogList = ({ page }: { page: PageDetailsResponse<BlogResponse[]> }) => {
                     </Box>
                     <Pagination
                         count={page.totalPages}
+                        page={page?.currentPage || 1}
                         shape="rounded"
                         showFirstButton
                         showLastButton
@@ -46,7 +47,7 @@ const BlogList = ({ page }: { page: PageDetailsResponse<BlogResponse[]> }) => {
                     />
                 </>
             ) : (
-                <BlogListEmpty />
+                <ListEmpty text="Không có bài viết nào để hiển thị" />
             )}
         </>
     )

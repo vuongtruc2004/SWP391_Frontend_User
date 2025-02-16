@@ -16,7 +16,8 @@ const BlogDetails = ({ blog }: { blog: BlogResponse }) => {
         <Box sx={{
             bgcolor: 'black',
             borderRadius: '6px',
-            padding: '40px 20px'
+            padding: '40px 20px',
+            boxShadow: '2px 2px 5px rgba(0, 0, 0, 0.5)',
         }}>
             <h1 className="text-2xl font-semibold">{blog.title}</h1>
             <Box sx={{

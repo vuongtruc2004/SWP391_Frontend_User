@@ -32,6 +32,7 @@ const CourseList = ({ coursePage }: {
             </Box>
             <Pagination
                 count={coursePage.totalPages}
+                page={coursePage?.currentPage || 1}
                 shape="rounded"
                 showFirstButton
                 showLastButton

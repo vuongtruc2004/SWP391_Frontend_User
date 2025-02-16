@@ -35,7 +35,8 @@ const InteractOnBlog = ({ blog }: { blog: BlogResponse }) => {
         <Box sx={{
             bgcolor: 'black',
             borderRadius: '6px',
-            padding: '20px'
+            padding: '20px',
+            boxShadow: '2px 2px 5px rgba(0, 0, 0, 0.5)',
         }}>
             <ul className="flex items-center gap-x-10">
                 <li className="flex items-center gap-x-1">

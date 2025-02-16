@@ -7,15 +7,18 @@ import SchoolIcon from '@mui/icons-material/School';
 import WorkHistoryIcon from '@mui/icons-material/WorkHistory';
 import { useState } from "react";
 import Image from "next/image";
+import { getEmojiOnAvgStars } from "@/helper/course.details.helper";
 
 const CourseExpert = ({ course }: { course: CourseDetailsResponse }) => {
     const [expandDescription, setExpandDescription] = useState(false);
     const avatarSrc = course?.expert?.user?.avatar?.startsWith("http") ? course?.expert?.user?.avatar : `${storageUrl}/avatar/${course?.expert?.user?.avatar}`;
     return (
         <>
-            <div className="bg-black rounded-md p-5 my-5 flex items-center justify-between">
+            <div className="bg-black rounded-md p-5 my-5 flex items-center justify-between" style={{
+                boxShadow: '2px 2px 5px rgba(0, 0, 0, 0.5)',
+            }}>
                 <div className="flex items-center gap-x-3">
-                    <Image src={`${storageUrl}/icon/star.png`} alt="emoji" width={42} height={42} />
+                    <Image src={`${storageUrl}/icon/${getEmojiOnAvgStars(course.averageRating)}`} alt="emoji" width={46} height={46} />
                     <div>
                         <p className="font-semibold">Đánh giá</p>
                         <p className="text-sm text-gray-400 font-semibold">{course.totalRating} bài đánh giá</p>
@@ -23,11 +26,13 @@ const CourseExpert = ({ course }: { course: CourseDetailsResponse }) => {
                 </div>
                 <div>
                     <Rating name="read-only" value={course.averageRating} readOnly size="small" precision={0.1} />
-                    <p className="text-sm text-gray-400 font-semibold">{course.averageRating} sao</p>
+                    <p className="text-sm text-gray-400 font-semibold">{course.averageRating.toFixed(1)} sao</p>
                 </div>
             </div>
 
-            <div className="bg-black p-5 rounded-md">
+            <div className="bg-black p-5 rounded-md" style={{
+                boxShadow: '2px 2px 5px rgba(0, 0, 0, 0.5)',
+            }}>
                 <h1 className="font-semibold text-xl">Giảng viên</h1>
                 <div className="flex items-center gap-x-2 mt-3 mb-2">
                     <Avatar src={avatarSrc} sx={{

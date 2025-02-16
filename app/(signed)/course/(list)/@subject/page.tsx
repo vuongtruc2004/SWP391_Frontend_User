@@ -21,7 +21,7 @@ const SubjectPage = async (props: {
         queryParams: {
             page: 1,
             size: 50,
-            sort: `subjectName,${sortSubject}`
+            sort: `subjectName,${sortSubject}`,
         }
     });
 

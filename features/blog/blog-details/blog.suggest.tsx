@@ -22,7 +22,9 @@ const BlogSuggest = ({ blogList, currentId }: {
             flexDirection: 'column',
             rowGap: '20px',
         }}>
-            <div className="bg-black px-5 py-10 rounded-md">
+            <div className="bg-black px-5 py-10 rounded-md" style={{
+                boxShadow: '2px 2px 5px rgba(0, 0, 0, 0.5)',
+            }}>
                 <h1 className="text-lg font-semibold mb-5">Hashtags</h1>
                 <ul className="flex flex-wrap items-center gap-1">
                     {hashtags.map(tag => {
@@ -49,7 +51,9 @@ const BlogSuggest = ({ blogList, currentId }: {
                 </ul>
             </div>
 
-            <div className="bg-black px-5 py-10 rounded-md">
+            <div className="bg-black px-5 py-10 rounded-md" style={{
+                boxShadow: '2px 2px 5px rgba(0, 0, 0, 0.5)',
+            }}>
                 <h1 className="text-lg font-semibold mb-5">Xem thêm các bài viết của tác giả</h1>
                 <ul className="flex flex-col gap-y-5">
                     {suggestList?.map(blog => {

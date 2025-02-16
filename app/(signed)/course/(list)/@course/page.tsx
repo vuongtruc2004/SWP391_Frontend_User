@@ -1,4 +1,4 @@
-import CourseListEmpty from "@/components/course/course.list.empty";
+import ListEmpty from "@/components/empty/list.empty";
 import CourseList from "@/features/course/course.list";
 import CourseSort from "@/features/course/course.sort";
 import { getCourseSort, getInputPrice } from "@/helper/course.list.helper";
@@ -10,6 +10,7 @@ const CoursePage = async (props: {
     searchParams: Promise<{
         page: string;
         keyword: string;
+        event: string;
         priceFrom: string;
         priceTo: string;
         courseSort: string;
@@ -21,6 +22,7 @@ const CoursePage = async (props: {
     const searchParams = await props.searchParams;
     const page = searchParams.page || 1;
     const keyword = searchParams.keyword || "";
+    const event = searchParams.event || "all";
     const priceFrom = getInputPrice(searchParams.priceFrom);
     const priceTo = getInputPrice(searchParams.priceTo);
     const courseSort = getCourseSort(searchParams.courseSort);
@@ -29,6 +31,12 @@ const CoursePage = async (props: {
     const subjectIds = searchParams.subjectIds || "";
 
     let filter = `(courseName ~ '${keyword}' or description ~ '${keyword}')`;
+
+    if (event === "sale") {
+        filter += ' and salePrice < originalPrice';
+    } else if (event === "noSale") {
+        filter += ' and salePrice : originalPrice';
+    }
 
     if (priceFrom !== "") {
         filter += ` and salePrice >: ${priceFrom}`
@@ -73,7 +81,7 @@ const CoursePage = async (props: {
             />
 
             {(!coursePageResponse.data?.content?.length || coursePageResponse.data.content.length === 0) ? (
-                <CourseListEmpty />
+                <ListEmpty text="Không có khóa học nào để hiển thị" />
             ) : (
                 <CourseList coursePage={coursePageResponse.data} />
             )}

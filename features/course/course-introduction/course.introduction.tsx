@@ -1,28 +1,28 @@
 'use client'
 import { storageUrl } from "@/utils/url"
-import { Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from "@mui/material"
+import Box from "@mui/material/Box"
 import Image from "next/image";
 import ChevronRightOutlinedIcon from '@mui/icons-material/ChevronRightOutlined';
 import { useState } from "react";
+import CourseIntroVideo from "./course.intro.video";
 
-const CourseVideoIntro = ({ course }: { course: CourseDetailsResponse }) => {
+const CourseIntroduction = ({ course }: { course: CourseDetailsResponse }) => {
     const [open, setOpen] = useState(false);
 
     const handleClickOpen = () => {
         setOpen(true);
     };
 
-    const handleClose = () => {
-        setOpen(false);
-    };
     return (
         <>
             <Box sx={{
-                height: '280px',
+                height: '380px',
                 position: 'relative',
                 cursor: 'pointer',
                 overflow: 'hidden',
                 marginBottom: '10px',
+                boxShadow: '2px 2px 5px rgba(0, 0, 0, 0.5)',
+                borderRadius: '6px',
                 '&::after': {
                     content: '""',
                     position: 'absolute',
@@ -69,30 +69,9 @@ const CourseVideoIntro = ({ course }: { course: CourseDetailsResponse }) => {
                     <ChevronRightOutlinedIcon sx={{ fontSize: '16px' }} />
                 </div>
             </Box>
-            <Dialog
-                open={open}
-                onClose={handleClose}
-                aria-labelledby="alert-dialog-title"
-                aria-describedby="alert-dialog-description"
-            >
-                <DialogTitle id="alert-dialog-title">
-                    {"Use Google's location service?"}
-                </DialogTitle>
-                <DialogContent>
-                    <DialogContentText id="alert-dialog-description">
-                        Let Google help apps determine location. This means sending anonymous
-                        location data to Google, even when no apps are running.
-                    </DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={handleClose}>Disagree</Button>
-                    <Button onClick={handleClose} autoFocus>
-                        Agree
-                    </Button>
-                </DialogActions>
-            </Dialog>
+            <CourseIntroVideo open={open} setOpen={setOpen} course={course} />
         </>
     )
 }
 
-export default CourseVideoIntro
+export default CourseIntroduction
