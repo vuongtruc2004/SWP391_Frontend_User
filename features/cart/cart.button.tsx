@@ -14,7 +14,7 @@ const CartButton = () => {
         <>
             <Tooltip title="Giỏ hàng" arrow>
                 <IconButton color="secondary" onClick={(e) => setAnchorEl(e.currentTarget)}>
-                    <Badge color="error" overlap="circular" badgeContent={cart?.length || 0}>
+                    <Badge color="error" overlap="circular" badgeContent={cart ? (cart.length > 99 ? '99+' : cart.length) : 0}>
                         <ShoppingCartOutlinedIcon sx={{ color: pathname === "/cart" ? "#60a5fa" : "#dee2e6" }} />
                     </Badge>
                 </IconButton>

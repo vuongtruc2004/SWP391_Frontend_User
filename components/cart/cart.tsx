@@ -6,6 +6,7 @@ import Box from "@mui/material/Box"
 import ListEmpty from "../empty/list.empty";
 import { Button } from "@mui/material";
 import Link from "next/link";
+import SuggestCourse from "@/features/cart/suggest.course";
 
 const Cart = () => {
     const { cart } = useCartContext();
@@ -36,19 +37,25 @@ const Cart = () => {
             </Box>
         )
     }
+
     return (
         <Box sx={{
-            display: 'grid',
-            gridTemplateColumns: '2.5fr 1fr',
-            columnGap: '20px',
             paddingTop: '120px',
             width: '100%',
             maxWidth: '1200px',
             margin: '0 auto',
         }}>
-            <CartList />
-            <CartSummary />
+            <Box sx={{
+                display: 'grid',
+                gridTemplateColumns: '2.5fr 1fr',
+                columnGap: '20px',
+            }}>
+                <CartList />
+                <CartSummary />
+            </Box>
+            <SuggestCourse />
         </Box>
+
     )
 }
 
