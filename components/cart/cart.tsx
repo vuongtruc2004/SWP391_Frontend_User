@@ -4,13 +4,28 @@ import CartSummary from "@/components/cart/cart.summary"
 import { useCartContext } from "@/wrapper/course-cart/course.cart.wrapper";
 import Box from "@mui/material/Box"
 import ListEmpty from "../empty/list.empty";
-import { Button } from "@mui/material";
+import { Button, Skeleton } from "@mui/material";
 import Link from "next/link";
 import SuggestCourse from "@/features/cart/suggest.course";
 
 const Cart = () => {
-    const { cart } = useCartContext();
+    const { cart, loading } = useCartContext();
 
+    if (loading) {
+        return (
+            <div className="pt-[120px]">
+                <Box sx={{
+                    display: 'grid',
+                    gridTemplateColumns: '2.5fr 1fr',
+                    columnGap: '20px',
+                }}>
+                    <Skeleton variant="rounded" width={"100%"} height={200} animation="wave" />
+                    <Skeleton variant="rounded" width={"100%"} height={200} animation="wave" />
+                </Box>
+                <Skeleton variant="rounded" width={"100%"} height={250} animation="wave" sx={{ marginTop: '20px' }} />
+            </div>
+        )
+    }
     if (!cart || cart.length === 0) {
         return (
             <Box sx={{

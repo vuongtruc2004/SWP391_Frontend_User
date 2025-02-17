@@ -4,19 +4,22 @@ import { createContext, useContext, useEffect, useState } from "react";
 interface ICartCourse {
     cart: CartCourse[];
     setCart: React.Dispatch<React.SetStateAction<CartCourse[]>>;
+    loading: boolean;
 }
 const CartContext = createContext<ICartCourse | null>(null);
 
 export const CourseCartWrapper = ({ children }: { children: React.ReactNode }) => {
     const [cart, setCart] = useState<CartCourse[]>([]);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const storedCart = JSON.parse(localStorage.getItem("cart") || "[]");
         setCart(storedCart);
+        setLoading(false);
     }, []);
 
     return (
-        <CartContext.Provider value={{ cart, setCart }}>
+        <CartContext.Provider value={{ cart, setCart, loading }}>
             {children}
         </CartContext.Provider>
     )

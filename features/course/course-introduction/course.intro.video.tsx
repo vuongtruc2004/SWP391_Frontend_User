@@ -19,7 +19,8 @@ const CourseIntroVideo = ({ open, setOpen, course }: {
             onClose={handleClose}
             sx={{
                 '.mui-16bx961-MuiPaper-root-MuiDialog-paper': {
-                    maxWidth: 'max-content'
+                    maxWidth: 'max-content',
+                    boxShadow: 'none !important',
                 }
             }}
         >
@@ -36,7 +37,7 @@ const CourseIntroVideo = ({ open, setOpen, course }: {
                         <h1 className="text-sm text-gray-300">Giới thiệu khóa học</h1>
                         <h1 className="text-xl font-semibold mb-2">{course.courseName}</h1>
                     </div>
-                    <span className="transition-all duration-150 hover:text-gray-500 cursor-pointer" onClick={handleClose}>
+                    <span className="transition-all duration-150 hover:text-purple-300 cursor-pointer" onClick={handleClose}>
                         <CloseIcon />
                     </span>
                 </div>

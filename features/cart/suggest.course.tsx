@@ -1,7 +1,7 @@
 import { sendRequest } from "@/utils/fetch.api";
 import { apiUrl } from "@/utils/url";
 import { useCartContext } from "@/wrapper/course-cart/course.cart.wrapper"
-import { Box, Button, IconButton } from "@mui/material"
+import { Box, Button, IconButton, Skeleton } from "@mui/material"
 import { useEffect, useRef, useState } from "react";
 import SingleCourseSuggest from "./single.course.suggest";
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -14,12 +14,14 @@ import 'swiper/css';
 
 const SuggestCourse = () => {
     const { cart } = useCartContext();
+    const [loading, setLoading] = useState(false);
     const [courses, setCourses] = useState<CourseDetailsResponse[]>([]);
     const navigationPrevRef = useRef(null);
     const navigationNextRef = useRef(null);
 
     useEffect(() => {
         const fetchSuggestCourses = async () => {
+            setLoading(true);
             const courseIds = cart.map(item => item.courseId);
             const coursesResponse = await sendRequest<ApiResponse<CourseDetailsResponse[]>>({
                 url: `${apiUrl}/courses/suggestion`,
@@ -30,9 +32,29 @@ const SuggestCourse = () => {
             if (coursesResponse.status === 200) {
                 setCourses(coursesResponse.data);
             }
+            setLoading(false);
         }
         fetchSuggestCourses();
     }, [cart]);
+
+    if (loading) {
+        return (
+            <Box sx={{
+                width: '100%',
+                maxWidth: '1200px',
+                marginTop: '20px',
+            }}>
+                <Skeleton variant="text" sx={{ fontSize: '1.25rem', marginBottom: '20px' }} width={100} />
+                <div className="grid grid-cols-5 gap-x-3">
+                    {Array.from({ length: 5 }).map((_, index) => {
+                        return (
+                            <Skeleton key={index} animation="wave" variant="rounded" width={"100%"} height={180} />
+                        )
+                    })}
+                </div>
+            </Box>
+        )
+    }
 
     return (
         <Box sx={{

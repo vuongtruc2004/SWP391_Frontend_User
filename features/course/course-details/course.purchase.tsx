@@ -1,6 +1,6 @@
 'use client'
 import { formatPrice, getSalePercent } from "@/helper/course.list.helper";
-import { Button, Divider } from "@mui/material";
+import { Alert, Button, Divider, Slide, SlideProps, Snackbar } from "@mui/material";
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import { formatCreateDate } from "@/helper/blog.helper";
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
@@ -13,10 +13,16 @@ import HowToRegOutlinedIcon from '@mui/icons-material/HowToRegOutlined';
 import { useCartContext } from "@/wrapper/course-cart/course.cart.wrapper";
 import Link from "next/link";
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import { useState } from "react";
+
+function SlideTransition(props: SlideProps) {
+    return <Slide {...props} direction="down" />;
+}
 
 const CoursePurchase = ({ course }: { course: CourseDetailsResponse }) => {
 
     const { cart, setCart } = useCartContext();
+    const [open, setOpen] = useState(false);
 
     const handleCart = () => {
         let cartFromStorage: CartCourse[] = JSON.parse(localStorage.getItem('cart') || "[]");
@@ -42,6 +48,7 @@ const CoursePurchase = ({ course }: { course: CourseDetailsResponse }) => {
             newCart = [...cartFromStorage, newItem];
             localStorage.setItem('cart', JSON.stringify(newCart));
             setCart(newCart);
+            setOpen(true);
         }
     };
 
@@ -115,6 +122,27 @@ const CoursePurchase = ({ course }: { course: CourseDetailsResponse }) => {
             <Button variant="contained" color="primary" fullWidth startIcon={<LocalMallOutlinedIcon />}>
                 Mua ngay
             </Button>
+
+            <Snackbar
+                open={open}
+                autoHideDuration={3000}
+                onClose={() => setOpen(false)}
+                anchorOrigin={{
+                    vertical: 'top',
+                    horizontal: 'center'
+                }}
+                TransitionComponent={SlideTransition}
+                key={SlideTransition.name}
+            >
+                <Alert
+                    severity="success"
+                    onClose={() => setOpen(false)}
+                    sx={{ width: '100%', color: 'white' }}
+                    variant="filled"
+                >
+                    Khóa học đã được thêm vào giỏ hàng!
+                </Alert>
+            </Snackbar>
         </div>
     )
 }
