@@ -18,11 +18,12 @@ const Cart = () => {
                     display: 'grid',
                     gridTemplateColumns: '2.5fr 1fr',
                     columnGap: '20px',
+                    maxWidth: '1200px',
+                    margin: '0 auto'
                 }}>
-                    <Skeleton variant="rounded" width={"100%"} height={200} animation="wave" />
+                    <Skeleton variant="rounded" width={"100%"} height={250} animation="wave" />
                     <Skeleton variant="rounded" width={"100%"} height={200} animation="wave" />
                 </Box>
-                <Skeleton variant="rounded" width={"100%"} height={250} animation="wave" sx={{ marginTop: '20px' }} />
             </div>
         )
     }

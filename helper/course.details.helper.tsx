@@ -32,8 +32,8 @@ export const getNumberOfVideos = (course: CourseDetailsResponse): number => {
 }
 
 export const getNumberOfDocuments = (course: CourseDetailsResponse): number => {
-    const numberOfVideos = course.lessons.map(item => item.documents.length);
-    return numberOfVideos.reduce((sum, num) => sum + num, 0);
+    const numberOfDocuments = course.lessons.map(item => item.documents.length);
+    return numberOfDocuments.reduce((sum, num) => sum + num, 0);
 }
 
 export const convertSecondToTime = (second: number): string => {

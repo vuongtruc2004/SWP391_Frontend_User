@@ -7,17 +7,36 @@ import Image from 'next/image';
 import { displayPrice, displayProgressbar } from '@/helper/course.list.helper';
 import { formatCreateDate } from '@/helper/blog.helper';
 import HowToRegIcon from '@mui/icons-material/HowToReg';
-import { useState } from 'react';
+import { useCoursePurchased } from "@/wrapper/course-purchased/course.purchased.wrapper";
+import { Skeleton } from "@mui/material";
 
 const SingleCourseSlider = ({ course }: { course: CourseResponse }) => {
-    const [status, setStatus] = useState<'not buy' | 'not start' | 'studying' | 'completed'>('not buy');
+    const { purchasedCourses, loading } = useCoursePurchased();
+
+    const percentage = purchasedCourses.find((purchasedCourse) => purchasedCourse.courseId === course.courseId)?.completionPercentage;
+    let status = -1;
+    if (percentage !== undefined) {
+        status = percentage;
+    }
+
+    if (loading) {
+        return (
+            <div>
+                <Skeleton width={"100%"} height={220} animation="wave" variant="rounded" />
+                <Skeleton width={"80%"} animation="wave" variant="text" sx={{ fontSize: '20px' }} />
+                <Skeleton width={"60%"} animation="wave" variant="text" sx={{ fontSize: '14px' }} />
+                <Skeleton width={"60%"} animation="wave" variant="text" sx={{ fontSize: '14px' }} />
+            </div>
+        )
+    }
 
     return (
         <Box sx={{
             borderRadius: '6px',
             bgcolor: 'black',
             color: 'white',
-            boxShadow: '2px 2px 5px rgba(0,0,0,0.5)'
+            boxShadow: '2px 2px 5px rgba(0,0,0,0.5)',
+            height: 'max-content'
         }}>
             <Link href={`/course/${course.courseId}`} style={{
                 display: 'block',
@@ -41,18 +60,18 @@ const SingleCourseSlider = ({ course }: { course: CourseResponse }) => {
             <div className='p-5'>
                 <Link href={`/course/${course.courseId}`} className='transition-all duration-150 text-xl font-semibold hover:underline hover:text-blue-500'>{course.courseName}</Link>
                 {displayProgressbar(status)}
-                <p className='text-gray-400 my-1 line-clamp-2'>
+                <p className='text-gray-300 my-1 line-clamp-2'>
                     {course.description}
                     Lorem ipsum dolor, sit amet consectetur adipisicing elit. Hic commodi enim facere ullam corrupti nisi tenetur doloremque aliquam ratione quod.
                 </p>
 
                 <div className='text-sm'>
-                    <div className="flex items-center gap-x-2 text-blue-500">
-                        <p className="text-green-400">Giảng viên:</p>
-                        <Link href={"/home"} className="hover:underline">{course.expert.user.fullname}</Link>
+                    <div className="flex items-center gap-x-2">
+                        <p className="text-gray-300 font-semibold">Giảng viên:</p>
+                        <p className="text-green-500">{course.expert.user.fullname}</p>
                     </div>
                     <div className='flex items-center gap-x-2'>
-                        <p className='text-gray-300'>Cập nhật lần cuối:</p>
+                        <p className='text-gray-300 font-semibold'>Cập nhật lần cuối:</p>
                         <p className='text-purple-300'>{formatCreateDate(course.updatedAt ?? course.createdAt)}</p>
                     </div>
                 </div>

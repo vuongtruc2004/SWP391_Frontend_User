@@ -76,6 +76,11 @@ declare global {
         updatedAt: string;
     }
 
+    interface CourseStatusResponse {
+        courseId: number;
+        completionPercentage: number;
+    }
+
     interface CourseDetailsResponse extends CourseResponse {
         introduction: string;
         objectives: string[];
