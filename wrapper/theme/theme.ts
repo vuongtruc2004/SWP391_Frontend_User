@@ -17,6 +17,9 @@ const theme = createTheme({
         info: {
             main: '#dab2ff'
         },
+        warning: {
+            main: '#00c951'
+        },
         mode: 'dark'
     },
     typography: {

@@ -1,5 +1,8 @@
 import { sendRequest } from "@/utils/fetch.api";
 import { apiUrl } from "@/utils/url";
+import { Button } from "@mui/material";
+import PlayArrowIcon from '@mui/icons-material/PlayArrow';
+import { BorderLinearProgress } from "@/components/course/course-slider/custom.progress";
 
 export const getCourseById = async (id: string): Promise<ApiResponse<CourseDetailsResponse>> => {
     const courseResponse = await sendRequest<ApiResponse<CourseDetailsResponse>>({
@@ -85,4 +88,46 @@ export const countTotalTime = (course: CourseDetailsResponse): string => {
 
 export const getVideoIdFromUrl = (url: string) => {
     return url.substring(url.lastIndexOf("/") + 1, url.indexOf("?"));
+}
+
+export const getPurchasedButton = (status: number): React.ReactNode => {
+    if (status === 0) {
+        return (
+            <>
+                <div className='flex items-center gap-x-2 w-full my-2'>
+                    <BorderLinearProgress variant="determinate" value={0} sx={{ flex: 1 }} />
+                    <p className='text-gray-300 font-semibold'>{0}%</p>
+                </div>
+                <Button variant="outlined" color="secondary" fullWidth startIcon={<PlayArrowIcon />}>
+                    Bắt đầu học
+                </Button>
+            </>
+        )
+    } else if (status > 0 && status < 100) {
+        return (
+            <>
+                <div className='flex items-center gap-x-2 w-full my-2'>
+                    <BorderLinearProgress variant="determinate" value={status} sx={{ flex: 1 }} />
+                    <p className='text-purple-300 font-semibold'>{status.toFixed(1)}%</p>
+                </div>
+                <Button variant="outlined" color="info" fullWidth startIcon={<PlayArrowIcon />}>
+                    Học ngay
+                </Button>
+            </>
+        )
+    } else if (status === 100) {
+        return (
+            <>
+                <div className='flex items-center gap-x-2 w-full my-2'>
+                    <BorderLinearProgress variant="determinate" value={100} sx={{ flex: 1 }} thumb_color="#00c951" />
+                    <p className='text-green-500 font-semibold'>{100}%</p>
+                </div>
+                <Button variant="outlined" color="warning" fullWidth startIcon={<PlayArrowIcon />}>
+                    Xem lại khóa học
+                </Button>
+            </>
+        )
+    } else {
+        return null;
+    }
 }

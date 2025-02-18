@@ -1,11 +1,11 @@
 'use client'
 import { formatPrice, getSalePercent } from "@/helper/course.list.helper";
-import { Alert, Button, Divider, Slide, SlideProps, Snackbar } from "@mui/material";
+import { Alert, Button, Divider, Skeleton, Slide, SlideProps, Snackbar } from "@mui/material";
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import { formatCreateDate } from "@/helper/blog.helper";
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import LoopIcon from '@mui/icons-material/Loop';
-import { countTotalTime } from "@/helper/course.details.helper";
+import { countTotalTime, getPurchasedButton } from "@/helper/course.details.helper";
 import LocalMallOutlinedIcon from '@mui/icons-material/LocalMallOutlined';
 import StayCurrentPortraitOutlinedIcon from '@mui/icons-material/StayCurrentPortraitOutlined';
 import AllInclusiveOutlinedIcon from '@mui/icons-material/AllInclusiveOutlined';
@@ -14,6 +14,8 @@ import { useCartContext } from "@/wrapper/course-cart/course.cart.wrapper";
 import Link from "next/link";
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import { useState } from "react";
+import InfoIcon from '@mui/icons-material/Info';
+import { useCoursePurchased } from "@/wrapper/course-purchased/course.purchased.wrapper";
 
 function SlideTransition(props: SlideProps) {
     return <Slide {...props} direction="down" />;
@@ -22,6 +24,14 @@ function SlideTransition(props: SlideProps) {
 const CoursePurchase = ({ course }: { course: CourseDetailsResponse }) => {
 
     const { cart, setCart } = useCartContext();
+    const { purchasedCourses, loading } = useCoursePurchased();
+
+    const percentage = purchasedCourses.find((purchasedCourse) => purchasedCourse.courseId === course.courseId)?.completionPercentage;
+    let status = -1;
+    if (percentage !== undefined) {
+        status = percentage;
+    }
+
     const [open, setOpen] = useState(false);
 
     const handleCart = () => {
@@ -52,23 +62,32 @@ const CoursePurchase = ({ course }: { course: CourseDetailsResponse }) => {
         }
     };
 
+    if (loading) {
+        return (
+            <Skeleton width={"100%"} height={300} animation="wave" variant="rounded" />
+        )
+    }
+
     return (
         <div className="bg-black rounded-md p-5" style={{
             boxShadow: '2px 2px 5px rgba(0, 0, 0, 0.5)',
         }}>
-            <div className="flex items-center justify-between">
-                <div className="flex items-end gap-x-2">
-                    <h1 className='text-3xl font-semibold'>{formatPrice(course.salePrice)}<span className="text-sm">₫</span></h1>
-                    {course.salePrice !== course.originalPrice && (
-                        <p className='line-through text-gray-400'>{formatPrice(course.originalPrice)}₫</p>
-                    )}
-                </div>
-                {course.salePrice !== course.originalPrice && (
-                    <p className="px-3 py-2 bg-green-700 text-sm rounded-md">-{getSalePercent(course.originalPrice, course.salePrice)}%</p>
-                )}
-            </div>
-
-            <Divider sx={{ marginBlock: '10px' }} />
+            {status < 0 && (
+                <>
+                    <div className="flex items-center justify-between">
+                        <div className="flex items-end gap-x-2">
+                            <h1 className='text-3xl font-semibold'>{formatPrice(course.salePrice)}<span className="text-sm">₫</span></h1>
+                            {course.salePrice !== course.originalPrice && (
+                                <p className='line-through text-gray-400'>{formatPrice(course.originalPrice)}₫</p>
+                            )}
+                        </div>
+                        {course.salePrice !== course.originalPrice && (
+                            <p className="px-3 py-2 bg-green-700 text-sm rounded-md">-{getSalePercent(course.originalPrice, course.salePrice)}%</p>
+                        )}
+                    </div>
+                    <Divider sx={{ marginBlock: '10px' }} />
+                </>
+            )}
 
             <h2 className="font-semibold text-lg">Về khóa học</h2>
             <ul className="text-sm">
@@ -94,55 +113,69 @@ const CoursePurchase = ({ course }: { course: CourseDetailsResponse }) => {
                 </li>
             </ul>
 
-            {cart.some(item => item.courseId === course.courseId) ? (
-                <Link href={"/cart"}>
+            {status < 0 ? (
+                cart.some(item => item.courseId === course.courseId) ? (
+                    <Link href={"/cart"}>
+                        <Button
+                            variant="outlined"
+                            color="info"
+                            fullWidth
+                            endIcon={<ChevronRightIcon />}
+                            sx={{ marginBlock: '10px 12px' }}
+                        >
+                            Chuyển đến giỏ hàng
+                        </Button>
+                    </Link>
+                ) : (
                     <Button
                         variant="outlined"
-                        color="info"
+                        color="secondary"
                         fullWidth
-                        endIcon={<ChevronRightIcon />}
+                        startIcon={<AddShoppingCartIcon />}
                         sx={{ marginBlock: '10px 12px' }}
+                        onClick={handleCart}
                     >
-                        Chuyển đến giỏ hàng
+                        Thêm vào giỏ hàng
                     </Button>
-                </Link>
+                )
             ) : (
-                <Button
-                    variant="outlined"
-                    color="secondary"
-                    fullWidth
-                    startIcon={<AddShoppingCartIcon />}
-                    sx={{ marginBlock: '10px 12px' }}
-                    onClick={handleCart}
-                >
-                    Thêm vào giỏ hàng
-                </Button>
+                <>
+                    <Divider />
+                    {getPurchasedButton(status)}
+                    <p className="text-sm flex items-center gap-x-1 ml-2">
+                        <InfoIcon sx={{ fontSize: '1.2rem', color: '#2b7fff' }} />
+                        <span>Bạn đã mua khóa học này vào 20 thang 8, 2025</span>
+                    </p>
+                </>
             )}
 
-            <Button variant="contained" color="primary" fullWidth startIcon={<LocalMallOutlinedIcon />}>
-                Mua ngay
-            </Button>
-
-            <Snackbar
-                open={open}
-                autoHideDuration={3000}
-                onClose={() => setOpen(false)}
-                anchorOrigin={{
-                    vertical: 'top',
-                    horizontal: 'center'
-                }}
-                TransitionComponent={SlideTransition}
-                key={SlideTransition.name}
-            >
-                <Alert
-                    severity="success"
-                    onClose={() => setOpen(false)}
-                    sx={{ width: '100%', color: 'white' }}
-                    variant="filled"
-                >
-                    Khóa học đã được thêm vào giỏ hàng!
-                </Alert>
-            </Snackbar>
+            {status < 0 && (
+                <>
+                    <Button variant="contained" color="primary" fullWidth startIcon={<LocalMallOutlinedIcon />}>
+                        Mua ngay
+                    </Button>
+                    <Snackbar
+                        open={open}
+                        autoHideDuration={3000}
+                        onClose={() => setOpen(false)}
+                        anchorOrigin={{
+                            vertical: 'top',
+                            horizontal: 'center'
+                        }}
+                        TransitionComponent={SlideTransition}
+                        key={SlideTransition.name}
+                    >
+                        <Alert
+                            severity="success"
+                            onClose={() => setOpen(false)}
+                            sx={{ width: '100%', color: 'white' }}
+                            variant="filled"
+                        >
+                            Khóa học đã được thêm vào giỏ hàng!
+                        </Alert>
+                    </Snackbar>
+                </>
+            )}
         </div>
     )
 }
