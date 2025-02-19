@@ -46,4 +46,12 @@ declare global {
         email: string;
         password: string;
     }
+
+    interface OrderRequest {
+        userId: number;
+        courses: {
+            courseId: number;
+            price: number;
+        }[];
+    }
 }

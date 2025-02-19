@@ -6,8 +6,7 @@ import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import DoneAllIcon from '@mui/icons-material/DoneAll';
 import AutoAwesomeOutlinedIcon from '@mui/icons-material/AutoAwesomeOutlined';
 import { useSession } from "next-auth/react";
-import { encryptTextWithAES } from "@/utils/aes.encryption";
-import { convertCoursesListToString } from "@/helper/course.cart.helper";
+import { decryptWithAES, encryptWithAES } from "@/utils/aes.encryption";
 
 const PaymentInstruction = ({ open, setOpen, courses }: {
     open: boolean;
@@ -31,16 +30,26 @@ const PaymentInstruction = ({ open, setOpen, courses }: {
                 setTimeout(() => setCopied(false), 1500);
             })
             .catch(err => console.error("Copy failed:", err));
+        console.log(decryptWithAES(textToCopy));
     };
 
     useEffect(() => {
         if (status === "authenticated") {
-            setTextToCopy(encryptTextWithAES(`uid=${session.user.userId}&courseIds=${convertCoursesListToString(courses)}`));
+            setTextToCopy(encryptWithAES({
+                userId: session.user.userId,
+                courses: courses.map(course => {
+                    return {
+                        courseId: course.courseId,
+                        price: course.salePrice
+                    }
+                })
+            }));
         }
     }, [session]);
 
     return (
         <Dialog
+            aria-hidden={false}
             onClose={handleClose}
             open={open}
             sx={{

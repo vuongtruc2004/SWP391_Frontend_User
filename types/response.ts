@@ -148,4 +148,8 @@ declare global {
         thumbnail: string;
         totalCourses: number;
     }
+
+    interface OrderResponse {
+
+    }
 }
