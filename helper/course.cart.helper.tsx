@@ -9,3 +9,7 @@ export const sumOriginalPrice = (cart: CartCourse[]): string => {
 export const savePrice = (cart: CartCourse[]): string => {
     return cart.reduce((sum, item) => sum + (item.originalPrice - item.salePrice), 0).toLocaleString('vi-VN');
 }
+
+export const convertCoursesListToString = (courses: CourseDetailsResponse[] | CartCourse[] | CourseResponse[]) => {
+    return courses.map(course => course.courseId).join(",");
+}

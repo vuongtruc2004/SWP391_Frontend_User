@@ -1,5 +1,6 @@
 'use client'
 import { createContext, useContext, useEffect, useState } from "react";
+import { useCoursePurchased } from "../course-purchased/course.purchased.wrapper";
 
 interface ICartCourse {
     cart: CartCourse[];
@@ -9,14 +10,26 @@ interface ICartCourse {
 const CartContext = createContext<ICartCourse | null>(null);
 
 export const CourseCartWrapper = ({ children }: { children: React.ReactNode }) => {
+    const { purchasedCourses } = useCoursePurchased();
     const [cart, setCart] = useState<CartCourse[]>([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const storedCart = JSON.parse(localStorage.getItem("cart") || "[]");
-        setCart(storedCart);
+        const storedCart: CartCourse[] = JSON.parse(localStorage.getItem("cart") || "[]");
+
+        if (purchasedCourses.length) {
+            const newStoredCart = storedCart.filter(course => !purchasedCourses.some(item => item.courseId === course.courseId));
+
+            if (newStoredCart.length !== cart.length) {
+                localStorage.setItem('cart', JSON.stringify(newStoredCart));
+                setCart(newStoredCart);
+            }
+        } else {
+            setCart(storedCart);
+        }
+
         setLoading(false);
-    }, []);
+    }, [purchasedCourses]);
 
     return (
         <CartContext.Provider value={{ cart, setCart, loading }}>

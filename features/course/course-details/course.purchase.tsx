@@ -13,9 +13,11 @@ import HowToRegOutlinedIcon from '@mui/icons-material/HowToRegOutlined';
 import { useCartContext } from "@/wrapper/course-cart/course.cart.wrapper";
 import Link from "next/link";
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import { useState } from "react";
-import InfoIcon from '@mui/icons-material/Info';
+import { useEffect, useState } from "react";
 import { useCoursePurchased } from "@/wrapper/course-purchased/course.purchased.wrapper";
+import PaymentInstruction from "./payment.instruction";
+import { useSession } from "next-auth/react";
+import { usePathname, useRouter } from "next/navigation";
 
 function SlideTransition(props: SlideProps) {
     return <Slide {...props} direction="down" />;
@@ -25,14 +27,13 @@ const CoursePurchase = ({ course }: { course: CourseDetailsResponse }) => {
 
     const { cart, setCart } = useCartContext();
     const { purchasedCourses, loading } = useCoursePurchased();
+    const { status } = useSession();
+    const { push } = useRouter();
+    const pathname = usePathname();
 
-    const percentage = purchasedCourses.find((purchasedCourse) => purchasedCourse.courseId === course.courseId)?.completionPercentage;
-    let status = -1;
-    if (percentage !== undefined) {
-        status = percentage;
-    }
-
-    const [open, setOpen] = useState(false);
+    const [openNotification, setOpenNotification] = useState(false);
+    const [openInstruction, setOpenInstruction] = useState(false);
+    const [percentage, setPercentage] = useState<number>(-1);
 
     const handleCart = () => {
         let cartFromStorage: CartCourse[] = JSON.parse(localStorage.getItem('cart') || "[]");
@@ -58,9 +59,27 @@ const CoursePurchase = ({ course }: { course: CourseDetailsResponse }) => {
             newCart = [...cartFromStorage, newItem];
             localStorage.setItem('cart', JSON.stringify(newCart));
             setCart(newCart);
-            setOpen(true);
+            setOpenNotification(true);
         }
     };
+
+    const handleOpenInstruction = () => {
+        if (status !== "authenticated") {
+            sessionStorage.setItem('prevUrl', pathname);
+            push("/login");
+        } else {
+            setOpenInstruction(true);
+        }
+    }
+
+    useEffect(() => {
+        if (!loading) {
+            const completionPercentage = purchasedCourses.find((purchasedCourse) => purchasedCourse.courseId === course.courseId)?.completionPercentage;
+            if (completionPercentage !== undefined) {
+                setPercentage(completionPercentage);
+            }
+        }
+    }, [loading]);
 
     if (loading) {
         return (
@@ -72,7 +91,7 @@ const CoursePurchase = ({ course }: { course: CourseDetailsResponse }) => {
         <div className="bg-black rounded-md p-5" style={{
             boxShadow: '2px 2px 5px rgba(0, 0, 0, 0.5)',
         }}>
-            {status < 0 && (
+            {percentage < 0 && (
                 <>
                     <div className="flex items-center justify-between">
                         <div className="flex items-end gap-x-2">
@@ -113,7 +132,7 @@ const CoursePurchase = ({ course }: { course: CourseDetailsResponse }) => {
                 </li>
             </ul>
 
-            {status < 0 ? (
+            {percentage < 0 ? (
                 cart.some(item => item.courseId === course.courseId) ? (
                     <Link href={"/cart"}>
                         <Button
@@ -127,53 +146,52 @@ const CoursePurchase = ({ course }: { course: CourseDetailsResponse }) => {
                         </Button>
                     </Link>
                 ) : (
-                    <Button
-                        variant="outlined"
-                        color="secondary"
-                        fullWidth
-                        startIcon={<AddShoppingCartIcon />}
-                        sx={{ marginBlock: '10px 12px' }}
-                        onClick={handleCart}
-                    >
-                        Thêm vào giỏ hàng
-                    </Button>
+                    <>
+                        <Button
+                            variant="outlined"
+                            color="secondary"
+                            fullWidth
+                            startIcon={<AddShoppingCartIcon />}
+                            sx={{ marginBlock: '10px 12px' }}
+                            onClick={handleCart}
+                        >
+                            Thêm vào giỏ hàng
+                        </Button>
+                        <Snackbar
+                            open={openNotification}
+                            autoHideDuration={3000}
+                            onClose={() => setOpenNotification(false)}
+                            anchorOrigin={{
+                                vertical: 'top',
+                                horizontal: 'center'
+                            }}
+                            TransitionComponent={SlideTransition}
+                            key={SlideTransition.name}
+                        >
+                            <Alert
+                                severity="success"
+                                onClose={() => setOpenNotification(false)}
+                                sx={{ width: '100%', color: 'white' }}
+                                variant="filled"
+                            >
+                                Khóa học đã được thêm vào giỏ hàng!
+                            </Alert>
+                        </Snackbar>
+                    </>
                 )
             ) : (
                 <>
                     <Divider />
-                    {getPurchasedButton(status)}
-                    <p className="text-sm flex items-center gap-x-1 ml-2">
-                        <InfoIcon sx={{ fontSize: '1.2rem', color: '#2b7fff' }} />
-                        <span>Bạn đã mua khóa học này vào 20 thang 8, 2025</span>
-                    </p>
+                    {getPurchasedButton(percentage)}
                 </>
             )}
 
-            {status < 0 && (
+            {percentage < 0 && (
                 <>
-                    <Button variant="contained" color="primary" fullWidth startIcon={<LocalMallOutlinedIcon />}>
+                    <Button variant="contained" color="primary" fullWidth startIcon={<LocalMallOutlinedIcon />} onClick={handleOpenInstruction}>
                         Mua ngay
                     </Button>
-                    <Snackbar
-                        open={open}
-                        autoHideDuration={3000}
-                        onClose={() => setOpen(false)}
-                        anchorOrigin={{
-                            vertical: 'top',
-                            horizontal: 'center'
-                        }}
-                        TransitionComponent={SlideTransition}
-                        key={SlideTransition.name}
-                    >
-                        <Alert
-                            severity="success"
-                            onClose={() => setOpen(false)}
-                            sx={{ width: '100%', color: 'white' }}
-                            variant="filled"
-                        >
-                            Khóa học đã được thêm vào giỏ hàng!
-                        </Alert>
-                    </Snackbar>
+                    <PaymentInstruction open={openInstruction} setOpen={setOpenInstruction} courses={[course]} />
                 </>
             )}
         </div>

@@ -3,6 +3,7 @@ import { apiUrl } from "@/utils/url";
 import { Button } from "@mui/material";
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import { BorderLinearProgress } from "@/components/course/course-slider/custom.progress";
+import ReplayIcon from '@mui/icons-material/Replay';
 
 export const getCourseById = async (id: string): Promise<ApiResponse<CourseDetailsResponse>> => {
     const courseResponse = await sendRequest<ApiResponse<CourseDetailsResponse>>({
@@ -98,7 +99,7 @@ export const getPurchasedButton = (status: number): React.ReactNode => {
                     <BorderLinearProgress variant="determinate" value={0} sx={{ flex: 1 }} />
                     <p className='text-gray-300 font-semibold'>{0}%</p>
                 </div>
-                <Button variant="outlined" color="secondary" fullWidth startIcon={<PlayArrowIcon />}>
+                <Button variant="outlined" color="primary" fullWidth startIcon={<PlayArrowIcon />}>
                     Bắt đầu học
                 </Button>
             </>
@@ -110,8 +111,8 @@ export const getPurchasedButton = (status: number): React.ReactNode => {
                     <BorderLinearProgress variant="determinate" value={status} sx={{ flex: 1 }} />
                     <p className='text-purple-300 font-semibold'>{status.toFixed(1)}%</p>
                 </div>
-                <Button variant="outlined" color="info" fullWidth startIcon={<PlayArrowIcon />}>
-                    Học ngay
+                <Button variant="outlined" color="primary" fullWidth startIcon={<PlayArrowIcon />}>
+                    Tiếp tục học
                 </Button>
             </>
         )
@@ -122,7 +123,7 @@ export const getPurchasedButton = (status: number): React.ReactNode => {
                     <BorderLinearProgress variant="determinate" value={100} sx={{ flex: 1 }} thumb_color="#00c951" />
                     <p className='text-green-500 font-semibold'>{100}%</p>
                 </div>
-                <Button variant="outlined" color="warning" fullWidth startIcon={<PlayArrowIcon />}>
+                <Button variant="outlined" color="primary" fullWidth startIcon={<ReplayIcon />}>
                     Xem lại khóa học
                 </Button>
             </>

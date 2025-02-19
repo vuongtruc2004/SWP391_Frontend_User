@@ -1,16 +1,14 @@
-import { storageUrl } from "@/utils/url";
 import { useCartContext } from "@/wrapper/course-cart/course.cart.wrapper"
-import { Box, Button, Divider, IconButton, Popover, Rating } from "@mui/material";
-import Image from "next/image";
-import Link from "next/link";
-import { Fragment, useState } from "react";
+import { Box, Button, IconButton, Popover } from "@mui/material";
+import { useEffect, useState } from "react";
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
-import { formatPrice, getSalePercent } from "@/helper/course.list.helper";
-import CloseIcon from '@mui/icons-material/Close';
+import SingleCartCourse from "./single.cart.course";
+import { useSession } from "next-auth/react";
 
 const CartList = () => {
     const { cart, setCart } = useCartContext();
+    const { data: session, status } = useSession();
 
     const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
 
@@ -24,13 +22,11 @@ const CartList = () => {
         setAnchorEl(null);
     }
 
-    const handleDeleteItem = (courseId: number) => {
-        let cartFromStorage: CartCourse[] = JSON.parse(localStorage.getItem('cart') || "[]");
-        const newCart = cartFromStorage.filter(item => item.courseId !== courseId);
+    useEffect(() => {
+        if (status === "authenticated") {
 
-        localStorage.setItem('cart', JSON.stringify(newCart));
-        setCart(newCart);
-    }
+        }
+    }, [session]);
 
     return (
         <Box sx={{
@@ -84,60 +80,7 @@ const CartList = () => {
             }}>
                 {cart.map((item, index) => {
                     return (
-                        <Fragment key={item.courseId}>
-                            <div className={`flex items-center justify-between gap-x-10 ${index === 0 ? 'pb-5' : 'py-5'}`}>
-                                <div className="flex items-center gap-x-2">
-                                    <Link href={`/course/${item.courseId}`} style={{
-                                        display: 'block',
-                                        width: '180px',
-                                        height: `90px`,
-                                        position: 'relative',
-                                    }}>
-                                        <Image src={`${storageUrl}/course/${item.thumbnail}`} alt="course image" fill sizes="(max-width: 1000px) 100vw" priority={true} style={{
-                                            objectFit: 'cover',
-                                            borderRadius: '6px',
-                                            objectPosition: 'center',
-                                            cursor: 'pointer'
-                                        }} />
-                                    </Link>
-
-                                    <div>
-                                        <Link href={`/course/${item.courseId}`} className='transition-all duration-150 line-clamp-1 text-lg font-semibold hover:underline hover:text-blue-500'>{item.courseName}</Link>
-                                        <p className="text-gray-300 font-semibold text-sm">Bởi {item.author}</p>
-
-                                        <div className="flex items-center gap-x-1 text-sm text-gray-200">
-                                            <p className="text-amber-600 font-semibold">{item.averageRating.toFixed(1)}</p>
-                                            <Rating name="read-only" value={item.averageRating} readOnly size="small" precision={0.1} />
-                                            <p>(<span className="text-green-500 font-semibold">{item.totalRating}</span> xếp hạng)</p>
-                                        </div>
-
-                                        <div className="flex items-center gap-x-1.5 text-sm text-gray-200">
-                                            <p>Tổng số {item.totalTime}</p>
-                                            <p className="text-gray-100 font-bold">•</p>
-                                            <p>{item.totalLessons} chương</p>
-                                            <p className="text-gray-100 font-bold">•</p>
-                                            <p>{item.totalPurchased} người đăng kí</p>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div>
-                                    <div className="flex flex-col items-end mb-1">
-                                        <p className="font-semibold text-lg">{formatPrice(item.salePrice)}₫</p>
-                                        {item.salePrice < item.originalPrice && (
-                                            <div className="flex items-center gap-x-2">
-                                                <p className="line-through font-semibold text-gray-400">{formatPrice(item.originalPrice)}₫</p>
-                                                <p className="px-3 mt-0.5 text-sm text-green-600 border-green-800 border rounded-md">-{getSalePercent(item.originalPrice, item.salePrice)}%</p>
-                                            </div>
-                                        )}
-                                    </div>
-                                    <Button color="error" size="small" startIcon={<CloseIcon />} onClick={() => handleDeleteItem(item.courseId)}>
-                                        Xóa khỏi giỏ hàng
-                                    </Button>
-                                </div>
-                            </div>
-                            <Divider />
-                        </Fragment>
+                        <SingleCartCourse course={item} setCart={setCart} index={index} key={item.courseId + "_" + item.courseName} />
                     )
                 })}
             </Box>

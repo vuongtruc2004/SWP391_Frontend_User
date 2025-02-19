@@ -8,9 +8,9 @@ const CourseIntroVideo = ({ open, setOpen, course }: {
     setOpen: React.Dispatch<SetStateAction<boolean>>;
     course: CourseDetailsResponse;
 }) => {
+
     const handleClose = () => {
         setOpen(false);
-
     };
 
     return (
@@ -20,7 +20,8 @@ const CourseIntroVideo = ({ open, setOpen, course }: {
             sx={{
                 '.mui-16bx961-MuiPaper-root-MuiDialog-paper': {
                     maxWidth: 'max-content',
-                    boxShadow: 'none !important',
+                    boxShadow: 'none',
+                    backgroundImage: 'none'
                 }
             }}
         >

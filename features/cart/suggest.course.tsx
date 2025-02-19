@@ -1,17 +1,19 @@
 import { sendRequest } from "@/utils/fetch.api";
 import { apiUrl } from "@/utils/url";
 import { useCartContext } from "@/wrapper/course-cart/course.cart.wrapper"
-import { Box, Button, IconButton, Skeleton } from "@mui/material"
+import { Box, Button, Skeleton } from "@mui/material"
 import { useEffect, useRef, useState } from "react";
 import SingleCourseSuggest from "./single.course.suggest";
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation } from "swiper/modules";
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import { useSession } from "next-auth/react";
 import 'swiper/css';
 
 const SuggestCourse = () => {
     const { cart } = useCartContext();
+    const { data: session, status } = useSession();
     const [loading, setLoading] = useState(false);
     const [courses, setCourses] = useState<CourseDetailsResponse[]>([]);
     const navigationPrevRef = useRef(null);
@@ -21,19 +23,34 @@ const SuggestCourse = () => {
         const fetchSuggestCourses = async () => {
             setLoading(true);
             const courseIds = cart.map(item => item.courseId);
-            const coursesResponse = await sendRequest<ApiResponse<CourseDetailsResponse[]>>({
-                url: `${apiUrl}/courses/suggestion`,
-                queryParams: {
-                    courseIds: courseIds.join(',')
-                }
-            });
+            let coursesResponse: ApiResponse<CourseDetailsResponse[]>;
+
+            if (status === "authenticated") {
+                coursesResponse = await sendRequest<ApiResponse<CourseDetailsResponse[]>>({
+                    url: `${apiUrl}/courses/suggestion`,
+                    headers: {
+                        Authorization: `Bearer ${session.accessToken}`
+                    },
+                    queryParams: {
+                        courseIds: courseIds.join(',')
+                    }
+                });
+            } else {
+                coursesResponse = await sendRequest<ApiResponse<CourseDetailsResponse[]>>({
+                    url: `${apiUrl}/courses/suggestion`,
+                    queryParams: {
+                        courseIds: courseIds.join(',')
+                    }
+                });
+            }
+
             if (coursesResponse.status === 200) {
                 setCourses(coursesResponse.data);
             }
             setLoading(false);
         }
         fetchSuggestCourses();
-    }, [cart]);
+    }, [cart, session]);
 
     if (loading) {
         return (

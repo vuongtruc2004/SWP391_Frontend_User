@@ -19,22 +19,19 @@ export const CoursePurchasedWrapper = ({ children }: { children: React.ReactNode
 
     useEffect(() => {
         const fetchPurchasedCourses = async () => {
-            let purchasedCoursesResponse: ApiResponse<CourseStatusResponse[]>;
             if (status === "authenticated") {
-                purchasedCoursesResponse = await sendRequest<ApiResponse<CourseStatusResponse[]>>({
+                const purchasedCoursesResponse = await sendRequest<ApiResponse<CourseStatusResponse[]>>({
                     url: `${apiUrl}/courses/user/purchased`,
                     headers: {
                         Authorization: `Bearer ${session?.accessToken}`
                     }
                 });
+                console.log(purchasedCoursesResponse);
+                if (purchasedCoursesResponse.status === 200) {
+                    setPurchasedCourses(purchasedCoursesResponse.data);
+                }
             } else {
-                purchasedCoursesResponse = await sendRequest<ApiResponse<CourseStatusResponse[]>>({
-                    url: `${apiUrl}/courses/user/purchased`,
-                });
-            }
-            console.log(purchasedCoursesResponse);
-            if (purchasedCoursesResponse.status === 200) {
-                setPurchasedCourses(purchasedCoursesResponse.data);
+                setPurchasedCourses([]);
             }
             setLoading(false);
         }
