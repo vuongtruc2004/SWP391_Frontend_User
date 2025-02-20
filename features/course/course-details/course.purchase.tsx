@@ -79,7 +79,7 @@ const CoursePurchase = ({ course }: { course: CourseDetailsResponse }) => {
                 setPercentage(completionPercentage);
             }
         }
-    }, [loading]);
+    }, [purchasedCourses, loading]);
 
     if (loading) {
         return (

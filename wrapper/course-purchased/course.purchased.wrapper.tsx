@@ -1,4 +1,5 @@
 'use client'
+import { useWebSocket } from "@/hooks/use.websocket";
 import { sendRequest } from "@/utils/fetch.api";
 import { apiUrl } from "@/utils/url";
 import { useSession } from "next-auth/react";
@@ -9,7 +10,6 @@ interface ICoursePurchased {
     setPurchasedCourses: React.Dispatch<React.SetStateAction<CourseStatusResponse[]>>;
     loading: boolean;
 }
-
 const CoursePurchasedContext = createContext<ICoursePurchased | null>(null);
 
 export const CoursePurchasedWrapper = ({ children }: { children: React.ReactNode }) => {
@@ -17,24 +17,30 @@ export const CoursePurchasedWrapper = ({ children }: { children: React.ReactNode
     const [purchasedCourses, setPurchasedCourses] = useState<CourseStatusResponse[]>([]);
     const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-        const fetchPurchasedCourses = async () => {
-            if (status === "authenticated") {
-                const purchasedCoursesResponse = await sendRequest<ApiResponse<CourseStatusResponse[]>>({
-                    url: `${apiUrl}/courses/user/purchased`,
-                    headers: {
-                        Authorization: `Bearer ${session?.accessToken}`
-                    }
-                });
-                console.log(purchasedCoursesResponse);
-                if (purchasedCoursesResponse.status === 200) {
-                    setPurchasedCourses(purchasedCoursesResponse.data);
+    const fetchPurchasedCourses = async () => {
+        if (status === "authenticated") {
+            const purchasedCoursesResponse = await sendRequest<ApiResponse<CourseStatusResponse[]>>({
+                url: `${apiUrl}/courses/user/purchased`,
+                headers: {
+                    Authorization: `Bearer ${session?.accessToken}`
                 }
-            } else {
-                setPurchasedCourses([]);
+            });
+            if (purchasedCoursesResponse.status === 200) {
+                setPurchasedCourses(purchasedCoursesResponse.data);
             }
-            setLoading(false);
+        } else {
+            setPurchasedCourses([]);
         }
+        setLoading(false);
+    }
+
+    useWebSocket((message) => {
+        if (message) {
+            fetchPurchasedCourses();
+        }
+    });
+
+    useEffect(() => {
         fetchPurchasedCourses();
     }, [session]);
 

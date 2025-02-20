@@ -19,6 +19,7 @@
     "@mui/material": "^6.4.3",
     "@mui/material-nextjs": "^6.4.3",
     "@mui/x-date-pickers": "^7.26.0",
+    "@stomp/stompjs": "^7.0.0",
     "@tailwindcss/postcss": "^4.0.6",
     "crypto-js": "^3.1.8",
     "dayjs": "^1.11.13",
@@ -29,6 +30,8 @@
     "query-string": "^9.1.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "socket.io-client": "^4.8.1",
+    "sockjs-client": "^1.6.1",
     "swiper": "^11.2.2",
     "user-ui": "file:"
   },
