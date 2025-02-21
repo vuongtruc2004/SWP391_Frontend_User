@@ -1,6 +1,6 @@
 import ListEmpty from "@/components/empty/list.empty";
-import CourseList from "@/features/course/course.list";
-import CourseSort from "@/features/course/course.sort";
+import CourseList from "@/features/course/course-list/course.list";
+import CourseSort from "@/features/course/course-list/course.sort";
 import { getCourseSort, getInputPrice } from "@/helper/course.list.helper";
 import { sendRequest } from "@/utils/fetch.api";
 import { apiUrl } from "@/utils/url";
@@ -60,7 +60,6 @@ const CoursePage = async (props: {
     } else {
         queryParams.sort = `courseId,${direction}`;
     }
-
 
     const coursePageResponse = await sendRequest<ApiResponse<PageDetailsResponse<CourseResponse[]>>>({
         url: `${apiUrl}/courses`,

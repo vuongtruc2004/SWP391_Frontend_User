@@ -1,4 +1,4 @@
-import CourseExpertFilter from "@/features/course/course.expert.filter";
+import CourseExpertFilter from "@/features/course/course-list/course.expert.filter";
 import { sendRequest } from "@/utils/fetch.api"
 import { apiUrl } from "@/utils/url"
 

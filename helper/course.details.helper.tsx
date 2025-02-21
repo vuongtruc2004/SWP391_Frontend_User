@@ -4,6 +4,7 @@ import { Button } from "@mui/material";
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import { BorderLinearProgress } from "@/components/course/course-slider/custom.progress";
 import ReplayIcon from '@mui/icons-material/Replay';
+import Link from "next/link";
 
 export const getCourseById = async (id: string): Promise<ApiResponse<CourseDetailsResponse>> => {
     const courseResponse = await sendRequest<ApiResponse<CourseDetailsResponse>>({
@@ -91,7 +92,7 @@ export const getVideoIdFromUrl = (url: string) => {
     return url.substring(url.lastIndexOf("/") + 1, url.indexOf("?"));
 }
 
-export const getPurchasedButton = (status: number): React.ReactNode => {
+export const getPurchasedButton = (status: number, courseId: number): React.ReactNode => {
     if (status === 0) {
         return (
             <>
@@ -99,9 +100,11 @@ export const getPurchasedButton = (status: number): React.ReactNode => {
                     <BorderLinearProgress variant="determinate" value={0} sx={{ flex: 1 }} />
                     <p className='text-gray-300 font-semibold'>{0}%</p>
                 </div>
-                <Button variant="outlined" color="primary" fullWidth startIcon={<PlayArrowIcon />}>
-                    Bắt đầu học
-                </Button>
+                <Link href={`/course/learning/${courseId}`}>
+                    <Button variant="outlined" color="primary" fullWidth startIcon={<PlayArrowIcon />}>
+                        Bắt đầu học
+                    </Button>
+                </Link>
             </>
         )
     } else if (status > 0 && status < 100) {
@@ -111,9 +114,11 @@ export const getPurchasedButton = (status: number): React.ReactNode => {
                     <BorderLinearProgress variant="determinate" value={status} sx={{ flex: 1 }} />
                     <p className='text-purple-300 font-semibold'>{status.toFixed(1)}%</p>
                 </div>
-                <Button variant="outlined" color="primary" fullWidth startIcon={<PlayArrowIcon />}>
-                    Tiếp tục học
-                </Button>
+                <Link href={`/course/learning/${courseId}`}>
+                    <Button variant="outlined" color="primary" fullWidth startIcon={<PlayArrowIcon />}>
+                        Tiếp tục học
+                    </Button>
+                </Link>
             </>
         )
     } else if (status === 100) {
@@ -123,9 +128,11 @@ export const getPurchasedButton = (status: number): React.ReactNode => {
                     <BorderLinearProgress variant="determinate" value={100} sx={{ flex: 1 }} thumb_color="#00c951" />
                     <p className='text-green-500 font-semibold'>{100}%</p>
                 </div>
-                <Button variant="outlined" color="primary" fullWidth startIcon={<ReplayIcon />}>
-                    Xem lại khóa học
-                </Button>
+                <Link href={`/course/learning/${courseId}`}>
+                    <Button variant="outlined" color="primary" fullWidth startIcon={<ReplayIcon />}>
+                        Xem lại khóa học
+                    </Button>
+                </Link>
             </>
         )
     } else {

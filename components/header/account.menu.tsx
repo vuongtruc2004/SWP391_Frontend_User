@@ -10,9 +10,10 @@ import Logout from '@mui/icons-material/Logout';
 import Button from "@mui/material/Button";
 import PersonIcon from '@mui/icons-material/Person';
 import { signOut, useSession } from 'next-auth/react';
-import { apiUrl, storageUrl } from '@/utils/url';
+import { apiUrl } from '@/utils/url';
 import { sendRequest } from '@/utils/fetch.api';
 import Link from 'next/link';
+import { useUserAvatar } from '@/wrapper/user-avatar/user.avatar.wrapper';
 
 export default function AccountMenu({ anchorEl, setAnchorEl }: {
     anchorEl: HTMLElement | null;
@@ -20,7 +21,7 @@ export default function AccountMenu({ anchorEl, setAnchorEl }: {
 }) {
     const { data: session } = useSession();
     const open = Boolean(anchorEl);
-    const avatarSrc = session?.user?.avatar?.startsWith("http") ? session?.user?.avatar : `${storageUrl}/avatar/${session?.user?.avatar}`
+    const { avatarSrc } = useUserAvatar();
 
     const handleClose = () => {
         setAnchorEl(null);
@@ -91,7 +92,7 @@ export default function AccountMenu({ anchorEl, setAnchorEl }: {
             anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
         >
             <div className='flex items-center justify-between py-1.5 px-4 gap-x-5'>
-                <Avatar src={session ? avatarSrc : ""} alt='avatar'>
+                <Avatar src={avatarSrc} alt='avatar'>
                     {session?.user.fullname?.charAt(0).toUpperCase()}
                 </Avatar>
                 <div className='min-w-44'>

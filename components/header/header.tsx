@@ -14,19 +14,18 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import AccountMenu from "./account.menu";
 import { useSession } from "next-auth/react";
-import { storageUrl } from "@/utils/url";
 import { motion } from 'framer-motion';
 import Image from "next/image";
 import CartButton from "@/features/cart/cart.button";
+import { useUserAvatar } from "@/wrapper/user-avatar/user.avatar.wrapper";
 
 const Header = () => {
     const pathname = usePathname();
     const router = useRouter();
     const searchParams = useSearchParams();
     const { data: session } = useSession();
-
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-    const avatarSrc = session?.user?.avatar?.startsWith("http") ? session?.user?.avatar : `${storageUrl}/avatar/${session?.user?.avatar}`
+    const { avatarSrc } = useUserAvatar();
 
     const links = [
         {
@@ -96,29 +95,25 @@ const Header = () => {
     }, [pathname]);
 
     return (
-        <Box
-            sx={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                columnGap: '20px',
-                width: '100%',
-                paddingInline: '20px',
-                'img': {
-                    width: '40px',
-                    height: '40px',
-                    objectFit: 'cover',
-                    borderRadius: '50%',
-                    bgcolor: 'black'
-                },
-                bgcolor: 'rgba(0,0,0,0.4)',
-                backdropFilter: 'blur(25px)',
-                color: 'white',
-                position: 'fixed',
-                top: 0,
-                left: 0,
-                zIndex: 15
-            }}>
+        <Box sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            columnGap: '20px',
+            width: '100%',
+            paddingInline: '20px',
+            'img': {
+                objectFit: 'cover',
+                borderRadius: '50%',
+                bgcolor: 'black'
+            },
+            bgcolor: 'rgba(0,0,0,0.4)',
+            backdropFilter: 'blur(25px)',
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            zIndex: 15
+        }}>
             <div className="flex items-center justify-center gap-x-6">
                 <Link href={"/home"} className="items-center flex justify-center cursor-pointer gap-x-2 mr-3">
                     <Image src={`/logo.webp`} alt="app logo" width={40} height={40} />

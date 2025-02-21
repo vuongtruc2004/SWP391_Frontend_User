@@ -5,16 +5,17 @@ import Button from "@mui/material/Button";
 import EditIcon from '@mui/icons-material/Edit';
 import { ChangeEvent, useRef, useState } from "react";
 import { sendRequest } from "@/utils/fetch.api";
-import { apiUrl, storageUrl } from "@/utils/url";
+import { apiUrl } from "@/utils/url";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { Alert, Snackbar } from "@mui/material";
+import { useUserAvatar } from "@/wrapper/user-avatar/user.avatar.wrapper";
 
 const ProfileAvatar = ({ avatar }: {
     avatar: string;
 }) => {
     const { data: session, update } = useSession();
-    const avatarSrc = avatar?.startsWith("http") ? avatar : `${storageUrl}/avatar/${avatar}`
+    const { avatarSrc } = useUserAvatar();
 
     const router = useRouter();
     const inputRef = useRef<HTMLInputElement>(null);
@@ -72,7 +73,7 @@ const ProfileAvatar = ({ avatar }: {
                         marginTop: '20px',
                         fontSize: '3rem',
                     }}
-                    src={session ? avatarSrc : ""}
+                    src={avatarSrc}
                     alt="avatar"
                 >
                     {session?.user.fullname.charAt(0).toUpperCase() || 'N'}

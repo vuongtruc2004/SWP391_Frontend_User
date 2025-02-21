@@ -182,7 +182,7 @@ const CoursePurchase = ({ course }: { course: CourseDetailsResponse }) => {
             ) : (
                 <>
                     <Divider />
-                    {getPurchasedButton(percentage)}
+                    {getPurchasedButton(percentage, course.courseId)}
                 </>
             )}
 

@@ -79,6 +79,7 @@ declare global {
     interface CourseStatusResponse {
         courseId: number;
         completionPercentage: number;
+        totalCompletionVideosAndDocuments: number;
     }
 
     interface CourseDetailsResponse extends CourseResponse {

@@ -1,26 +1,18 @@
 'use client'
 import Button from "@mui/material/Button";
-import IconButton from "@mui/material/IconButton";
-import { Fragment, useEffect, useState } from "react";
-import { Avatar, Divider, Pagination, Popover, Rating } from "@mui/material";
+import { useEffect, useState } from "react";
+import { Pagination } from "@mui/material";
 import { apiUrl, storageUrl } from "@/utils/url";
-import MoreVertIcon from '@mui/icons-material/MoreVert';
-import FlagIcon from '@mui/icons-material/Flag';
 import StarIcon from '@mui/icons-material/Star';
-import { formatCreateDate } from "@/helper/blog.helper";
 import { sendRequest } from "@/utils/fetch.api";
+import SingleCourseRating from "@/components/course/course-details/single.course.rating";
 
 const CourseRate = ({ course }: { course: CourseDetailsResponse }) => {
-    const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
     const [rateList, setRateList] = useState<RateResponse[]>([]);
     const [page, setPage] = useState(1);
     const [totalPages, setTotalPages] = useState(0);
     const [starsFilter, setStarsFilter] = useState<number>(0);
     const [ratingCounts, setRatingCounts] = useState<Record<number, number>>({});
-
-    const handleOpenPopover = (event: React.MouseEvent<HTMLButtonElement>) => {
-        setAnchorEl(event.currentTarget);
-    };
 
     const handleStarsFilter = (stars: number) => {
         setStarsFilter(stars);
@@ -48,10 +40,9 @@ const CourseRate = ({ course }: { course: CourseDetailsResponse }) => {
                 url: `${apiUrl}/rates`,
                 queryParams: {
                     page: page,
-                    size: 3,
-                    courseId: course.courseId,
+                    size: 5,
                     sort: 'stars,desc',
-                    filter: starsFilter !== 0 ? `stars : ${starsFilter}` : ""
+                    filter: `${starsFilter !== 0 ? `stars : ${starsFilter} and ` : ""}course.courseId : ${course.courseId}`
                 }
             });
 
@@ -95,61 +86,17 @@ const CourseRate = ({ course }: { course: CourseDetailsResponse }) => {
                         </Button>
                     );
                 })}
-
             </div>
 
             {rateList.map((rate, index) => {
                 const avatarSrc = rate?.user?.avatar?.startsWith("http") ?
                     rate?.user?.avatar :
                     `${storageUrl}/avatar/${rate?.user?.avatar}`;
-
                 return (
-                    <Fragment key={rate.rateId + "_" + rate.user.userId}>
-                        <div className={index === 0 ? "pb-5" : "py-5"}>
-                            <div className="flex items-center gap-x-3 justify-between pr-3">
-                                <div className="flex items-center gap-x-3">
-                                    <Avatar alt="user avatar" src={avatarSrc} sx={{
-                                        width: '40px',
-                                        height: '40px'
-                                    }}>
-                                        {rate?.user?.fullname.charAt(0).toUpperCase()}
-                                    </Avatar>
-                                    <div>
-                                        <p className="font-semibold line-clamp-1 text-sm">{rate?.user?.fullname}</p>
-                                        <p className="text-sm text-gray-300">{formatCreateDate(rate.updatedAt)}</p>
-                                    </div>
-                                </div>
-
-                                <IconButton onClick={handleOpenPopover}>
-                                    <MoreVertIcon />
-                                </IconButton>
-
-                                <Popover
-                                    open={Boolean(anchorEl)}
-                                    anchorEl={anchorEl}
-                                    onClose={() => setAnchorEl(null)}
-                                    anchorOrigin={{
-                                        vertical: 'bottom',
-                                        horizontal: 'center',
-                                    }}
-                                    transformOrigin={{
-                                        vertical: 'top',
-                                        horizontal: 'right',
-                                    }}
-                                >
-                                    <Button startIcon={<FlagIcon />} color="secondary" variant="text">
-                                        Báo Cáo
-                                    </Button>
-                                </Popover>
-
-                            </div>
-                            <p className="text-gray-100 mt-3 line-clamp-3">{rate.content}</p>
-                            <p className="flex items-center gap-x-1 mt-1 ml-1 text-sm text-gray-300">Đã đánh giá<Rating name="read-only" value={rate.stars} readOnly size="small" /></p>
-                        </div>
-                        <Divider />
-                    </Fragment>
+                    <SingleCourseRating key={rate.rateId + "_" + rate.user.userId} rate={rate} index={index} avatarSrc={avatarSrc} />
                 )
             })}
+
             <Pagination
                 count={totalPages}
                 page={page}

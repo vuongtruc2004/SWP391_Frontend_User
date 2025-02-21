@@ -36,6 +36,5 @@ export const sendRequest = async <T>(props: IProps) => {
     if (queryParams) {
         url = `${url}?${queryString.stringify(queryParams)}`;
     }
-
     return fetch(url, options).then(response => response.json() as T);
 }

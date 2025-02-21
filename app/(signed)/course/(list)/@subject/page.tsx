@@ -1,4 +1,4 @@
-import CourseSubjectFilter from "@/features/course/course.subject.filter";
+import CourseSubjectFilter from "@/features/course/course-list/course.subject.filter";
 import { sendRequest } from "@/utils/fetch.api"
 import { apiUrl } from "@/utils/url"
 

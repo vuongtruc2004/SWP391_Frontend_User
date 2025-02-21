@@ -30,7 +30,6 @@ const PaymentInstruction = ({ open, setOpen, courses }: {
                 setTimeout(() => setCopied(false), 1500);
             })
             .catch(err => console.error("Copy failed:", err));
-        console.log(decryptWithAES(textToCopy));
     };
 
     useEffect(() => {

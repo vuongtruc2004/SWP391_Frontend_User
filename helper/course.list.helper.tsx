@@ -41,7 +41,7 @@ export const getCourseSort = (courseSort: string): string => {
     return courseSort;
 }
 
-export const displayProgressbar = (status: number): React.ReactNode => {
+export const displayProgressbar = (status: number, courseId: number): React.ReactNode => {
     if (status < 0) {
         return null;
     }
@@ -58,7 +58,7 @@ export const displayProgressbar = (status: number): React.ReactNode => {
                     <BorderLinearProgress variant="determinate" value={0} sx={{ flex: 1 }} />
                     <p className='text-gray-300 font-semibold'>{0}%</p>
                 </div>
-                <Link href={"/course"} className='text-nowrap inline-flex items-center gap-x-1 transition-all duration-200 cursor-pointer text-gray-300 hover:text-purple-500'>
+                <Link href={`/course/learning/${courseId}`} className='text-nowrap inline-flex items-center gap-x-1 transition-all duration-200 cursor-pointer text-gray-300 hover:text-purple-500'>
                     <PlayArrowIcon />
                     <p>Bắt đầu</p>
                 </Link>
@@ -77,7 +77,7 @@ export const displayProgressbar = (status: number): React.ReactNode => {
                     <BorderLinearProgress variant="determinate" value={status} sx={{ flex: 1 }} />
                     <p className='text-purple-500 font-semibold'>{status.toFixed(1)}%</p>
                 </div>
-                <Link href={"/course"} className='text-nowrap inline-flex items-center gap-x-1 transition-all duration-200 cursor-pointer text-purple-400 hover:text-green-500'>
+                <Link href={`/course/learning/${courseId}`} className='text-nowrap inline-flex items-center gap-x-1 transition-all duration-200 cursor-pointer text-purple-400 hover:text-green-500'>
                     <PlayArrowIcon />
                     <p>Tiếp tục</p>
                 </Link>
@@ -128,7 +128,7 @@ export const displayPrice = (course: CourseResponse, status: number): React.Reac
         )
     } else if (status === 0) {
         return (
-            <Link href={"/course"}>
+            <Link href={`/course/learning/${course.courseId}`}>
                 <Button variant='outlined' fullWidth startIcon={<PlayArrowIcon />}>
                     Bắt đầu học
                 </Button>
@@ -137,7 +137,7 @@ export const displayPrice = (course: CourseResponse, status: number): React.Reac
 
     } else if (status > 0 && status < 100) {
         return (
-            <Link href={"/course"}>
+            <Link href={`/course/learning/${course.courseId}`}>
                 <Button variant='outlined' fullWidth startIcon={<PlayArrowIcon />}>
                     Tiếp tục học
                 </Button>
@@ -146,7 +146,7 @@ export const displayPrice = (course: CourseResponse, status: number): React.Reac
     }
     else if (status === 100) {
         return (
-            <Link href={"/course"}>
+            <Link href={`/course/learning/${course.courseId}`}>
                 <Button variant='outlined' fullWidth startIcon={<ReplayIcon />}>
                     Xem lại khóa học
                 </Button>

@@ -4,6 +4,8 @@ import ThemeWrapper from "@/wrapper/theme/theme.wrapper";
 import ProgressBarWrapper from "@/wrapper/progress-bar/progress.bar.wrapper";
 import NextAuthWrapper from '@/wrapper/next-auth/next.auth.wrapper';
 import { quicksand } from '@/wrapper/theme/theme';
+import { UserAvatarWrapper } from '@/wrapper/user-avatar/user.avatar.wrapper';
+import { CoursePurchasedWrapper } from '@/wrapper/course-purchased/course.purchased.wrapper';
 
 export default function RootLayout({
   children,
@@ -22,7 +24,11 @@ export default function RootLayout({
             <NextAuthWrapper>
               <ProgressBarWrapper>
 
-                {children}
+                <CoursePurchasedWrapper>
+                  <UserAvatarWrapper>
+                    {children}
+                  </UserAvatarWrapper>
+                </CoursePurchasedWrapper>
 
               </ProgressBarWrapper>
             </NextAuthWrapper>
