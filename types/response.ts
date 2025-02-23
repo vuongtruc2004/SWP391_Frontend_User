@@ -161,4 +161,17 @@ declare global {
     interface OrderResponse {
 
     }
+
+    interface UserNotificationResponse {
+        userNotificationId: number;
+        user: UserResponse;
+        notification: NotificationResponse;
+        isRead: boolean;
+    }
+    interface NotificationResponse {
+        notificationId: number;
+        title: string;
+        content: string;
+        createdAt: string;
+    }
 }

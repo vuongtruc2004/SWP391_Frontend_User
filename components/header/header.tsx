@@ -18,6 +18,7 @@ import { motion } from 'framer-motion';
 import Image from "next/image";
 import CartButton from "@/features/cart/cart.button";
 import { useUserAvatar } from "@/wrapper/user-avatar/user.avatar.wrapper";
+import NotificationButton from "../notification/notification.button";
 
 const Header = () => {
     const pathname = usePathname();
@@ -171,15 +172,7 @@ const Header = () => {
 
                 {session ? (
                     <>
-                        <Tooltip title="Thông báo" arrow>
-                            <Link href={"/notification"}>
-                                <IconButton color="secondary">
-                                    <Badge color="error" overlap="circular" badgeContent={5}>
-                                        <NotificationsNoneIcon sx={{ color: pathname === "/notification" ? "#60a5fa" : "#dee2e6" }} />
-                                    </Badge>
-                                </IconButton>
-                            </Link>
-                        </Tooltip>
+                        <NotificationButton />
 
                         <Avatar alt="avatar" onClick={(event) => setAnchorEl(event.currentTarget)} sx={{ cursor: 'pointer' }} src={avatarSrc}>
                             {session?.user.fullname?.charAt(0).toUpperCase()}
