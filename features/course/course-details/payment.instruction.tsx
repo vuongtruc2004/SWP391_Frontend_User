@@ -6,7 +6,7 @@ import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import DoneAllIcon from '@mui/icons-material/DoneAll';
 import AutoAwesomeOutlinedIcon from '@mui/icons-material/AutoAwesomeOutlined';
 import { useSession } from "next-auth/react";
-import { decryptWithAES, encryptWithAES } from "@/utils/aes.encryption";
+import { encryptWithAES } from "@/utils/aes.encryption";
 
 const PaymentInstruction = ({ open, setOpen, courses }: {
     open: boolean;
@@ -36,15 +36,20 @@ const PaymentInstruction = ({ open, setOpen, courses }: {
         if (status === "authenticated") {
             setTextToCopy(encryptWithAES({
                 userId: session.user.userId,
+                fullname: session.user.fullname,
+                gender: session.user.gender,
                 courses: courses.map(course => {
                     return {
                         courseId: course.courseId,
-                        price: course.salePrice
+                        courseName: course.courseName,
+                        price: course.salePrice,
+                        expertName: "author" in course ? course.author : course.expert.user.fullname,
+                        thumbnail: course.thumbnail
                     }
                 })
             }));
         }
-    }, [session]);
+    }, [session, courses]);
 
     return (
         <Dialog

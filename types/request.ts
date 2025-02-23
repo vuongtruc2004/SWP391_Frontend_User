@@ -49,8 +49,13 @@ declare global {
 
     interface OrderRequest {
         userId: number;
+        fullname: string;
+        gender: string;
         courses: {
             courseId: number;
+            courseName: string;
+            thumbnail: string;
+            expertName: string;
             price: number;
         }[];
     }
