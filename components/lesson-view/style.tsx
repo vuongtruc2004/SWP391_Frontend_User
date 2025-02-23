@@ -53,13 +53,34 @@ export const TabsStyled = styled(Tabs)({
     '& .MuiTabs-indicator': {
         backgroundColor: '#2b7fff',
     },
+    '.mui-1wxkzlj-MuiTabs-flexContainer': {
+        columnGap: '20px'
+    }
 });
 
 export const TabStyled = styled(Tab)({
     color: '#adb5bd',
     textTransform: 'none',
+    padding: 0,
     fontSize: '1rem',
     '&.Mui-selected': {
         color: '#2b7fff',
     },
-})
+    minWidth: 'max-content'
+});
+
+interface TabPanelProps {
+    children?: React.ReactNode;
+    index: number;
+    value: number;
+}
+
+export const CustomTabPanel = (props: TabPanelProps) => {
+    const { children, value, index } = props;
+
+    return (
+        <div hidden={value !== index}>
+            {value === index && <>{children}</>}
+        </div>
+    );
+}

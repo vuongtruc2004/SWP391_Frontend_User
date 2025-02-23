@@ -2,24 +2,8 @@
 import { useState } from 'react';
 import CourseDetails from './course.details';
 import CourseRating from './course.rating';
-import { TabsStyled, TabStyled } from '../style';
+import { CustomTabPanel, TabsStyled, TabStyled } from '../style';
 import { useCourseView } from '@/wrapper/course-view/course.view.wrapper';
-
-interface TabPanelProps {
-    children?: React.ReactNode;
-    index: number;
-    value: number;
-}
-
-function CustomTabPanel(props: TabPanelProps) {
-    const { children, value, index } = props;
-
-    return (
-        <div hidden={value !== index}>
-            {value === index && <>{children}</>}
-        </div>
-    );
-}
 
 const LessonViewTab = () => {
     const [value, setValue] = useState(0);

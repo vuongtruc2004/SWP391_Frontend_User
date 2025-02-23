@@ -38,12 +38,12 @@ const SearchSnackbar = ({ open, setOpen }: {
             key={SlideTransition.name}
         >
             <Box sx={{
-                bgcolor: '#101010',
+                bgcolor: 'black',
                 borderRadius: '6px',
                 padding: '20px',
                 width: '380px',
                 position: 'relative',
-                boxShadow: '2px 2px 5px rgba(0,0,0,0.5)',
+                boxShadow: '2px 2px 5px rgba(0,0,0,0.5), -2px -2px 5px rgba(0,0,0,0.5)',
             }}>
                 <h1 className="mb-2">Tìm kiếm khóa học</h1>
                 <span className="absolute top-2 right-3 hover:text-purple-300 cursor-pointer" onClick={() => setOpen(false)}>

@@ -1,7 +1,7 @@
 'use client'
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import SingleLesson from "./single.lesson";
-import { Avatar, Box, Divider, Skeleton } from "@mui/material";
+import { Avatar, Box, CircularProgress, Divider } from "@mui/material";
 import { useCoursePurchased } from "@/wrapper/course-purchased/course.purchased.wrapper";
 import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 import { getNumberOfDocuments, getNumberOfVideos } from "@/helper/course.details.helper";
@@ -15,56 +15,41 @@ import { useCourseView } from "@/wrapper/course-view/course.view.wrapper";
 
 const LessonList = () => {
     const { loading, getPercentage } = useCoursePurchased();
-    const { course, userProgress } = useCourseView();
-    const [lessonsExpand, setLessonsExpand] = useState<Set<number>>(new Set());
+    const { course, userProgress, currentPlayIndex, lectures } = useCourseView();
+    const [lessonsExpand, setLessonsExpand] = useState<number>(course.lessons[0].lessonId);
 
     const avatarSrc = course?.expert?.user?.avatar?.startsWith("http") ? course?.expert?.user?.avatar : `${storageUrl}/avatar/${course?.expert?.user?.avatar}`;
 
-    const toggleLesson = (id: number) => {
-        setLessonsExpand(prev => {
-            const newSet = new Set(prev);
-            if (newSet.has(id)) {
-                newSet.delete(id);
-            } else {
-                newSet.add(id);
+    useEffect(() => {
+        const isVideo = "videoUrl" in lectures[currentPlayIndex];
+        const idKey = isVideo ? "videoId" : "documentId";
+
+        for (let lesson of course.lessons) {
+            const lectureList = isVideo ? lesson.videos : lesson.documents;
+
+            //@ts-ignore
+            if (lectureList.some(item => item[idKey] === lectures[currentPlayIndex][idKey])) {
+                setLessonsExpand(lesson.lessonId);
+                break;
             }
-            return newSet;
-        });
-    }
+        }
+    }, [currentPlayIndex]);
 
     if (loading) {
         return (
             <Box sx={{
                 display: 'flex',
                 flexDirection: 'column',
-                justifyContent: 'space-between',
+                justifyContent: 'center',
+                alignItems: 'center',
                 bgcolor: 'rgba(255, 255, 255, .05)',
                 width: '100%',
-                padding: '20px',
                 height: '100vh',
                 position: 'sticky',
                 top: 0,
                 right: 0
             }}>
-                <div>
-                    <Skeleton variant="text" width={"80%"} sx={{ fontSize: '20px' }} animation="wave" />
-                    <Skeleton variant="text" width={"60%"} sx={{ fontSize: '14px' }} animation="wave" />
-                    <Skeleton variant="text" width={"100%"} sx={{ fontSize: '14px' }} animation="wave" />
-                    <Skeleton variant="rounded" width={"100%"} height={300} animation="wave" />
-                </div>
-                <div>
-                    <div className="flex items-center gap-x-3 mb-3">
-                        <Skeleton variant="circular" width={50} height={50} animation="wave" />
-                        <div>
-                            <Skeleton variant="text" width={200} sx={{ fontSize: '1rem' }} animation="wave" />
-                            <Skeleton variant="text" width={100} sx={{ fontSize: '14px' }} animation="wave" />
-                        </div>
-                    </div>
-                    <Skeleton variant="text" width={250} sx={{ fontSize: '14px' }} animation="wave" />
-                    <Skeleton variant="text" width={220} sx={{ fontSize: '14px' }} animation="wave" />
-                    <Skeleton variant="text" width={200} sx={{ fontSize: '14px' }} animation="wave" />
-                    <Skeleton variant="text" width={200} sx={{ fontSize: '14px' }} animation="wave" />
-                </div>
+                <CircularProgress />
             </Box>
         )
     }
@@ -79,7 +64,8 @@ const LessonList = () => {
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'space-between',
-            overflow: 'auto'
+            overflow: 'auto',
+            borderLeft: '1px solid #25272c',
         }}>
             <div className="flex-1">
                 <div className="p-5">
@@ -95,7 +81,13 @@ const LessonList = () => {
                 <div className="flex flex-col">
                     {course.lessons.map((lesson, index) => {
                         return (
-                            <SingleLesson lesson={lesson} index={index} lessonsExpand={lessonsExpand} toggleLesson={toggleLesson} key={lesson.lessonId + "_" + lesson.title} />
+                            <SingleLesson
+                                lesson={lesson}
+                                index={index}
+                                lessonsExpand={lessonsExpand}
+                                setLessonsExpand={setLessonsExpand}
+                                key={lesson.lessonId + "_" + lesson.title}
+                            />
                         )
                     })}
                 </div>

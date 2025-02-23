@@ -5,16 +5,16 @@ import { Accordion, AccordionSummary } from "./style";
 import { FacebookCircularProgress } from "@/components/lesson-view/style";
 import { countCompletionOfALesson, countTotalTimeInALesson } from "@/helper/lesson.helper";
 import { useCourseView } from "@/wrapper/course-view/course.view.wrapper";
-import { useEffect, useState } from "react";
+import { SetStateAction, useEffect, useState } from "react";
 import { sendRequest } from "@/utils/fetch.api";
 import { apiUrl } from "@/utils/url";
 import { useSession } from "next-auth/react";
 
-const SingleLesson = ({ lesson, index, lessonsExpand, toggleLesson }: {
+const SingleLesson = ({ lesson, index, lessonsExpand, setLessonsExpand }: {
     lesson: LessonResponse,
     index: number,
-    lessonsExpand: Set<number>,
-    toggleLesson: (id: number) => void
+    lessonsExpand: number,
+    setLessonsExpand: React.Dispatch<SetStateAction<number>>;
 }) => {
     const { data: session, status } = useSession();
     const { currentPlayIndex, setCurrentPlayIndex, userProgress, course, setUserProgress, lectures } = useCourseView();
@@ -69,8 +69,8 @@ const SingleLesson = ({ lesson, index, lessonsExpand, toggleLesson }: {
 
     return (
         <Accordion
-            expanded={lessonsExpand.has(lesson.lessonId)}
-            onChange={() => toggleLesson(lesson.lessonId)}
+            expanded={lessonsExpand === lesson.lessonId}
+            onChange={() => setLessonsExpand(lesson.lessonId)}
             slotProps={{ transition: { unmountOnExit: true } }}
         >
             <AccordionSummary>
