@@ -1,5 +1,5 @@
 'use client'
-import { useCourseListContext } from "@/wrapper/course-list/course.list.wrapper";
+import { useCourseList } from "@/wrapper/course-list/course.list.wrapper";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import MenuItem from "@mui/material/MenuItem";
@@ -15,7 +15,7 @@ const CourseSort = ({ totalElements, courseSort, direction }: {
     courseSort: string;
     direction: string;
 }) => {
-    const { orderBy, setOrderby } = useCourseListContext();
+    const { orderBy, setOrderby } = useCourseList();
     const router = useRouter();
     const pathname = usePathname();
     const searchParams = useSearchParams();

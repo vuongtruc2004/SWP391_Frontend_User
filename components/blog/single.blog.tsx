@@ -43,7 +43,7 @@ const SingleBlogList = ({ blog }: { blog: BlogResponse }) => {
                 <div className="flex items-center gap-x-2 text-sm text-purple-300">
                     <p>{formatCreateDate(blog.createdAt)}</p>
                     <p>•</p>
-                    <p>{calculateReadingTime(blog.content)}</p>
+                    <p>{calculateReadingTime(blog.content)} phút đọc</p>
                 </div>
 
                 <Divider sx={{ marginBlock: '10px' }} />

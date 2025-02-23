@@ -3,10 +3,11 @@ import { Box, CircularProgress, circularProgressClasses, CircularProgressProps, 
 
 interface CircularProgressPropsPrime extends CircularProgressProps {
     thumb_color?: string | null;
+    percentage?: React.ReactNode;
 }
 export const FacebookCircularProgress = (props: CircularProgressPropsPrime) => {
     return (
-        <Box sx={{ position: 'relative' }}>
+        <Box sx={{ position: 'relative', height: '32px' }}>
             <CircularProgress
                 variant="determinate"
                 sx={(theme) => ({
@@ -38,19 +39,27 @@ export const FacebookCircularProgress = (props: CircularProgressPropsPrime) => {
                 thickness={4}
                 {...props}
             />
+
+            {props.percentage && (
+                <div className="absolute top-1/2 left-1/2 -translate-1/2">
+                    {props.percentage}
+                </div>
+            )}
         </Box>
     );
 }
 
 export const TabsStyled = styled(Tabs)({
     '& .MuiTabs-indicator': {
-        backgroundColor: '#dab2ff',
+        backgroundColor: '#2b7fff',
     },
 });
 
 export const TabStyled = styled(Tab)({
     color: '#adb5bd',
+    textTransform: 'none',
+    fontSize: '1rem',
     '&.Mui-selected': {
-        color: '#dab2ff',
+        color: '#2b7fff',
     },
 })

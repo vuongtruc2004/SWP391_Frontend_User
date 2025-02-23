@@ -1,9 +1,14 @@
-import { AccordionDetails, Box } from "@mui/material";
+import { AccordionDetails, Box, Checkbox } from "@mui/material";
 import PlayCircleIcon from '@mui/icons-material/PlayCircle';
 import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
-import { convertSecondToTime } from "@/helper/course.details.helper";
-import { calculateReadingTime } from "@/helper/blog.helper";
-import { Accordion, AccordionSummary } from "@/components/course/course-content/style";
+import { Accordion, AccordionSummary } from "./style";
+import { FacebookCircularProgress } from "@/components/lesson-view/style";
+import { countCompletionOfALesson, countTotalTimeInALesson } from "@/helper/lesson.helper";
+import { useCourseView } from "@/wrapper/course-view/course.view.wrapper";
+import { useEffect, useState } from "react";
+import { sendRequest } from "@/utils/fetch.api";
+import { apiUrl } from "@/utils/url";
+import { useSession } from "next-auth/react";
 
 const SingleLesson = ({ lesson, index, lessonsExpand, toggleLesson }: {
     lesson: LessonResponse,
@@ -11,6 +16,57 @@ const SingleLesson = ({ lesson, index, lessonsExpand, toggleLesson }: {
     lessonsExpand: Set<number>,
     toggleLesson: (id: number) => void
 }) => {
+    const { data: session, status } = useSession();
+    const { currentPlayIndex, setCurrentPlayIndex, userProgress, course, setUserProgress, lectures } = useCourseView();
+    const completionOfLesson = countCompletionOfALesson(lesson, userProgress);
+
+    const [completedItems, setCompletedItems] = useState<Set<string>>(new Set());
+
+    const handleChangeStatus = async (type: "video" | "document", id: number) => {
+        if (status === "authenticated") {
+            const request: UserProgressRequest = {
+                courseId: course.courseId,
+                lessonId: lesson.lessonId,
+                documentId: type === "document" ? id : null,
+                videoId: type === "video" ? id : null
+            }
+            const userProgressResponse = await sendRequest<ApiResponse<UserProgressResponse>>({
+                url: `${apiUrl}/progress`,
+                method: 'POST',
+                headers: {
+                    Authorization: `Bearer ${session.accessToken}`,
+                    'Content-Type': 'application/json'
+                },
+                body: request
+            });
+            if (userProgressResponse.status === 200) {
+                if (completedItems.has(`${type}-${id}`)) {
+                    setUserProgress(prev => prev.filter(progress => progress.progressId !== userProgressResponse.data.progressId));
+                } else {
+                    setUserProgress(prev => [...prev, userProgressResponse.data]);
+                }
+            }
+        }
+    }
+
+    const handleChangeCurrentPlayIndex = (item: VideoResponse | DocumentResponse) => {
+        const index = lectures.findIndex(lecture =>
+            ("videoUrl" in item && "videoUrl" in lecture && lecture.videoId === item.videoId) ||
+            ("plainContent" in item && "plainContent" in lecture && lecture.documentId === item.documentId)
+        );
+        setCurrentPlayIndex(index);
+    }
+
+    useEffect(() => {
+        if (userProgress.length) {
+            const set = new Set<string>();
+            userProgress.forEach(progress => {
+                set.add(progress.documentId ? `document-${progress.documentId}` : `video-${progress.videoId}`);
+            });
+            setCompletedItems(set);
+        }
+    }, [userProgress]);
+
     return (
         <Accordion
             expanded={lessonsExpand.has(lesson.lessonId)}
@@ -18,16 +74,31 @@ const SingleLesson = ({ lesson, index, lessonsExpand, toggleLesson }: {
             slotProps={{ transition: { unmountOnExit: true } }}
         >
             <AccordionSummary>
-                <div className="flex items-center justify-between w-full">
-                    <p>Chương {index + 1}: {lesson.title}</p>
-                    <p className="text-purple-300 text-sm">{lesson.videos.length + lesson.documents.length + 0} bài giảng</p>
+                <div className="flex items-center gap-x-3">
+                    <FacebookCircularProgress
+                        variant="determinate"
+                        thumb_color={completionOfLesson === 100 ? "#05df72" : ""}
+                        value={completionOfLesson}
+                        percentage={(
+                            <p className={`text-sm ${completionOfLesson === 100 ? "text-green-400" : (completionOfLesson === 0 ? "text-gray-300" : "text-purple-300")}`}>
+                                {index + 1}
+                            </p>
+                        )}
+                    />
+
+                    <div className="flex flex-col">
+                        <p className="line-clamp-1">{lesson.title}</p>
+                        <div className="text-gray-300 text-sm flex items-center gap-x-2">
+                            <p>{lesson.videos.length + lesson.documents.length + 0} bài giảng</p>
+                            <p>•</p>
+                            <p>{countTotalTimeInALesson(lesson)}</p>
+                        </div>
+                    </div>
                 </div>
             </AccordionSummary>
 
-            <AccordionDetails sx={{
-                padding: 0
-            }}>
-                {lesson?.videos.map((video, index) => {
+            <AccordionDetails sx={{ padding: 0 }}>
+                {lesson?.videos.map((video) => {
                     return (
                         <Box sx={{
                             display: 'flex',
@@ -35,16 +106,26 @@ const SingleLesson = ({ lesson, index, lessonsExpand, toggleLesson }: {
                             justifyContent: 'space-between',
                             columnGap: '50px',
                             padding: '15px 20px',
-                        }} key={video.videoId + "_" + video.title}>
+                            bgcolor: '#101010',
+                            cursor: 'pointer'
+                        }}
+                            key={video.videoId + "_" + video.title}
+                            onClick={() => handleChangeCurrentPlayIndex(video)}
+                        >
                             <div className="flex items-center">
                                 <PlayCircleIcon sx={{ fontSize: '16px', color: '#bbdefb', marginRight: '20px' }} />
-                                <p>{index + 1}. {video.title}</p>
+                                <p className={"videoUrl" in lectures[currentPlayIndex] && lectures[currentPlayIndex].videoId === video.videoId ? "text-green-500" : ""}>{video.title}</p>
                             </div>
-                            <p className="text-gray-300 text-sm">{convertSecondToTime(video.duration)}</p>
+                            <Checkbox
+                                size="small"
+                                color="success"
+                                checked={completedItems.has(`video-${video.videoId}`)}
+                                onChange={() => handleChangeStatus('video', video.videoId)}
+                            />
                         </Box>
                     )
                 })}
-                {lesson?.documents.map((document, index) => {
+                {lesson?.documents.map((document) => {
                     return (
                         <Box sx={{
                             display: 'flex',
@@ -52,12 +133,22 @@ const SingleLesson = ({ lesson, index, lessonsExpand, toggleLesson }: {
                             justifyContent: 'space-between',
                             columnGap: '50px',
                             padding: '15px 20px',
-                        }} key={document.documentId + "_" + document.title}>
+                            bgcolor: '#101010',
+                            cursor: 'pointer'
+                        }}
+                            key={document.documentId + "_" + document.title}
+                            onClick={() => handleChangeCurrentPlayIndex(document)}
+                        >
                             <div className="flex items-center">
                                 <DescriptionOutlinedIcon sx={{ fontSize: '16px', color: '#adb5bd', marginRight: '20px' }} />
-                                <p>{index + 1 + lesson.videos.length}. {document.title}</p>
+                                <p className={"plainContent" in lectures[currentPlayIndex] && lectures[currentPlayIndex].documentId === document.documentId ? "text-green-500" : ""}>{document.title}</p>
                             </div>
-                            <p className="text-gray-300 text-sm">{calculateReadingTime(document.content)}</p>
+                            <Checkbox
+                                size="small"
+                                color="success"
+                                checked={completedItems.has(`document-${document.documentId}`)}
+                                onChange={() => handleChangeStatus('document', document.documentId)}
+                            />
                         </Box>
                     )
                 })}

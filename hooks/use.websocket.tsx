@@ -6,6 +6,8 @@ export const useWebSocket = (onMessageReceived: (message: string) => void) => {
     useEffect(() => {
         const stompClient = new Client({
             brokerURL: "ws://localhost:8386/ws/websocket",
+            heartbeatIncoming: 3000,
+            heartbeatOutgoing: 3000,
             onConnect: () => {
                 console.log("Connected to WebSocket");
                 stompClient.subscribe("/topic/purchased", (message) => {

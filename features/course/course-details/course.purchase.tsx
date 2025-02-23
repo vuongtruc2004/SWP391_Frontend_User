@@ -26,14 +26,13 @@ function SlideTransition(props: SlideProps) {
 const CoursePurchase = ({ course }: { course: CourseDetailsResponse }) => {
 
     const { cart, setCart } = useCartContext();
-    const { purchasedCourses, loading } = useCoursePurchased();
+    const { loading, getPercentage } = useCoursePurchased();
     const { status } = useSession();
     const { push } = useRouter();
     const pathname = usePathname();
 
     const [openNotification, setOpenNotification] = useState(false);
     const [openInstruction, setOpenInstruction] = useState(false);
-    const [percentage, setPercentage] = useState<number>(-1);
 
     const handleCart = () => {
         let cartFromStorage: CartCourse[] = JSON.parse(localStorage.getItem('cart') || "[]");
@@ -72,15 +71,6 @@ const CoursePurchase = ({ course }: { course: CourseDetailsResponse }) => {
         }
     }
 
-    useEffect(() => {
-        if (!loading) {
-            const completionPercentage = purchasedCourses.find((purchasedCourse) => purchasedCourse.courseId === course.courseId)?.completionPercentage;
-            if (completionPercentage !== undefined) {
-                setPercentage(completionPercentage);
-            }
-        }
-    }, [purchasedCourses, loading]);
-
     if (loading) {
         return (
             <Skeleton width={"100%"} height={300} animation="wave" variant="rounded" />
@@ -91,7 +81,7 @@ const CoursePurchase = ({ course }: { course: CourseDetailsResponse }) => {
         <div className="bg-black rounded-md p-5" style={{
             boxShadow: '2px 2px 5px rgba(0, 0, 0, 0.5)',
         }}>
-            {percentage < 0 && (
+            {getPercentage(course.courseId) < 0 && (
                 <>
                     <div className="flex items-center justify-between">
                         <div className="flex items-end gap-x-2">
@@ -132,7 +122,7 @@ const CoursePurchase = ({ course }: { course: CourseDetailsResponse }) => {
                 </li>
             </ul>
 
-            {percentage < 0 ? (
+            {getPercentage(course.courseId) < 0 ? (
                 cart.some(item => item.courseId === course.courseId) ? (
                     <Link href={"/cart"}>
                         <Button
@@ -182,11 +172,11 @@ const CoursePurchase = ({ course }: { course: CourseDetailsResponse }) => {
             ) : (
                 <>
                     <Divider />
-                    {getPurchasedButton(percentage, course.courseId)}
+                    {getPurchasedButton(getPercentage(course.courseId), course.courseId)}
                 </>
             )}
 
-            {percentage < 0 && (
+            {getPercentage(course.courseId) < 0 && (
                 <>
                     <Button variant="contained" color="primary" fullWidth startIcon={<LocalMallOutlinedIcon />} onClick={handleOpenInstruction}>
                         Mua ngay

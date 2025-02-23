@@ -18,7 +18,7 @@ export const CourseListWrapper = ({ children }: { children: React.ReactNode }) =
     );
 };
 
-export const useCourseListContext = () => {
+export const useCourseList = () => {
     const context = useContext(CourseListContext);
     if (!context) {
         throw new Error("Bạn phải bọc các phần tử bên trong CourseListWrapper!");

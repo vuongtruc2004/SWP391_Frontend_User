@@ -3,8 +3,11 @@ import SingleCourseRating from "@/components/course/course-details/single.course
 import { sendRequest } from "@/utils/fetch.api";
 import { apiUrl, storageUrl } from "@/utils/url";
 import { CircularProgress } from "@mui/material";
+import { useCourseView } from "@/wrapper/course-view/course.view.wrapper";
 
-const CourseRating = ({ course }: { course: CourseDetailsResponse }) => {
+const CourseRating = () => {
+    const { course } = useCourseView();
+
     const [rateList, setRateList] = useState<RateResponse[]>([]);
     const [page, setPage] = useState(1);
     const [loading, setLoading] = useState(false);

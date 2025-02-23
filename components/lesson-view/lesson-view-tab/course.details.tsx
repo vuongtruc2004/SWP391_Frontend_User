@@ -2,11 +2,13 @@ import StarIcon from '@mui/icons-material/Star';
 import { countTotalTime } from "@/helper/course.details.helper";
 import CourseObjectives from "@/components/course/course-details/course.objectives";
 import CourseSubject from "@/components/course/course-details/course.subject";
+import { useCourseView } from '@/wrapper/course-view/course.view.wrapper';
 
-const CourseDetails = ({ course }: { course: CourseDetailsResponse }) => {
+const CourseDetails = () => {
+    const { course } = useCourseView();
     return (
         <div className="mt-5">
-            <h2 className="text-xl font-semibold mb-1 flex items-center gap-x-1">Mô tả khóa học</h2>
+            <h2 className="text-2xl font-semibold mb-1 flex items-center gap-x-1">{course.courseName}</h2>
             <p className="text-gray-300 mb-3">{course.description}</p>
 
             <ul className="flex items-start gap-x-8 mb-5">

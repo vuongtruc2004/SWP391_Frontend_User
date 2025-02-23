@@ -1,91 +1,62 @@
 'use client'
-import Box from '@mui/material/Box';
 import { useState } from 'react';
-import SmartDisplayIcon from '@mui/icons-material/SmartDisplay';
-import SchoolIcon from '@mui/icons-material/School';
-import WorkHistoryIcon from '@mui/icons-material/WorkHistory';
-import { Avatar, Button } from '@mui/material';
-import { storageUrl } from '@/utils/url';
-import { formatCreateDate } from '@/helper/blog.helper';
 import CourseDetails from './course.details';
 import CourseRating from './course.rating';
+import { TabsStyled, TabStyled } from '../style';
+import { useCourseView } from '@/wrapper/course-view/course.view.wrapper';
 
-const LessonViewTab = ({ course }: { course: CourseDetailsResponse }) => {
-    const avatarSrc = course?.expert?.user?.avatar?.startsWith("http") ? course?.expert?.user?.avatar : `${storageUrl}/avatar/${course?.expert?.user?.avatar}`;
-    const [currentTab, setCurrentTab] = useState(1);
+interface TabPanelProps {
+    children?: React.ReactNode;
+    index: number;
+    value: number;
+}
+
+function CustomTabPanel(props: TabPanelProps) {
+    const { children, value, index } = props;
 
     return (
-        <Box sx={{ width: '100%', padding: '20px' }}>
+        <div hidden={value !== index}>
+            {value === index && <>{children}</>}
+        </div>
+    );
+}
 
-            <h1 className="text-2xl font-semibold">{course.courseName}</h1>
-            <p className='text-sm flex items-center gap-x-2 text-gray-300'>Cập nhật lần cuối {formatCreateDate(course.updatedAt)}</p>
-            <div className="flex justify-between items-center">
-                <div className="flex items-center gap-x-2 mt-3 mb-2">
-                    <Avatar src={avatarSrc} sx={{
-                        width: '40px',
-                        height: '40px',
-                    }}>
-                        {course?.expert?.user?.fullname.charAt(0).toUpperCase()}
-                    </Avatar>
-                    <div className="font-semibold text-sm">
-                        <p>{course?.expert?.user?.fullname}</p>
-                        <p className="text-gray-400">{course?.expert?.job}</p>
-                    </div>
-                </div>
-                <ul className="text-sm flex items-center gap-x-3">
-                    <Button variant='outlined' color='secondary' sx={{
-                        borderRadius: '30px',
-                        textTransform: 'none',
-                        pointerEvents: 'none'
-                    }}
-                        startIcon={<SchoolIcon />}>
-                        {course?.expert?.totalStudents} học sinh
-                    </Button>
-                    <Button variant='outlined' color='secondary' sx={{
-                        borderRadius: '30px',
-                        textTransform: 'none',
-                        pointerEvents: 'none'
-                    }}
-                        startIcon={<SmartDisplayIcon />}>
-                        {course?.expert?.totalCourses} khóa học
-                    </Button>
-                    <Button variant='outlined' color='secondary' sx={{
-                        borderRadius: '30px',
-                        textTransform: 'none',
-                        pointerEvents: 'none'
-                    }}
-                        startIcon={<WorkHistoryIcon />}>
-                        {course?.expert?.yearOfExperience} năm kinh nghiệm
-                    </Button>
-                </ul>
+const LessonViewTab = () => {
+    const [value, setValue] = useState(0);
+    const { currentPlayIndex, lectures } = useCourseView();
+
+    const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+        setValue(newValue);
+    };
+
+    if ("plainContent" in lectures[currentPlayIndex]) {
+        return null;
+    }
+
+    return (
+        <>
+            <div className='my-3'>
+                <TabsStyled value={value} onChange={handleChange}>
+                    <TabStyled label="Tổng quan về khóa học" />
+                    <TabStyled label="Đánh giá" />
+                    <TabStyled label="Tài liệu đọc thêm" />
+                    <TabStyled label="Hỗ trợ" />
+                </TabsStyled>
             </div>
 
-            <div className='flex items-center gap-x-5 mt-5'>
-                <Button variant='outlined' color={currentTab === 1 ? 'info' : 'secondary'} sx={{ borderRadius: '30px' }} onClick={() => setCurrentTab(1)}>
-                    Tổng quan về khóa học
-                </Button>
-                <Button variant='outlined' color={currentTab === 2 ? 'info' : 'secondary'} sx={{ borderRadius: '30px' }} onClick={() => setCurrentTab(2)}>
-                    Đánh giá về khóa học
-                </Button>
-                <Button variant='outlined' color={currentTab === 3 ? 'info' : 'secondary'} sx={{ borderRadius: '30px' }} onClick={() => setCurrentTab(3)}>
-                    Hỏi đáp
-                </Button>
-            </div>
-
-            <div>
-                {currentTab === 1 && (
-                    <CourseDetails course={course} />
-                )}
-                {currentTab === 2 && (
-                    <CourseRating course={course} />
-                )}
-                {currentTab === 3 && (
-                    <p>
-                        Hỏi đáp
-                    </p>
-                )}
-            </div>
-        </Box>
+            <CustomTabPanel value={value} index={0}>
+                <CourseDetails />
+            </CustomTabPanel>
+            <CustomTabPanel value={value} index={1}>
+                <CourseRating />
+            </CustomTabPanel>
+            <CustomTabPanel value={value} index={2}>
+                Tài liệu
+            </CustomTabPanel>
+            <CustomTabPanel value={value} index={3}>
+                Hỗ trợ
+            </CustomTabPanel>
+        </>
     );
 }
 

@@ -10,7 +10,7 @@ import TextField from "@mui/material/TextField";
 import SortByAlphaOutlinedIcon from '@mui/icons-material/SortByAlphaOutlined';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { ChangeEvent } from 'react';
-import { useCourseListContext } from '@/wrapper/course-list/course.list.wrapper';
+import { useCourseList } from "@/wrapper/course-list/course.list.wrapper";
 
 const CourseExpertFilter = ({ expertList, priceFrom, priceTo, expertIds }: {
     expertList: ExpertResponse[],
@@ -18,7 +18,7 @@ const CourseExpertFilter = ({ expertList, priceFrom, priceTo, expertIds }: {
     priceTo: string;
     expertIds: string;
 }) => {
-    const { priceFormRef } = useCourseListContext();
+    const { priceFormRef } = useCourseList();
     const expertIdArray = expertIds.split(",");
 
     const pathname = usePathname();

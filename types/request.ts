@@ -54,4 +54,11 @@ declare global {
             price: number;
         }[];
     }
+
+    interface UserProgressRequest {
+        courseId: number;
+        lessonId: number;
+        videoId: number | null;
+        documentId: number | null;
+    }
 }

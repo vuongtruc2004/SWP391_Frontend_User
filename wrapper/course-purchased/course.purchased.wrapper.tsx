@@ -9,7 +9,9 @@ interface ICoursePurchased {
     purchasedCourses: CourseStatusResponse[];
     setPurchasedCourses: React.Dispatch<React.SetStateAction<CourseStatusResponse[]>>;
     loading: boolean;
+    getPercentage: (courseId: number) => number;
 }
+
 const CoursePurchasedContext = createContext<ICoursePurchased | null>(null);
 
 export const CoursePurchasedWrapper = ({ children }: { children: React.ReactNode }) => {
@@ -34,22 +36,30 @@ export const CoursePurchasedWrapper = ({ children }: { children: React.ReactNode
         setLoading(false);
     }
 
-    useWebSocket((message) => {
-        if (message) {
-            fetchPurchasedCourses();
+    const getPercentage = (courseId: number): number => {
+        const percentage = purchasedCourses.find(course => course.courseId === courseId)?.completionPercentage;
+        if (percentage === undefined) {
+            return -1;
         }
-    });
+        return percentage;
+    };
 
     useEffect(() => {
         fetchPurchasedCourses();
     }, [session]);
 
+    useWebSocket((message) => {
+        if (message === "PURCHASED") {
+            fetchPurchasedCourses();
+        }
+    });
+
     return (
-        <CoursePurchasedContext.Provider value={{ purchasedCourses, setPurchasedCourses, loading }}>
+        <CoursePurchasedContext.Provider value={{ purchasedCourses, setPurchasedCourses, loading, getPercentage }}>
             {children}
         </CoursePurchasedContext.Provider>
-    )
-}
+    );
+};
 
 export const useCoursePurchased = () => {
     const context = useContext(CoursePurchasedContext);
@@ -57,4 +67,4 @@ export const useCoursePurchased = () => {
         throw new Error('useCoursePurchased must be used within a CoursePurchasedWrapper');
     }
     return context;
-}
+};

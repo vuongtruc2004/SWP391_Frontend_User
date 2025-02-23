@@ -13,14 +13,14 @@ import SortByAlphaOutlinedIcon from '@mui/icons-material/SortByAlphaOutlined';
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import RefreshIcon from '@mui/icons-material/Refresh';
 import { ChangeEvent, useRef, useState } from "react";
-import { useCourseListContext } from "@/wrapper/course-list/course.list.wrapper";
 import { FormControl, Radio, RadioGroup } from "@mui/material";
+import { useCourseList } from "@/wrapper/course-list/course.list.wrapper";
 
 const CourseSubjectFilter = ({ subjectList, subjectIds }: {
     subjectList: SubjectResponse[];
     subjectIds: string;
 }) => {
-    const { priceFormRef, setOrderby } = useCourseListContext();
+    const { priceFormRef, setOrderby } = useCourseList();
     const subjectIdArray = subjectIds.split(",");
 
     const pathname = usePathname();

@@ -79,7 +79,6 @@ declare global {
     interface CourseStatusResponse {
         courseId: number;
         completionPercentage: number;
-        totalCompletionVideosAndDocuments: number;
     }
 
     interface CourseDetailsResponse extends CourseResponse {
@@ -148,6 +147,15 @@ declare global {
         description: string;
         thumbnail: string;
         totalCourses: number;
+    }
+
+    interface UserProgressResponse {
+        progressId: number;
+        userId: number;
+        courseId: number;
+        lessonId: number;
+        videoId: number;
+        documentId: number;
     }
 
     interface OrderResponse {

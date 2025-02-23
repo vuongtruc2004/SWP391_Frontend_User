@@ -14,10 +14,13 @@ import { apiUrl } from '@/utils/url';
 import { sendRequest } from '@/utils/fetch.api';
 import Link from 'next/link';
 import { useUserAvatar } from '@/wrapper/user-avatar/user.avatar.wrapper';
+import { PopoverOrigin } from '@mui/material';
 
-export default function AccountMenu({ anchorEl, setAnchorEl }: {
+export default function AccountMenu({ anchorEl, setAnchorEl, transformOrigin, anchorOrigin }: {
     anchorEl: HTMLElement | null;
     setAnchorEl: React.Dispatch<React.SetStateAction<HTMLElement | null>>;
+    transformOrigin?: PopoverOrigin;
+    anchorOrigin?: PopoverOrigin;
 }) {
     const { data: session } = useSession();
     const open = Boolean(anchorEl);
@@ -88,8 +91,8 @@ export default function AccountMenu({ anchorEl, setAnchorEl }: {
                     padding: '10px'
                 },
             }}
-            transformOrigin={{ horizontal: 'right', vertical: 'top' }}
-            anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+            transformOrigin={transformOrigin ? transformOrigin : { horizontal: 'right', vertical: 'top' }}
+            anchorOrigin={anchorOrigin ? anchorOrigin : { horizontal: 'right', vertical: 'bottom' }}
         >
             <div className='flex items-center justify-between py-1.5 px-4 gap-x-5'>
                 <Avatar src={avatarSrc} alt='avatar'>

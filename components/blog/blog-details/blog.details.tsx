@@ -53,7 +53,7 @@ const BlogDetails = ({ blog }: { blog: BlogResponse }) => {
 
                 <section>
                     <LocalLibraryOutlinedIcon sx={{ fontSize: '1.35rem' }} />
-                    <p>{calculateReadingTime(blog.content)}</p>
+                    <p>{calculateReadingTime(blog.content)} phút đọc</p>
                 </section>
             </Box>
 

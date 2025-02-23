@@ -11,13 +11,7 @@ import { useCoursePurchased } from "@/wrapper/course-purchased/course.purchased.
 import { Skeleton } from "@mui/material";
 
 const SingleCourseSlider = ({ course }: { course: CourseResponse }) => {
-    const { purchasedCourses, loading } = useCoursePurchased();
-
-    const percentage = purchasedCourses.find((purchasedCourse) => purchasedCourse.courseId === course.courseId)?.completionPercentage;
-    let status = -1;
-    if (percentage !== undefined) {
-        status = percentage;
-    }
+    const { purchasedCourses, loading, getPercentage } = useCoursePurchased();
 
     if (loading) {
         return (
@@ -59,7 +53,7 @@ const SingleCourseSlider = ({ course }: { course: CourseResponse }) => {
 
             <div className='p-5'>
                 <Link href={`/course/${course.courseId}`} className='transition-all duration-150 text-xl font-semibold hover:underline hover:text-blue-500'>{course.courseName}</Link>
-                {displayProgressbar(status, course.courseId)}
+                {displayProgressbar(getPercentage(course.courseId), course.courseId)}
                 <p className='text-gray-300 my-1 line-clamp-2'>
                     {course.description}
                     Lorem ipsum dolor, sit amet consectetur adipisicing elit. Hic commodi enim facere ullam corrupti nisi tenetur doloremque aliquam ratione quod.
@@ -78,7 +72,7 @@ const SingleCourseSlider = ({ course }: { course: CourseResponse }) => {
 
                 <Divider sx={{ marginBlock: '10px' }} />
 
-                {displayPrice(course, status)}
+                {displayPrice(course, getPercentage(course.courseId))}
             </div>
         </Box >
     )
