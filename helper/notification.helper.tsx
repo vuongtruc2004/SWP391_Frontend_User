@@ -12,3 +12,5 @@ export const sortDatesByProximity = (dates: UserNotificationResponse[]): UserNot
         return diffA - diffB; // Sắp xếp khoảng cách tăng dần
     });
 }
+
+// Helper notification
