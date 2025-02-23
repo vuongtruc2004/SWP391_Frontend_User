@@ -37,10 +37,8 @@ export const NotificationWrapper = ({ children }: { children: React.ReactNode })
                 size: 10,
             }
         })
-        console.log("notificationRes: ", notificationRes)
         setNotifications(sortDatesByProximity(notificationRes.data.content));
-        setNumNotification(notificationRes.data.content.length)
-        console.log(notificationRes)
+        setNumNotification(notificationRes.data.content.filter(notification => notification.isRead === false).length);
     };
 
     useWebSocket((message) => {
@@ -49,7 +47,6 @@ export const NotificationWrapper = ({ children }: { children: React.ReactNode })
         }
     })
     useEffect(() => {
-
         if (status === "authenticated") {
             getNotification()
         }

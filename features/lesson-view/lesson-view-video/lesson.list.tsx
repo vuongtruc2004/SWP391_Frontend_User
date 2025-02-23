@@ -2,7 +2,6 @@
 import { useEffect, useState } from "react";
 import SingleLesson from "./single.lesson";
 import { Avatar, Box, CircularProgress, Divider } from "@mui/material";
-import { useCoursePurchased } from "@/wrapper/course-purchased/course.purchased.wrapper";
 import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 import { getNumberOfDocuments, getNumberOfVideos } from "@/helper/course.details.helper";
 import { BorderLinearProgress } from "@/components/course/course-slider/custom.progress";
@@ -12,11 +11,14 @@ import SchoolIcon from '@mui/icons-material/School';
 import WorkHistoryIcon from '@mui/icons-material/WorkHistory';
 import { storageUrl } from "@/utils/url";
 import { useCourseView } from "@/wrapper/course-view/course.view.wrapper";
+import { countCompletionOfACourse } from "@/helper/lesson.helper";
+import { useSession } from "next-auth/react";
 
 const LessonList = () => {
-    const { loading, getPercentage } = useCoursePurchased();
-    const { course, userProgress, currentPlayIndex, lectures } = useCourseView();
+    const { course, userProgress, currentPlayIndex, lectures, loading } = useCourseView();
     const [lessonsExpand, setLessonsExpand] = useState<number>(course.lessons[0].lessonId);
+    const { data: session, status } = useSession();
+    const [completionOfACourse, setCompletionOfACourse] = useState(0);
 
     const avatarSrc = course?.expert?.user?.avatar?.startsWith("http") ? course?.expert?.user?.avatar : `${storageUrl}/avatar/${course?.expert?.user?.avatar}`;
 
@@ -34,6 +36,12 @@ const LessonList = () => {
             }
         }
     }, [currentPlayIndex]);
+
+    useEffect(() => {
+        if (status === "authenticated") {
+            setCompletionOfACourse(countCompletionOfACourse(userProgress, course, session.user.userId));
+        }
+    }, [session, userProgress]);
 
     if (loading) {
         return (
@@ -73,9 +81,9 @@ const LessonList = () => {
 
                     <div className={`text-sm flex items-center justify-between mb-1.5 text-gray-400`}>
                         <p>Đã hoàn thành {userProgress.length} / {getNumberOfVideos(course) + getNumberOfDocuments(course)} bài giảng</p>
-                        <EmojiEventsIcon sx={{ fontSize: '1.2rem' }} className={getPercentage(course.courseId) === 100 ? "text-[#faaf00]" : ""} />
+                        <EmojiEventsIcon sx={{ fontSize: '1.2rem' }} className={completionOfACourse >= 99.9 ? "text-[#faaf00]" : ""} />
                     </div>
-                    <BorderLinearProgress variant="determinate" value={getPercentage(course.courseId)} height={4} thumb_color={getPercentage(course.courseId) === 100 ? "#05df72" : "#dab2ff"} />
+                    <BorderLinearProgress variant="determinate" value={completionOfACourse} height={4} thumb_color={completionOfACourse >= 99.9 ? "#05df72" : "#dab2ff"} />
                 </div>
 
                 <div className="flex flex-col">

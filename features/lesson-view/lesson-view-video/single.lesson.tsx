@@ -40,11 +40,7 @@ const SingleLesson = ({ lesson, index, lessonsExpand, setLessonsExpand }: {
                 body: request
             });
             if (userProgressResponse.status === 200) {
-                if (completedItems.has(`${type}-${id}`)) {
-                    setUserProgress(prev => prev.filter(progress => progress.progressId !== userProgressResponse.data.progressId));
-                } else {
-                    setUserProgress(prev => [...prev, userProgressResponse.data]);
-                }
+                setUserProgress(prev => [...prev, userProgressResponse.data]);
             }
         }
     }
@@ -118,9 +114,9 @@ const SingleLesson = ({ lesson, index, lessonsExpand, setLessonsExpand }: {
                             </div>
                             <Checkbox
                                 size="small"
-                                color="success"
                                 checked={completedItems.has(`video-${video.videoId}`)}
                                 onChange={() => handleChangeStatus('video', video.videoId)}
+                                disabled={completedItems.has(`video-${video.videoId}`)}
                             />
                         </Box>
                     )
@@ -145,9 +141,9 @@ const SingleLesson = ({ lesson, index, lessonsExpand, setLessonsExpand }: {
                             </div>
                             <Checkbox
                                 size="small"
-                                color="success"
                                 checked={completedItems.has(`document-${document.documentId}`)}
                                 onChange={() => handleChangeStatus('document', document.documentId)}
+                                disabled={completedItems.has(`document-${document.documentId}`)}
                             />
                         </Box>
                     )

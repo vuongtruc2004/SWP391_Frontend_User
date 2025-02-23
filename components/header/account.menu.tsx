@@ -14,6 +14,7 @@ import { apiUrl } from '@/utils/url';
 import { sendRequest } from '@/utils/fetch.api';
 import Link from 'next/link';
 import { useUserAvatar } from '@/wrapper/user-avatar/user.avatar.wrapper';
+import NotificationsIcon from '@mui/icons-material/Notifications';
 import { PopoverOrigin } from '@mui/material';
 
 export default function AccountMenu({ anchorEl, setAnchorEl, transformOrigin, anchorOrigin }: {
@@ -139,6 +140,24 @@ export default function AccountMenu({ anchorEl, setAnchorEl, transformOrigin, an
                         <AutoStoriesIcon fontSize="small" />
                     </ListItemIcon>
                     <p>Khóa học của tôi</p>
+                </Link>
+            </MenuItem>
+
+            <MenuItem sx={{
+                padding: 0,
+                marginBottom: '2px',
+                'a': {
+                    display: 'flex',
+                    alignItems: 'center',
+                    width: '100%',
+                    padding: '6px 16px',
+                }
+            }}>
+                <Link href={"/user/notification"}>
+                    <ListItemIcon>
+                        <NotificationsIcon fontSize="small" />
+                    </ListItemIcon>
+                    <p>Thông báo</p>
                 </Link>
             </MenuItem>
 

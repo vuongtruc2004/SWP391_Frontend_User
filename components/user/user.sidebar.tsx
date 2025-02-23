@@ -7,6 +7,7 @@ import { usePathname } from "next/navigation";
 import PersonIcon from '@mui/icons-material/Person';
 import AutoStoriesIcon from '@mui/icons-material/AutoStories';
 import SettingsIcon from '@mui/icons-material/Settings';
+import NotificationsIcon from '@mui/icons-material/Notifications';
 
 const UserSidebar = () => {
     const pathname = usePathname();
@@ -27,7 +28,13 @@ const UserSidebar = () => {
             key: 'my-course',
             link: '/user/my-course',
             name: 'Khóa học của tôi',
-            icon: < AutoStoriesIcon />
+            icon: <AutoStoriesIcon />
+        },
+        {
+            key: 'notification',
+            link: '/user/notification',
+            name: 'Thông báo',
+            icon: <NotificationsIcon />
         },
         {
             key: 'settings',

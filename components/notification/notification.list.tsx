@@ -21,7 +21,6 @@ const NotificationList = () => {
                     Authorization: `Bearer ${session?.accessToken}`,
                 }
             });
-            console.log("check>>", abc)
         }
     }
     return (

@@ -14,7 +14,6 @@ import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
 const NotificationBigger = ({ notification }: {
     notification: UserNotificationResponse
 }) => {
-    const [openModal, setOpenModal] = useState(false);
     const [showAllContent, setShowAllContent] = useState(false);
     const { data: session, status } = useSession();
     const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
@@ -29,7 +28,6 @@ const NotificationBigger = ({ notification }: {
                     Authorization: `Bearer ${session?.accessToken}`,
                 }
             });
-            setOpenModal(false);
         }
     }
 
@@ -39,7 +37,7 @@ const NotificationBigger = ({ notification }: {
                 url: `${apiUrl}/notifications/${notification.notification.notificationId}`,
                 method: 'DELETE',
                 headers: {
-                    Authorization: `Bearer ${session?.accessToken}`,
+                    Authorization: `Bearer ${session.accessToken}`,
                 }
             });
         }

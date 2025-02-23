@@ -1,4 +1,5 @@
 import { calculateReadingTime } from "./blog.helper";
+import { getNumberOfDocuments, getNumberOfVideos } from "./course.details.helper";
 
 export const countTotalTimeInALesson = (lesson: LessonResponse) => {
     const videoLength = lesson.videos.reduce((sum, video) => sum + video.duration, 0);
@@ -18,12 +19,16 @@ export const countTotalTimeInALesson = (lesson: LessonResponse) => {
     return result.trim();
 };
 
-export const getFirstLectureOfCourse = (course: CourseDetailsResponse) => {
-    return course.lessons[0].videos[0];
-}
-
 export const countCompletionOfALesson = (lesson: LessonResponse, userProgress: UserProgressResponse[]) => {
     const completed = userProgress.filter(progress => progress.lessonId === lesson.lessonId).length;
     const total = lesson.videos.length + lesson.documents.length;
+    return total > 0 ? (completed / total) * 100 : 0;
+}
+
+export const countCompletionOfACourse = (userProgress: UserProgressResponse[], course: CourseDetailsResponse, userId: number) => {
+    const totalVideos = getNumberOfVideos(course);
+    const totalDocuments = getNumberOfDocuments(course);
+    const total = totalDocuments + totalVideos;
+    const completed = userProgress.filter(progress => progress.userId === userId && progress.courseId === course.courseId).length;
     return total > 0 ? (completed / total) * 100 : 0;
 }
