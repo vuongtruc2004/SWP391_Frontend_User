@@ -1,6 +1,4 @@
 import { AccordionDetails, Box, Checkbox } from "@mui/material";
-import PlayCircleIcon from '@mui/icons-material/PlayCircle';
-import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
 import { Accordion, AccordionSummary } from "./style";
 import { FacebookCircularProgress } from "@/components/lesson-view/style";
 import { countCompletionOfALesson, countTotalTimeInALesson } from "@/helper/lesson.helper";
@@ -9,6 +7,9 @@ import { SetStateAction, useEffect, useState } from "react";
 import { sendRequest } from "@/utils/fetch.api";
 import { apiUrl } from "@/utils/url";
 import { useSession } from "next-auth/react";
+import PlayArrowIcon from '@mui/icons-material/PlayArrow';
+import DescriptionIcon from '@mui/icons-material/Description';
+import FlagIcon from '@mui/icons-material/Flag';
 
 const SingleLesson = ({ lesson, index, lessonsExpand, setLessonsExpand }: {
     lesson: LessonResponse,
@@ -20,6 +21,7 @@ const SingleLesson = ({ lesson, index, lessonsExpand, setLessonsExpand }: {
     const { currentPlayIndex, setCurrentPlayIndex, userProgress, course, setUserProgress, lectures } = useCourseView();
     const completionOfLesson = countCompletionOfALesson(lesson, userProgress);
 
+    const [currentLesson, setCurrentLesson] = useState<number | null>(null);
     const [completedItems, setCompletedItems] = useState<Set<string>>(new Set());
 
     const handleChangeStatus = async (type: "video" | "document", id: number) => {
@@ -63,6 +65,22 @@ const SingleLesson = ({ lesson, index, lessonsExpand, setLessonsExpand }: {
         }
     }, [userProgress]);
 
+    useEffect(() => {
+        const isVideo = "videoUrl" in lectures[currentPlayIndex];
+        const idKey = isVideo ? "videoId" : "documentId";
+
+        for (let lesson of course.lessons) {
+            const lectureList = isVideo ? lesson.videos : lesson.documents;
+
+            //@ts-ignore
+            if (lectureList.some(item => item[idKey] === lectures[currentPlayIndex][idKey])) {
+                setLessonsExpand(lesson.lessonId);
+                setCurrentLesson(lesson.lessonId);
+                break;
+            }
+        }
+    }, [currentPlayIndex]);
+
     return (
         <Accordion
             expanded={lessonsExpand === lesson.lessonId}
@@ -77,13 +95,13 @@ const SingleLesson = ({ lesson, index, lessonsExpand, setLessonsExpand }: {
                         value={completionOfLesson}
                         percentage={(
                             <p className={`text-sm ${completionOfLesson === 100 ? "text-green-400" : (completionOfLesson === 0 ? "text-gray-300" : "text-purple-300")}`}>
-                                {index + 1}
+                                {currentLesson === lesson.lessonId ? <FlagIcon sx={{ fontSize: '1rem' }} /> : `${index + 1}`}
                             </p>
                         )}
                     />
 
                     <div className="flex flex-col">
-                        <p className="line-clamp-1">{lesson.title}</p>
+                        <p className="text-wrap line-clamp-1">{lesson.title}</p>
                         <div className="text-gray-300 text-sm flex items-center gap-x-2">
                             <p>{lesson.videos.length + lesson.documents.length + 0} bài giảng</p>
                             <p>•</p>
@@ -109,8 +127,8 @@ const SingleLesson = ({ lesson, index, lessonsExpand, setLessonsExpand }: {
                             onClick={() => handleChangeCurrentPlayIndex(video)}
                         >
                             <div className="flex items-center">
-                                <PlayCircleIcon sx={{ fontSize: '16px', color: '#bbdefb', marginRight: '20px' }} />
-                                <p className={"videoUrl" in lectures[currentPlayIndex] && lectures[currentPlayIndex].videoId === video.videoId ? "text-green-500" : ""}>{video.title}</p>
+                                <PlayArrowIcon sx={{ fontSize: '1.2rem' }} className="mr-5 text-blue-300" />
+                                <p className={`${"videoUrl" in lectures[currentPlayIndex] && lectures[currentPlayIndex].videoId === video.videoId ? "text-purple-300" : ""} text-wrap line-clamp-1`}>{video.title}</p>
                             </div>
                             <Checkbox
                                 size="small"
@@ -136,8 +154,8 @@ const SingleLesson = ({ lesson, index, lessonsExpand, setLessonsExpand }: {
                             onClick={() => handleChangeCurrentPlayIndex(document)}
                         >
                             <div className="flex items-center">
-                                <DescriptionOutlinedIcon sx={{ fontSize: '16px', color: '#adb5bd', marginRight: '20px' }} />
-                                <p className={"plainContent" in lectures[currentPlayIndex] && lectures[currentPlayIndex].documentId === document.documentId ? "text-green-500" : ""}>{document.title}</p>
+                                <DescriptionIcon sx={{ fontSize: '1.2rem' }} className="text-blue-300 mr-5" />
+                                <p className={`${"plainContent" in lectures[currentPlayIndex] && lectures[currentPlayIndex].documentId === document.documentId ? "text-purple-300" : ""} text-wrap line-clamp-1`}>{document.title}</p>
                             </div>
                             <Checkbox
                                 size="small"

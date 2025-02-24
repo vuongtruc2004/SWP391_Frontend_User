@@ -47,10 +47,8 @@ const CourseExpert = ({ course }: { course: CourseDetailsResponse }) => {
                     </div>
                 </div>
 
-                <p
-                    className={`text-gray-300 ${expandDescription ? "" : "line-clamp-3"} mb-0.5 cursor-pointer`}
-                    onClick={() => setExpandDescription(prev => !prev)}
-                >
+                <p className={`text-gray-300 ${expandDescription ? "" : "line-clamp-3"} mb-0.5 cursor-pointer`}
+                    onClick={() => setExpandDescription(prev => !prev)}>
                     {course?.expert?.description}
                 </p>
 

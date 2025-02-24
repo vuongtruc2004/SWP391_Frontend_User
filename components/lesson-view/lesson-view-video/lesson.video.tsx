@@ -26,12 +26,12 @@ const LessonVideo = () => {
                     <p className="text-gray-300 text-sm">Cập nhật lần cuối: <span className="text-purple-300 font-semibold">{formatCreateDate(lectures[currentPlayIndex].updatedAt)}</span></p>
                 </div>
                 <ul className="flex items-center gap-x-5">
-                    <li className={`cursor-pointer flex items-center gap-x-1 ${currentPlayIndex === 0 ? "text-gray-400 pointer-events-none" : ""}`}
+                    <li className={`cursor-pointer hover:text-purple-300 flex items-center gap-x-1 ${currentPlayIndex === 0 ? "text-gray-400 pointer-events-none" : ""}`}
                         onClick={() => setCurrentPlayIndex(prev => prev - 1)}>
                         <ChevronLeftIcon sx={{ fontSize: '1.2rem' }} />
                         <p>Trước</p>
                     </li>
-                    <li className={`cursor-pointer flex items-center gap-x-1 ${currentPlayIndex === lectures.length - 1 ? "text-gray-400 pointer-events-none" : ""}`}
+                    <li className={`cursor-pointer hover:text-purple-300 flex items-center gap-x-1 ${currentPlayIndex === lectures.length - 1 ? "text-gray-400 pointer-events-none" : ""}`}
                         onClick={() => setCurrentPlayIndex(prev => prev + 1)}>
                         <p>Sau</p>
                         <ChevronRightIcon sx={{ fontSize: '1.2rem' }} />

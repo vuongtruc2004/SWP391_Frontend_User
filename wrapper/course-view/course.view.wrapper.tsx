@@ -13,6 +13,8 @@ interface ICourseView {
     loading: boolean;
     setLoading: React.Dispatch<SetStateAction<boolean>>;
     lectures: (VideoResponse | DocumentResponse)[];
+    openProgressBar: boolean;
+    setOpenProgressBar: React.Dispatch<SetStateAction<boolean>>;
 }
 const CourseViewContext = createContext<ICourseView | null>(null);
 
@@ -21,7 +23,9 @@ export const CourseViewWrapper = ({ children, course }: { children: React.ReactN
 
     const [currentPlayIndex, setCurrentPlayIndex] = useState<number>(0);
     const [userProgress, setUserProgress] = useState<UserProgressResponse[]>([]);
+    const [openProgressBar, setOpenProgressBar] = useState<boolean>(true);
     const [loading, setLoading] = useState<boolean>(true);
+
     const lectures: (VideoResponse | DocumentResponse)[] = course.lessons.flatMap(lesson => [...lesson.videos, ...lesson.documents]);
 
     useEffect(() => {
@@ -43,7 +47,18 @@ export const CourseViewWrapper = ({ children, course }: { children: React.ReactN
     }, [session]);
 
     return (
-        <CourseViewContext.Provider value={{ currentPlayIndex, setCurrentPlayIndex, course, userProgress, setUserProgress, loading, setLoading, lectures }}>
+        <CourseViewContext.Provider value={{
+            currentPlayIndex,
+            setCurrentPlayIndex,
+            course,
+            userProgress,
+            setUserProgress,
+            loading,
+            setLoading,
+            openProgressBar,
+            setOpenProgressBar,
+            lectures
+        }}>
             {children}
         </CourseViewContext.Provider>
     )

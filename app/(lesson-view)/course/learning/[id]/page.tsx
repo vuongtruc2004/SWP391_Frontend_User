@@ -48,19 +48,13 @@ const CourseLearningPage = async ({ params }: { params: Promise<{ id: string }> 
                 position: 'relative'
             }}>
                 <Sidebar />
-                <Box sx={{
-                    display: "grid",
-                    gridTemplateColumns: '1fr 380px',
-                    '@media (max-width: 1460px)': {
-                        gridTemplateColumns: '1fr 330px'
-                    }
-                }}>
-                    <div className="px-10 py-[30px]">
+                <div className="flex">
+                    <div className="px-10 py-5 w-full">
                         <LessonVideo />
                         <LessonViewTab />
                     </div>
                     <LessonList />
-                </Box>
+                </div>
             </Box>
         </CourseViewWrapper>
     )
