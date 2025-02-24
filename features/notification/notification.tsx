@@ -34,7 +34,7 @@ const Notification = () => {
                     Thông báo ({numNotification})
                 </h1>
                 <Box sx={{
-                    maxHeight: '278px',
+                    maxHeight: '257px',
                     overflow: 'auto',
                     marginBottom: '20px',
                     '&::-webkit-scrollbar': {
@@ -66,11 +66,9 @@ const Notification = () => {
                     )}
                 </Box>
 
-                {notifications?.length > 3 && (
-                    <Link href={"/user/notification"} onClick={handleClose}>
-                        <Button endIcon={<ChevronRightIcon />} variant="outlined" fullWidth>Xem thêm</Button>
-                    </Link>
-                )}
+                <Link href={"/user/notification"} onClick={handleClose}>
+                    <Button endIcon={<ChevronRightIcon />} variant="outlined" fullWidth>Chuyển đến trang thông báo</Button>
+                </Link>
             </Box>
         </Popover>
     )

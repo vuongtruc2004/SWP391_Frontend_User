@@ -1,7 +1,5 @@
-'use client'
-import { formatCreateDate } from "@/helper/blog.helper"
 import { apiUrl, storageUrl } from "@/utils/url"
-import { Avatar, Box, Button, Divider, IconButton, Modal, Popover } from "@mui/material"
+import { Avatar, Box, Button, Divider, IconButton, Popover } from "@mui/material"
 import { useState } from "react";
 import { sendRequest } from "@/utils/fetch.api";
 import { useSession } from "next-auth/react";
@@ -10,6 +8,12 @@ import CheckIcon from '@mui/icons-material/Check';
 import CancelPresentationIcon from '@mui/icons-material/CancelPresentation';
 import PestControlIcon from '@mui/icons-material/PestControl';
 import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
+import relativeTime from "dayjs/plugin/relativeTime";
+import "dayjs/locale/vi";
+import dayjs from "dayjs"
+
+dayjs.locale("vi");
+dayjs.extend(relativeTime);
 
 const NotificationBigger = ({ notification }: {
     notification: UserNotificationResponse
@@ -46,6 +50,7 @@ const NotificationBigger = ({ notification }: {
     const handleOpenPopover = (event: React.MouseEvent<HTMLButtonElement>) => {
         setAnchorEl(event.currentTarget);
     };
+
     return (
         <>
             <Box className="flex items-center justify-between gap-x-5">
@@ -55,18 +60,19 @@ const NotificationBigger = ({ notification }: {
                         height: '50px'
                     }} />
                     <div className="w-full max-w-[500px]">
-                        <div className="flex gap-x-1.5 items-center">
+                        <div className="flex gap-x-3 items-center">
                             <h1 className="font-semibold line-clamp-1">LearnGo: {notification.notification?.title}</h1>
                             {!notification.isRead && (
-                                <FiberManualRecordIcon sx={{ color: 'green', fontSize: '15px' }} />
+                                <FiberManualRecordIcon sx={{ fontSize: '1rem' }} className="text-blue-400" />
                             )}
-
                         </div>
-                        <p>{formatCreateDate(notification.notification?.createdAt)}</p>
-                        <p className={`${showAllContent ? "" : "line-clamp-2"} cursor-pointer`} onClick={() => {
+
+                        <p className={`${showAllContent ? "" : "line-clamp-2"} cursor-pointer text-gray-300`} onClick={() => {
                             setShowAllContent(prev => !prev);
                             handleRead()
                         }}>{notification.notification?.content}</p>
+
+                        <p className="text-sm text-blue-400 font-semibold">{dayjs(notification.notification?.createdAt).fromNow()}</p>
                     </div>
                 </div>
 

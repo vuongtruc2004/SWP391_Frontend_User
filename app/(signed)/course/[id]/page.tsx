@@ -23,7 +23,7 @@ const CourseDetails = async ({ params }: { params: Promise<{ id: string }> }) =>
 
     return (
         <Box sx={{
-            paddingTop: '120px',
+            paddingTop: '90px',
             width: '100%',
             maxWidth: '1200px',
             margin: '0 auto',

@@ -2,9 +2,9 @@ import { sendRequest } from "@/utils/fetch.api";
 import { apiUrl } from "@/utils/url";
 import { useCartContext } from "@/wrapper/course-cart/course.cart.wrapper"
 import { Box, Button, Skeleton } from "@mui/material"
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import SingleCourseSuggest from "./single.course.suggest";
-import { Swiper, SwiperSlide } from 'swiper/react';
+import { Swiper, SwiperRef, SwiperSlide } from 'swiper/react';
 import { Navigation } from "swiper/modules";
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
@@ -16,8 +16,18 @@ const SuggestCourse = () => {
     const { data: session, status } = useSession();
     const [loading, setLoading] = useState(false);
     const [courses, setCourses] = useState<CourseDetailsResponse[]>([]);
-    const navigationPrevRef = useRef(null);
-    const navigationNextRef = useRef(null);
+
+    const sliderRef = useRef<SwiperRef>(null);
+
+    const handlePrev = useCallback(() => {
+        if (!sliderRef.current) return;
+        sliderRef.current.swiper.slidePrev();
+    }, []);
+
+    const handleNext = useCallback(() => {
+        if (!sliderRef.current) return;
+        sliderRef.current.swiper.slideNext();
+    }, []);
 
     useEffect(() => {
         const fetchSuggestCourses = async () => {
@@ -94,28 +104,15 @@ const SuggestCourse = () => {
                 top: '50%',
                 transform: 'translateY(-50%)',
                 zIndex: '8',
-            },
-            '.swiper-button-disabled': {
-                opacity: 0.3,
-                pointerEvents: 'none',
             }
         }}>
             <h1 className="text-lg font-semibold mb-5">Có thể bạn cũng thích</h1>
             <Swiper
+                ref={sliderRef}
                 slidesPerView={5}
                 spaceBetween={15}
                 grabCursor={true}
-                navigation={{
-                    prevEl: navigationPrevRef.current,
-                    nextEl: navigationNextRef.current,
-                }}
                 modules={[Navigation]}
-                onBeforeInit={(swiper) => {
-                    //@ts-ignore
-                    swiper.params.navigation.prevEl = navigationPrevRef.current;
-                    //@ts-ignore
-                    swiper.params.navigation.nextEl = navigationNextRef.current;
-                }}
             >
                 {courses.map(course => {
                     return (
@@ -125,10 +122,10 @@ const SuggestCourse = () => {
                     )
                 })}
             </Swiper>
-            <Button ref={navigationPrevRef} variant="contained" color="primary" className="left-0">
+            <Button onClick={handlePrev} variant="contained" color="primary" className="left-0">
                 <ChevronLeftIcon />
             </Button>
-            <Button ref={navigationNextRef} variant="contained" color="primary" className="right-0">
+            <Button onClick={handleNext} variant="contained" color="primary" className="right-0">
                 <ChevronRightIcon />
             </Button>
         </Box>

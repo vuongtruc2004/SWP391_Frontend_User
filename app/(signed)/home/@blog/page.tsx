@@ -6,7 +6,7 @@ const BlogPage = async () => {
     const blogListResponse = await sendRequest<ApiResponse<PageDetailsResponse<BlogResponse[]>>>({
         url: `${apiUrl}/blogs`,
         queryParams: {
-            sort: 'createdAt,asc',
+            sort: 'createdAt,desc',
             page: 1,
             size: 6
         }

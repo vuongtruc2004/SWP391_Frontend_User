@@ -22,12 +22,12 @@ const BlogDetailsLayout = ({ details, suggest }: { details: React.ReactNode, sug
     return (
         <div style={{
             display: 'grid',
-            gridTemplateColumns: '72% 28%',
+            gridTemplateColumns: '2.5fr 1fr',
             gap: '20px',
             width: '95%',
             maxWidth: '1200px',
             alignItems: 'flex-start',
-            paddingTop: '120px',
+            paddingTop: '90px',
             color: 'white',
             margin: '0 auto'
         }}>

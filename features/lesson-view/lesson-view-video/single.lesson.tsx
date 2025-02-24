@@ -32,6 +32,9 @@ const SingleLesson = ({ lesson, index, lessonsExpand, setLessonsExpand }: {
                 documentId: type === "document" ? id : null,
                 videoId: type === "video" ? id : null
             }
+            console.log(">>> lesson: ", lesson);
+            console.log(lectures);
+            console.log(request);
             const userProgressResponse = await sendRequest<ApiResponse<UserProgressResponse>>({
                 url: `${apiUrl}/progress`,
                 method: 'POST',
@@ -41,6 +44,7 @@ const SingleLesson = ({ lesson, index, lessonsExpand, setLessonsExpand }: {
                 },
                 body: request
             });
+            console.log(userProgressResponse);
             if (userProgressResponse.status === 200) {
                 setUserProgress(prev => [...prev, userProgressResponse.data]);
             }

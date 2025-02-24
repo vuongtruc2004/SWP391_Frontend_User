@@ -58,7 +58,7 @@ const SingleLessonDetails = ({ lesson, index, lessonsExpand, toggleLesson }: {
                                 <DescriptionIcon sx={{ fontSize: '1.2rem' }} className="text-blue-300 mr-5" />
                                 <p>{index + 1 + lesson.videos.length}. {document.title}</p>
                             </div>
-                            <p className="text-gray-300 text-sm">{calculateReadingTime(document.content)}</p>
+                            <p className="text-gray-300 text-sm">{calculateReadingTime(document.content)} phút đọc</p>
                         </Box>
                     )
                 })}

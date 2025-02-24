@@ -28,17 +28,17 @@ const BlogSearch = ({ category, keyword, tag_name, totalElements }: {
     const filter: BlogFilter[] = [
         {
             key: 'all',
-            name: 'Tất cả',
+            name: 'Tất cả bài viết',
             icon: <AlignHorizontalLeftIcon sx={{ color: '#c77dff !important', fontSize: '16px' }} />
         },
         {
             key: 'like',
-            name: 'Đã thích',
+            name: 'Bài viết bạn đã thích',
             icon: <ThumbUpIcon sx={{ color: '#0466c8 !important', fontSize: '16px' }} />
         },
         {
             key: 'comment',
-            name: 'Đã bình luận',
+            name: 'Bài viết bạn đã bình luận',
             icon: <ChatBubbleIcon sx={{ color: '#adb5bd !important', fontSize: '16px' }} />
         }
     ];

@@ -13,7 +13,7 @@ const Cart = () => {
 
     if (loading) {
         return (
-            <div className="pt-[120px]">
+            <div className="pt-[90px]">
                 <Box sx={{
                     display: 'grid',
                     gridTemplateColumns: '2.5fr 1fr',
@@ -29,9 +29,7 @@ const Cart = () => {
     }
     if (!cart || cart.length === 0) {
         return (
-            <Box sx={{
-                paddingTop: '120px',
-            }}>
+            <div className="pt-[90px]">
                 <Box sx={{
                     width: '100%',
                     maxWidth: '1200px',
@@ -50,13 +48,13 @@ const Cart = () => {
                         </Link>
                     </div>
                 </Box>
-            </Box>
+            </div>
         )
     }
 
     return (
         <Box sx={{
-            paddingTop: '120px',
+            paddingTop: '90px',
             width: '100%',
             maxWidth: '1200px',
             margin: '0 auto',

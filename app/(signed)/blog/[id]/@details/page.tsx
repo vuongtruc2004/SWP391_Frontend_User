@@ -12,6 +12,11 @@ const DetailsPage = async ({
     const blogResponse = await sendRequest<ApiResponse<BlogResponse>>({
         url: `${apiUrl}/blogs/${id}`,
     });
+
+    if (blogResponse.status !== 200) {
+        throw new Error(blogResponse.message.toString());
+    }
+
     return (
         <div className="flex flex-col gap-y-5">
             <BlogDetails blog={blogResponse.data} />

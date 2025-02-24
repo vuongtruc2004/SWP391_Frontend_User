@@ -2,7 +2,6 @@
 import { useNotification } from "@/wrapper/notification/notification.wrapper"
 import { Box, Divider } from "@mui/material";
 import ListEmpty from "../empty/list.empty";
-import SingleNotification from "./single.notification";
 import NotificationBigger from "./bigger.single.notification";
 import { useSession } from "next-auth/react";
 import { sendRequest } from "@/utils/fetch.api";
@@ -14,7 +13,7 @@ const NotificationList = () => {
 
     const handleReadAllNotification = async () => {
         if (status === "authenticated") {
-            const abc = await sendRequest<ApiResponse<String>>({
+            await sendRequest<ApiResponse<String>>({
                 url: `${apiUrl}/notifications/all`,
                 method: 'POST',
                 headers: {
@@ -23,16 +22,17 @@ const NotificationList = () => {
             });
         }
     }
+
     return (
-        <Box>
+        <>
             <div className="flex items-center justify-between">
                 <h1 className="font-semibold text-xl">Thông báo ({numNotification})</h1>
-                <p className="text-purple-300 hover:underline cursor-pointer font-semibold" onClick={handleReadAllNotification}>Đánh dấu là đã đọc</p>
+                <p className="text-purple-300 hover:underline cursor-pointer" onClick={handleReadAllNotification}>Đánh dấu là đã đọc</p>
             </div>
-            <Divider sx={{
-                marginBlock: '15px'
-            }} />
-            <Box>
+
+            <Divider sx={{ marginBlock: '15px' }} />
+
+            <div>
                 {(notifications && notifications.length > 0) ? notifications.map((notification) => {
                     return (
                         <NotificationBigger notification={notification} key={notification.userNotificationId} />
@@ -40,9 +40,8 @@ const NotificationList = () => {
                 }) : (
                     <ListEmpty text='Không có thông báo' height={220} />
                 )}
-            </Box>
-
-        </Box>
+            </div>
+        </>
     )
 }
 

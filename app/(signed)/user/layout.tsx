@@ -7,11 +7,11 @@ const UserLayout = ({ children }: { children: React.ReactNode }) => {
             bgcolor: '#101010',
             width: '100%',
             minHeight: '100vh',
-            paddingTop: '120px'
+            paddingTop: '90px'
         }}>
             <Box sx={{
                 display: 'grid',
-                gridTemplateColumns: '25% 75%',
+                gridTemplateColumns: '1fr 3fr',
                 gap: '20px',
                 width: '100%',
                 maxWidth: '1200px',

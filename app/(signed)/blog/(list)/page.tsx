@@ -74,7 +74,7 @@ const BlogPage = async (props: {
                 gridTemplateColumns: '2fr 1fr',
                 alignItems: 'center',
                 columnGap: '20px',
-                paddingTop: '120px'
+                paddingTop: '90px'
             }}>
                 {pinnedBlogData.status === 200 && <PinnedBlog blog={pinnedBlogData.data} />}
             </Box>

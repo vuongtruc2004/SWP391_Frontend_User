@@ -14,8 +14,7 @@ const SingleBlogSlider = ({ blog }: { blog: BlogResponse; }) => {
             alignItems: 'center',
             gridTemplateColumns: '55% 45%',
             background: 'black',
-            width: '100%',
-            maxWidth: '700px',
+            width: '700px',
             borderRadius: '6px',
             boxShadow: '-2px -2px 5px rgba(0,0,0,0.5)'
         }}>
