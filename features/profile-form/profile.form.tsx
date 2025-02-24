@@ -37,10 +37,7 @@ const ProfileForm = ({ user }: {
             setFullnameError("Tên không được để trống.");
             return false;
         }
-        if (!/^[a-zA-Z\sÀ-ỹ]+$/.test(value)) {
-            setFullnameError("Tên chỉ được chứa chữ cái.");
-            return false;
-        }
+
         setFullnameError("");
         return true;
     };
@@ -120,20 +117,9 @@ const ProfileForm = ({ user }: {
                     display: 'grid',
                     alignItems: 'center',
                     gap: '20px',
-                    gridTemplateColumns: '20% 1fr',
                     marginBottom: '12px'
                 }}>
-                    <div>
-                        <label className="mb-[10px] block text-white"><span className="text-red-500 mr-1">*</span>UID:</label>
-                        <TextField
-                            variant="outlined"
-                            size='small'
-                            name='userId'
-                            defaultValue={user.userId}
-                            fullWidth
-                            disabled
-                        />
-                    </div>
+
                     <div>
                         <label className="mb-[10px] block text-white"><span className="text-red-500 mr-1">*</span>Email:</label>
                         <TextField
