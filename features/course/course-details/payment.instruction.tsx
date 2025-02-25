@@ -36,6 +36,7 @@ const PaymentInstruction = ({ open, setOpen, courses }: {
         if (status === "authenticated") {
             setTextToCopy(encryptWithAES({
                 userId: session.user.userId,
+                email: session.user.email,
                 fullname: session.user.fullname,
                 gender: session.user.gender,
                 courses: courses.map(course => {

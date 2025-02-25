@@ -6,6 +6,7 @@ import { apiUrl, storageUrl } from "@/utils/url";
 import StarIcon from '@mui/icons-material/Star';
 import { sendRequest } from "@/utils/fetch.api";
 import SingleCourseRating from "@/components/course/course-details/single.course.rating";
+import ListEmpty from "@/components/empty/list.empty";
 
 const CourseRate = ({ course }: { course: CourseDetailsResponse }) => {
     const [rateList, setRateList] = useState<RateResponse[]>([]);
@@ -88,28 +89,33 @@ const CourseRate = ({ course }: { course: CourseDetailsResponse }) => {
                 })}
             </div>
 
-            {rateList.map((rate, index) => {
-                const avatarSrc = rate?.user?.avatar?.startsWith("http") ?
-                    rate?.user?.avatar :
-                    `${storageUrl}/avatar/${rate?.user?.avatar}`;
-                return (
-                    <SingleCourseRating key={rate.rateId + "_" + rate.user.userId} rate={rate} index={index} avatarSrc={avatarSrc} />
-                )
-            })}
-
-            <Pagination
-                count={totalPages}
-                page={page}
-                shape="rounded"
-                showFirstButton
-                showLastButton
-                sx={{
-                    display: 'flex',
-                    justifyContent: 'flex-end',
-                    marginTop: '20px',
-                }}
-                onChange={(event: React.ChangeEvent<unknown>, value: number) => setPage(value)}
-            />
+            {rateList.length ? (
+                <>
+                    {rateList.map((rate, index) => {
+                        const avatarSrc = rate?.user?.avatar?.startsWith("http") ?
+                            rate?.user?.avatar :
+                            `${storageUrl}/avatar/${rate?.user?.avatar}`;
+                        return (
+                            <SingleCourseRating key={rate.rateId + "_" + rate.user.userId} rate={rate} index={index} avatarSrc={avatarSrc} />
+                        )
+                    })}
+                    <Pagination
+                        count={totalPages}
+                        page={page}
+                        shape="rounded"
+                        showFirstButton
+                        showLastButton
+                        sx={{
+                            display: 'flex',
+                            justifyContent: 'flex-end',
+                            marginTop: '20px',
+                        }}
+                        onChange={(event: React.ChangeEvent<unknown>, value: number) => setPage(value)}
+                    />
+                </>
+            ) : (
+                <ListEmpty text="Hiện chưa có bài đánh giá nào" />
+            )}
         </div>
     )
 }

@@ -8,6 +8,7 @@ import WorkHistoryIcon from '@mui/icons-material/WorkHistory';
 import { useState } from "react";
 import Image from "next/image";
 import { getEmojiOnAvgStars } from "@/helper/course.details.helper";
+import ListEmpty from "@/components/empty/list.empty";
 
 const CourseExpert = ({ course }: { course: CourseDetailsResponse }) => {
     const [expandDescription, setExpandDescription] = useState(false);
@@ -17,17 +18,25 @@ const CourseExpert = ({ course }: { course: CourseDetailsResponse }) => {
             <div className="bg-black rounded-md p-5 my-5 flex items-center justify-between" style={{
                 boxShadow: '2px 2px 5px rgba(0, 0, 0, 0.5)',
             }}>
-                <div className="flex items-center gap-x-3">
-                    <Image src={`${storageUrl}/icon/${getEmojiOnAvgStars(course.averageRating)}`} alt="emoji" width={46} height={46} />
-                    <div>
-                        <p className="font-semibold">Đánh giá</p>
-                        <p className="text-sm text-gray-400 font-semibold">{course.totalRating} bài đánh giá</p>
+                {course.totalRating ? (
+                    <>
+                        <div className="flex items-center gap-x-3">
+                            <Image src={`${storageUrl}/icon/${getEmojiOnAvgStars(course.averageRating)}`} alt="emoji" width={46} height={46} />
+                            <div>
+                                <p className="font-semibold">Đánh giá</p>
+                                <p className="text-sm text-gray-400 font-semibold">{course.totalRating} bài đánh giá</p>
+                            </div>
+                        </div>
+                        <div>
+                            <Rating name="read-only" value={course.averageRating} readOnly size="small" precision={0.1} />
+                            <p className="text-sm text-gray-400 font-semibold">{course.averageRating.toFixed(1)} sao</p>
+                        </div>
+                    </>
+                ) : (
+                    <div className="flex justify-center w-full">
+                        <ListEmpty text="Hiện chưa có bài đánh giá nào" height={100} />
                     </div>
-                </div>
-                <div>
-                    <Rating name="read-only" value={course.averageRating} readOnly size="small" precision={0.1} />
-                    <p className="text-sm text-gray-400 font-semibold">{course.averageRating.toFixed(1)} sao</p>
-                </div>
+                )}
             </div>
 
             <div className="bg-black p-5 rounded-md" style={{
