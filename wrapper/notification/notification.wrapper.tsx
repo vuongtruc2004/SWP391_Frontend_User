@@ -36,7 +36,7 @@ export const NotificationWrapper = ({ children }: { children: React.ReactNode })
                 page: 1,
                 size: 10,
             }
-        })
+        });
         setNotifications(sortDatesByProximity(notificationRes.data.content));
         setNumNotification(notificationRes.data.content.filter(notification => notification.isRead === false).length);
     };

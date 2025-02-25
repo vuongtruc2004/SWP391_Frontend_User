@@ -11,6 +11,7 @@ import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
 import relativeTime from "dayjs/plugin/relativeTime";
 import "dayjs/locale/vi";
 import dayjs from "dayjs"
+import { useNotification } from "@/wrapper/notification/notification.wrapper";
 
 dayjs.locale("vi");
 dayjs.extend(relativeTime);
@@ -21,7 +22,7 @@ const NotificationBigger = ({ notification }: {
     const [showAllContent, setShowAllContent] = useState(false);
     const { data: session, status } = useSession();
     const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
-
+    const { setNotifications, notifications } = useNotification();
 
     const handleRead = async () => {
         if (status === "authenticated") {
@@ -37,13 +38,19 @@ const NotificationBigger = ({ notification }: {
 
     const handleDelete = async () => {
         if (status === "authenticated") {
-            await sendRequest<ApiResponse<String>>({
+            const deleteRes = await sendRequest<ApiResponse<UserNotificationResponse>>({
                 url: `${apiUrl}/notifications/${notification.notification.notificationId}`,
                 method: 'DELETE',
                 headers: {
                     Authorization: `Bearer ${session.accessToken}`,
                 }
             });
+            console.log(deleteRes);
+
+            if (deleteRes.status === 200) {
+                const newNotifications = notifications.filter(notification => notification.userNotificationId != deleteRes.data.userNotificationId);
+                setNotifications(newNotifications);
+            }
         }
     }
 
