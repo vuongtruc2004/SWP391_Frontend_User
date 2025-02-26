@@ -63,8 +63,7 @@ declare global {
 
     interface UserProgressRequest {
         courseId: number;
+        chapterId: number;
         lessonId: number;
-        videoId: number | null;
-        documentId: number | null;
     }
 }

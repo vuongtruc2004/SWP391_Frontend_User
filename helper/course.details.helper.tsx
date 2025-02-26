@@ -31,16 +31,6 @@ export const getEmojiOnAvgStars = (avg: number): string => {
     }
 };
 
-export const getNumberOfVideos = (course: CourseDetailsResponse): number => {
-    const numberOfVideos = course.lessons.map(item => item.videos.length);
-    return numberOfVideos.reduce((sum, num) => sum + num, 0);
-}
-
-export const getNumberOfDocuments = (course: CourseDetailsResponse): number => {
-    const numberOfDocuments = course.lessons.map(item => item.documents.length);
-    return numberOfDocuments.reduce((sum, num) => sum + num, 0);
-}
-
 export const convertSecondToTime = (second: number): string => {
     const hours = Math.floor(second / 3600);
     const minutes = Math.floor((second % 3600) / 60);
@@ -60,33 +50,23 @@ export const convertSecondToTime = (second: number): string => {
 };
 
 export const countTotalTime = (course: CourseDetailsResponse): string => {
-    let totalMinutes = 0;
-    const wordsPerMinute = 200;
-
-    for (const lesson of course.lessons) {
-        // Tính tổng thời lượng video
-        for (const video of lesson.videos) {
-            totalMinutes += Math.ceil(video.duration / 60);
-        }
-
-        // Tính tổng thời gian đọc tài liệu
-        for (const doc of lesson.documents) {
-            const wordCount = doc.content.split(/\s+/).length;
-            totalMinutes += Math.ceil(wordCount / wordsPerMinute);
-        }
+    let totalSeconds = 0;
+    for (let chapter of course.chapters) {
+        totalSeconds += chapter.lessons.reduce((sum, lesson) => sum + (lesson.duration || 0), 0);
     }
 
+    const totalMinutes = Math.floor(totalSeconds / 60);
     const days = Math.floor(totalMinutes / 1440);
     const hours = Math.floor((totalMinutes % 1440) / 60);
-    const minutes = totalMinutes % 60;
+    const minutes = Math.floor(totalMinutes % 60);
 
-    let result = "";
-    if (days > 0) result += `${days} ngày `;
-    if (hours > 0) result += `${hours} giờ `;
-    if (minutes > 0 || result === "") result += `${minutes} phút`;
+    return [
+        days > 0 ? `${days} ngày` : "",
+        hours > 0 ? `${hours} giờ` : "",
+        minutes > 0 ? `${minutes} phút` : ""
+    ].filter(Boolean).join(" ") || "0 phút";
+};
 
-    return result.trim();
-}
 
 export const getVideoIdFromUrl = (url: string) => {
     return url.substring(url.lastIndexOf("/") + 1, url.indexOf("?"));

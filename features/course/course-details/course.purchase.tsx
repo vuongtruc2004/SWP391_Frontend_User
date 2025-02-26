@@ -1,6 +1,6 @@
 'use client'
 import { formatPrice, getSalePercent } from "@/helper/course.list.helper";
-import { Alert, Button, Divider, Skeleton, Slide, SlideProps, Snackbar } from "@mui/material";
+import { Alert, Button, Divider, Skeleton, Snackbar } from "@mui/material";
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import { formatCreateDate } from "@/helper/blog.helper";
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
@@ -18,15 +18,11 @@ import { useCoursePurchased } from "@/wrapper/course-purchased/course.purchased.
 import PaymentInstruction from "./payment.instruction";
 import { useSession } from "next-auth/react";
 import { usePathname, useRouter } from "next/navigation";
-
-function SlideTransition(props: SlideProps) {
-    return <Slide {...props} direction="down" />;
-}
+import { SlideTransition } from "@/components/course/course-content/style";
 
 const CoursePurchase = ({ course }: { course: CourseDetailsResponse }) => {
-
     const { cart, setCart } = useCartContext();
-    const { loading, getPercentage } = useCoursePurchased();
+    const { loading, getPercentageByCourseId } = useCoursePurchased();
     const { status } = useSession();
     const { push } = useRouter();
     const pathname = usePathname();
@@ -38,24 +34,21 @@ const CoursePurchase = ({ course }: { course: CourseDetailsResponse }) => {
         let cartFromStorage: CartCourse[] = JSON.parse(localStorage.getItem('cart') || "[]");
 
         const isExist = cartFromStorage.some(item => item.courseId === course.courseId);
-        let newCart: CartCourse[] = [];
-
         if (!isExist) {
             const newItem: CartCourse = {
                 courseId: course.courseId,
                 courseName: course.courseName,
                 thumbnail: course.thumbnail,
-                salePrice: course.salePrice,
-                originalPrice: course.originalPrice,
+                price: course.price,
                 averageRating: course.averageRating,
                 totalRating: course.totalRating,
-                totalLessons: course.lessons.length,
+                totalChapters: course.chapters.length,
                 totalTime: countTotalTime(course),
                 totalPurchased: course.totalPurchased,
                 author: course.expert.user.fullname
             };
 
-            newCart = [...cartFromStorage, newItem];
+            const newCart = [...cartFromStorage, newItem];
             localStorage.setItem('cart', JSON.stringify(newCart));
             setCart(newCart);
             setOpenNotification(true);
@@ -81,10 +74,10 @@ const CoursePurchase = ({ course }: { course: CourseDetailsResponse }) => {
         <div className="bg-black rounded-md p-5" style={{
             boxShadow: '2px 2px 5px rgba(0, 0, 0, 0.5)',
         }}>
-            {getPercentage(course.courseId) < 0 && (
+            {getPercentageByCourseId(course.courseId) < 0 && (
                 <>
                     <div className="flex items-center justify-between">
-                        <div className="flex items-end gap-x-2">
+                        {/* <div className="flex items-end gap-x-2">
                             <h1 className='text-3xl font-semibold'>{formatPrice(course.salePrice)}<span className="text-sm">₫</span></h1>
                             {course.salePrice !== course.originalPrice && (
                                 <p className='line-through text-gray-400'>{formatPrice(course.originalPrice)}₫</p>
@@ -92,7 +85,7 @@ const CoursePurchase = ({ course }: { course: CourseDetailsResponse }) => {
                         </div>
                         {course.salePrice !== course.originalPrice && (
                             <p className="px-3 py-2 bg-green-700 text-sm rounded-md">-{getSalePercent(course.originalPrice, course.salePrice)}%</p>
-                        )}
+                        )} */}
                     </div>
                     <Divider sx={{ marginBlock: '10px' }} />
                 </>
@@ -122,7 +115,7 @@ const CoursePurchase = ({ course }: { course: CourseDetailsResponse }) => {
                 </li>
             </ul>
 
-            {getPercentage(course.courseId) < 0 ? (
+            {getPercentageByCourseId(course.courseId) < 0 ? (
                 cart.some(item => item.courseId === course.courseId) ? (
                     <Link href={"/cart"}>
                         <Button
@@ -172,11 +165,11 @@ const CoursePurchase = ({ course }: { course: CourseDetailsResponse }) => {
             ) : (
                 <>
                     <Divider />
-                    {getPurchasedButton(getPercentage(course.courseId), course.courseId)}
+                    {getPurchasedButton(getPercentageByCourseId(course.courseId), course.courseId)}
                 </>
             )}
 
-            {getPercentage(course.courseId) < 0 && (
+            {getPercentageByCourseId(course.courseId) < 0 && (
                 <>
                     <Button variant="contained" color="primary" fullWidth startIcon={<LocalMallOutlinedIcon />} onClick={handleOpenInstruction}>
                         Mua ngay

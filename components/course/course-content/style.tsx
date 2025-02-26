@@ -5,6 +5,7 @@ import MuiAccordionSummary, {
     accordionSummaryClasses,
 } from '@mui/material/AccordionSummary';
 import ChevronRightOutlinedIcon from '@mui/icons-material/ChevronRightOutlined';
+import { Slide, SlideProps } from '@mui/material';
 
 export const Accordion = styled((props: AccordionProps) => (
     <MuiAccordion disableGutters elevation={0} square {...props} />
@@ -52,4 +53,8 @@ export const CustomTabPanel = (props: {
             )}
         </div>
     );
+}
+
+export function SlideTransition(props: SlideProps) {
+    return <Slide {...props} direction="down" />;
 }

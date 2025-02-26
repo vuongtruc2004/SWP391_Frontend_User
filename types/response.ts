@@ -68,8 +68,7 @@ declare global {
         description: string;
         thumbnail: string;
         introduction: string;
-        originalPrice: number;
-        salePrice: number;
+        price: number;
         expert: ExpertResponse;
         totalPurchased: number;
         createdAt: string;
@@ -87,18 +86,27 @@ declare global {
         accepted: boolean;
         expert: ExpertDetailsResponse;
         subjects: SubjectResponse[];
-        lessons: LessonResponse[];
+        chapters: ChapterResponse[];
         averageRating: number;
         totalRating: number;
     }
 
-    interface DocumentResponse {
-        documentId: number;
-        title: string
-        content: string
-        plainContent: string;
+    interface ChapterResponse {
+        chapterId: number;
+        title: string;
+        description: string;
+        lessons: LessonResponse[];
+    }
+
+    interface LessonResponse {
+        lessonId: number;
+        title: string;
+        duration: number;
         createdAt: string;
         updatedAt: string;
+        lessonType: string;
+        videoUrl: string | null;
+        documentContent: string | null;
     }
 
     interface ExpertResponse {
@@ -113,23 +121,6 @@ declare global {
         description: string;
         yearOfExperience: string;
         totalStudents: number;
-    }
-
-    interface VideoResponse {
-        videoId: number;
-        title: string;
-        description: string;
-        videoUrl: string;
-        duration: number;
-        createdAt: string;
-        updatedAt: string;
-    }
-    interface LessonResponse {
-        lessonId: number;
-        title: string;
-        description: string;
-        videos: VideoResponse[];
-        documents: DocumentResponse[];
     }
 
     interface RateResponse {
@@ -153,13 +144,8 @@ declare global {
         progressId: number;
         userId: number;
         courseId: number;
+        chapterId: number;
         lessonId: number;
-        videoId: number;
-        documentId: number;
-    }
-
-    interface OrderResponse {
-
     }
 
     interface UserNotificationResponse {
@@ -168,6 +154,7 @@ declare global {
         notification: NotificationResponse;
         isRead: boolean;
     }
+
     interface NotificationResponse {
         notificationId: number;
         title: string;

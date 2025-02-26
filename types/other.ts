@@ -11,11 +11,10 @@ declare global {
         courseId: number;
         courseName: string;
         thumbnail: string;
-        salePrice: number;
-        originalPrice: number;
+        price: number;
         averageRating: number;
         totalRating: number;
-        totalLessons: number;
+        totalChapters: number;
         totalTime: string;
         totalPurchased: number;
         author: string;
