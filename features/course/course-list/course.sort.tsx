@@ -74,9 +74,8 @@ const CourseSort = ({ totalElements, courseSort, direction }: {
                         onChange={handleChangeSortOption}
                         size="small"
                     >
-                        <MenuItem value={"default"}>Mặc định</MenuItem>
-                        <MenuItem value={"salePrice"}>Giá</MenuItem>
-                        <MenuItem value={"updatedAt"}>Mới nhất</MenuItem>
+                        <MenuItem value={"updatedAt"}>Ngày cập nhật</MenuItem>
+                        <MenuItem value={"price"}>Giá</MenuItem>
                         <MenuItem value={"purchaser"}>Số lượt mua</MenuItem>
                         <MenuItem value={"rate"}>Đánh giá</MenuItem>
                     </Select>

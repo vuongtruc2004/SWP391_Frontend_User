@@ -15,12 +15,14 @@ import Image from "next/image";
 import CartButton from "@/features/cart/cart.button";
 import { useUserAvatar } from "@/wrapper/user-avatar/user.avatar.wrapper";
 import NotificationButton from "../notification/notification.button";
+import AiSupportButton from "../ai-support/ai.support.button";
+import { Divider } from "@mui/material";
 
 const Header = () => {
     const pathname = usePathname();
     const router = useRouter();
     const searchParams = useSearchParams();
-    const { data: session } = useSession();
+    const { data: session, status } = useSession();
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const { avatarSrc } = useUserAvatar();
 
@@ -164,12 +166,19 @@ const Header = () => {
             </div>
 
             <div className="flex items-center gap-x-3">
+
                 <CartButton />
 
-                {session ? (
-                    <>
-                        <NotificationButton />
+                {status === "authenticated" && (
+                    <NotificationButton />
+                )}
 
+                <AiSupportButton />
+
+                <Divider orientation="vertical" sx={{ height: '30px', borderColor: '#adb5bd' }} />
+
+                {status === "authenticated" ? (
+                    <>
                         <Avatar alt="avatar" onClick={(event) => setAnchorEl(event.currentTarget)} sx={{ cursor: 'pointer' }} src={avatarSrc}>
                             {session?.user.fullname?.charAt(0).toUpperCase()}
                         </Avatar>
@@ -186,6 +195,8 @@ const Header = () => {
                         </Link>
                     </>
                 )}
+
+
             </div>
         </Box>
     )

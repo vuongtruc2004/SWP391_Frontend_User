@@ -32,17 +32,11 @@ const CoursePage = async (props: {
 
     let filter = `(courseName ~ '${keyword}' or description ~ '${keyword}')`;
 
-    if (event === "sale") {
-        filter += ' and salePrice < originalPrice';
-    } else if (event === "noSale") {
-        filter += ' and salePrice : originalPrice';
-    }
-
     if (priceFrom !== "") {
-        filter += ` and salePrice >: ${priceFrom}`
+        filter += ` and price >: ${priceFrom}`
     }
     if (priceTo !== "") {
-        filter += ` and salePrice <: ${priceTo}`
+        filter += ` and price <: ${priceTo}`
     }
 
     const queryParams: Record<string, any> = {
@@ -53,12 +47,18 @@ const CoursePage = async (props: {
         subjectIds: subjectIds
     };
 
-    if (["salePrice", "updatedAt"].includes(courseSort)) {
+    if (["price", "updatedAt"].includes(courseSort)) {
         queryParams.sort = `${courseSort},${direction}`;
     } else if (["purchaser", "rate"].includes(courseSort)) {
         queryParams.specialSort = `${courseSort},${direction}`;
     } else {
         queryParams.sort = `courseId,${direction}`;
+    }
+
+    if (event === "sale") {
+        queryParams.event = "sale";
+    } else if (event === "noSale") {
+        queryParams.event = "noSale";
     }
 
     const coursePageResponse = await sendRequest<ApiResponse<PageDetailsResponse<CourseResponse[]>>>({

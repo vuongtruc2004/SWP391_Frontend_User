@@ -9,7 +9,7 @@ const CourseListContext = createContext<{
 
 export const CourseListWrapper = ({ children }: { children: React.ReactNode }) => {
     const priceFormRef = useRef<HTMLFormElement>(null);
-    const [orderBy, setOrderby] = useState("default");
+    const [orderBy, setOrderby] = useState("updatedAt");
 
     return (
         <CourseListContext.Provider value={{ priceFormRef, orderBy, setOrderby }}>

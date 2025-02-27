@@ -16,6 +16,17 @@ export const getCourseById = async (id: string): Promise<ApiResponse<CourseDetai
     throw new Error(courseResponse.message.toString());
 }
 
+export const getNumberOfLessonType = (
+    course: CourseDetailsResponse,
+    type: "VIDEO" | "DOCUMENT"
+): number => {
+    return course.chapters.reduce((rs, chapter) =>
+        rs + chapter.lessons.reduce((sum, lesson) =>
+            lesson.lessonType === type ? sum + 1 : sum
+            , 0)
+        , 0);
+}
+
 export const getEmojiOnAvgStars = (avg: number): string => {
     switch (true) {
         case avg < 1: return '05s.png';

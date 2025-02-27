@@ -84,7 +84,7 @@ const CourseSubjectFilter = ({ subjectList, subjectIds }: {
     const handleResetFilter = () => {
         formRef.current?.reset();
         priceFormRef.current?.reset();
-        setOrderby("default");
+        setOrderby("updatedAt");
         setSelectedEvent("all");
         router.push("/course");
     }

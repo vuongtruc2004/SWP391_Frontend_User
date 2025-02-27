@@ -30,13 +30,12 @@ export const getInputPrice = (price: any): string => {
 
 export const getCourseSort = (courseSort: string): string => {
     if (!courseSort ||
-        (courseSort !== "default" &&
-            courseSort !== "salePrice" &&
+        (courseSort !== "price" &&
             courseSort !== "updatedAt" &&
             courseSort !== "purchaser" &&
             courseSort !== "rate")
     ) {
-        return "default";
+        return "updatedAt";
     }
     return courseSort;
 }
@@ -109,14 +108,14 @@ export const displayPrice = (course: CourseResponse, status: number): React.Reac
         return (
             <>
                 <div className='flex items-center justify-between mt-2'>
-                    {course.salePrice !== course.originalPrice && (
+                    {/* {course.salePrice !== course.originalPrice && (
                         <p>Giảm giá {getSalePercent(course.originalPrice, course.salePrice)}%</p>
-                    )}
+                    )} */}
                     <div className='flex items-end gap-x-2'>
-                        {course.salePrice !== course.originalPrice && (
+                        {/* {course.salePrice !== course.originalPrice && (
                             <p className='text-sm line-through text-red-500 italic'>{formatPrice(course.originalPrice)}₫</p>
-                        )}
-                        <h1 className='text-xl font-semibold'>{formatPrice(course.salePrice)}₫</h1>
+                        )} */}
+                        <h1 className='text-xl font-semibold'>{formatPrice(course.price)}₫</h1>
                     </div>
                 </div>
                 <Link href={`/course/${course.courseId}`} className="block mt-2" color="secondary">

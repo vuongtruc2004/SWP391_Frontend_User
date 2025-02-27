@@ -21,7 +21,7 @@ const ExpertPage = async (props: {
     }
 
     const expertPageResponse = await sendRequest<ApiResponse<PageDetailsResponse<ExpertResponse[]>>>({
-        url: `${apiUrl}/experts`,
+        url: `${apiUrl}/experts/course`,
         queryParams: {
             page: 1,
             size: 100,

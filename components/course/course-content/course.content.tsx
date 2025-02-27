@@ -1,14 +1,14 @@
 'use client'
-import SingleLessonDetails from "./single.lesson.details";
+import { getNumberOfLessonType } from "@/helper/course.details.helper";
+import SingleChapterDetails from "./single.chapter.details";
 import { useState } from "react"
-import { getNumberOfDocuments, getNumberOfVideos } from "@/helper/course.details.helper";
 
 const CourseContent = ({ course }: { course: CourseDetailsResponse }) => {
-    const [lessonsExpand, setLessonsExpand] = useState<Set<number>>(new Set());
+    const [chaptersExpand, setChaptersExpand] = useState<Set<number>>(new Set());
     const [allExpand, setAllExpand] = useState(false);
 
-    const toggleLesson = (id: number) => {
-        setLessonsExpand(prev => {
+    const toggleChapter = (id: number) => {
+        setChaptersExpand(prev => {
             const newSet = new Set(prev);
             if (newSet.has(id)) {
                 newSet.delete(id);
@@ -17,7 +17,7 @@ const CourseContent = ({ course }: { course: CourseDetailsResponse }) => {
                 }
             } else {
                 newSet.add(id);
-                if (newSet.size === course?.lessons.length) {
+                if (newSet.size === course?.chapters.length) {
                     setAllExpand(true);
                 }
             }
@@ -27,10 +27,10 @@ const CourseContent = ({ course }: { course: CourseDetailsResponse }) => {
 
     const toggleAllLessons = () => {
         if (allExpand) {
-            setLessonsExpand(new Set());
+            setChaptersExpand(new Set());
         } else {
-            const allLessonIds = new Set(course.lessons.map(lesson => lesson.lessonId));
-            setLessonsExpand(allLessonIds);
+            const allChapterIds = new Set(course.chapters.map(chapter => chapter.chapterId));
+            setChaptersExpand(allChapterIds);
         }
         setAllExpand(prev => !prev);
     };
@@ -39,14 +39,28 @@ const CourseContent = ({ course }: { course: CourseDetailsResponse }) => {
         <>
             <h1 className="text-xl font-semibold mt-5 mb-1 flex items-center gap-x-1">III. Nội dung khóa học</h1>
             <div className="flex items-center justify-between text-gray-300 mb-4 px-1 text-sm">
-                <p><strong className="text-white">{course?.lessons.length}</strong> chương • <strong className="text-white">{getNumberOfVideos(course)}</strong> bài giảng • <strong className="text-white">{getNumberOfDocuments(course)}</strong> bài đọc • <strong className="text-white">{0}</strong> bài kiểm tra</p>
+                <p>
+                    <strong className="text-white">{course?.chapters.length}</strong> chương
+                    <span>•</span>
+                    <strong className="text-white">{getNumberOfLessonType(course, "VIDEO")}</strong> bài giảng
+                    <span>•</span>
+                    <strong className="text-white">{getNumberOfLessonType(course, 'DOCUMENT')}</strong> bài đọc
+                    <span>•</span>
+                    <strong className="text-white">{0}</strong> bài kiểm tra
+                </p>
                 <p className="text-blue-500 hover:text-blue-700 cursor-pointer font-semibold" onClick={toggleAllLessons}>
                     {allExpand ? "Đóng tất cả" : "Mở rộng tất cả"}
                 </p>
             </div>
-            {course.lessons.map((lesson, index) => {
+            {course.chapters.map((chapter, index) => {
                 return (
-                    <SingleLessonDetails key={lesson.lessonId} lesson={lesson} index={index} lessonsExpand={lessonsExpand} toggleLesson={toggleLesson} />
+                    <SingleChapterDetails
+                        key={chapter.chapterId}
+                        chapter={chapter}
+                        index={index}
+                        chaptersExpand={chaptersExpand}
+                        toggleChapter={toggleChapter}
+                    />
                 )
             })}
         </>

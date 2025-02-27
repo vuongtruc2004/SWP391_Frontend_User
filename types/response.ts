@@ -104,7 +104,7 @@ declare global {
         duration: number;
         createdAt: string;
         updatedAt: string;
-        lessonType: string;
+        lessonType: "VIDEO" | "DOCUMENT";
         videoUrl: string | null;
         documentContent: string | null;
     }
