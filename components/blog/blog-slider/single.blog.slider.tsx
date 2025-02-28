@@ -1,4 +1,4 @@
-import { calculateReadingTime, formatCreateDate } from '@/helper/blog.helper';
+import { calculateReadingTime, formatDate } from '@/helper/blog.helper';
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
@@ -47,7 +47,7 @@ const SingleBlogSlider = ({ blog }: { blog: BlogResponse; }) => {
                 </div>
 
                 <div className="flex items-center gap-x-2 text-sm text-purple-300">
-                    <p>{formatCreateDate(blog.createdAt)}</p>
+                    <p>{formatDate(blog.createdAt)}</p>
                     <p>•</p>
                     <p>{calculateReadingTime(blog.content)} phút đọc</p>
                 </div>

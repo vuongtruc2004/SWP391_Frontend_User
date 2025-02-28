@@ -1,8 +1,8 @@
 'use client'
-import { formatPrice, getSalePercent } from "@/helper/course.list.helper";
+import { formatPrice } from "@/helper/course.list.helper";
 import { Alert, Button, Divider, Skeleton, Snackbar } from "@mui/material";
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
-import { formatCreateDate } from "@/helper/blog.helper";
+import { formatDate } from "@/helper/blog.helper";
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import LoopIcon from '@mui/icons-material/Loop';
 import { countTotalTime, getPurchasedButton } from "@/helper/course.details.helper";
@@ -13,7 +13,7 @@ import HowToRegOutlinedIcon from '@mui/icons-material/HowToRegOutlined';
 import { useCartContext } from "@/wrapper/course-cart/course.cart.wrapper";
 import Link from "next/link";
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useCoursePurchased } from "@/wrapper/course-purchased/course.purchased.wrapper";
 import PaymentInstruction from "./payment.instruction";
 import { useSession } from "next-auth/react";
@@ -77,15 +77,7 @@ const CoursePurchase = ({ course }: { course: CourseDetailsResponse }) => {
             {getPercentageByCourseId(course.courseId) < 0 && (
                 <>
                     <div className="flex items-center justify-between">
-                        {/* <div className="flex items-end gap-x-2">
-                            <h1 className='text-3xl font-semibold'>{formatPrice(course.salePrice)}<span className="text-sm">₫</span></h1>
-                            {course.salePrice !== course.originalPrice && (
-                                <p className='line-through text-gray-400'>{formatPrice(course.originalPrice)}₫</p>
-                            )}
-                        </div>
-                        {course.salePrice !== course.originalPrice && (
-                            <p className="px-3 py-2 bg-green-700 text-sm rounded-md">-{getSalePercent(course.originalPrice, course.salePrice)}%</p>
-                        )} */}
+                        <h1 className='text-3xl font-semibold'>{formatPrice(course.price)}<span className="text-sm">₫</span></h1>
                     </div>
                     <Divider sx={{ marginBlock: '10px' }} />
                 </>
@@ -111,7 +103,7 @@ const CoursePurchase = ({ course }: { course: CourseDetailsResponse }) => {
                 </li>
                 <li className="flex items-center gap-x-2 py-1.5">
                     <LoopIcon sx={{ fontSize: '1.2rem' }} />
-                    <p>Cập nhật lần cuối: <span className="font-semibold text-purple-300">{formatCreateDate(course.updatedAt)}</span></p>
+                    <p>Cập nhật lần cuối: <span className="font-semibold text-purple-300">{formatDate(course.updatedAt)}</span></p>
                 </li>
             </ul>
 

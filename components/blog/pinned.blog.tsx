@@ -1,4 +1,4 @@
-import { calculateReadingTime, formatCreateDate } from "@/helper/blog.helper";
+import { calculateReadingTime, formatDate } from "@/helper/blog.helper";
 import { storageUrl } from "@/utils/url";
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import Box from "@mui/material/Box";
@@ -40,7 +40,7 @@ const PinnedBlog = ({ blog }: { blog: BlogResponse }) => {
                 </div>
 
                 <div className="flex items-center gap-x-2 text-sm text-purple-300">
-                    <p>{formatCreateDate(blog.createdAt)}</p>
+                    <p>{formatDate(blog.createdAt)}</p>
                     <p>•</p>
                     <p>{calculateReadingTime(blog.content)} phút đọc</p>
                 </div>

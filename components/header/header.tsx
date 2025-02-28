@@ -24,7 +24,7 @@ const Header = () => {
     const searchParams = useSearchParams();
     const { data: session, status } = useSession();
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-    const { avatarSrc } = useUserAvatar();
+    const { avatarSrc, fullname } = useUserAvatar();
 
     const links = [
         {
@@ -180,7 +180,7 @@ const Header = () => {
                 {status === "authenticated" ? (
                     <>
                         <Avatar alt="avatar" onClick={(event) => setAnchorEl(event.currentTarget)} sx={{ cursor: 'pointer' }} src={avatarSrc}>
-                            {session?.user.fullname?.charAt(0).toUpperCase()}
+                            {fullname.charAt(0).toUpperCase()}
                         </Avatar>
                         <AccountMenu anchorEl={anchorEl} setAnchorEl={setAnchorEl} />
                     </>

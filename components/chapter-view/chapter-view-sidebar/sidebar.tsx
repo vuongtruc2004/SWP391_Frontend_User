@@ -54,7 +54,7 @@ const Sidebar = () => {
 
     const { data: session } = useSession();
     const { setOpenProgressBar, openProgressBar } = useCourseView();
-    const { avatarSrc } = useUserAvatar();
+    const { avatarSrc, fullname } = useUserAvatar();
     const pathname = usePathname();
     const [menuAnchorEl, setMenuAnchorEl] = useState<null | HTMLElement>(null);
     const [openSearchBox, setOpenSearchBox] = useState<boolean>(false);
@@ -114,9 +114,9 @@ const Sidebar = () => {
                     <Tooltip title={openProgressBar ? "Ẩn tiến độ khóa học" : "Hiển thị tiến độ khóa học"} arrow placement="right">
                         <div className="flex w-full px-5 py-4 text-gray-400 hover:text-blue-500 cursor-pointer" onClick={() => setOpenProgressBar(prev => !prev)}>
                             {openProgressBar ? (
-                                <VisibilityOffIcon sx={{ fontSize: '1.25rem' }} />
-                            ) : (
                                 <VisibilityIcon sx={{ fontSize: '1.25rem' }} />
+                            ) : (
+                                <VisibilityOffIcon sx={{ fontSize: '1.25rem' }} />
                             )}
                         </div>
                     </Tooltip>
@@ -125,7 +125,7 @@ const Sidebar = () => {
             </div>
 
             <Avatar alt="avatar" onClick={(event) => setMenuAnchorEl(event.currentTarget)} sx={{ cursor: 'pointer' }} src={avatarSrc}>
-                {session?.user.fullname?.charAt(0).toUpperCase()}
+                {fullname.charAt(0).toUpperCase()}
             </Avatar>
             <AccountMenu
                 anchorEl={menuAnchorEl}

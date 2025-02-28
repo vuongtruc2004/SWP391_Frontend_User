@@ -43,7 +43,7 @@ const PaymentInstruction = ({ open, setOpen, courses }: {
                     return {
                         courseId: course.courseId,
                         courseName: course.courseName,
-                        price: course.salePrice,
+                        price: course.price,
                         expertName: "author" in course ? course.author : course.expert.user.fullname,
                         thumbnail: course.thumbnail
                     }

@@ -1,5 +1,5 @@
 'use client'
-import { formatCreateDate } from "@/helper/blog.helper";
+import { formatDate } from "@/helper/blog.helper";
 import { storageUrl } from "@/utils/url";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -77,7 +77,7 @@ const BlogSuggest = ({ blogList, currentId }: {
                                     <Link href={`/blog/${blog.blogId}`} className="text-sm font-semibold hover:underline">{blog.title}</Link>
                                     <section className="flex items-center gap-x-1 text-gray-400 mt-2">
                                         <AccessTimeIcon sx={{ fontSize: '1.25rem' }} />
-                                        <p className="text-[0.8125rem]">{formatCreateDate(blog.createdAt)}</p>
+                                        <p className="text-[0.8125rem]">{formatDate(blog.createdAt)}</p>
                                     </section>
                                 </div>
                             </li>

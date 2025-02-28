@@ -1,10 +1,5 @@
-import { calculateReadingTime } from "./blog.helper";
-import { getNumberOfDocuments, getNumberOfVideos } from "./course.details.helper";
-
-export const countTotalTimeInALesson = (lesson: LessonResponse) => {
-    const videoLength = lesson.videos.reduce((sum, video) => sum + video.duration, 0);
-    const documentLength = lesson.documents.reduce((sum, document) => sum + calculateReadingTime(document.plainContent), 0);
-    const totalSeconds = videoLength + documentLength;
+export const countTotalTimeInAChapter = (chapter: ChapterResponse) => {
+    const totalSeconds = chapter.lessons.reduce((sum, lesson) => sum + lesson.duration, 0);
 
     const hours = Math.floor(totalSeconds / 3600);
     let minutes = Math.ceil((totalSeconds % 3600) / 60);
@@ -19,16 +14,29 @@ export const countTotalTimeInALesson = (lesson: LessonResponse) => {
     return result.trim();
 };
 
-export const countCompletionOfALesson = (lesson: LessonResponse, userProgress: UserProgressResponse[]) => {
-    const completed = userProgress.filter(progress => progress.lessonId === lesson.lessonId).length;
-    const total = lesson.videos.length + lesson.documents.length;
+export const countCompletionOfAChapter = (chapter: ChapterResponse, userProgress: UserProgressResponse[]) => {
+    const completed = userProgress.filter(progress => progress.chapterId === chapter.chapterId).length;
+    const total = chapter.lessons.length;
     return total > 0 ? (completed / total) * 100 : 0;
 }
 
 export const countCompletionOfACourse = (userProgress: UserProgressResponse[], course: CourseDetailsResponse, userId: number) => {
-    const totalVideos = getNumberOfVideos(course);
-    const totalDocuments = getNumberOfDocuments(course);
-    const total = totalDocuments + totalVideos;
-    const completed = userProgress.filter(progress => progress.userId === userId && progress.courseId === course.courseId).length;
-    return total > 0 ? (completed / total) * 100 : 0;
+    const completedLessons = userProgress.filter(progress => progress.userId === userId && progress.courseId === course.courseId).length;
+    const totalLessons = course.chapters.reduce((sum, chapter) => sum + chapter.lessons.length, 0);
+    return totalLessons > 0 ? (completedLessons / totalLessons) * 100 : 0;
 }
+
+export const formatTotalFollowers = (total: number): string => {
+    if (total >= 1000000000) {
+        const value = total / 1000000000;
+        return value % 1 === 0 ? `${value} T` : `${value.toFixed(1)} T`;
+    } else if (total >= 1000000) {
+        const value = total / 1000000;
+        return value % 1 === 0 ? `${value} Tr` : `${value.toFixed(1)} Tr`;
+    } else if (total >= 1000) {
+        const value = total / 1000;
+        return value % 1 === 0 ? `${value} N` : `${value.toFixed(1)} N`;
+    } else {
+        return `${total}`;
+    }
+};

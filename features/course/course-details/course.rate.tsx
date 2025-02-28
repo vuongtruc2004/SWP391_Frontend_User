@@ -58,7 +58,7 @@ const CourseRate = ({ course }: { course: CourseDetailsResponse }) => {
 
     return (
         <div className="p-5">
-            <h1 className="text-xl font-semibold flex items-center gap-x-1">IV. Đánh giá về khóa học</h1>
+            <h1 className="text-xl font-semibold flex items-center gap-x-1">Đánh giá về khóa học</h1>
             <div className="text-gray-300 mb-2 mt-1 text-sm flex items-center gap-x-1">
                 <strong className="text-white flex items-center gap-x-1">
                     <StarIcon sx={{ fontSize: '1.2rem', color: '#faaf00' }} />
@@ -114,7 +114,7 @@ const CourseRate = ({ course }: { course: CourseDetailsResponse }) => {
                     />
                 </>
             ) : (
-                <ListEmpty text="Hiện chưa có bài đánh giá nào" />
+                <ListEmpty text="Không có đánh giá" />
             )}
         </div>
     )

@@ -2,7 +2,7 @@ import { Avatar, Button, Divider, IconButton, Popover, Rating } from "@mui/mater
 import FlagIcon from '@mui/icons-material/Flag';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { useState } from "react";
-import { formatCreateDate } from "@/helper/blog.helper";
+import { formatDate } from "@/helper/blog.helper";
 
 const SingleCourseRating = ({ rate, index, avatarSrc }: {
     rate: RateResponse;
@@ -28,7 +28,7 @@ const SingleCourseRating = ({ rate, index, avatarSrc }: {
                         </Avatar>
                         <div>
                             <p className="font-semibold line-clamp-1 text-sm">{rate?.user?.fullname}</p>
-                            <p className="text-sm text-gray-300">{formatCreateDate(rate.updatedAt)}</p>
+                            <p className="text-sm text-gray-300">{formatDate(rate.updatedAt)}</p>
                         </div>
                     </div>
 

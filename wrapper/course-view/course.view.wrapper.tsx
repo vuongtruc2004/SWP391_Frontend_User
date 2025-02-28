@@ -2,17 +2,19 @@
 import { sendRequest } from "@/utils/fetch.api";
 import { apiUrl } from "@/utils/url";
 import { useSession } from "next-auth/react";
-import { createContext, SetStateAction, useContext, useEffect, useState } from "react"
+import { createContext, Dispatch, SetStateAction, useContext, useEffect, useState } from "react"
 
 interface ICourseView {
+    currentPlayIndex: number;
+    setCurrentPlayIndex: Dispatch<SetStateAction<number>>;
     course: CourseDetailsResponse;
     lessons: LessonResponse[];
     userProgress: UserProgressResponse[];
-    setUserProgress: React.Dispatch<SetStateAction<UserProgressResponse[]>>;
+    setUserProgress: Dispatch<SetStateAction<UserProgressResponse[]>>;
     loading: boolean;
-    setLoading: React.Dispatch<SetStateAction<boolean>>;
+    setLoading: Dispatch<SetStateAction<boolean>>;
     openProgressBar: boolean;
-    setOpenProgressBar: React.Dispatch<SetStateAction<boolean>>;
+    setOpenProgressBar: Dispatch<SetStateAction<boolean>>;
 }
 const CourseViewContext = createContext<ICourseView | null>(null);
 
@@ -20,9 +22,11 @@ export const CourseViewWrapper = ({ children, course }: { children: React.ReactN
     const { data: session, status } = useSession();
 
     const [userProgress, setUserProgress] = useState<UserProgressResponse[]>([]);
-    const lessons = course.chapters.flatMap(chapter => [...chapter.lessons]);
+    const [currentPlayIndex, setCurrentPlayIndex] = useState<number>(0);
     const [openProgressBar, setOpenProgressBar] = useState<boolean>(true);
     const [loading, setLoading] = useState<boolean>(true);
+
+    const lessons = course.chapters.flatMap(chapter => [...chapter.lessons]);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -44,6 +48,8 @@ export const CourseViewWrapper = ({ children, course }: { children: React.ReactN
 
     return (
         <CourseViewContext.Provider value={{
+            currentPlayIndex,
+            setCurrentPlayIndex,
             course,
             lessons,
             userProgress,

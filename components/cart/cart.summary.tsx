@@ -1,4 +1,4 @@
-import { savePrice, sumOriginalPrice, sumSalePrice } from "@/helper/course.cart.helper";
+import { sumOriginalPrice } from "@/helper/course.cart.helper";
 import { useCartContext } from "@/wrapper/course-cart/course.cart.wrapper";
 import { Box, Button } from "@mui/material";
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
@@ -33,11 +33,14 @@ const CartSummary = () => {
             height: 'max-content',
         }}>
             <h1 className="font-semibold text-gray-300">Tổng</h1>
-            <h2 className="text-3xl font-semibold mb-1">{sumSalePrice(cart)}₫ <span className="text-gray-400 line-through text-base">{sumOriginalPrice(cart)}₫</span></h2>
+            <h2 className="text-3xl font-semibold mb-1">
+                <span className="text-gray-400 line-through text-base">
+                    {sumOriginalPrice(cart)}₫
+                </span>
+            </h2>
             <Button variant="contained" color="primary" fullWidth endIcon={<ChevronRightIcon />} onClick={handleOpenInstruction}>
                 Tiến hành thanh toán
             </Button>
-            <p className="text-sm text-green-500 mt-1">Tiết kiệm {savePrice(cart)}₫</p>
 
             <PaymentInstruction open={openInstruction} setOpen={setOpenInstruction} courses={cart} />
         </Box>

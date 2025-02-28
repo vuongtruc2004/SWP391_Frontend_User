@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { storageUrl } from '@/utils/url';
 import Image from 'next/image';
 import { displayPrice, displayProgressbar } from '@/helper/course.list.helper';
-import { formatCreateDate } from '@/helper/blog.helper';
+import { formatDate } from '@/helper/blog.helper';
 import HowToRegIcon from '@mui/icons-material/HowToReg';
 import { useCoursePurchased } from "@/wrapper/course-purchased/course.purchased.wrapper";
 import { Skeleton } from "@mui/material";
@@ -66,7 +66,7 @@ const SingleCourseSlider = ({ course }: { course: CourseResponse }) => {
                     </div>
                     <div className='flex items-center gap-x-2'>
                         <p className='text-gray-300 font-semibold'>Cập nhật lần cuối:</p>
-                        <p className='text-purple-300'>{formatCreateDate(course.updatedAt ?? course.createdAt)}</p>
+                        <p className='text-purple-300'>{formatDate(course.updatedAt ?? course.createdAt)}</p>
                     </div>
                 </div>
 

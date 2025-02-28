@@ -37,9 +37,9 @@ const CourseContent = ({ course }: { course: CourseDetailsResponse }) => {
 
     return (
         <>
-            <h1 className="text-xl font-semibold mt-5 mb-1 flex items-center gap-x-1">III. Nội dung khóa học</h1>
+            <h1 className="text-xl font-semibold mt-5 mb-1 flex items-center gap-x-1">Nội dung khóa học</h1>
             <div className="flex items-center justify-between text-gray-300 mb-4 px-1 text-sm">
-                <p>
+                <p className="flex items-center gap-x-1">
                     <strong className="text-white">{course?.chapters.length}</strong> chương
                     <span>•</span>
                     <strong className="text-white">{getNumberOfLessonType(course, "VIDEO")}</strong> bài giảng

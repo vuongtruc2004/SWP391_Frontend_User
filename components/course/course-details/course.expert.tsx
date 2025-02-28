@@ -34,7 +34,7 @@ const CourseExpert = ({ course }: { course: CourseDetailsResponse }) => {
                     </>
                 ) : (
                     <div className="flex justify-center w-full">
-                        <ListEmpty text="Hiện chưa có bài đánh giá nào" height={100} />
+                        <ListEmpty text="Không có đánh giá" height={100} />
                     </div>
                 )}
             </div>

@@ -15,7 +15,7 @@ const ProfileAvatar = ({ avatar }: {
     avatar: string;
 }) => {
     const { data: session, update } = useSession();
-    const { avatarSrc } = useUserAvatar();
+    const { avatarSrc, fullname } = useUserAvatar();
 
     const router = useRouter();
     const inputRef = useRef<HTMLInputElement>(null);
@@ -76,7 +76,7 @@ const ProfileAvatar = ({ avatar }: {
                     src={avatarSrc}
                     alt="avatar"
                 >
-                    {session?.user.fullname.charAt(0).toUpperCase() || 'N'}
+                    {fullname.charAt(0).toUpperCase()}
                 </Avatar>
 
                 <Button startIcon={<EditIcon />} variant="contained" onClick={() => {

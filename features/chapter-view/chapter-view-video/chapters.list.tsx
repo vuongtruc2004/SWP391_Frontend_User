@@ -1,18 +1,18 @@
 'use client'
 import { useEffect, useState } from "react";
-import SingleLesson from "./single.lesson";
 import { Box, CircularProgress } from "@mui/material";
 import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
-import { getNumberOfDocuments, getNumberOfVideos } from "@/helper/course.details.helper";
 import { BorderLinearProgress } from "@/components/course/course-slider/custom.progress";
 
 import { useCourseView } from "@/wrapper/course-view/course.view.wrapper";
 import { countCompletionOfACourse } from "@/helper/lesson.helper";
 import { useSession } from "next-auth/react";
+import { getNumberOfLessonType } from "@/helper/course.details.helper";
+import SingleChapter from "./single.chapter";
 
-const LessonList = () => {
+const ChaptersList = () => {
     const { course, userProgress, loading, openProgressBar } = useCourseView();
-    const [lessonsExpand, setLessonsExpand] = useState<number>(course.lessons[0].lessonId);
+    const [chapterExpand, setChapterExpand] = useState<number>(course.chapters[0].chapterId);
     const { data: session, status } = useSession();
     const [completionOfACourse, setCompletionOfACourse] = useState(0);
 
@@ -36,9 +36,6 @@ const LessonList = () => {
                 right: 0,
                 flexShrink: 0,
                 width: openProgressBar ? '380px' : 0,
-                '@media (max-width: 1460px)': {
-                    width: openProgressBar ? '330px' : 0
-                },
             }}>
                 <CircularProgress />
             </Box>
@@ -59,11 +56,7 @@ const LessonList = () => {
             borderLeft: '1px solid #25272c',
             flexShrink: 0,
             transition: 'all .3s',
-            // transform: openProgressBar ? "translateX(0)" : 'translateX(100%)',
-            width: openProgressBar ? '380px' : 0,
-            '@media (max-width: 1460px)': {
-                width: openProgressBar ? '330px' : 0
-            },
+            width: openProgressBar ? '360px' : 0,
             textWrap: 'nowrap'
         }}>
             <div className="flex-1">
@@ -71,21 +64,21 @@ const LessonList = () => {
                     <h1 className="font-semibold text-lg mb-1">Tiến độ của bạn</h1>
 
                     <div className={`text-sm flex items-center justify-between mb-1.5 text-gray-400`}>
-                        <p>Đã hoàn thành {userProgress.length} / {getNumberOfVideos(course) + getNumberOfDocuments(course)} bài giảng</p>
+                        <p>Đã hoàn thành {userProgress.length} / {getNumberOfLessonType(course, "VIDEO") + getNumberOfLessonType(course, "DOCUMENT")} bài giảng</p>
                         <EmojiEventsIcon sx={{ fontSize: '1.2rem' }} className={completionOfACourse >= 99.9 ? "text-[#faaf00]" : ""} />
                     </div>
                     <BorderLinearProgress variant="determinate" value={completionOfACourse} height={4} thumb_color={completionOfACourse >= 99.9 ? "#05df72" : "#dab2ff"} />
                 </div>
 
                 <div className="flex flex-col">
-                    {course.lessons.map((lesson, index) => {
+                    {course.chapters.map((chapter, index) => {
                         return (
-                            <SingleLesson
-                                lesson={lesson}
+                            <SingleChapter
+                                chapter={chapter}
                                 index={index}
-                                lessonsExpand={lessonsExpand}
-                                setLessonsExpand={setLessonsExpand}
-                                key={lesson.lessonId + "_" + lesson.title}
+                                chapterExpand={chapterExpand}
+                                setChapterExpand={setChapterExpand}
+                                key={chapter.chapterId + "_" + chapter.title}
                             />
                         )
                     })}
@@ -95,4 +88,4 @@ const LessonList = () => {
     )
 }
 
-export default LessonList
+export default ChaptersList

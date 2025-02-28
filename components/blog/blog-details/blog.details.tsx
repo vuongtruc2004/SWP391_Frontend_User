@@ -1,5 +1,5 @@
 'use client'
-import { calculateReadingTime, formatCreateDate } from "@/helper/blog.helper";
+import { calculateReadingTime, formatDate } from "@/helper/blog.helper";
 import { storageUrl } from "@/utils/url";
 import Avatar from "@mui/material/Avatar";
 import Box from "@mui/material/Box";
@@ -46,7 +46,7 @@ const BlogDetails = ({ blog }: { blog: BlogResponse }) => {
 
                 <section>
                     <AccessTimeIcon sx={{ fontSize: '1.35rem' }} />
-                    <p>{formatCreateDate(blog.createdAt)}</p>
+                    <p>{formatDate(blog.createdAt)}</p>
                 </section>
 
                 <Divider orientation="vertical" variant="middle" flexItem sx={{ borderColor: '#6c757d', height: '16px' }} />

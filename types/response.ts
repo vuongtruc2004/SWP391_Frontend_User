@@ -101,6 +101,7 @@ declare global {
     interface LessonResponse {
         lessonId: number;
         title: string;
+        description: string;
         duration: number;
         createdAt: string;
         updatedAt: string;
@@ -121,6 +122,7 @@ declare global {
         description: string;
         yearOfExperience: string;
         totalStudents: number;
+        totalFollowers: number;
     }
 
     interface RateResponse {

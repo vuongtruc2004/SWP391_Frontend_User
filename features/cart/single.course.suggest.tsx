@@ -28,10 +28,7 @@ const SingleCourseSuggest = ({ course }: { course: CourseDetailsResponse }) => {
                 <p>(<span className="text-green-500 font-semibold">{course.totalRating}</span> xếp hạng)</p>
             </div>
             <div className="flex items-end gap-x-2 font-semibold">
-                <p>{formatPrice(course.salePrice)}₫</p>
-                {course.salePrice < course.originalPrice && (
-                    <p className="text-sm line-through text-gray-400">{formatPrice(course.originalPrice)}₫</p>
-                )}
+                <p>{formatPrice(course.price)}₫</p>
             </div>
         </Box>
     )

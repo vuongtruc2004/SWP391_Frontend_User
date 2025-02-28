@@ -25,7 +25,7 @@ export default function AccountMenu({ anchorEl, setAnchorEl, transformOrigin, an
 }) {
     const { data: session } = useSession();
     const open = Boolean(anchorEl);
-    const { avatarSrc } = useUserAvatar();
+    const { avatarSrc, fullname } = useUserAvatar();
 
     const handleClose = () => {
         setAnchorEl(null);
@@ -97,10 +97,10 @@ export default function AccountMenu({ anchorEl, setAnchorEl, transformOrigin, an
         >
             <div className='flex items-center justify-between py-1.5 px-4 gap-x-5'>
                 <Avatar src={avatarSrc} alt='avatar'>
-                    {session?.user.fullname?.charAt(0).toUpperCase()}
+                    {fullname.charAt(0).toUpperCase()}
                 </Avatar>
                 <div className='min-w-44'>
-                    <p className='text-sm text-gray-400'>Hello, <strong className='text-blue-500'>{session?.user.fullname}</strong></p>
+                    <p className='text-sm text-gray-400'>Hello, <strong className='text-blue-500'>{fullname}</strong></p>
                     <p className='text-sm text-gray-400'>UID: <strong className='text-blue-500'>{session?.user.userId}</strong></p>
                 </div>
             </div>

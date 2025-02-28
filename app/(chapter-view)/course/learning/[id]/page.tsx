@@ -1,8 +1,7 @@
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-import Sidebar from "@/components/lesson-view/lesson-view-sidebar/sidebar";
-import LessonViewTab from "@/components/lesson-view/lesson-view-tab/lesson.view.tab";
-import LessonVideo from "@/components/lesson-view/lesson-view-video/lesson.video";
-import LessonList from "@/features/lesson-view/lesson-view-video/lesson.list";
+import Sidebar from "@/components/chapter-view/chapter-view-sidebar/sidebar";
+import PlayingLesson from "@/components/lesson/playing.lesson";
+import ChaptersList from "@/features/chapter-view/chapter-view-video/chapters.list";
 import { getCourseById } from "@/helper/course.details.helper";
 import { sendRequest } from "@/utils/fetch.api";
 import { apiUrl } from "@/utils/url";
@@ -49,11 +48,10 @@ const CourseLearningPage = async ({ params }: { params: Promise<{ id: string }> 
             }}>
                 <Sidebar />
                 <div className="flex">
-                    <div className="px-10 py-5 w-full">
-                        <LessonVideo />
-                        <LessonViewTab />
+                    <div className="p-5 w-full">
+                        <PlayingLesson />
                     </div>
-                    <LessonList />
+                    <ChaptersList />
                 </div>
             </Box>
         </CourseViewWrapper>

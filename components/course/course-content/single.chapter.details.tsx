@@ -1,8 +1,8 @@
 import { Accordion, AccordionSummary } from "./style";
 import { AccordionDetails, Box } from "@mui/material";
-import PlayArrowIcon from '@mui/icons-material/PlayArrow';
-import DescriptionIcon from '@mui/icons-material/Description';
 import { convertSecondToTime } from "@/helper/course.details.helper";
+import AutoStoriesOutlinedIcon from '@mui/icons-material/AutoStoriesOutlined';
+import SmartDisplayOutlinedIcon from '@mui/icons-material/SmartDisplayOutlined';
 
 const SingleChapterDetails = ({ chapter, index, chaptersExpand, toggleChapter }: {
     chapter: ChapterResponse,
@@ -33,22 +33,28 @@ const SingleChapterDetails = ({ chapter, index, chaptersExpand, toggleChapter }:
                             display: 'flex',
                             alignItems: 'center',
                             justifyContent: 'space-between',
-                            columnGap: '50px',
+                            columnGap: '60px',
                             padding: '15px 20px',
                         }} key={lesson.lessonId + "_" + lesson.title}>
                             {lesson.lessonType === "VIDEO" ? (
                                 <>
                                     <div className="flex items-center">
-                                        <PlayArrowIcon sx={{ fontSize: '1.2rem' }} className="mr-5 text-blue-300" />
-                                        <p>{index + 1}. {lesson.title}</p>
+                                        <SmartDisplayOutlinedIcon sx={{ fontSize: '1.2rem' }} className="text-blue-300 mr-5" />
+                                        <div>
+                                            <p>{lesson.title}</p>
+                                            <p className="text-gray-300 text-sm">Video</p>
+                                        </div>
                                     </div>
                                     <p className="text-gray-300 text-sm">{convertSecondToTime(lesson.duration)}</p>
                                 </>
                             ) : (
                                 <>
                                     <div className="flex items-center">
-                                        <DescriptionIcon sx={{ fontSize: '1.2rem' }} className="text-blue-300 mr-5" />
-                                        <p>{index + 1}. {lesson.title}</p>
+                                        <AutoStoriesOutlinedIcon sx={{ fontSize: '1.2rem' }} className="text-blue-300 mr-5" />
+                                        <div>
+                                            <p>{lesson.title}</p>
+                                            <p className="text-gray-300 text-sm">Tài liệu đọc thêm</p>
+                                        </div>
                                     </div>
                                     <p className="text-gray-300 text-sm">{Math.ceil(lesson.duration / 60)} phút đọc</p>
                                 </>

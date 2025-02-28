@@ -1,4 +1,4 @@
-import { formatPrice, getSalePercent } from "@/helper/course.list.helper";
+import { formatPrice } from "@/helper/course.list.helper";
 import { storageUrl } from "@/utils/url";
 import CloseIcon from '@mui/icons-material/Close';
 import { Button, Divider, Rating } from "@mui/material";
@@ -49,7 +49,7 @@ const SingleCartCourse = ({ course, setCart, index }: {
                         <div className="flex items-center gap-x-1.5 text-sm text-gray-200">
                             <p>Tổng số {course.totalTime}</p>
                             <p className="text-gray-100 font-bold">•</p>
-                            <p>{course.totalLessons} chương</p>
+                            <p>{course.totalChapters} chương</p>
                             <p className="text-gray-100 font-bold">•</p>
                             <p>{course.totalPurchased} người đăng kí</p>
                         </div>
@@ -58,13 +58,7 @@ const SingleCartCourse = ({ course, setCart, index }: {
 
                 <div>
                     <div className="flex flex-col items-end mb-1">
-                        <p className="font-semibold text-lg">{formatPrice(course.salePrice)}₫</p>
-                        {course.salePrice < course.originalPrice && (
-                            <div className="flex items-center gap-x-2">
-                                <p className="line-through font-semibold text-gray-400">{formatPrice(course.originalPrice)}₫</p>
-                                <p className="px-3 mt-0.5 text-sm text-green-600 border-green-800 border rounded-md">-{getSalePercent(course.originalPrice, course.salePrice)}%</p>
-                            </div>
-                        )}
+                        <p className="font-semibold text-lg">{formatPrice(course.price)}₫</p>
                     </div>
                     <Button color="error" size="small" startIcon={<CloseIcon />} onClick={() => handleDeleteItem(course.courseId)}>
                         Xóa khỏi giỏ hàng
