@@ -1,5 +1,5 @@
 import { useCourseView } from '@/wrapper/course-view/course.view.wrapper'
-import { useUserAvatar } from '@/wrapper/user-avatar/user.avatar.wrapper';
+import { useUserAvatar } from '@/wrapper/user/user.wrapper';
 import { Avatar, TextField } from '@mui/material';
 
 const CourseRateInput = () => {

@@ -9,7 +9,7 @@ import { apiUrl } from "@/utils/url";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { Alert, Snackbar } from "@mui/material";
-import { useUserAvatar } from "@/wrapper/user-avatar/user.avatar.wrapper";
+import { useUserAvatar } from "@/wrapper/user/user.wrapper";
 
 const ProfileAvatar = ({ avatar }: {
     avatar: string;

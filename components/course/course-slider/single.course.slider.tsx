@@ -9,9 +9,18 @@ import { formatDate } from '@/helper/blog.helper';
 import HowToRegIcon from '@mui/icons-material/HowToReg';
 import { useCoursePurchased } from "@/wrapper/course-purchased/course.purchased.wrapper";
 import { Skeleton } from "@mui/material";
+import { useCourseView } from "@/wrapper/course-view/course.view.wrapper";
+import { useEffect, useState } from "react";
 
 const SingleCourseSlider = ({ course }: { course: CourseResponse }) => {
-    const { purchasedCourses, loading, getPercentageByCourseId } = useCoursePurchased();
+    const { loading, userProgress } = useCourseView();
+    const [completionOfACourse, setCompletionOfACourse] = useState(-1);
+
+    useEffect(() => {
+        if (userProgress.length) {
+            setCompletionOfACourse()
+        }
+    }, [userProgress]);
 
     if (loading) {
         return (

@@ -5,7 +5,7 @@ import { Avatar, Box, Tooltip } from "@mui/material";
 import AccountMenu from "../../header/account.menu";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
-import { useUserAvatar } from "@/wrapper/user-avatar/user.avatar.wrapper";
+import { useUserAvatar } from "@/wrapper/user/user.wrapper";
 import SearchIcon from '@mui/icons-material/Search';
 import { usePathname } from "next/navigation";
 import HomeIcon from '@mui/icons-material/Home';

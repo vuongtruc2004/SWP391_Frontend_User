@@ -4,7 +4,6 @@ import { sendRequest } from "@/utils/fetch.api";
 import { apiUrl, storageUrl } from "@/utils/url";
 import { CircularProgress, MenuItem, Rating, Select } from "@mui/material";
 import { useCourseView } from "@/wrapper/course-view/course.view.wrapper";
-import CourseRateInput from "./course.rate.input";
 
 const ChapterCourseRate = () => {
     const { course } = useCourseView();
@@ -53,7 +52,7 @@ const ChapterCourseRate = () => {
     }, [page, hasMore, direction]);
 
     return (
-        <div className="mt-5">
+        <div className="mt-8">
             <h1 className="font-semibold text-lg">Đánh giá về khóa học</h1>
 
             <div className="flex items-center justify-between mb-3">
@@ -71,8 +70,6 @@ const ChapterCourseRate = () => {
                     <MenuItem value={"asc"}>Cũ nhất</MenuItem>
                 </Select>
             </div>
-
-            <CourseRateInput />
 
             {rateList.map((rate, index) => {
                 const avatarSrc = rate?.user?.avatar?.startsWith("http")

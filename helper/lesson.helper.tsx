@@ -20,12 +20,6 @@ export const countCompletionOfAChapter = (chapter: ChapterResponse, userProgress
     return total > 0 ? (completed / total) * 100 : 0;
 }
 
-export const countCompletionOfACourse = (userProgress: UserProgressResponse[], course: CourseDetailsResponse, userId: number) => {
-    const completedLessons = userProgress.filter(progress => progress.userId === userId && progress.courseId === course.courseId).length;
-    const totalLessons = course.chapters.reduce((sum, chapter) => sum + chapter.lessons.length, 0);
-    return totalLessons > 0 ? (completedLessons / totalLessons) * 100 : 0;
-}
-
 export const formatTotalFollowers = (total: number): string => {
     if (total >= 1000000000) {
         const value = total / 1000000000;

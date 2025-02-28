@@ -6,7 +6,9 @@ import { ArrowLeftIcon, ArrowRightIcon } from '@mui/x-date-pickers/icons';
 const LessonDocument = () => {
     const { lessons, currentPlayIndex, setCurrentPlayIndex } = useCourseView();
 
-    if (!lessons[currentPlayIndex].documentContent) {
+    const currentLesson = lessons[currentPlayIndex];
+
+    if (!currentLesson.documentContent) {
         return <></>
     }
 
@@ -14,8 +16,8 @@ const LessonDocument = () => {
         <>
             <div className="flex items-center justify-between">
                 <div>
-                    <h1 className="text-xl font-semibold">{lessons[currentPlayIndex].title}</h1>
-                    <p className="text-gray-300 text-sm">Cập nhật lần cuối: <span className="text-purple-300 font-semibold">{formatDate(lessons[currentPlayIndex].updatedAt)}</span></p>
+                    <h1 className="text-xl font-semibold">{currentLesson.title}</h1>
+                    <p className="text-gray-300 text-sm">Cập nhật lần cuối: <span className="text-purple-300 font-semibold">{formatDate(currentLesson.updatedAt)}</span></p>
                 </div>
 
                 <ul className='flex items-center'>
@@ -41,7 +43,7 @@ const LessonDocument = () => {
 
             <Divider sx={{ marginBlock: '10px' }} />
 
-            <div dangerouslySetInnerHTML={{ __html: lessons[currentPlayIndex].documentContent }} />
+            <div dangerouslySetInnerHTML={{ __html: currentLesson.documentContent }} />
         </>
     )
 }

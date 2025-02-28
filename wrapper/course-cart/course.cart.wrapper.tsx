@@ -10,15 +10,15 @@ interface ICartCourse {
 const CartContext = createContext<ICartCourse | null>(null);
 
 export const CourseCartWrapper = ({ children }: { children: React.ReactNode }) => {
-    const { purchasedCourses } = useCoursePurchased();
+    const { purchasedCourseIds } = useCoursePurchased();
     const [cart, setCart] = useState<CartCourse[]>([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const storedCart: CartCourse[] = JSON.parse(localStorage.getItem("cart") || "[]");
 
-        if (purchasedCourses.length) {
-            const newStoredCart = storedCart.filter(course => !purchasedCourses.some(item => item.courseId === course.courseId));
+        if (purchasedCourseIds.length) {
+            const newStoredCart = storedCart.filter(course => !purchasedCourseIds.some(courseId => courseId === course.courseId));
 
             if (newStoredCart.length !== cart.length) {
                 localStorage.setItem('cart', JSON.stringify(newStoredCart));
@@ -29,7 +29,7 @@ export const CourseCartWrapper = ({ children }: { children: React.ReactNode }) =
         }
 
         setLoading(false);
-    }, [purchasedCourses]);
+    }, [purchasedCourseIds]);
 
     return (
         <CartContext.Provider value={{ cart, setCart, loading }}>

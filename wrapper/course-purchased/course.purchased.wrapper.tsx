@@ -2,55 +2,45 @@
 import { sendRequest } from "@/utils/fetch.api";
 import { apiUrl } from "@/utils/url";
 import { useSession } from "next-auth/react";
-import { createContext, useCallback, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 
 interface ICoursePurchased {
-    purchasedCourses: CourseStatusResponse[];
-    setPurchasedCourses: React.Dispatch<React.SetStateAction<CourseStatusResponse[]>>;
+    purchasedCourseIds: number[];
+    setPurchasedCourseIds: React.Dispatch<React.SetStateAction<number[]>>;
     loading: boolean;
-    getPercentageByCourseId: (courseId: number) => number;
 }
 
 const CoursePurchasedContext = createContext<ICoursePurchased | null>(null);
 
 export const CoursePurchasedWrapper = ({ children }: { children: React.ReactNode }) => {
     const { data: session, status } = useSession();
-    const [purchasedCourses, setPurchasedCourses] = useState<CourseStatusResponse[]>([]);
+    const [purchasedCourseIds, setPurchasedCourseIds] = useState<number[]>([]);
     const [loading, setLoading] = useState(true);
 
-    const getPercentageByCourseId = useCallback((courseId: number) => {
-        const completionPercentage = purchasedCourses.find(course => course.courseId === courseId)?.completionPercentage;
-        if (completionPercentage === undefined) {
-            return -1;
-        }
-        return completionPercentage;
-    }, [purchasedCourses]);
-
     useEffect(() => {
-        const fetchPurchasedCourses = async () => {
+        const fetchPurchasedCourseIds = async () => {
             if (status === "authenticated") {
-                const purchasedCoursesResponse = await sendRequest<ApiResponse<CourseStatusResponse[]>>({
+                const purchasedCourseIdsResponse = await sendRequest<ApiResponse<number[]>>({
                     url: `${apiUrl}/courses/user/purchased`,
                     headers: {
                         Authorization: `Bearer ${session?.accessToken}`
                     }
                 });
-                if (purchasedCoursesResponse.status === 200) {
-                    setPurchasedCourses(purchasedCoursesResponse.data);
+                if (purchasedCourseIdsResponse.status === 200) {
+                    setPurchasedCourseIds(purchasedCourseIdsResponse.data);
                 }
             } else {
-                setPurchasedCourses([]);
+                setPurchasedCourseIds([]);
             }
             setLoading(false);
         }
-        fetchPurchasedCourses();
+        fetchPurchasedCourseIds();
     }, [session]);
 
     return (
         <CoursePurchasedContext.Provider value={{
-            purchasedCourses,
-            setPurchasedCourses,
-            getPercentageByCourseId,
+            purchasedCourseIds,
+            setPurchasedCourseIds,
             loading
         }}>
             {children}

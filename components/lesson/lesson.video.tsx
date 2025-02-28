@@ -94,7 +94,7 @@ const LessonVideo = () => {
                         <>
                             <Divider sx={{ marginBlock: '20px' }} />
 
-                            <h1 className="text-xl font-semibold">Thông tin khóa học</h1>
+                            <h1 className="text-xl font-semibold">Khóa học</h1>
 
                             <div className="flex items-center gap-x-3 mt-3 mb-5">
                                 <Link href={`/course/${course.courseId}`} style={{
@@ -115,16 +115,16 @@ const LessonVideo = () => {
 
                                 <div className="max-w-[280px]">
                                     <Link href={`/course/${course.courseId}`} className='transition-all duration-150 line-clamp-1 text-lg font-semibold hover:underline hover:text-blue-500'>{course.courseName}</Link>
-                                    <div className="flex items-center gap-x-1 text-sm text-gray-200">
-                                        <p className="text-amber-600 font-semibold">{course.averageRating.toFixed(1)}</p>
-                                        <Rating name="read-only" value={course.averageRating} readOnly size="small" precision={0.1} />
-                                        <p>(<span className="text-green-500 font-semibold">{course.totalRating}</span> xếp hạng)</p>
-                                    </div>
-
-                                    <div className="flex items-center gap-x-1.5 text-sm text-gray-200">
-                                        <p>Tổng số {countTotalTime(course)}</p>
-                                        <p className="text-gray-100 font-bold">•</p>
-                                        <p>{course.totalPurchased} người đăng kí</p>
+                                    <div className='text-sm'>
+                                        <div className='flex items-center gap-x-2'>
+                                            <p>Cập nhật lần cuối:</p>
+                                            <p className='text-purple-300 font-semibold'>{formatDate(course.updatedAt)}</p>
+                                        </div>
+                                        <div className="flex items-center gap-x-1">
+                                            <p><span className="font-semibold text-blue-500">{course.totalPurchased}</span> người đăng kí</p>
+                                            <p>•</p>
+                                            <p>Tổng thời lượng <span className="text-green-500 font-semibold">{countTotalTime(course)}</span></p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

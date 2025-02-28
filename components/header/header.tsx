@@ -13,7 +13,7 @@ import { useSession } from "next-auth/react";
 import { motion } from 'framer-motion';
 import Image from "next/image";
 import CartButton from "@/features/cart/cart.button";
-import { useUserAvatar } from "@/wrapper/user-avatar/user.avatar.wrapper";
+import { useUserAvatar } from "@/wrapper/user/user.wrapper";
 import NotificationButton from "../notification/notification.button";
 import AiSupportButton from "../ai-support/ai.support.button";
 import { Divider } from "@mui/material";

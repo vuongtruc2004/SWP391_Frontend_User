@@ -71,13 +71,9 @@ declare global {
         price: number;
         expert: ExpertResponse;
         totalPurchased: number;
+        totalLessons: number;
         createdAt: string;
         updatedAt: string;
-    }
-
-    interface CourseStatusResponse {
-        courseId: number;
-        completionPercentage: number;
     }
 
     interface CourseDetailsResponse extends CourseResponse {

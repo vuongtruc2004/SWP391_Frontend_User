@@ -29,6 +29,31 @@ export const CourseViewWrapper = ({ children, course }: { children: React.ReactN
     const lessons = course.chapters.flatMap(chapter => [...chapter.lessons]);
 
     useEffect(() => {
+        const storedData = localStorage.getItem('last_play') || "{}";
+        try {
+            const lastPlay = JSON.parse(storedData);
+            setCurrentPlayIndex(lastPlay[course.courseId] || 0);
+        } catch (error) {
+            localStorage.setItem('last_play', '{}');
+            throw new Error("last_play trong localStorage của bạn đã bị chỉnh sửa, vui lòng click vào nút 'Try Again'");
+        }
+    }, []);
+
+    useEffect(() => {
+        const storedData = localStorage.getItem('last_play') || "{}";
+        try {
+            const lastPlay = JSON.parse(storedData);
+            if (lastPlay[course.courseId] !== currentPlayIndex) {
+                lastPlay[course.courseId] = currentPlayIndex;
+                localStorage.setItem('last_play', JSON.stringify(lastPlay));
+            }
+        } catch (error) {
+            localStorage.setItem('last_play', '{}');
+            throw new Error("last_play trong localStorage của bạn đã bị chỉnh sửa, vui lòng click vào nút 'Try Again'");
+        }
+    }, [currentPlayIndex]);
+
+    useEffect(() => {
         const fetchData = async () => {
             if (status === "authenticated") {
                 const userProgressResponse = await sendRequest<ApiResponse<UserProgressResponse[]>>({

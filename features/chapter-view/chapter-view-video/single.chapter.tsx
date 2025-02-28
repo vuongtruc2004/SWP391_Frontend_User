@@ -19,53 +19,48 @@ const SingleChapter = ({ chapter, index, chapterExpand, setChapterExpand }: {
 }) => {
     const { data: session, status } = useSession();
     const { currentPlayIndex, setCurrentPlayIndex, userProgress, course, setUserProgress, lessons } = useCourseView();
-    const completionOfChapter = countCompletionOfAChapter(chapter, userProgress);
 
+    const [completionOfChapter, setCompletionOfChapter] = useState(0);
     const [playingChapter, setPlayingChapter] = useState<number | null>(null);
-    const [completedItems, setCompletedItems] = useState<Set<string>>(new Set());
+    const [completedItems, setCompletedItems] = useState<Set<number>>(new Set());
 
-    // const handleChangeStatus = async (type: "video" | "document", id: number) => {
-    //     if (status === "authenticated") {
-    //         const request: UserProgressRequest = {
-    //             courseId: course.courseId,
-    //             lessonId: lesson.lessonId,
-    //             documentId: type === "document" ? id : null,
-    //             videoId: type === "video" ? id : null
-    //         }
-    //         console.log(">>> lesson: ", lesson);
-    //         console.log(lectures);
-    //         console.log(request);
-    //         const userProgressResponse = await sendRequest<ApiResponse<UserProgressResponse>>({
-    //             url: `${apiUrl}/progress`,
-    //             method: 'POST',
-    //             headers: {
-    //                 Authorization: `Bearer ${session.accessToken}`,
-    //                 'Content-Type': 'application/json'
-    //             },
-    //             body: request
-    //         });
-    //         console.log(userProgressResponse);
-    //         if (userProgressResponse.status === 200) {
-    //             setUserProgress(prev => [...prev, userProgressResponse.data]);
-    //         }
-    //     }
-    // }
+    const handleChangeStatus = async (lessonId: number) => {
+        if (status === "authenticated") {
+            const request: UserProgressRequest = {
+                courseId: course.courseId,
+                chapterId: chapter.chapterId,
+                lessonId: lessonId,
+            }
+            const userProgressResponse = await sendRequest<ApiResponse<UserProgressResponse>>({
+                url: `${apiUrl}/progress`,
+                method: 'POST',
+                headers: {
+                    Authorization: `Bearer ${session.accessToken}`,
+                    'Content-Type': 'application/json'
+                },
+                body: request
+            });
+            if (userProgressResponse.status === 200) {
+                setUserProgress(prev => [...prev, userProgressResponse.data]);
+            }
+        }
+    }
 
     const handleChangeCurrentPlayIndex = (clickedLessonId: number) => {
-        console.log(">>>", clickedLessonId);
         const index = lessons.findIndex(lesson => lesson.lessonId === clickedLessonId);
         setCurrentPlayIndex(index);
     }
 
-    // useEffect(() => {
-    //     if (userProgress.length) {
-    //         const set = new Set<string>();
-    //         userProgress.forEach(progress => {
-    //             set.add(progress.documentId ? `document-${progress.documentId}` : `video-${progress.videoId}`);
-    //         });
-    //         setCompletedItems(set);
-    //     }
-    // }, [userProgress]);
+    useEffect(() => {
+        if (userProgress.length) {
+            const set = new Set<number>();
+            userProgress.forEach(progress => {
+                set.add(progress.lessonId);
+            });
+            setCompletedItems(set);
+        }
+        setCompletionOfChapter(countCompletionOfAChapter(chapter, userProgress));
+    }, [userProgress]);
 
     useEffect(() => {
         for (let chapter of course.chapters) {
@@ -86,10 +81,10 @@ const SingleChapter = ({ chapter, index, chapterExpand, setChapterExpand }: {
                 <div className="flex items-center gap-x-3">
                     <FacebookCircularProgress
                         variant="determinate"
-                        thumb_color={completionOfChapter === 100 ? "#05df72" : ""}
+                        thumb_color={completionOfChapter >= 99.9 ? "#05df72" : ""}
                         value={completionOfChapter}
                         percentage={(
-                            <p className={`text-sm ${completionOfChapter === 100 ? "text-green-400" : (completionOfChapter === 0 ? "text-gray-300" : "text-purple-300")}`}>
+                            <p className={`text-sm ${completionOfChapter >= 99.9 ? "text-green-400" : (completionOfChapter === 0 ? "text-gray-300" : "text-purple-300")}`}>
                                 {playingChapter === chapter.chapterId ? <FlagIcon sx={{ fontSize: '1rem' }} /> : `${index + 1}`}
                             </p>
                         )}
@@ -122,46 +117,36 @@ const SingleChapter = ({ chapter, index, chapterExpand, setChapterExpand }: {
                             onClick={() => handleChangeCurrentPlayIndex(lesson.lessonId)}
                         >
                             {lesson.lessonType === "VIDEO" ? (
-                                <>
-                                    <div className="flex items-center">
-                                        <SmartDisplayOutlinedIcon sx={{ fontSize: '1.2rem' }} className="text-blue-300 mr-5" />
-                                        <div className="max-w-[200px]">
-                                            <p className={`${lessons[currentPlayIndex].lessonId === lesson.lessonId ? "text-purple-300" : ""} text-wrap line-clamp-1`}>{lesson.title}</p>
-                                            <p className="text-gray-300 text-sm flex items-center gap-x-1">
-                                                <span>Video</span>
-                                                <span>•</span>
-                                                <span>{convertSecondToTime(lesson.duration)}</span>
-                                            </p>
-                                        </div>
+                                <div className="flex items-center">
+                                    <SmartDisplayOutlinedIcon sx={{ fontSize: '1.2rem' }} className="text-blue-300 mr-5" />
+                                    <div className="max-w-[200px]">
+                                        <p className={`${lessons[currentPlayIndex].lessonId === lesson.lessonId ? "text-purple-300" : ""} text-wrap line-clamp-1`}>{lesson.title}</p>
+                                        <p className="text-gray-300 text-sm flex items-center gap-x-1">
+                                            <span>Video</span>
+                                            <span>•</span>
+                                            <span>{convertSecondToTime(lesson.duration)}</span>
+                                        </p>
                                     </div>
-                                    <Checkbox
-                                        size="small"
-                                    // checked={completedItems.has(`video-${video.videoId}`)}
-                                    // onChange={() => handleChangeStatus('video', video.videoId)}
-                                    // disabled={completedItems.has(`video-${video.videoId}`)}
-                                    />
-                                </>
+                                </div>
                             ) : (
-                                <>
-                                    <div className="flex items-center">
-                                        <AutoStoriesOutlinedIcon sx={{ fontSize: '1.2rem' }} className="text-blue-300 mr-5" />
-                                        <div className="max-w-[200px]">
-                                            <p className={`${lessons[currentPlayIndex].lessonId === lesson.lessonId ? "text-purple-300" : ""} text-wrap line-clamp-1`}>{lesson.title}</p>
-                                            <p className="text-gray-300 text-sm flex items-center gap-x-1">
-                                                <span>Tài liệu đọc thêm</span>
-                                                <span>•</span>
-                                                <span>{Math.ceil(lesson.duration / 60)} phút đọc</span>
-                                            </p>
-                                        </div>
+                                <div className="flex items-center">
+                                    <AutoStoriesOutlinedIcon sx={{ fontSize: '1.2rem' }} className="text-blue-300 mr-5" />
+                                    <div className="max-w-[200px]">
+                                        <p className={`${lessons[currentPlayIndex].lessonId === lesson.lessonId ? "text-purple-300" : ""} text-wrap line-clamp-1`}>{lesson.title}</p>
+                                        <p className="text-gray-300 text-sm flex items-center gap-x-1">
+                                            <span>Tài liệu đọc thêm</span>
+                                            <span>•</span>
+                                            <span>{Math.ceil(lesson.duration / 60)} phút đọc</span>
+                                        </p>
                                     </div>
-                                    <Checkbox
-                                        size="small"
-                                    // checked={completedItems.has(`document-${document.documentId}`)}
-                                    // onChange={() => handleChangeStatus('document', document.documentId)}
-                                    // disabled={completedItems.has(`document-${document.documentId}`)}
-                                    />
-                                </>
+                                </div>
                             )}
+                            <Checkbox
+                                size="small"
+                                checked={completedItems.has(lesson.lessonId)}
+                                onChange={() => handleChangeStatus(lesson.lessonId)}
+                                disabled={completedItems.has(lesson.lessonId)}
+                            />
                         </Box>
                     )
                 })}

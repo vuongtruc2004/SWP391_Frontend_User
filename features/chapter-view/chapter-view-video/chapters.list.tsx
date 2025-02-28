@@ -3,11 +3,8 @@ import { useEffect, useState } from "react";
 import { Box, CircularProgress } from "@mui/material";
 import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 import { BorderLinearProgress } from "@/components/course/course-slider/custom.progress";
-
 import { useCourseView } from "@/wrapper/course-view/course.view.wrapper";
-import { countCompletionOfACourse } from "@/helper/lesson.helper";
 import { useSession } from "next-auth/react";
-import { getNumberOfLessonType } from "@/helper/course.details.helper";
 import SingleChapter from "./single.chapter";
 
 const ChaptersList = () => {
@@ -18,7 +15,7 @@ const ChaptersList = () => {
 
     useEffect(() => {
         if (status === "authenticated") {
-            setCompletionOfACourse(countCompletionOfACourse(userProgress, course, session.user.userId));
+            setCompletionOfACourse((userProgress.length / course.totalLessons) * 100);
         }
     }, [session, userProgress]);
 
@@ -64,7 +61,7 @@ const ChaptersList = () => {
                     <h1 className="font-semibold text-lg mb-1">Tiến độ của bạn</h1>
 
                     <div className={`text-sm flex items-center justify-between mb-1.5 text-gray-400`}>
-                        <p>Đã hoàn thành {userProgress.length} / {getNumberOfLessonType(course, "VIDEO") + getNumberOfLessonType(course, "DOCUMENT")} bài giảng</p>
+                        <p>Đã hoàn thành {userProgress.length} / {course.totalLessons} bài giảng</p>
                         <EmojiEventsIcon sx={{ fontSize: '1.2rem' }} className={completionOfACourse >= 99.9 ? "text-[#faaf00]" : ""} />
                     </div>
                     <BorderLinearProgress variant="determinate" value={completionOfACourse} height={4} thumb_color={completionOfACourse >= 99.9 ? "#05df72" : "#dab2ff"} />
