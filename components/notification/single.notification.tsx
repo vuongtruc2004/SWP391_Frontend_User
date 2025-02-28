@@ -15,7 +15,7 @@ const SingleNotification = ({ notification }: { notification: UserNotificationRe
     return (
         <>
             <Link href={`/user/notification`} className="flex items-center gap-x-5" onClick={() => setAnchorEl(null)}>
-                <Avatar alt="LearnGo" src={`${storageUrl}/avatar/truc.jpg`} sx={{ width: '50px', height: '50px' }} />
+                <Avatar alt="LearnGo" src="/logo.webp" sx={{ width: '50px', height: '50px' }} />
                 <div className="max-w-[220px]">
                     <h1 className="font-semibold line-clamp-1">{notification.notification?.title}</h1>
                     <p className="line-clamp-1 text-gray-300">{notification.notification?.content}</p>

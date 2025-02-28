@@ -12,6 +12,7 @@ import relativeTime from "dayjs/plugin/relativeTime";
 import "dayjs/locale/vi";
 import dayjs from "dayjs"
 import { useNotification } from "@/wrapper/notification/notification.wrapper";
+import { useRouter } from "next/navigation";
 
 dayjs.locale("vi");
 dayjs.extend(relativeTime);
@@ -23,16 +24,20 @@ const NotificationBigger = ({ notification }: {
     const { data: session, status } = useSession();
     const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
     const { setNotifications, notifications } = useNotification();
+    const router = useRouter();
 
     const handleRead = async () => {
         if (status === "authenticated") {
-            await sendRequest<ApiResponse<String>>({
+            const changeStatusRead = await sendRequest<ApiResponse<String>>({
                 url: `${apiUrl}/notifications/${notification.notification.notificationId}`,
                 method: 'POST',
                 headers: {
                     Authorization: `Bearer ${session?.accessToken}`,
                 }
             });
+            if (changeStatusRead.status === 200) {
+                router.refresh();
+            }
         }
     }
 
@@ -62,7 +67,7 @@ const NotificationBigger = ({ notification }: {
         <>
             <Box className="flex items-center justify-between gap-x-5">
                 <div className="flex items-center gap-x-5">
-                    <Avatar alt="LearnGo" src={`${storageUrl}/avatar/truc.jpg`} sx={{
+                    <Avatar alt="LearnGo" src="/logo.webp" sx={{
                         width: '50px',
                         height: '50px'
                     }} />
@@ -76,7 +81,7 @@ const NotificationBigger = ({ notification }: {
 
                         <p className={`${showAllContent ? "" : "line-clamp-2"} cursor-pointer text-gray-300`} onClick={() => {
                             setShowAllContent(prev => !prev);
-                            handleRead()
+                            handleRead();
                         }}>{notification.notification?.content}</p>
 
                         <p className="text-sm text-blue-400 font-semibold">{dayjs(notification.notification?.createdAt).fromNow()}</p>
