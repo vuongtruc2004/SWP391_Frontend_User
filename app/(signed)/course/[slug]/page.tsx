@@ -9,16 +9,18 @@ import CourseRate from "@/features/course/course-details/course.rate";
 import CourseObjectives from "@/components/course/course-details/course.objectives";
 import CourseIntroduction from "@/features/course/course-introduction/course.introduction";
 
-export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
-    const id = (await params).id
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+    const slug = (await params).slug;
+    const id = slug.split("-").pop() || "";
     const courseResponse = await getCourseById(id);
     return {
         title: courseResponse.data.courseName,
     }
 }
 
-const CourseDetails = async ({ params }: { params: Promise<{ id: string }> }) => {
-    const id = (await params).id
+const CourseDetails = async ({ params }: { params: Promise<{ slug: string }> }) => {
+    const slug = (await params).slug;
+    const id = slug.split("-").pop() || "";
     const courseResponse = await getCourseById(id);
 
     return (

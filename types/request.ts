@@ -47,23 +47,15 @@ declare global {
         password: string;
     }
 
-    interface OrderRequest {
-        userId: number;
-        email: string;
-        fullname: string;
-        gender: string;
-        courses: {
-            courseId: number;
-            courseName: string;
-            thumbnail: string;
-            expertName: string;
-            price: number;
-        }[];
-    }
-
     interface UserProgressRequest {
         courseId: number;
         chapterId: number;
         lessonId: number;
+    }
+
+    interface PurchaseRequest {
+        courseIds: number[];
+        totalPrice: number;
+        couponCode?: string;
     }
 }

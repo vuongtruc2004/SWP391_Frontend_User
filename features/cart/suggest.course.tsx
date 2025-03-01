@@ -1,6 +1,5 @@
 import { sendRequest } from "@/utils/fetch.api";
 import { apiUrl } from "@/utils/url";
-import { useCartContext } from "@/wrapper/course-cart/course.cart.wrapper"
 import { Box, Button, Skeleton } from "@mui/material"
 import { useCallback, useEffect, useRef, useState } from "react";
 import SingleCourseSuggest from "./single.course.suggest";
@@ -10,9 +9,10 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import { useSession } from "next-auth/react";
 import 'swiper/css';
+import { useCart } from "@/wrapper/course-cart/course.cart.wrapper";
 
 const SuggestCourse = () => {
-    const { cart } = useCartContext();
+    const { cart, change } = useCart();
     const { data: session, status } = useSession();
     const [loading, setLoading] = useState(false);
     const [courses, setCourses] = useState<CourseDetailsResponse[]>([]);
@@ -60,7 +60,7 @@ const SuggestCourse = () => {
             setLoading(false);
         }
         fetchSuggestCourses();
-    }, [cart, session]);
+    }, [change, session]);
 
     if (loading) {
         return (

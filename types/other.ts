@@ -18,5 +18,6 @@ declare global {
         totalTime: string;
         totalPurchased: number;
         author: string;
+        buyLater: boolean;
     }
 }

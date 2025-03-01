@@ -10,20 +10,20 @@ import LocalMallOutlinedIcon from '@mui/icons-material/LocalMallOutlined';
 import StayCurrentPortraitOutlinedIcon from '@mui/icons-material/StayCurrentPortraitOutlined';
 import AllInclusiveOutlinedIcon from '@mui/icons-material/AllInclusiveOutlined';
 import HowToRegOutlinedIcon from '@mui/icons-material/HowToRegOutlined';
-import { useCartContext } from "@/wrapper/course-cart/course.cart.wrapper";
 import Link from "next/link";
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import { useEffect, useState } from "react";
-import PaymentInstruction from "./payment.instruction";
+import PaymentInstruction from "../../cart/payment.instruction";
 import { useSession } from "next-auth/react";
 import { usePathname, useRouter } from "next/navigation";
 import { SlideTransition } from "@/components/course/course-content/style";
 import { useUserProgress } from "@/wrapper/user-progress/user.progress.wrapper";
 import { countCompletionOfACourse } from "@/helper/lesson.helper";
 import { useCoursePurchased } from "@/wrapper/course-purchased/course.purchased.wrapper";
+import { useCart } from "@/wrapper/course-cart/course.cart.wrapper";
 
 const CoursePurchase = ({ course }: { course: CourseDetailsResponse }) => {
-    const { cart, setCart } = useCartContext();
+    const { cart, setCart } = useCart();
     const { userProgresses, loading } = useUserProgress();
     const { purchasedCourseIds } = useCoursePurchased();
     const [completionOfACourse, setCompletionOfACourse] = useState(-1);
@@ -50,7 +50,7 @@ const CoursePurchase = ({ course }: { course: CourseDetailsResponse }) => {
                 totalChapters: course.chapters.length,
                 totalTime: countTotalTime(course),
                 totalPurchased: course.totalPurchased,
-                author: course.expert.user.fullname
+                author: course.expert.user.fullname,
             };
 
             const newCart = [...cartFromStorage, newItem];

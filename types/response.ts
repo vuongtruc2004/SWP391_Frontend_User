@@ -159,4 +159,25 @@ declare global {
         content: string;
         createdAt: string;
     }
+
+    interface PurchaseResponse {
+        order: OrderResponse;
+        redirectUrl: string;
+    }
+
+    interface OrderResponse {
+        orderId: number;
+        orderCode: string;
+        orderStatus: string;
+        createdAt: string;
+        updatedAt: string;
+        expiredAt: string;
+        userId: number;
+        orderDetails: OrderDetailsResponse[];
+    }
+
+    interface OrderDetailsResponse {
+        orderDetailsId: number;
+        courseId: number;
+    }
 }

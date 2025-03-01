@@ -1,15 +1,16 @@
 'use client'
-import CartList from "@/components/cart/cart.list"
 import CartSummary from "@/components/cart/cart.summary"
-import { useCartContext } from "@/wrapper/course-cart/course.cart.wrapper";
 import Box from "@mui/material/Box"
 import ListEmpty from "../empty/list.empty";
 import { Button, Skeleton } from "@mui/material";
 import Link from "next/link";
 import SuggestCourse from "@/features/cart/suggest.course";
+import { useCart } from "@/wrapper/course-cart/course.cart.wrapper";
+import CartBuyList from "./cart.buy.list";
+import CartBuyLaterList from "./cart.buy.later.list";
 
 const Cart = () => {
-    const { cart, loading } = useCartContext();
+    const { cart, loading } = useCart();
 
     if (loading) {
         return (
@@ -58,13 +59,17 @@ const Cart = () => {
             width: '100%',
             maxWidth: '1200px',
             margin: '0 auto',
+            position: 'relative'
         }}>
             <Box sx={{
                 display: 'grid',
                 gridTemplateColumns: '2.5fr 1fr',
                 columnGap: '20px',
             }}>
-                <CartList />
+                <div className="flex flex-col gap-y-5">
+                    <CartBuyList />
+                    <CartBuyLaterList />
+                </div>
                 <CartSummary />
             </Box>
             <SuggestCourse />

@@ -1,10 +1,12 @@
 'use client'
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, Dispatch, SetStateAction, useContext, useEffect, useState } from "react";
 import { useCoursePurchased } from "../course-purchased/course.purchased.wrapper";
 
 interface ICartCourse {
+    change: number;
+    setChange: Dispatch<SetStateAction<number>>;
     cart: CartCourse[];
-    setCart: React.Dispatch<React.SetStateAction<CartCourse[]>>;
+    setCart: Dispatch<SetStateAction<CartCourse[]>>;
     loading: boolean;
 }
 const CartContext = createContext<ICartCourse | null>(null);
@@ -12,6 +14,7 @@ const CartContext = createContext<ICartCourse | null>(null);
 export const CourseCartWrapper = ({ children }: { children: React.ReactNode }) => {
     const { purchasedCourseIds } = useCoursePurchased();
     const [cart, setCart] = useState<CartCourse[]>([]);
+    const [change, setChange] = useState(0);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -32,16 +35,16 @@ export const CourseCartWrapper = ({ children }: { children: React.ReactNode }) =
     }, [purchasedCourseIds]);
 
     return (
-        <CartContext.Provider value={{ cart, setCart, loading }}>
+        <CartContext.Provider value={{ cart, setCart, loading, change, setChange }}>
             {children}
         </CartContext.Provider>
     )
 }
 
-export const useCartContext = () => {
+export const useCart = () => {
     const cartContext = useContext(CartContext);
     if (!cartContext) {
-        throw new Error('useCartContext must be used within a CartContext');
+        throw new Error('useCart must be used within a Cart');
     }
     return cartContext;
 }

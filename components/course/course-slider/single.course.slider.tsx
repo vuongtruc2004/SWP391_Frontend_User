@@ -12,6 +12,7 @@ import { useEffect, useState } from "react";
 import { useUserProgress } from "@/wrapper/user-progress/user.progress.wrapper";
 import { countCompletionOfACourse } from "@/helper/lesson.helper";
 import { useCoursePurchased } from "@/wrapper/course-purchased/course.purchased.wrapper";
+import { slugifyText } from "@/helper/slugify.helper";
 
 const SingleCourseSlider = ({ course }: { course: CourseResponse }) => {
     const { userProgresses, loading } = useUserProgress();
@@ -20,9 +21,7 @@ const SingleCourseSlider = ({ course }: { course: CourseResponse }) => {
 
     useEffect(() => {
         if (purchasedCourseIds.find(id => id === course.courseId)) {
-            if (userProgresses.length) {
-                setCompletionOfACourse(countCompletionOfACourse(course, userProgresses));
-            }
+            setCompletionOfACourse(countCompletionOfACourse(course, userProgresses));
         }
     }, [userProgresses, purchasedCourseIds]);
 
@@ -45,7 +44,7 @@ const SingleCourseSlider = ({ course }: { course: CourseResponse }) => {
             boxShadow: '2px 2px 5px rgba(0,0,0,0.5)',
             height: 'max-content'
         }}>
-            <Link href={`/course/${course.courseId}`} style={{
+            <Link href={`/course/${slugifyText(course.courseName + "-" + course.courseId)}`} style={{
                 display: 'block',
                 width: '100%',
                 height: `220px`,
@@ -65,8 +64,10 @@ const SingleCourseSlider = ({ course }: { course: CourseResponse }) => {
             </Link>
 
             <div className='p-5'>
-                <Link href={`/course/${course.courseId}`} className='transition-all duration-150 text-xl font-semibold hover:underline hover:text-blue-500'>{course.courseName}</Link>
+                <Link href={`/course/${slugifyText(course.courseName + "-" + course.courseId)}`} className='transition-all duration-150 text-xl font-semibold hover:underline hover:text-blue-500'>{course.courseName}</Link>
+
                 {displayProgressbar(completionOfACourse, course.courseId)}
+
                 <p className='text-gray-300 my-1 line-clamp-2'>
                     {course.description}
                     Lorem ipsum dolor, sit amet consectetur adipisicing elit. Hic commodi enim facere ullam corrupti nisi tenetur doloremque aliquam ratione quod.

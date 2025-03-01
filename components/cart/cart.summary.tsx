@@ -1,14 +1,15 @@
 import { sumOriginalPrice } from "@/helper/course.cart.helper";
-import { useCartContext } from "@/wrapper/course-cart/course.cart.wrapper";
 import { Box, Button } from "@mui/material";
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import PaymentInstruction from "@/features/course/course-details/payment.instruction";
-import { useState } from "react";
+import PaymentInstruction from "@/features/cart/payment.instruction";
+import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { usePathname, useRouter } from "next/navigation";
+import { useCart } from "@/wrapper/course-cart/course.cart.wrapper";
 
 const CartSummary = () => {
-    const { cart } = useCartContext();
+    const { cart } = useCart();
+    const [buyCourses, setBuyCourses] = useState<CartCourse[]>([]);
     const { status } = useSession();
     const { push } = useRouter();
     const pathname = usePathname();
@@ -24,6 +25,10 @@ const CartSummary = () => {
         }
     }
 
+    useEffect(() => {
+        setBuyCourses(cart.filter(item => !item.buyLater));
+    }, [cart]);
+
     return (
         <Box sx={{
             bgcolor: 'black',
@@ -31,18 +36,20 @@ const CartSummary = () => {
             padding: '20px',
             borderRadius: '6px',
             height: 'max-content',
+            position: 'sticky',
+            right: 0,
+            top: 90
         }}>
-            <h1 className="font-semibold text-gray-300">Tổng</h1>
-            <h2 className="text-3xl font-semibold mb-1">
-                <span className="text-gray-400 line-through text-base">
-                    {sumOriginalPrice(cart)}₫
-                </span>
-            </h2>
+            <h1 className="font-semibold text-gray-300">Tổng:</h1>
+            <h2 className="font-semibold text-2xl mb-1">{sumOriginalPrice(buyCourses)}₫</h2>
+
             <Button variant="contained" color="primary" fullWidth endIcon={<ChevronRightIcon />} onClick={handleOpenInstruction}>
                 Tiến hành thanh toán
             </Button>
 
-            <PaymentInstruction open={openInstruction} setOpen={setOpenInstruction} courses={cart} />
+            <p className="text-sm text-gray-300 mt-1">Bạn sẽ không bị tính phí ngay bây giờ</p>
+
+            <PaymentInstruction open={openInstruction} setOpen={setOpenInstruction} courses={buyCourses} />
         </Box>
     )
 }

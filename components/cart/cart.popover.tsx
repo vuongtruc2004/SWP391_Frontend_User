@@ -2,17 +2,17 @@ import { Box, Button, Divider, Popover } from '@mui/material';
 import Link from 'next/link';
 import { Fragment, SetStateAction } from 'react';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import { useCartContext } from '@/wrapper/course-cart/course.cart.wrapper';
 import Image from 'next/image';
 import { storageUrl } from '@/utils/url';
 import { formatPrice } from '@/helper/course.list.helper';
 import ListEmpty from '@/components/empty/list.empty';
+import { useCart } from '@/wrapper/course-cart/course.cart.wrapper';
 
 const CartPopover = ({ anchorEl, setAnchorEl }: {
     anchorEl: HTMLButtonElement | null;
     setAnchorEl: React.Dispatch<SetStateAction<HTMLButtonElement | null>>;
 }) => {
-    const { cart } = useCartContext();
+    const { cart } = useCart();
 
     const handleClose = () => {
         setAnchorEl(null);
@@ -85,12 +85,7 @@ const CartPopover = ({ anchorEl, setAnchorEl }: {
                                             <div className='max-w-[200px]'>
                                                 <Link href={`/course/${item.courseId}`} onClick={handleClose} className='line-clamp-1 font-semibold hover:underline hover:text-blue-500'>{item.courseName}</Link>
                                                 <p className='text-sm text-gray-300'>{item.author}</p>
-                                                <div className='flex items-center gap-x-2.5'>
-                                                    <p className='font-semibold'>{formatPrice(item.price)}₫</p>
-                                                    {/* {item.salePrice < item.originalPrice && (
-                                                        <p className="px-3 mt-0.5 text-sm text-green-600 border-green-800 border rounded-3xl">-{getSalePercent(item.originalPrice, item.salePrice)}%</p>
-                                                    )} */}
-                                                </div>
+                                                <p className='font-semibold'>{formatPrice(item.price)}₫</p>
                                             </div>
                                         </div>
                                         <Divider />

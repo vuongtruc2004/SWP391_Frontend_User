@@ -131,7 +131,7 @@ const LessonVideo = () => {
                         </>
                     )}
                     {showDescription && (
-                        <p className="mt-2 cursor-pointer font-semibold flex items-center gap-x-1 hover:text-purple-300" onClick={() => setShowDescription(false)}>
+                        <p className="mt-2 cursor-pointer font-semibold flex items-center gap-x-1 hover:text-purple-300 w-max" onClick={() => setShowDescription(false)}>
                             <KeyboardDoubleArrowUpIcon sx={{ fontSize: '1rem' }} />
                             <span>Ẩn bớt</span>
                         </p>
