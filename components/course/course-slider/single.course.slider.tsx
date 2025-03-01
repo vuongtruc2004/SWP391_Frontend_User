@@ -7,20 +7,24 @@ import Image from 'next/image';
 import { displayPrice, displayProgressbar } from '@/helper/course.list.helper';
 import { formatDate } from '@/helper/blog.helper';
 import HowToRegIcon from '@mui/icons-material/HowToReg';
-import { useCoursePurchased } from "@/wrapper/course-purchased/course.purchased.wrapper";
 import { Skeleton } from "@mui/material";
-import { useCourseView } from "@/wrapper/course-view/course.view.wrapper";
 import { useEffect, useState } from "react";
+import { useUserProgress } from "@/wrapper/user-progress/user.progress.wrapper";
+import { countCompletionOfACourse } from "@/helper/lesson.helper";
+import { useCoursePurchased } from "@/wrapper/course-purchased/course.purchased.wrapper";
 
 const SingleCourseSlider = ({ course }: { course: CourseResponse }) => {
-    const { loading, userProgress } = useCourseView();
+    const { userProgresses, loading } = useUserProgress();
+    const { purchasedCourseIds } = useCoursePurchased();
     const [completionOfACourse, setCompletionOfACourse] = useState(-1);
 
     useEffect(() => {
-        if (userProgress.length) {
-            setCompletionOfACourse()
+        if (purchasedCourseIds.find(id => id === course.courseId)) {
+            if (userProgresses.length) {
+                setCompletionOfACourse(countCompletionOfACourse(course, userProgresses));
+            }
         }
-    }, [userProgress]);
+    }, [userProgresses, purchasedCourseIds]);
 
     if (loading) {
         return (
@@ -62,7 +66,7 @@ const SingleCourseSlider = ({ course }: { course: CourseResponse }) => {
 
             <div className='p-5'>
                 <Link href={`/course/${course.courseId}`} className='transition-all duration-150 text-xl font-semibold hover:underline hover:text-blue-500'>{course.courseName}</Link>
-                {displayProgressbar(getPercentageByCourseId(course.courseId), course.courseId)}
+                {displayProgressbar(completionOfACourse, course.courseId)}
                 <p className='text-gray-300 my-1 line-clamp-2'>
                     {course.description}
                     Lorem ipsum dolor, sit amet consectetur adipisicing elit. Hic commodi enim facere ullam corrupti nisi tenetur doloremque aliquam ratione quod.
@@ -81,7 +85,7 @@ const SingleCourseSlider = ({ course }: { course: CourseResponse }) => {
 
                 <Divider sx={{ marginBlock: '10px' }} />
 
-                {displayPrice(course, getPercentageByCourseId(course.courseId))}
+                {displayPrice(course, completionOfACourse)}
             </div>
         </Box >
     )

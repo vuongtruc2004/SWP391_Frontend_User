@@ -3,19 +3,18 @@ import Image from "next/image";
 import Link from "next/link";
 import { Avatar, Box, Tooltip } from "@mui/material";
 import AccountMenu from "../../header/account.menu";
-import { useSession } from "next-auth/react";
 import { useState } from "react";
-import { useUserAvatar } from "@/wrapper/user/user.wrapper";
-import SearchIcon from '@mui/icons-material/Search';
+import { useUserAvatar } from "@/wrapper/user-avatar/user.avatar.wrapper";
 import { usePathname } from "next/navigation";
 import HomeIcon from '@mui/icons-material/Home';
 import LocalLibraryIcon from '@mui/icons-material/LocalLibrary';
-import ArticleIcon from '@mui/icons-material/Article';
 import InfoIcon from '@mui/icons-material/Info';
-import SearchSnackbar from "./search.snackbar";
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { useCourseView } from "@/wrapper/course-view/course.view.wrapper";
+import AiSupportButton from "@/components/ai-support/ai.support.button";
+import StarIcon from '@mui/icons-material/Star';
+import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 
 interface ISidebar {
     key: string;
@@ -24,7 +23,7 @@ interface ISidebar {
     icon: React.ReactNode;
 }
 const Sidebar = () => {
-    const { course } = useCourseView();
+    const { course, currentPlayIndex, lessons } = useCourseView();
     const sidebarItems: ISidebar[] = [
         {
             key: 'home',
@@ -34,30 +33,28 @@ const Sidebar = () => {
         },
         {
             key: 'course-list',
-            title: 'Danh sách khóa học',
+            title: 'Tất cả khóa học',
             link: `/course`,
+            icon: <FormatListBulletedIcon sx={{ fontSize: '1.25rem' }} />
+        },
+        {
+            key: 'course-learning',
+            title: `${lessons[currentPlayIndex].title}`,
+            link: `/course/learning/${course.courseId}`,
             icon: <LocalLibraryIcon sx={{ fontSize: '1.25rem' }} />
         },
         {
             key: 'course-info',
-            title: `Thông tin khóa học ${course.courseName}`,
+            title: `${course.courseName}`,
             link: `/course/${course.courseId}`,
             icon: <InfoIcon sx={{ fontSize: '1.25rem' }} />
-        },
-        {
-            key: 'blog',
-            title: 'Bài viết',
-            link: '/blog',
-            icon: <ArticleIcon sx={{ fontSize: '1.25rem' }} />
         }
     ]
 
-    const { data: session } = useSession();
     const { setOpenProgressBar, openProgressBar } = useCourseView();
     const { avatarSrc, fullname } = useUserAvatar();
     const pathname = usePathname();
     const [menuAnchorEl, setMenuAnchorEl] = useState<null | HTMLElement>(null);
-    const [openSearchBox, setOpenSearchBox] = useState<boolean>(false);
 
     return (
         <Box sx={{
@@ -100,19 +97,21 @@ const Sidebar = () => {
                     {sidebarItems.map(item => {
                         return (
                             <Tooltip title={item.title} key={item.key} arrow placement="right">
-                                <Link href={item.link} className={`flex w-full px-5 py-4 text-gray-400 hover:text-blue-500`}>
+                                <Link href={item.link} className={`flex w-full px-5 py-4 text-gray-400 hover:text-blue-500 ${pathname === item.link && "active"}`}>
                                     {item.icon}
                                 </Link>
                             </Tooltip>
                         )
                     })}
-                    <Tooltip title="Tìm kiếm khóa học" arrow placement="right">
-                        <div className="flex w-full px-5 py-4 text-gray-400 hover:text-blue-500 cursor-pointer" onClick={() => setOpenSearchBox(true)}>
-                            <SearchIcon sx={{ fontSize: '1.25rem' }} />
+
+                    <Tooltip title={"Đánh giá khóa học"} arrow placement="right">
+                        <div className="flex w-full px-5 py-4 text-gray-400 hover:text-blue-500 cursor-pointer">
+                            <StarIcon sx={{ fontSize: '1.25rem' }} />
                         </div>
                     </Tooltip>
+
                     <Tooltip title={openProgressBar ? "Ẩn tiến độ khóa học" : "Hiển thị tiến độ khóa học"} arrow placement="right">
-                        <div className="flex w-full px-5 py-4 text-gray-400 hover:text-blue-500 cursor-pointer" onClick={() => setOpenProgressBar(prev => !prev)}>
+                        <div className="flex w-full px-5 py-4 text-gray-400 hover:text-blue-500 cursor-pointer mb-2" onClick={() => setOpenProgressBar(prev => !prev)}>
                             {openProgressBar ? (
                                 <VisibilityIcon sx={{ fontSize: '1.25rem' }} />
                             ) : (
@@ -120,9 +119,10 @@ const Sidebar = () => {
                             )}
                         </div>
                     </Tooltip>
-                    <SearchSnackbar open={openSearchBox} setOpen={setOpenSearchBox} />
+
+                    <AiSupportButton placement="right" />
                 </Box>
-            </div>
+            </div >
 
             <Avatar alt="avatar" onClick={(event) => setMenuAnchorEl(event.currentTarget)} sx={{ cursor: 'pointer' }} src={avatarSrc}>
                 {fullname.charAt(0).toUpperCase()}
@@ -139,7 +139,7 @@ const Sidebar = () => {
                     horizontal: 'left',
                 }}
             />
-        </Box>
+        </Box >
     )
 }
 

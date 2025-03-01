@@ -13,7 +13,7 @@ import { useSession } from "next-auth/react";
 import { motion } from 'framer-motion';
 import Image from "next/image";
 import CartButton from "@/features/cart/cart.button";
-import { useUserAvatar } from "@/wrapper/user/user.wrapper";
+import { useUserAvatar } from "@/wrapper/user-avatar/user.avatar.wrapper";
 import NotificationButton from "../notification/notification.button";
 import AiSupportButton from "../ai-support/ai.support.button";
 import { Divider } from "@mui/material";
@@ -22,7 +22,7 @@ const Header = () => {
     const pathname = usePathname();
     const router = useRouter();
     const searchParams = useSearchParams();
-    const { data: session, status } = useSession();
+    const { status } = useSession();
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const { avatarSrc, fullname } = useUserAvatar();
 

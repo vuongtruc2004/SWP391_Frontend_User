@@ -2,9 +2,11 @@ import { Box, Tooltip } from "@mui/material"
 import Image from "next/image";
 import { storageUrl } from "@/utils/url";
 
-const AiSupportButton = () => {
+const AiSupportButton = ({ placement }: {
+    placement?: "top" | "right" | "bottom" | "left" | "bottom-end" | "bottom-start" | "left-end" | "left-start" | "right-end" | "right-start" | "top-end" | "top-start" | undefined
+}) => {
     return (
-        <Tooltip title="Chat với LearnGo AI" arrow>
+        <Tooltip title="Chat với LearnGo AI" arrow placement={placement}>
             <Box
                 sx={{
                     position: "relative",
@@ -15,7 +17,8 @@ const AiSupportButton = () => {
                         borderRadius: '50%'
                     },
                     cursor: 'pointer',
-                    borderRadius: '50%'
+                    borderRadius: '50%',
+                    bgcolor: 'transparent'
                 }}
             >
                 <Image

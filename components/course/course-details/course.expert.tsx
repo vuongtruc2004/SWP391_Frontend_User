@@ -9,6 +9,8 @@ import { useState } from "react";
 import Image from "next/image";
 import { getEmojiOnAvgStars } from "@/helper/course.details.helper";
 import ListEmpty from "@/components/empty/list.empty";
+import { formatTotalFollowers } from "@/helper/lesson.helper";
+import HowToRegIcon from '@mui/icons-material/HowToReg';
 
 const CourseExpert = ({ course }: { course: CourseDetailsResponse }) => {
     const [expandDescription, setExpandDescription] = useState(false);
@@ -62,6 +64,10 @@ const CourseExpert = ({ course }: { course: CourseDetailsResponse }) => {
                 </p>
 
                 <ul className="text-sm">
+                    <li className="flex items-center gap-x-2 py-1.5">
+                        <HowToRegIcon sx={{ fontSize: '1.2rem' }} />
+                        <p><span className="font-semibold text-blue-500">{formatTotalFollowers(course.expert.totalFollowers)}</span> người theo dõi</p>
+                    </li>
                     <li className="flex items-center gap-x-2 py-1.5">
                         <WorkspacePremiumIcon sx={{ fontSize: '1.2rem' }} />
                         <p>{course?.expert?.achievement}</p>

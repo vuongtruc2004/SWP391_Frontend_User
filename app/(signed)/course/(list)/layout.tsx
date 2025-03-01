@@ -18,7 +18,7 @@ const CourseLayout = ({ course, subject, expert }: { course: React.ReactNode, su
             <CourseListWrapper>
                 <Box sx={{
                     display: 'grid',
-                    gridTemplateColumns: '1fr 2.4fr',
+                    gridTemplateColumns: '1fr 2.5fr',
                     gap: '20px',
                     width: '100%',
                     maxWidth: '1200px',

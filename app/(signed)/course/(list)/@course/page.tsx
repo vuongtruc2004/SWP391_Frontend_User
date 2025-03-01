@@ -26,7 +26,7 @@ const CoursePage = async (props: {
     const priceFrom = getInputPrice(searchParams.priceFrom);
     const priceTo = getInputPrice(searchParams.priceTo);
     const courseSort = getCourseSort(searchParams.courseSort);
-    const direction = (!searchParams.direction || (searchParams.direction !== "asc" && searchParams.direction !== "desc")) ? "asc" : searchParams.direction;
+    const direction = (!searchParams.direction || (searchParams.direction !== "asc" && searchParams.direction !== "desc")) ? "desc" : searchParams.direction;
     const expertIds = searchParams.expertIds || "";
     const subjectIds = searchParams.subjectIds || "";
 

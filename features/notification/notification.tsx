@@ -66,9 +66,11 @@ const Notification = () => {
                     )}
                 </Box>
 
-                <Link href={"/user/notification"} onClick={handleClose}>
-                    <Button endIcon={<ChevronRightIcon />} variant="outlined" fullWidth>Chuyển đến trang thông báo</Button>
-                </Link>
+                {(notifications && notifications.length > 0) && (
+                    <Link href={"/user/notification"} onClick={handleClose}>
+                        <Button endIcon={<ChevronRightIcon />} variant="outlined" fullWidth>Chuyển đến trang thông báo</Button>
+                    </Link>
+                )}
             </Box>
         </Popover>
     )

@@ -13,16 +13,21 @@ import HowToRegOutlinedIcon from '@mui/icons-material/HowToRegOutlined';
 import { useCartContext } from "@/wrapper/course-cart/course.cart.wrapper";
 import Link from "next/link";
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import { useState } from "react";
-import { useCoursePurchased } from "@/wrapper/course-purchased/course.purchased.wrapper";
+import { useEffect, useState } from "react";
 import PaymentInstruction from "./payment.instruction";
 import { useSession } from "next-auth/react";
 import { usePathname, useRouter } from "next/navigation";
 import { SlideTransition } from "@/components/course/course-content/style";
+import { useUserProgress } from "@/wrapper/user-progress/user.progress.wrapper";
+import { countCompletionOfACourse } from "@/helper/lesson.helper";
+import { useCoursePurchased } from "@/wrapper/course-purchased/course.purchased.wrapper";
 
 const CoursePurchase = ({ course }: { course: CourseDetailsResponse }) => {
     const { cart, setCart } = useCartContext();
-    const { loading, getPercentageByCourseId } = useCoursePurchased();
+    const { userProgresses, loading } = useUserProgress();
+    const { purchasedCourseIds } = useCoursePurchased();
+    const [completionOfACourse, setCompletionOfACourse] = useState(-1);
+
     const { status } = useSession();
     const { push } = useRouter();
     const pathname = usePathname();
@@ -64,6 +69,14 @@ const CoursePurchase = ({ course }: { course: CourseDetailsResponse }) => {
         }
     }
 
+    useEffect(() => {
+        if (purchasedCourseIds.find(id => id === course.courseId)) {
+            if (userProgresses.length) {
+                setCompletionOfACourse(countCompletionOfACourse(course, userProgresses));
+            }
+        }
+    }, [userProgresses, purchasedCourseIds]);
+
     if (loading) {
         return (
             <Skeleton width={"100%"} height={300} animation="wave" variant="rounded" />
@@ -74,7 +87,7 @@ const CoursePurchase = ({ course }: { course: CourseDetailsResponse }) => {
         <div className="bg-black rounded-md p-5" style={{
             boxShadow: '2px 2px 5px rgba(0, 0, 0, 0.5)',
         }}>
-            {getPercentageByCourseId(course.courseId) < 0 && (
+            {completionOfACourse < 0 && (
                 <>
                     <div className="flex items-center justify-between">
                         <h1 className='text-3xl font-semibold'>{formatPrice(course.price)}<span className="text-sm">₫</span></h1>
@@ -107,7 +120,7 @@ const CoursePurchase = ({ course }: { course: CourseDetailsResponse }) => {
                 </li>
             </ul>
 
-            {getPercentageByCourseId(course.courseId) < 0 ? (
+            {completionOfACourse < 0 ? (
                 cart.some(item => item.courseId === course.courseId) ? (
                     <Link href={"/cart"}>
                         <Button
@@ -157,11 +170,11 @@ const CoursePurchase = ({ course }: { course: CourseDetailsResponse }) => {
             ) : (
                 <>
                     <Divider />
-                    {getPurchasedButton(getPercentageByCourseId(course.courseId), course.courseId)}
+                    {getPurchasedButton(completionOfACourse, course.courseId)}
                 </>
             )}
 
-            {getPercentageByCourseId(course.courseId) < 0 && (
+            {completionOfACourse < 0 && (
                 <>
                     <Button variant="contained" color="primary" fullWidth startIcon={<LocalMallOutlinedIcon />} onClick={handleOpenInstruction}>
                         Mua ngay

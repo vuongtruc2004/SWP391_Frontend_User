@@ -13,7 +13,7 @@ import { signOut, useSession } from 'next-auth/react';
 import { apiUrl } from '@/utils/url';
 import { sendRequest } from '@/utils/fetch.api';
 import Link from 'next/link';
-import { useUserAvatar } from '@/wrapper/user/user.wrapper';
+import { useUserAvatar } from '@/wrapper/user-avatar/user.avatar.wrapper';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import { PopoverOrigin } from '@mui/material';
 

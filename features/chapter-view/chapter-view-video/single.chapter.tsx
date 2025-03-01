@@ -10,6 +10,7 @@ import AutoStoriesOutlinedIcon from '@mui/icons-material/AutoStoriesOutlined';
 import SmartDisplayOutlinedIcon from '@mui/icons-material/SmartDisplayOutlined';
 import FlagIcon from '@mui/icons-material/Flag';
 import { convertSecondToTime } from "@/helper/course.details.helper";
+import { useUserProgress } from "@/wrapper/user-progress/user.progress.wrapper";
 
 const SingleChapter = ({ chapter, index, chapterExpand, setChapterExpand }: {
     chapter: ChapterResponse,
@@ -18,7 +19,8 @@ const SingleChapter = ({ chapter, index, chapterExpand, setChapterExpand }: {
     setChapterExpand: React.Dispatch<SetStateAction<number>>;
 }) => {
     const { data: session, status } = useSession();
-    const { currentPlayIndex, setCurrentPlayIndex, userProgress, course, setUserProgress, lessons } = useCourseView();
+    const { currentPlayIndex, setCurrentPlayIndex, course, lessons } = useCourseView();
+    const { userProgresses, setUserProgresses } = useUserProgress();
 
     const [completionOfChapter, setCompletionOfChapter] = useState(0);
     const [playingChapter, setPlayingChapter] = useState<number | null>(null);
@@ -41,7 +43,7 @@ const SingleChapter = ({ chapter, index, chapterExpand, setChapterExpand }: {
                 body: request
             });
             if (userProgressResponse.status === 200) {
-                setUserProgress(prev => [...prev, userProgressResponse.data]);
+                setUserProgresses(prev => [...prev, userProgressResponse.data]);
             }
         }
     }
@@ -52,15 +54,15 @@ const SingleChapter = ({ chapter, index, chapterExpand, setChapterExpand }: {
     }
 
     useEffect(() => {
-        if (userProgress.length) {
+        if (userProgresses.length) {
             const set = new Set<number>();
-            userProgress.forEach(progress => {
+            userProgresses.forEach(progress => {
                 set.add(progress.lessonId);
             });
             setCompletedItems(set);
         }
-        setCompletionOfChapter(countCompletionOfAChapter(chapter, userProgress));
-    }, [userProgress]);
+        setCompletionOfChapter(countCompletionOfAChapter(chapter, userProgresses));
+    }, [userProgresses]);
 
     useEffect(() => {
         for (let chapter of course.chapters) {

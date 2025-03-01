@@ -4,20 +4,22 @@ import { Box, CircularProgress } from "@mui/material";
 import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 import { BorderLinearProgress } from "@/components/course/course-slider/custom.progress";
 import { useCourseView } from "@/wrapper/course-view/course.view.wrapper";
-import { useSession } from "next-auth/react";
 import SingleChapter from "./single.chapter";
+import { useUserProgress } from "@/wrapper/user-progress/user.progress.wrapper";
+import { countCompletedLessonsOfACourse, countCompletionOfACourse } from "@/helper/lesson.helper";
 
 const ChaptersList = () => {
-    const { course, userProgress, loading, openProgressBar } = useCourseView();
+    const { course, openProgressBar } = useCourseView();
+    const { userProgresses, loading } = useUserProgress();
+
     const [chapterExpand, setChapterExpand] = useState<number>(course.chapters[0].chapterId);
-    const { data: session, status } = useSession();
     const [completionOfACourse, setCompletionOfACourse] = useState(0);
 
     useEffect(() => {
-        if (status === "authenticated") {
-            setCompletionOfACourse((userProgress.length / course.totalLessons) * 100);
+        if (userProgresses.length) {
+            setCompletionOfACourse(countCompletionOfACourse(course, userProgresses));
         }
-    }, [session, userProgress]);
+    }, [userProgresses]);
 
     if (loading) {
         return (
@@ -61,7 +63,7 @@ const ChaptersList = () => {
                     <h1 className="font-semibold text-lg mb-1">Tiến độ của bạn</h1>
 
                     <div className={`text-sm flex items-center justify-between mb-1.5 text-gray-400`}>
-                        <p>Đã hoàn thành {userProgress.length} / {course.totalLessons} bài giảng</p>
+                        <p>Đã hoàn thành {countCompletedLessonsOfACourse(course, userProgresses)} / {course.totalLessons} bài giảng</p>
                         <EmojiEventsIcon sx={{ fontSize: '1.2rem' }} className={completionOfACourse >= 99.9 ? "text-[#faaf00]" : ""} />
                     </div>
                     <BorderLinearProgress variant="determinate" value={completionOfACourse} height={4} thumb_color={completionOfACourse >= 99.9 ? "#05df72" : "#dab2ff"} />

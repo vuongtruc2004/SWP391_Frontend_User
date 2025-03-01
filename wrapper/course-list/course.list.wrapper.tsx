@@ -1,18 +1,21 @@
 'use client'
-import { createContext, useContext, useRef, useState } from "react";
+import { createContext, Dispatch, SetStateAction, useContext, useRef, useState } from "react";
 
 const CourseListContext = createContext<{
     priceFormRef: React.RefObject<HTMLFormElement | null>;
+    updateSort: string;
+    setUpdateSort: Dispatch<SetStateAction<string>>;
     orderBy: string;
-    setOrderby: React.Dispatch<React.SetStateAction<string>>;
+    setOrderby: Dispatch<SetStateAction<string>>;
 } | null>(null);
 
 export const CourseListWrapper = ({ children }: { children: React.ReactNode }) => {
     const priceFormRef = useRef<HTMLFormElement>(null);
     const [orderBy, setOrderby] = useState("updatedAt");
+    const [updateSort, setUpdateSort] = useState("newest");
 
     return (
-        <CourseListContext.Provider value={{ priceFormRef, orderBy, setOrderby }}>
+        <CourseListContext.Provider value={{ priceFormRef, orderBy, setOrderby, updateSort, setUpdateSort }}>
             {children}
         </CourseListContext.Provider>
     );

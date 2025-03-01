@@ -22,7 +22,6 @@ const CourseSort = ({ totalElements, courseSort, direction }: {
 
     const handleChangeSortOption = (e: SelectChangeEvent<string>) => {
         const value = e.target.value;
-
         setOrderby(value);
         const newSearchParams = new URLSearchParams(searchParams);
         newSearchParams.set('courseSort', value);
@@ -80,16 +79,16 @@ const CourseSort = ({ totalElements, courseSort, direction }: {
                         <MenuItem value={"rate"}>Đánh giá</MenuItem>
                     </Select>
 
-                    <Tooltip title="Tăng dần" placement="top" arrow>
+                    <Tooltip title="Giảm dần" placement="top" arrow>
                         <Button
                             variant="outlined"
-                            onClick={() => handleChangeDirection("asc")}
-                            color={direction === "asc" ? 'primary' : 'secondary'}
-                            className={`${direction === "asc" ? "active" : ""}`}
+                            onClick={() => handleChangeDirection("desc")}
+                            color={direction === "desc" ? 'primary' : 'secondary'}
+                            className={`${direction === "desc" ? "active" : ""}`}
                         >
                             <Image
-                                src={`/asc.webp`}
-                                alt={"ascending icon"}
+                                src={`/desc.webp`}
+                                alt={"descending icon"}
                                 width={0}
                                 height={0}
                                 sizes="(max-width: 1000px) 100vw"
@@ -105,16 +104,16 @@ const CourseSort = ({ totalElements, courseSort, direction }: {
                         </Button>
                     </Tooltip>
 
-                    <Tooltip title="Giảm dần" placement="top" arrow>
+                    <Tooltip title="Tăng dần" placement="top" arrow>
                         <Button
                             variant="outlined"
-                            onClick={() => handleChangeDirection("desc")}
-                            color={direction === "desc" ? 'primary' : 'secondary'}
-                            className={`${direction === "desc" ? "active" : ""}`}
+                            onClick={() => handleChangeDirection("asc")}
+                            color={direction === "asc" ? 'primary' : 'secondary'}
+                            className={`${direction === "asc" ? "active" : ""}`}
                         >
                             <Image
-                                src={`/desc.webp`}
-                                alt={"descending icon"}
+                                src={`/asc.webp`}
+                                alt={"ascending icon"}
                                 width={0}
                                 height={0}
                                 sizes="(max-width: 1000px) 100vw"
