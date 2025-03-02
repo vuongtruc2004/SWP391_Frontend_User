@@ -5,7 +5,7 @@ import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import { formatDate } from "@/helper/blog.helper";
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import LoopIcon from '@mui/icons-material/Loop';
-import { countTotalTime, getPurchasedButton } from "@/helper/course.details.helper";
+import { countTotalTime, displayPurchasedButton } from "@/helper/course.details.helper";
 import LocalMallOutlinedIcon from '@mui/icons-material/LocalMallOutlined';
 import StayCurrentPortraitOutlinedIcon from '@mui/icons-material/StayCurrentPortraitOutlined';
 import AllInclusiveOutlinedIcon from '@mui/icons-material/AllInclusiveOutlined';
@@ -51,6 +51,7 @@ const CoursePurchase = ({ course }: { course: CourseDetailsResponse }) => {
                 totalTime: countTotalTime(course),
                 totalPurchased: course.totalPurchased,
                 author: course.expert.user.fullname,
+                buyLater: false
             };
 
             const newCart = [...cartFromStorage, newItem];
@@ -71,9 +72,7 @@ const CoursePurchase = ({ course }: { course: CourseDetailsResponse }) => {
 
     useEffect(() => {
         if (purchasedCourseIds.find(id => id === course.courseId)) {
-            if (userProgresses.length) {
-                setCompletionOfACourse(countCompletionOfACourse(course, userProgresses));
-            }
+            setCompletionOfACourse(countCompletionOfACourse(course, userProgresses));
         }
     }, [userProgresses, purchasedCourseIds]);
 
@@ -170,7 +169,7 @@ const CoursePurchase = ({ course }: { course: CourseDetailsResponse }) => {
             ) : (
                 <>
                     <Divider />
-                    {getPurchasedButton(completionOfACourse, course.courseId)}
+                    {displayPurchasedButton(completionOfACourse, course)}
                 </>
             )}
 

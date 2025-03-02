@@ -5,9 +5,10 @@ import { apiUrl } from "@/utils/url";
 const SuggestPage = async ({
     params,
 }: {
-    params: Promise<{ id: string }>
+    params: Promise<{ slug: string }>
 }) => {
-    const id = (await params).id;
+    const slug = (await params).slug;
+    const id = slug.split("-").pop() || "";
     const blogListResponse = await sendRequest<ApiResponse<PageDetailsResponse<BlogResponse[]>>>({
         url: `${apiUrl}/blogs/author`,
         queryParams: {

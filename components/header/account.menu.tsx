@@ -16,6 +16,7 @@ import Link from 'next/link';
 import { useUserAvatar } from '@/wrapper/user-avatar/user.avatar.wrapper';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import { PopoverOrigin } from '@mui/material';
+import { usePathname } from 'next/navigation';
 
 export default function AccountMenu({ anchorEl, setAnchorEl, transformOrigin, anchorOrigin }: {
     anchorEl: HTMLElement | null;
@@ -26,12 +27,17 @@ export default function AccountMenu({ anchorEl, setAnchorEl, transformOrigin, an
     const { data: session } = useSession();
     const open = Boolean(anchorEl);
     const { avatarSrc, fullname } = useUserAvatar();
+    const pathname = usePathname();
 
     const handleClose = () => {
         setAnchorEl(null);
     };
 
     const handleLogout = async () => {
+        if (pathname.startsWith("/course/learning")) {
+            sessionStorage.removeItem('prevUrl');
+        }
+
         await sendRequest({
             url: `${apiUrl}/auth/logout`,
             queryParams: {

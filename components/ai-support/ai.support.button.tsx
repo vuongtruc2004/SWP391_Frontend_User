@@ -13,12 +13,12 @@ const AiSupportButton = ({ placement }: {
                     width: "36px",
                     height: "36px",
                     '& img': {
-                        bgcolor: 'transparent',
+                        bgcolor: 'transparent !important',
                         borderRadius: '50%'
                     },
                     cursor: 'pointer',
                     borderRadius: '50%',
-                    bgcolor: 'transparent'
+                    bgcolor: 'transparent !important'
                 }}
             >
                 <Image

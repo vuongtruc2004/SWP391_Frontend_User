@@ -7,6 +7,7 @@ import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import Image from "next/image";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
+import slugify from "slugify";
 
 const BlogSuggest = ({ blogList, currentId }: {
     blogList: BlogResponse[];
@@ -59,7 +60,7 @@ const BlogSuggest = ({ blogList, currentId }: {
                     {suggestList?.map(blog => {
                         return (
                             <li key={blog.blogId} className="flex items-center gap-x-3">
-                                <Link href={`/blog/${blog.blogId}`} style={{
+                                <Link href={`/blog/${slugify(blog.title + "-" + blog.blogId)}`} style={{
                                     display: 'block',
                                     width: '100px',
                                     height: `100px`,
@@ -74,7 +75,7 @@ const BlogSuggest = ({ blogList, currentId }: {
                                     }} />
                                 </Link>
                                 <div>
-                                    <Link href={`/blog/${blog.blogId}`} className="text-sm font-semibold hover:underline">{blog.title}</Link>
+                                    <Link href={`/blog/${slugify(blog.title + "-" + blog.blogId)}`} className="text-sm font-semibold hover:underline">{blog.title}</Link>
                                     <section className="flex items-center gap-x-1 text-gray-400 mt-2">
                                         <AccessTimeIcon sx={{ fontSize: '1.25rem' }} />
                                         <p className="text-[0.8125rem]">{formatDate(blog.createdAt)}</p>

@@ -10,5 +10,6 @@ export default withAuth({
 export const config = {
     matcher: [
         '/user/:path*',
+        '/course/learning/:path*'
     ]
 }

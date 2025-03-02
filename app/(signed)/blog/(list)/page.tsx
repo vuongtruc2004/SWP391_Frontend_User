@@ -32,6 +32,7 @@ const BlogPage = async (props: {
         filter: `title ~ '${keyword}' or plainContent ~ '${keyword}' or user.fullname ~ '${keyword}'`,
         page: page,
         size: '6',
+        sort: `updatedAt,desc`,
         category: category,
         tag_name: tagNameList
     }).toString();

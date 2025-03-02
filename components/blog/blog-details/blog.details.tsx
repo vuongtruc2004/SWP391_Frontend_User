@@ -46,7 +46,7 @@ const BlogDetails = ({ blog }: { blog: BlogResponse }) => {
 
                 <section>
                     <AccessTimeIcon sx={{ fontSize: '1.35rem' }} />
-                    <p>{formatDate(blog.createdAt)}</p>
+                    <p>{formatDate(blog.updatedAt ? blog.updatedAt : blog.createdAt)}</p>
                 </section>
 
                 <Divider orientation="vertical" variant="middle" flexItem sx={{ borderColor: '#6c757d', height: '16px' }} />

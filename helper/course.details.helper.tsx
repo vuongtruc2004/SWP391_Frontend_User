@@ -5,10 +5,11 @@ import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import { BorderLinearProgress } from "@/components/course/course-slider/custom.progress";
 import ReplayIcon from '@mui/icons-material/Replay';
 import Link from "next/link";
+import slugify from "slugify";
 
 export const getCourseById = async (id: string): Promise<ApiResponse<CourseDetailsResponse>> => {
     const courseResponse = await sendRequest<ApiResponse<CourseDetailsResponse>>({
-        url: `${apiUrl}/courses/${id}`
+        url: `${apiUrl}/courses/accepted/${id}`
     });
     if (courseResponse.status === 200) {
         return courseResponse;
@@ -83,7 +84,7 @@ export const getVideoIdFromUrl = (url: string) => {
     return url.substring(url.lastIndexOf("/") + 1, url.indexOf("?"));
 }
 
-export const getPurchasedButton = (status: number, courseId: number): React.ReactNode => {
+export const displayPurchasedButton = (status: number, course: CourseResponse): React.ReactNode => {
     if (status === 0) {
         return (
             <>
@@ -91,7 +92,7 @@ export const getPurchasedButton = (status: number, courseId: number): React.Reac
                     <BorderLinearProgress variant="determinate" value={0} sx={{ flex: 1 }} />
                     <p className='text-gray-300 font-semibold'>{0}%</p>
                 </div>
-                <Link href={`/course/learning/${courseId}`}>
+                <Link href={`/course/learning/${slugify(course.courseName + "-" + course.courseId)}`}>
                     <Button variant="outlined" color="primary" fullWidth startIcon={<PlayArrowIcon />}>
                         Bắt đầu học
                     </Button>
@@ -105,7 +106,7 @@ export const getPurchasedButton = (status: number, courseId: number): React.Reac
                     <BorderLinearProgress variant="determinate" value={status} sx={{ flex: 1 }} />
                     <p className='text-purple-300 font-semibold'>{status.toFixed(1)}%</p>
                 </div>
-                <Link href={`/course/learning/${courseId}`}>
+                <Link href={`/course/learning/${slugify(course.courseName + "-" + course.courseId)}`}>
                     <Button variant="outlined" color="primary" fullWidth startIcon={<PlayArrowIcon />}>
                         Tiếp tục học
                     </Button>
@@ -119,7 +120,7 @@ export const getPurchasedButton = (status: number, courseId: number): React.Reac
                     <BorderLinearProgress variant="determinate" value={100} sx={{ flex: 1 }} thumb_color="#00c951" />
                     <p className='text-green-500 font-semibold'>{100}%</p>
                 </div>
-                <Link href={`/course/learning/${courseId}`}>
+                <Link href={`/course/learning/${slugify(course.courseName + "-" + course.courseId)}`}>
                     <Button variant="outlined" color="primary" fullWidth startIcon={<ReplayIcon />}>
                         Xem lại khóa học
                     </Button>
