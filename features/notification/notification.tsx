@@ -34,7 +34,7 @@ const Notification = () => {
                     Thông báo ({numNotification})
                 </h1>
                 <Box sx={{
-                    maxHeight: '257px',
+                    maxHeight: '268px',
                     overflow: 'auto',
                     marginBottom: '20px',
                     '&::-webkit-scrollbar': {
