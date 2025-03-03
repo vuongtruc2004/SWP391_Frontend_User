@@ -7,21 +7,17 @@ const MessengerIcon = () => {
     const [open, setOpen] = useState(true);
     const [isDragging, setIsDragging] = useState(false);
 
-    const handleCloseIcon = (e: React.MouseEvent<HTMLSpanElement, MouseEvent>) => {
-        e.stopPropagation();
-        setOpen(false);
-    };
-
-    const openMessengerChat = () => {
-        if (!isDragging) {
-            window.open("https://m.me/61573093011541", "_blank");
-        }
+    const openMessengerChat = (e: React.MouseEvent<HTMLDivElement>) => {
+        console.log(e.currentTarget);
+        // if (!isDragging) {
+        //     window.open("https://m.me/61573093011541", "_blank");
+        // }
     };
 
     return (
         <>
             {open && (
-                <motion.button
+                <motion.div
                     aria-label="Open Messenger Chat"
                     drag
                     onDragStart={() => setIsDragging(true)}
@@ -43,15 +39,12 @@ const MessengerIcon = () => {
                         outline: 'none',
                     }}
                     whileTap={{ cursor: 'grabbing' }}
-                    onClick={openMessengerChat}
+                    onClick={(e) => openMessengerChat(e)}
                 >
-                    <span
-                        className='absolute top-[-10px] right-[-5px] cursor-pointer text-pink-400 hover:text-pink-500'
-                        onClick={handleCloseIcon}
-                    >
+                    <div className='absolute top-[-10px] right-[-5px] cursor-pointer text-blue-400 hover:text-blue-500'>
                         <CloseIcon sx={{ fontSize: '16px' }} />
-                    </span>
-                </motion.button>
+                    </div>
+                </motion.div>
             )}
         </>
     );
