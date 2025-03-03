@@ -1,3 +1,4 @@
+import slugify from 'slugify';
 import dayjs from 'dayjs';
 import 'dayjs/locale/vi';
 
@@ -11,3 +12,9 @@ export const calculateReadingTime = (content: string) => {
 export const formatDate = (createdAt: string) => {
     return dayjs(createdAt).locale('vi').format('D [tháng] M, YYYY');
 };
+
+export const slugifyText = (text: string) => {
+    return slugify(text, {
+        lower: true
+    })
+}

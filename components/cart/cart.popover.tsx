@@ -7,7 +7,7 @@ import { storageUrl } from '@/utils/url';
 import { formatPrice } from '@/helper/course.list.helper';
 import ListEmpty from '@/components/empty/list.empty';
 import { useCart } from '@/wrapper/course-cart/course.cart.wrapper';
-import slugify from 'slugify';
+import { slugifyText } from '@/helper/blog.helper';
 
 const CartPopover = ({ anchorEl, setAnchorEl }: {
     anchorEl: HTMLButtonElement | null;
@@ -69,7 +69,7 @@ const CartPopover = ({ anchorEl, setAnchorEl }: {
                                 return (
                                     <Fragment key={item.courseId}>
                                         <div className={`flex items-center gap-x-2 ${index === 0 ? 'pb-5' : 'py-5'}`}>
-                                            <Link href={`/course/${slugify(item.courseName + "-" + item.courseId)}`} onClick={handleClose} style={{
+                                            <Link href={`/course/${slugifyText(item.courseName + "-" + item.courseId)}`} onClick={handleClose} style={{
                                                 display: 'block',
                                                 width: '110px',
                                                 height: `66px`,
@@ -84,7 +84,7 @@ const CartPopover = ({ anchorEl, setAnchorEl }: {
                                             </Link>
 
                                             <div className='max-w-[200px]'>
-                                                <Link href={`/course/${slugify(item.courseName + "-" + item.courseId)}`} onClick={handleClose} className='line-clamp-1 font-semibold hover:underline hover:text-blue-500'>{item.courseName}</Link>
+                                                <Link href={`/course/${slugifyText(item.courseName + "-" + item.courseId)}`} onClick={handleClose} className='line-clamp-1 font-semibold hover:underline hover:text-blue-500'>{item.courseName}</Link>
                                                 <p className='text-sm text-gray-300'>{item.author}</p>
                                                 <p className='font-semibold'>{formatPrice(item.price)}₫</p>
                                             </div>

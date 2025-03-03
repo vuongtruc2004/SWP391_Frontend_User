@@ -156,7 +156,7 @@ const CourseSubjectFilter = ({ subjectList, subjectIds }: {
                 boxShadow: '2px 2px 5px rgba(0, 0, 0, 0.5)',
             }}>
                 <div className="flex items-center justify-between">
-                    <h1 className="text-lg font-semibold">Công nghệ sử dụng</h1>
+                    <h1 className="text-lg font-semibold">Lĩnh vực</h1>
                     <IconButton color="primary" onClick={handleSortSubject}>
                         <SortByAlphaOutlinedIcon />
                     </IconButton>

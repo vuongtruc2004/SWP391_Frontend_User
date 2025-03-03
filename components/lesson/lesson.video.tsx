@@ -3,14 +3,13 @@ import { countTotalTime, getVideoIdFromUrl } from "@/helper/course.details.helpe
 import { useCourseView } from "@/wrapper/course-view/course.view.wrapper";
 import { storageUrl } from "@/utils/url";
 import { ArrowLeftIcon, ArrowRightIcon } from '@mui/x-date-pickers/icons';
-import { formatDate } from "@/helper/blog.helper";
+import { formatDate, slugifyText } from "@/helper/blog.helper";
 import { useState } from "react";
 import KeyboardDoubleArrowUpIcon from '@mui/icons-material/KeyboardDoubleArrowUp';
 import { formatTotalFollowers } from "@/helper/lesson.helper";
 import Image from "next/image";
 import Link from "next/link";
 import ChapterCourseRate from "../chapter-view/chapter-course-rate/chapter.course.rate";
-import slugify from "slugify";
 
 const LessonVideo = () => {
     const { course, setCurrentPlayIndex, currentPlayIndex, lessons } = useCourseView();
@@ -98,7 +97,7 @@ const LessonVideo = () => {
                             <h1 className="text-xl font-semibold">Khóa học</h1>
 
                             <div className="flex items-center gap-x-3 mt-3 mb-5">
-                                <Link href={`/course/${slugify(course.courseName + "-" + course.courseId)}`} style={{
+                                <Link href={`/course/${slugifyText(course.courseName + "-" + course.courseId)}`} style={{
                                     display: 'block',
                                     width: '160px',
                                     aspectRatio: 2,
@@ -115,7 +114,7 @@ const LessonVideo = () => {
                                 </Link>
 
                                 <div className="max-w-[280px]">
-                                    <Link href={`/course/${slugify(course.courseName + "-" + course.courseId)}`} className='transition-all duration-150 line-clamp-1 text-lg font-semibold hover:underline hover:text-blue-500'>{course.courseName}</Link>
+                                    <Link href={`/course/${slugifyText(course.courseName + "-" + course.courseId)}`} className='transition-all duration-150 line-clamp-1 text-lg font-semibold hover:underline hover:text-blue-500'>{course.courseName}</Link>
                                     <div className='text-sm'>
                                         <div className='flex items-center gap-x-2'>
                                             <p>Cập nhật lần cuối:</p>

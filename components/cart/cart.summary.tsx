@@ -1,4 +1,3 @@
-import { sumOriginalPrice } from "@/helper/course.cart.helper";
 import { Box, Button } from "@mui/material";
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import PaymentInstruction from "@/features/cart/payment.instruction";
@@ -6,6 +5,7 @@ import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { usePathname, useRouter } from "next/navigation";
 import { useCart } from "@/wrapper/course-cart/course.cart.wrapper";
+import { sumOriginalPrice } from "@/helper/course.list.helper";
 
 const CartSummary = () => {
     const { cart } = useCart();

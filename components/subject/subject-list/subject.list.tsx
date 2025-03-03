@@ -4,7 +4,7 @@ import SingleSubjectList from './single.subject.list';
 const SubjectList = ({ subjectList }: { subjectList: SubjectResponse[] }) => {
     return (
         <>
-            <h1 className='text-center font-bold uppercase text-2xl text-white mt-10'>Danh mục phổ biến</h1>
+            <h1 className='text-center font-bold uppercase text-2xl text-white mt-10'>Lĩnh vực phổ biến</h1>
             <Box sx={{
                 display: 'grid',
                 gridTemplateColumns: 'repeat(3, 1fr)',

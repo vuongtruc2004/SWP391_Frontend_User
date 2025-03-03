@@ -7,7 +7,7 @@ import Image from "next/image";
 import Link from "next/link";
 import WatchLaterOutlinedIcon from '@mui/icons-material/WatchLaterOutlined';
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
-import slugify from "slugify";
+import { slugifyText } from "@/helper/blog.helper";
 
 const SingleCartCourse = ({ course }: { course: CartCourse }) => {
 
@@ -34,7 +34,7 @@ const SingleCartCourse = ({ course }: { course: CartCourse }) => {
         <>
             <div className="flex items-center justify-between gap-x-10 py-5">
                 <div className="flex items-center gap-x-3">
-                    <Link href={`/course/${slugify(course.courseName + "-" + course.courseId)}`} style={{
+                    <Link href={`/course/${slugifyText(course.courseName + "-" + course.courseId)}`} style={{
                         display: 'block',
                         width: '180px',
                         height: `90px`,
@@ -49,7 +49,7 @@ const SingleCartCourse = ({ course }: { course: CartCourse }) => {
                     </Link>
 
                     <div>
-                        <Link href={`/course/${slugify(course.courseName + "-" + course.courseId)}`} className='transition-all duration-150 line-clamp-1 text-lg font-semibold hover:underline hover:text-blue-500'>{course.courseName}</Link>
+                        <Link href={`/course/${slugifyText(course.courseName + "-" + course.courseId)}`} className='transition-all duration-150 line-clamp-1 text-lg font-semibold hover:underline hover:text-blue-500'>{course.courseName}</Link>
                         <p className="text-gray-300 font-semibold text-sm">Bởi {course.author}</p>
 
                         <div className="flex items-center gap-x-1 text-sm text-gray-200">

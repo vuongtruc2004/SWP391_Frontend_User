@@ -11,7 +11,7 @@ import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { comment, CommentFieldResponse } from "./blog.interact.action";
 import ErrorOutlineRoundedIcon from '@mui/icons-material/ErrorOutlineRounded';
-import slugify from "slugify";
+import { slugifyText } from "@/helper/blog.helper";
 
 const initState: CommentFieldResponse | null = null;
 const InteractOnBlog = ({ blog }: { blog: BlogResponse }) => {
@@ -23,7 +23,7 @@ const InteractOnBlog = ({ blog }: { blog: BlogResponse }) => {
 
     const redirectToLogin = () => {
         if (!session) {
-            sessionStorage.setItem('prevUrl', `/blog/${slugify(blog.title + "-" + blog.blogId)}`);
+            sessionStorage.setItem('prevUrl', `/blog/${slugifyText(blog.title + "-" + blog.blogId)}`);
             router.push("/login");
         }
     }

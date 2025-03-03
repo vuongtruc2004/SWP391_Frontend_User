@@ -15,7 +15,7 @@ import { useCourseView } from "@/wrapper/course-view/course.view.wrapper";
 import AiSupportButton from "@/components/ai-support/ai.support.button";
 import StarIcon from '@mui/icons-material/Star';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
-import slugify from "slugify";
+import { slugifyText } from "@/helper/blog.helper";
 
 interface ISidebar {
     key: string;
@@ -41,13 +41,13 @@ const Sidebar = () => {
         {
             key: 'course-learning',
             title: `${lessons[currentPlayIndex].title}`,
-            link: `/course/learning/${slugify(course.courseName + "-" + course.courseId)}`,
+            link: `/course/learning/${slugifyText(course.courseName + "-" + course.courseId)}`,
             icon: <LocalLibraryIcon sx={{ fontSize: '1.25rem' }} />
         },
         {
             key: 'course-info',
             title: `${course.courseName}`,
-            link: `/course/${slugify(course.courseName + "-" + course.courseId)}`,
+            link: `/course/${slugifyText(course.courseName + "-" + course.courseId)}`,
             icon: <InfoIcon sx={{ fontSize: '1.25rem' }} />
         }
     ]

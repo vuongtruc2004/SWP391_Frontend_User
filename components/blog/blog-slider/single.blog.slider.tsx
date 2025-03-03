@@ -1,4 +1,4 @@
-import { calculateReadingTime, formatDate } from '@/helper/blog.helper';
+import { calculateReadingTime, formatDate, slugifyText } from '@/helper/blog.helper';
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
@@ -6,7 +6,6 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { storageUrl } from '@/utils/url';
 import { Divider } from '@mui/material';
-import slugify from 'slugify';
 
 const SingleBlogSlider = ({ blog }: { blog: BlogResponse; }) => {
     return (
@@ -36,7 +35,7 @@ const SingleBlogSlider = ({ blog }: { blog: BlogResponse; }) => {
                 color: 'white',
                 padding: '20px'
             }}>
-                <Link href={`/blog/${slugify(blog.title + "-" + blog.blogId)}`} className="transition-all duration-200 font-semibold hover:underline hover:text-blue-500 line-clamp-1">
+                <Link href={`/blog/${slugifyText(blog.title + "-" + blog.blogId)}`} className="transition-all duration-200 font-semibold hover:underline hover:text-blue-500 line-clamp-1">
                     {blog.title}
                 </Link>
 
@@ -55,7 +54,7 @@ const SingleBlogSlider = ({ blog }: { blog: BlogResponse; }) => {
 
                 <Divider sx={{ marginBlock: '10px' }} />
 
-                <Link href={`/blog/${slugify(blog.title + "-" + blog.blogId)}`}>
+                <Link href={`/blog/${slugifyText(blog.title + "-" + blog.blogId)}`}>
                     <Button variant="outlined" color="primary" endIcon={<ChevronRightIcon />} fullWidth>
                         Xem chi tiết
                     </Button>
