@@ -54,7 +54,8 @@ const SuggestCourse = () => {
                 });
             }
 
-            if (coursesResponse.status === 200) {
+            if (coursesResponse.status === 200 && coursesResponse.data.length) {
+                console.log(coursesResponse.data);
                 setCourses(coursesResponse.data);
             }
             setLoading(false);
@@ -82,53 +83,57 @@ const SuggestCourse = () => {
     }
 
     return (
-        <Box sx={{
-            bgcolor: 'black',
-            width: '100%',
-            maxWidth: '1200px',
-            borderRadius: '6px',
-            padding: '20px',
-            boxShadow: '2px 2px 5px rgba(0,0,0,0.5)',
-            marginTop: '20px',
-            position: 'relative',
-            '.mui-1yv1d02-MuiButtonBase-root-MuiButton-root': {
-                boxShadow: '2px 2px 5px rgba(0,0,0,0.5)',
-                borderRadius: '50%',
-                minWidth: '40px',
-                width: '40px',
-                height: '40px',
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                position: 'absolute',
-                top: '50%',
-                transform: 'translateY(-50%)',
-                zIndex: '8',
-            }
-        }}>
-            <h1 className="text-lg font-semibold mb-5">Có thể bạn cũng thích</h1>
-            <Swiper
-                ref={sliderRef}
-                slidesPerView={5}
-                spaceBetween={15}
-                grabCursor={true}
-                modules={[Navigation]}
-            >
-                {courses.map(course => {
-                    return (
-                        <SwiperSlide key={course.courseId}>
-                            <SingleCourseSuggest course={course} />
-                        </SwiperSlide>
-                    )
-                })}
-            </Swiper>
-            <Button onClick={handlePrev} variant="contained" color="primary" className="left-0">
-                <ChevronLeftIcon />
-            </Button>
-            <Button onClick={handleNext} variant="contained" color="primary" className="right-0">
-                <ChevronRightIcon />
-            </Button>
-        </Box>
+        <>
+            {courses.length !== 0 && (
+                <Box sx={{
+                    bgcolor: 'black',
+                    width: '100%',
+                    maxWidth: '1200px',
+                    borderRadius: '6px',
+                    padding: '20px',
+                    boxShadow: '2px 2px 5px rgba(0,0,0,0.5)',
+                    marginTop: '20px',
+                    position: 'relative',
+                    '.mui-1yv1d02-MuiButtonBase-root-MuiButton-root': {
+                        boxShadow: '2px 2px 5px rgba(0,0,0,0.5)',
+                        borderRadius: '50%',
+                        minWidth: '40px',
+                        width: '40px',
+                        height: '40px',
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        position: 'absolute',
+                        top: '50%',
+                        transform: 'translateY(-50%)',
+                        zIndex: '8',
+                    }
+                }}>
+                    <h1 className="text-lg font-semibold mb-5">Có thể bạn cũng thích</h1>
+                    <Swiper
+                        ref={sliderRef}
+                        slidesPerView={5}
+                        spaceBetween={15}
+                        grabCursor={true}
+                        modules={[Navigation]}
+                    >
+                        {courses.map(course => {
+                            return (
+                                <SwiperSlide key={course.courseId}>
+                                    <SingleCourseSuggest course={course} />
+                                </SwiperSlide>
+                            )
+                        })}
+                    </Swiper>
+                    <Button onClick={handlePrev} variant="contained" color="primary" className="left-0">
+                        <ChevronLeftIcon />
+                    </Button>
+                    <Button onClick={handleNext} variant="contained" color="primary" className="right-0">
+                        <ChevronRightIcon />
+                    </Button>
+                </Box>
+            )}
+        </>
     )
 }
 
