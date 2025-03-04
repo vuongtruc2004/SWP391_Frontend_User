@@ -112,7 +112,7 @@ const PaymentInstruction = ({ open, setOpen, courses }: {
                         background: '#1976D2',
                     },
                     'img': {
-                        objectFit: 'contain'
+                        objectFit: 'cover'
                     }
                 }}>
                     {courses.map(course => {
