@@ -33,6 +33,7 @@ const ChapterCourseRate = () => {
     useEffect(() => {
         const fetchRate = async () => {
             setLoading(true);
+            await new Promise(res => setTimeout(res, 2000));
             const response = await sendRequest<ApiResponse<PageDetailsResponse<RateResponse[]>>>({
                 url: `${apiUrl}/rates?page=${page}&size=2&filter=course.courseId:${course.courseId}&sort=createdAt,${direction}&sort=rateId,asc`,
             });

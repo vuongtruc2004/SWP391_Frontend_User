@@ -1,34 +1,25 @@
-import { Box, Tooltip } from "@mui/material"
-import Image from "next/image";
-import { storageUrl } from "@/utils/url";
+import { Drawer, Tooltip } from "@mui/material"
+import { useState } from "react";
+import AiConversation from "./ai.conversation";
+import AiIcon from "./ai.icon";
 
 const AiSupportButton = ({ placement }: {
     placement?: "top" | "right" | "bottom" | "left" | "bottom-end" | "bottom-start" | "left-end" | "left-start" | "right-end" | "right-start" | "top-end" | "top-start" | undefined
 }) => {
+    const [open, setOpen] = useState(false);
+
     return (
-        <Tooltip title="Chat với LearnGo AI" arrow placement={placement}>
-            <Box
-                sx={{
-                    position: "relative",
-                    width: "36px",
-                    height: "36px",
-                    '& img': {
-                        bgcolor: 'transparent !important',
-                        borderRadius: '50%'
-                    },
-                    cursor: 'pointer',
-                    borderRadius: '50%',
-                    bgcolor: 'transparent !important'
-                }}
-            >
-                <Image
-                    src={`${storageUrl}/icon/ai.png`}
-                    alt="cart"
-                    fill sizes="(max-width: 1000px) 100vw" priority={true}
-                    style={{ objectFit: "cover" }}
-                />
-            </Box>
-        </Tooltip>
+        <>
+            <Tooltip title="Chat với LearnGo AI" arrow placement={placement}>
+                <div onClick={() => setOpen(true)} className="cursor-pointer">
+                    <AiIcon width={36} height={36} />
+                </div>
+            </Tooltip>
+            <Drawer open={open} anchor="right" onClose={() => setOpen(false)}>
+                <AiConversation setOpen={setOpen} />
+            </Drawer>
+        </>
+
     )
 }
 
