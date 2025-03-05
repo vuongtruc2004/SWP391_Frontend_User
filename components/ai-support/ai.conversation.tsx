@@ -7,8 +7,6 @@ import Link from "next/link";
 import ChatBox from "@/features/ai-support/chatbox";
 import { Dispatch, SetStateAction, useState } from "react";
 import Image from "next/image";
-import { storageUrl } from "@/utils/url";
-import AiIcon from "./ai.icon";
 
 const AiConversation = ({ setOpen }: {
   setOpen: Dispatch<SetStateAction<boolean>>;
@@ -22,7 +20,7 @@ const AiConversation = ({ setOpen }: {
       height: '100vh',
       display: 'flex',
       flexDirection: 'column',
-      maxWidth: '420px'
+      maxWidth: '380px'
     }}>
       <div className="flex items-center justify-between pl-5 pr-[10px] pt-[10px]">
 
@@ -51,24 +49,20 @@ const AiConversation = ({ setOpen }: {
 
       <Divider sx={{ marginBlock: '10px 20px' }} />
 
-      <div className="flex items-center justify-center">
-        <AiIcon />
-      </div>
-
       <div className="flex-1 px-5">
         {messages.length ? (
           <>
             <h1 className="text-blue-500 text-2xl">
               Xin chào, {fullname ? fullname.trim().split(/\s+/).pop() : "bạn"}
             </h1>
-            <h2 className="text-xl text-gray-300">Tôi có thể giúp gì cho bạn?</h2>
+            <h2 className="text-lg font-semibold text-gray-300">Tôi có thể giúp gì cho bạn?</h2>
           </>
         ) : (
           <>
-            <h1 className="text-blue-500 text-2xl">
+            <h1 className="text-blue-500 text-lg font-semibold">
               Xin chào, {fullname ? fullname.trim().split(/\s+/).pop() : "bạn"}
             </h1>
-            <h2 className="text-xl text-gray-300">Tôi có thể giúp gì cho bạn?</h2>
+            <h2 className="text-gray-300">Tôi có thể giúp gì cho bạn?</h2>
           </>
         )}
       </div>

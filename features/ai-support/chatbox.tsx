@@ -41,7 +41,7 @@ const ChatBox = () => {
                 </Tooltip>
             </div>
 
-            <p className="text-sm text-gray-300 mt-1 px-1">LearnGo AI có thể mắc lỗi, bạn vui lòng kiểm tra lại thông tin quan trọng và không chia sẻ những thông tin nhạy cảm.</p>
+            <p className="text-sm text-gray-300 mt-1 px-1">LearnGo AI có thể mắc lỗi, bạn vui lòng kiểm tra lại thông tin quan trọng và không chia sẻ những thông tin nhạy cảm!</p>
         </div>
 
     )
