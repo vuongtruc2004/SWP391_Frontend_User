@@ -8,7 +8,7 @@ const Banner = () => {
             display: 'flex',
             justifyContent: 'flex-end',
             height: '70vh',
-            minHeight: '600px',
+            minHeight: '630px',
             position: 'relative',
             color: 'white',
             bgcolor: 'black',
