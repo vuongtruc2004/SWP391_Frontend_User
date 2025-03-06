@@ -180,4 +180,9 @@ declare global {
         orderDetailsId: number;
         courseId: number;
     }
+
+    interface MessageResponse {
+        role: "user" | "model" | "function" | "system";
+        parts: { text: string }[];
+    }
 }

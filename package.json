@@ -14,6 +14,7 @@
     "@emotion/cache": "^11.14.0",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
+    "@google/generative-ai": "^0.23.0",
     "@mui/icons-material": "^6.4.3",
     "@mui/joy": "^5.0.0-beta.51",
     "@mui/material": "^6.4.3",
@@ -29,6 +30,8 @@
     "query-string": "^9.1.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-markdown": "^10.0.1",
+    "remark-gfm": "^4.0.1",
     "slugify": "^1.6.6",
     "swiper": "^11.2.2",
     "user-ui": "file:"
