@@ -4,13 +4,12 @@ import { useState } from "react";
 import { sendRequest } from "@/utils/fetch.api";
 import { useAiMessage } from "@/wrapper/ai-message/ai.message.wrapper";
 
-const ChatBox = () => {
+const ChatInput = () => {
     const { setMessages, messages, loading, setLoading } = useAiMessage();
     const [userInput, setUserInput] = useState("");
 
     const handleSubmit = async () => {
         if (!userInput.trim()) return;
-
         setLoading(true);
         setMessages(prev => [
             ...prev,
@@ -18,7 +17,7 @@ const ChatBox = () => {
                 role: 'user',
                 parts: [{ text: userInput }]
             }
-        ])
+        ]);
         const response = await sendRequest<ApiResponse<string>>({
             url: '/api/chat',
             method: 'POST',
@@ -84,4 +83,4 @@ const ChatBox = () => {
     )
 }
 
-export default ChatBox
+export default ChatInput

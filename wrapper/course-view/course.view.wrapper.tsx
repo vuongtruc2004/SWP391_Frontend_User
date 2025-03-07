@@ -2,6 +2,8 @@
 import { createContext, Dispatch, SetStateAction, useContext, useEffect, useState } from "react"
 
 interface ICourseView {
+    openAI: boolean;
+    setOpenAI: Dispatch<SetStateAction<boolean>>;
     currentPlayIndex: number;
     setCurrentPlayIndex: Dispatch<SetStateAction<number>>;
     course: CourseDetailsResponse;
@@ -14,9 +16,10 @@ interface ICourseView {
 const CourseViewContext = createContext<ICourseView | null>(null);
 
 export const CourseViewWrapper = ({ children, course }: { children: React.ReactNode, course: CourseDetailsResponse }) => {
-    const [currentPlayIndex, setCurrentPlayIndex] = useState<number>(0);
-    const [openProgressBar, setOpenProgressBar] = useState<boolean>(true);
-    const [loading, setLoading] = useState<boolean>(true);
+    const [currentPlayIndex, setCurrentPlayIndex] = useState(0);
+    const [openProgressBar, setOpenProgressBar] = useState(true);
+    const [openAI, setOpenAI] = useState(false);
+    const [loading, setLoading] = useState(true);
 
     const lessons = course.chapters.flatMap(chapter => [...chapter.lessons]);
 
@@ -47,6 +50,8 @@ export const CourseViewWrapper = ({ children, course }: { children: React.ReactN
 
     return (
         <CourseViewContext.Provider value={{
+            openAI,
+            setOpenAI,
             currentPlayIndex,
             setCurrentPlayIndex,
             course,

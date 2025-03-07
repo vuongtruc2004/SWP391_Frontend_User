@@ -15,8 +15,8 @@ import Image from "next/image";
 import CartButton from "@/features/cart/cart.button";
 import { useUserAvatar } from "@/wrapper/user-avatar/user.avatar.wrapper";
 import NotificationButton from "../notification/notification.button";
-import AiSupportButton from "../ai-support/ai.support.button";
 import { Divider } from "@mui/material";
+import AiDrawerButton from "../ai-support/ai.drawer.button";
 
 const Header = () => {
     const pathname = usePathname();
@@ -173,7 +173,7 @@ const Header = () => {
                     <NotificationButton />
                 )}
 
-                <AiSupportButton />
+                <AiDrawerButton />
 
                 <Divider orientation="vertical" sx={{ height: '30px', borderColor: '#adb5bd' }} />
 
