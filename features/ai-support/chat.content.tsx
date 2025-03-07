@@ -4,7 +4,7 @@ import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import CheckIcon from '@mui/icons-material/Check';
 import { useAiMessage } from "@/wrapper/ai-message/ai.message.wrapper";
 import { Fragment, useState } from 'react';
-import ChatResponse from './chat.response';
+import ChatResponseFormat from './chat.response.format';
 
 const ChatContent = () => {
     const { messages } = useAiMessage();
@@ -23,7 +23,8 @@ const ChatContent = () => {
     return (
         <>
             {messages && messages.map((message, index) => {
-                const content = message.parts[0].text;
+                const content = message.content;
+
                 return (
                     <Fragment key={message.role + "_" + index}>
                         {message.role === "user" ? (
@@ -54,7 +55,7 @@ const ChatContent = () => {
                             </div>
                         ) : (
                             <div className="py-5 group relative">
-                                <ChatResponse content={content} />
+                                <ChatResponseFormat content={content} />
 
                                 <Tooltip title="Sao chép" arrow>
                                     <span className={`absolute bottom-[-16px] left-0 ${index === messages.length - 1 ? "" : "opacity-0"} group-hover:opacity-100 flex w-[30px] h-[30px] rounded-xl items-center justify-center cursor-pointer hover:bg-[#303030] transition-all duration-200`}

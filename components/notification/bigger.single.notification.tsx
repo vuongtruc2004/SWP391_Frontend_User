@@ -50,7 +50,6 @@ const NotificationBigger = ({ notification }: {
                     Authorization: `Bearer ${session.accessToken}`,
                 }
             });
-            console.log(deleteRes);
 
             if (deleteRes.status === 200) {
                 const newNotifications = notifications.filter(notification => notification.userNotificationId != deleteRes.data.userNotificationId);

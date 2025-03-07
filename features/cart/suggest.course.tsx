@@ -55,7 +55,6 @@ const SuggestCourse = () => {
             }
 
             if (coursesResponse.status === 200 && coursesResponse.data.length) {
-                console.log(coursesResponse.data);
                 setCourses(coursesResponse.data);
             }
             setLoading(false);

@@ -17,15 +17,22 @@ const generationConfig = {
     responseMimeType: "text/plain",
 };
 
+interface GeminiHistoryMessage {
+    role: "user" | "model" | "function" | "system";
+    parts: { text: string }[];
+}
 export async function POST(req: Request) {
     try {
-        const { prompt, history } = await req.json();
+        const { prompt, messages } = await req.json();
+        const history: GeminiHistoryMessage[] = messages.map((message: MessageResponse) => ({
+            role: message.role,
+            parts: [{ text: message.content }]
+        }));
+
         const chatSession = model.startChat({
             generationConfig,
             history: history,
         });
-        console.log(prompt);
-        console.log(history);
 
         const result = await chatSession.sendMessage(prompt);
         const response = await result.response;

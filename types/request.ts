@@ -58,4 +58,12 @@ declare global {
         totalPrice: number;
         couponCode?: string;
     }
+
+    interface CreateMessageRequest {
+        chatId: number;
+        messages: {
+            content: string;
+            role: "user" | "model" | "function" | "system";
+        }[];
+    }
 }

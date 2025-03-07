@@ -181,8 +181,15 @@ declare global {
         courseId: number;
     }
 
+    interface ChatResponse {
+        chatId: number;
+        title: string;
+        createdAt: string;
+        messages: MessageResponse[];
+    }
+
     interface MessageResponse {
+        content: string;
         role: "user" | "model" | "function" | "system";
-        parts: { text: string }[];
     }
 }

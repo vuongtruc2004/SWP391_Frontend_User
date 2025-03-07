@@ -15,8 +15,6 @@ import Image from "next/image";
 import CartButton from "@/features/cart/cart.button";
 import { useUserAvatar } from "@/wrapper/user-avatar/user.avatar.wrapper";
 import NotificationButton from "../notification/notification.button";
-import { Divider } from "@mui/material";
-import AiDrawerButton from "../ai-support/ai.drawer.button";
 
 const Header = () => {
     const pathname = usePathname();
@@ -166,16 +164,11 @@ const Header = () => {
             </div>
 
             <div className="flex items-center gap-x-3">
-
                 <CartButton />
 
                 {status === "authenticated" && (
                     <NotificationButton />
                 )}
-
-                <AiDrawerButton />
-
-                <Divider orientation="vertical" sx={{ height: '30px', borderColor: '#adb5bd' }} />
 
                 {status === "authenticated" ? (
                     <>
@@ -195,8 +188,6 @@ const Header = () => {
                         </Link>
                     </>
                 )}
-
-
             </div>
         </Box>
     )

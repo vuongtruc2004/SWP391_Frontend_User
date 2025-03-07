@@ -3,9 +3,12 @@ import ArrowUpwardOutlinedIcon from '@mui/icons-material/ArrowUpwardOutlined';
 import { useState } from "react";
 import { sendRequest } from "@/utils/fetch.api";
 import { useAiMessage } from "@/wrapper/ai-message/ai.message.wrapper";
+import { apiUrl } from "@/utils/url";
+import { useSession } from "next-auth/react";
 
 const ChatInput = () => {
-    const { setMessages, messages, loading, setLoading } = useAiMessage();
+    const { data: session, status } = useSession();
+    const { setLatestChat, latestChat, messages, setMessages, loading, setLoading } = useAiMessage();
     const [userInput, setUserInput] = useState("");
 
     const handleSubmit = async () => {
@@ -15,16 +18,17 @@ const ChatInput = () => {
             ...prev,
             {
                 role: 'user',
-                parts: [{ text: userInput }]
+                content: userInput
             }
         ]);
+
         const response = await sendRequest<ApiResponse<string>>({
             url: '/api/chat',
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: {
                 prompt: userInput,
-                history: messages
+                messages: messages
             }
         });
 
@@ -33,15 +37,45 @@ const ChatInput = () => {
                 ...prev,
                 {
                     role: "model",
-                    parts: [{ text: response.data }]
+                    content: response.data
                 }
             ]);
             setUserInput("");
+            handleSaveChat(response.data);
         } else {
             console.error(`Lỗi: ${response.errorMessage}`);
         }
         setLoading(false);
     };
+
+    const handleSaveChat = async (result: string) => {
+        if (status === "authenticated") {
+            const messagesRequest: CreateMessageRequest = {
+                chatId: latestChat ? latestChat.chatId : 0,
+                messages: [
+                    {
+                        content: userInput,
+                        role: 'user'
+                    },
+                    {
+                        content: result,
+                        role: 'model'
+                    }
+                ]
+            }
+
+            const chatResponse = await sendRequest<ApiResponse<ChatResponse>>({
+                url: `${apiUrl}/chats`,
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${session?.accessToken}`
+                },
+                body: messagesRequest
+            });
+
+            console.log(">>> check save response: ", chatResponse);
+        }
+    }
 
     return (
         <div className="p-5">

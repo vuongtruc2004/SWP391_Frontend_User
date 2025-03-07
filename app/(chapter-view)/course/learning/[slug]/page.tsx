@@ -5,6 +5,7 @@ import PlayingLesson from "@/components/lesson/playing.lesson";
 import { getCourseById } from "@/helper/course.details.helper";
 import { sendRequest } from "@/utils/fetch.api";
 import { apiUrl } from "@/utils/url";
+import AiMessageWrapper from "@/wrapper/ai-message/ai.message.wrapper";
 import { CourseViewWrapper } from "@/wrapper/course-view/course.view.wrapper";
 import { Box } from "@mui/material";
 import { Metadata } from "next";
@@ -36,27 +37,40 @@ const CourseLearningPage = async ({ params }: { params: Promise<{ slug: string }
         }
     });
 
+    const chatResponse = await sendRequest<ApiResponse<ChatResponse>>({
+        url: `${apiUrl}/chats/latest`,
+        headers: {
+            Authorization: `Bearer ${session.accessToken}`
+        }
+    });
+
     if (courseResponse.status !== 200) {
         throw new Error(courseResponse.message.toString());
     }
 
+    if (chatResponse.status !== 200) {
+        throw new Error(chatResponse.message.toString());
+    }
+
     return (
-        <CourseViewWrapper course={courseResponse.data}>
-            <Box sx={{
-                bgcolor: '#101010',
-                display: 'grid',
-                gridTemplateColumns: '60px 1fr',
-                position: 'relative'
-            }}>
-                <LeftSidebar />
-                <div className="flex">
-                    <div className="p-5 w-full">
+        <AiMessageWrapper chat={chatResponse.data}>
+            <CourseViewWrapper course={courseResponse.data}>
+                <Box sx={{
+                    bgcolor: '#101010',
+                    display: 'grid',
+                    gridTemplateColumns: '60px 1fr',
+                    position: 'relative',
+                    height: '100vh',
+                    overflow: 'hidden'
+                }}>
+                    <LeftSidebar />
+                    <div className="flex">
                         <PlayingLesson />
+                        <RightSidebar />
                     </div>
-                    <RightSidebar />
-                </div>
-            </Box>
-        </CourseViewWrapper>
+                </Box>
+            </CourseViewWrapper>
+        </AiMessageWrapper>
     )
 }
 

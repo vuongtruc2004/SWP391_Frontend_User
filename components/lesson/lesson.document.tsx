@@ -9,7 +9,7 @@ const LessonDocument = () => {
     const currentLesson = lessons[currentPlayIndex];
 
     if (!currentLesson.documentContent) {
-        return <></>
+        return null;
     }
 
     return (

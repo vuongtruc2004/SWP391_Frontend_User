@@ -7,7 +7,7 @@ import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import { useState } from 'react';
 import { Box } from '@mui/material';
 
-const ChatResponse = ({ content }: { content: string }) => {
+const ChatResponseFormat = ({ content }: { content: string }) => {
     const [copiedCode, setCopiedCode] = useState<string | null>(null);
 
     const handleCopyCode = (text: string) => {
@@ -167,4 +167,4 @@ const ChatResponse = ({ content }: { content: string }) => {
     );
 };
 
-export default ChatResponse;
+export default ChatResponseFormat;

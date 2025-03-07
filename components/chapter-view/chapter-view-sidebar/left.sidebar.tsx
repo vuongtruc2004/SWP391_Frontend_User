@@ -7,8 +7,8 @@ import { useState } from "react";
 import { useUserAvatar } from "@/wrapper/user-avatar/user.avatar.wrapper";
 import { useCourseView } from "@/wrapper/course-view/course.view.wrapper";
 import StarIcon from '@mui/icons-material/Star';
-import ViewSidebarOutlinedIcon from '@mui/icons-material/ViewSidebarOutlined';
 import AiIcon from "@/components/ai-support/ai.icon";
+import MenuOpenIcon from '@mui/icons-material/MenuOpen';
 
 const LeftSidebar = () => {
     const { setOpenProgressBar, setOpenAI, openProgressBar, openAI } = useCourseView();
@@ -54,7 +54,7 @@ const LeftSidebar = () => {
                             setOpenAI(false);
                             setOpenProgressBar(true);
                         }}>
-                            <span className="w-8 h-8 flex items-center justify-center"><ViewSidebarOutlinedIcon sx={{ fontSize: '1.25rem' }} /></span>
+                            <span className="w-8 h-8 flex items-center justify-center"><MenuOpenIcon sx={{ fontSize: '1.25rem' }} /></span>
                         </div>
                     </Tooltip>
 
