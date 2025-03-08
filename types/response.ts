@@ -188,8 +188,23 @@ declare global {
         messages: MessageResponse[];
     }
 
+    interface ChatHistoryResponse {
+        todayChats: {
+            chatId: number;
+            title: string;
+        }[];
+        yesterdayChats: {
+            chatId: number;
+            title: string;
+        }[];
+        weekAgoChats: {
+            chatId: number;
+            title: string;
+        }[];
+    }
+
     interface MessageResponse {
         content: string;
-        role: "user" | "model" | "function" | "system";
+        role: "USER" | "MODEL" | "FUNCTION" | "SYSTEM";
     }
 }

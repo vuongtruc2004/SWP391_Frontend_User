@@ -10,7 +10,7 @@ const ChatContent = () => {
     const { messages } = useAiMessage();
     const [copiedText, setCopiedText] = useState<string>("");
 
-    const handleCopyText = (text: string, role: "user" | "model" | "function" | "system", messageId: number) => {
+    const handleCopyText = (text: string, role: "USER" | "MODEL" | "FUNCTION" | "SYSTEM", messageId: number) => {
         navigator.clipboard.writeText(text).then(() => {
             setCopiedText(`${role}_${messageId}`);
             setTimeout(() => setCopiedText(""), 2000);
@@ -27,17 +27,17 @@ const ChatContent = () => {
 
                 return (
                     <Fragment key={message.role + "_" + index}>
-                        {message.role === "user" ? (
+                        {message.role === "USER" ? (
                             <div className="flex justify-end py-5 group">
                                 <div className="rounded-xl bg-[#303030] w-2/3 px-5 py-2.5 relative">
                                     {content}
 
-                                    <div className="flex items-center gap-x-2 absolute top-1 left-[-29%] group-hover:opacity-100 opacity-0 transition-all duration-200">
+                                    <div className="flex items-center gap-x-2 absolute top-1 left-[-32%] group-hover:opacity-100 opacity-0 transition-all duration-200">
                                         <Tooltip title="Sao chép" arrow placement="top">
                                             <span className="flex w-[30px] h-[30px] rounded-xl items-center justify-center cursor-pointer hover:bg-[#303030] transition-all duration-200"
-                                                onClick={() => handleCopyText(content, "user", index)}
+                                                onClick={() => handleCopyText(content, "USER", index)}
                                             >
-                                                {copiedText === `user_${index}` ? (
+                                                {copiedText === `USER_${index}` ? (
                                                     <CheckIcon sx={{ fontSize: '1rem' }} className="text-green-500" />
                                                 ) : (
                                                     <ContentCopyIcon sx={{ fontSize: '1rem' }} className="text-gray-300" />
@@ -59,9 +59,9 @@ const ChatContent = () => {
 
                                 <Tooltip title="Sao chép" arrow>
                                     <span className={`absolute bottom-[-16px] left-0 ${index === messages.length - 1 ? "" : "opacity-0"} group-hover:opacity-100 flex w-[30px] h-[30px] rounded-xl items-center justify-center cursor-pointer hover:bg-[#303030] transition-all duration-200`}
-                                        onClick={() => handleCopyText(content, "model", index)}
+                                        onClick={() => handleCopyText(content, "MODEL", index)}
                                     >
-                                        {copiedText === `model_${index}` ? (
+                                        {copiedText === `MODEL_${index}` ? (
                                             <CheckIcon sx={{ fontSize: '1rem' }} className="text-green-500" />
                                         ) : (
                                             <ContentCopyIcon sx={{ fontSize: '1rem' }} className="text-gray-300" />

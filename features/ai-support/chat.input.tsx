@@ -8,19 +8,13 @@ import { useSession } from "next-auth/react";
 
 const ChatInput = () => {
     const { data: session, status } = useSession();
-    const { setLatestChat, latestChat, messages, setMessages, loading, setLoading } = useAiMessage();
+    const { currentChatID, messages, setMessages, loading, setLoading, setCurrentChatID } = useAiMessage();
     const [userInput, setUserInput] = useState("");
 
     const handleSubmit = async () => {
         if (!userInput.trim()) return;
         setLoading(true);
-        setMessages(prev => [
-            ...prev,
-            {
-                role: 'user',
-                content: userInput
-            }
-        ]);
+        setMessages(prev => [...prev, { role: 'USER', content: userInput }]);
 
         const response = await sendRequest<ApiResponse<string>>({
             url: '/api/chat',
@@ -33,17 +27,9 @@ const ChatInput = () => {
         });
 
         if (response.status === 200) {
-            setMessages(prev => [
-                ...prev,
-                {
-                    role: "model",
-                    content: response.data
-                }
-            ]);
+            setMessages(prev => [...prev, { role: "MODEL", content: response.data }]);
             setUserInput("");
             handleSaveChat(response.data);
-        } else {
-            console.error(`Lỗi: ${response.errorMessage}`);
         }
         setLoading(false);
     };
@@ -51,29 +37,23 @@ const ChatInput = () => {
     const handleSaveChat = async (result: string) => {
         if (status === "authenticated") {
             const messagesRequest: CreateMessageRequest = {
-                chatId: latestChat ? latestChat.chatId : 0,
-                messages: [
-                    {
-                        content: userInput,
-                        role: 'user'
-                    },
-                    {
-                        content: result,
-                        role: 'model'
-                    }
-                ]
+                chatId: currentChatID,
+                messages: [{ content: userInput, role: 'USER' }, { content: result, role: 'MODEL' }]
             }
 
             const chatResponse = await sendRequest<ApiResponse<ChatResponse>>({
                 url: `${apiUrl}/chats`,
+                method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: `Bearer ${session?.accessToken}`
+                    Authorization: `Bearer ${session.accessToken}`
                 },
                 body: messagesRequest
             });
 
-            console.log(">>> check save response: ", chatResponse);
+            if (chatResponse.status === 201) {
+                setCurrentChatID(chatResponse.data.chatId);
+            }
         }
     }
 
@@ -90,7 +70,7 @@ const ChatInput = () => {
                 <Tooltip title="Gửi" arrow placement="top">
                     <Button variant="contained"
                         color="secondary"
-                        disabled={userInput === ""}
+                        disabled={userInput.trim() === ""}
                         loading={loading}
                         onClick={handleSubmit}
                         sx={{

@@ -33,7 +33,7 @@ const LessonVideo = () => {
         }}>
             {currentLesson.videoUrl.startsWith("http") ? (
                 <iframe
-                    src={`https://www.youtube.com/embed/${getVideoIdFromUrl(currentLesson.videoUrl)}?autoplay=1`}
+                    src={`https://www.youtube.com/embed/${getVideoIdFromUrl(currentLesson.videoUrl)}?autoplay=0`}
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope"
                     allowFullScreen
                 />

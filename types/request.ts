@@ -60,10 +60,10 @@ declare global {
     }
 
     interface CreateMessageRequest {
-        chatId: number;
+        chatId: number | null;
         messages: {
             content: string;
-            role: "user" | "model" | "function" | "system";
+            role: "USER" | "MODEL" | "FUNCTION" | "SYSTEM";
         }[];
     }
 }

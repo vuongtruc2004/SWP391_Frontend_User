@@ -25,7 +25,7 @@ export async function POST(req: Request) {
     try {
         const { prompt, messages } = await req.json();
         const history: GeminiHistoryMessage[] = messages.map((message: MessageResponse) => ({
-            role: message.role,
+            role: message.role.toLowerCase(),
             parts: [{ text: message.content }]
         }));
 

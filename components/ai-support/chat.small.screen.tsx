@@ -1,20 +1,16 @@
 'use client'
-import { Button, Divider, IconButton, Skeleton, Tooltip } from "@mui/material";
+import { Button, Divider, Skeleton } from "@mui/material";
 import { useUserAvatar } from "@/wrapper/user-avatar/user.avatar.wrapper";
 import { useEffect, useRef, useState } from "react";
 import ChatContent from "@/features/ai-support/chat.content";
 import { useAiMessage } from "@/wrapper/ai-message/ai.message.wrapper";
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import ChatInput from "@/features/ai-support/chat.input";
-import AddIcon from '@mui/icons-material/Add';
-import CloseIcon from '@mui/icons-material/Close';
-import Image from "next/image";
-import { useCourseView } from "@/wrapper/course-view/course.view.wrapper";
+import AiHeader from "@/features/ai-support/ai.header";
 
 const ChatSmallScreen = () => {
   const { fullname } = useUserAvatar();
   const { messages, loading } = useAiMessage();
-  const { setOpenAI } = useCourseView();
 
   const ref = useRef<HTMLDivElement>(null);
   const [showScrollButton, setShowScrollButton] = useState(false);
@@ -41,26 +37,7 @@ const ChatSmallScreen = () => {
 
   return (
     <div className="relative flex flex-col h-screen">
-      <div className="flex items-center justify-between pl-5 pr-3 pt-3">
-        <div className="flex items-center gap-x-1">
-          <Image src={`/logo.webp`} alt="app logo" width={32} height={32} />
-          <h1 className="font-semibold text-lg">LearnGo AI</h1>
-        </div>
-
-        <div className="flex items-center gap-x-3">
-          <Tooltip title="Đoạn chat mới" arrow>
-            <IconButton color="secondary" size="small">
-              <AddIcon />
-            </IconButton>
-          </Tooltip>
-
-          <Tooltip title="Đóng cửa sổ chat" arrow>
-            <IconButton color="secondary" onClick={() => setOpenAI(false)} size="small">
-              <CloseIcon />
-            </IconButton>
-          </Tooltip>
-        </div>
-      </div>
+      <AiHeader />
 
       <Divider sx={{ marginBlock: '10px' }} />
 
