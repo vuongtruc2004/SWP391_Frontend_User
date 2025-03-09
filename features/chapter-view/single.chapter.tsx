@@ -1,5 +1,5 @@
 import { AccordionDetails, Box, Checkbox } from "@mui/material";
-import { Accordion, AccordionSummary, FacebookCircularProgress } from "../style";
+import { Accordion, AccordionSummary, FacebookCircularProgress } from "./style";
 import { countCompletionOfAChapter, countTotalTimeInAChapter } from "@/helper/lesson.helper";
 import { useCourseView } from "@/wrapper/course-view/course.view.wrapper";
 import { SetStateAction, useEffect, useState } from "react";
@@ -147,7 +147,7 @@ const SingleChapter = ({ chapter, index, chapterExpand, setChapterExpand }: {
                                 size="small"
                                 checked={completedItems.has(lesson.lessonId)}
                                 onChange={() => handleChangeStatus(lesson.lessonId)}
-                                disabled={completedItems.has(lesson.lessonId)}
+                                disabled
                             />
                         </Box>
                     )

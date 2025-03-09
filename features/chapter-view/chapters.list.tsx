@@ -1,6 +1,6 @@
 'use client'
 import { useEffect, useState } from "react";
-import { Box, CircularProgress, Divider, IconButton, Tooltip } from "@mui/material";
+import { CircularProgress, Divider, IconButton, Tooltip } from "@mui/material";
 import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 import { BorderLinearProgress } from "@/components/course/course-slider/custom.progress";
 import { useCourseView } from "@/wrapper/course-view/course.view.wrapper";
@@ -24,16 +24,9 @@ const ChaptersList = () => {
 
     if (loading) {
         return (
-            <Box sx={{
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                width: '100%',
-                height: '100vh',
-                flexShrink: 0,
-            }}>
+            <div className="flex items-center justify-center w-full h-screen shrink-0">
                 <CircularProgress />
-            </Box>
+            </div>
         )
     }
 
@@ -41,7 +34,7 @@ const ChaptersList = () => {
         <div className="flex-1">
             <div className="flex items-center justify-between p-5">
                 <h1 className="font-semibold text-lg">Tiến độ khóa học</h1>
-                <Tooltip title="Ẩn tiến độ khóa học" arrow>
+                <Tooltip title="Đóng tiến độ khóa học" arrow>
                     <IconButton color="secondary" onClick={() => setOpenProgressBar(false)} size="small">
                         <CloseIcon />
                     </IconButton>

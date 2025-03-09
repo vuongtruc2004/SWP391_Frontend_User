@@ -8,7 +8,7 @@ import Image from "next/image";
 
 const AiHeader = () => {
     const { setOpenAI } = useCourseView();
-    const { messages, setMessages, setCurrentChatID } = useAiMessage();
+    const { messages, setMessages, setCurrentChatID, setOpenHistory } = useAiMessage();
 
     const handleCreateNewChat = async () => {
         if (!messages.length) return;
@@ -31,7 +31,7 @@ const AiHeader = () => {
                 </Tooltip>
 
                 <Tooltip title="Xem lịch sử chat" arrow>
-                    <IconButton color="secondary" size="small">
+                    <IconButton color="secondary" size="small" onClick={() => setOpenHistory(true)}>
                         <HistoryIcon />
                     </IconButton>
                 </Tooltip>

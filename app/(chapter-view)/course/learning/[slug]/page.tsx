@@ -37,23 +37,12 @@ const CourseLearningPage = async ({ params }: { params: Promise<{ slug: string }
         }
     });
 
-    const chatResponse = await sendRequest<ApiResponse<ChatResponse>>({
-        url: `${apiUrl}/chats/latest`,
-        headers: {
-            Authorization: `Bearer ${session.accessToken}`
-        }
-    });
-
     if (courseResponse.status !== 200) {
         throw new Error(courseResponse.message.toString());
     }
 
-    if (chatResponse.status !== 200) {
-        throw new Error(chatResponse.message.toString());
-    }
-
     return (
-        <AiMessageWrapper chat={chatResponse.data}>
+        <AiMessageWrapper>
             <CourseViewWrapper course={courseResponse.data}>
                 <Box sx={{
                     bgcolor: '#101010',

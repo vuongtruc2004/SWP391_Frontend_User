@@ -49,7 +49,7 @@ const LeftSidebar = () => {
                         </div>
                     </Tooltip>
 
-                    <Tooltip title="Hiển thị tiến độ khóa học" arrow placement="right">
+                    <Tooltip title="Tiến độ khóa học" arrow placement="right">
                         <div className={`flex items-center justify-center p-1.5 rounded-md text-gray-200 cursor-pointer mb-2 ${openProgressBar && 'active'}`} onClick={() => {
                             setOpenAI(false);
                             setOpenProgressBar(true);

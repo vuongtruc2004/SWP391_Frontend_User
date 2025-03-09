@@ -1,6 +1,5 @@
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import { Tooltip } from "@mui/material";
-import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import CheckIcon from '@mui/icons-material/Check';
 import { useAiMessage } from "@/wrapper/ai-message/ai.message.wrapper";
 import { Fragment, useState } from 'react';
@@ -32,25 +31,17 @@ const ChatContent = () => {
                                 <div className="rounded-xl bg-[#303030] w-2/3 px-5 py-2.5 relative">
                                     {content}
 
-                                    <div className="flex items-center gap-x-2 absolute top-1 left-[-32%] group-hover:opacity-100 opacity-0 transition-all duration-200">
-                                        <Tooltip title="Sao chép" arrow placement="top">
-                                            <span className="flex w-[30px] h-[30px] rounded-xl items-center justify-center cursor-pointer hover:bg-[#303030] transition-all duration-200"
-                                                onClick={() => handleCopyText(content, "USER", index)}
-                                            >
-                                                {copiedText === `USER_${index}` ? (
-                                                    <CheckIcon sx={{ fontSize: '1rem' }} className="text-green-500" />
-                                                ) : (
-                                                    <ContentCopyIcon sx={{ fontSize: '1rem' }} className="text-gray-300" />
-                                                )}
-                                            </span>
-                                        </Tooltip>
-
-                                        <Tooltip title="Chỉnh sửa tin nhắn" arrow placement="top">
-                                            <span className="flex w-[30px] h-[30px] rounded-xl items-center justify-center cursor-pointer hover:bg-[#303030] transition-all duration-200">
-                                                <EditOutlinedIcon sx={{ fontSize: '1rem' }} className="text-gray-300" />
-                                            </span>
-                                        </Tooltip>
-                                    </div>
+                                    <Tooltip title="Sao chép" arrow placement="top">
+                                        <span className=" absolute top-1 left-[-35px] group-hover:opacity-100 opacity-0 flex w-[30px] h-[30px] rounded-xl items-center justify-center cursor-pointer hover:bg-[#303030] transition-all duration-200"
+                                            onClick={() => handleCopyText(content, "USER", index)}
+                                        >
+                                            {copiedText === `USER_${index}` ? (
+                                                <CheckIcon sx={{ fontSize: '1rem' }} className="text-green-500" />
+                                            ) : (
+                                                <ContentCopyIcon sx={{ fontSize: '1rem' }} className="text-gray-300" />
+                                            )}
+                                        </span>
+                                    </Tooltip>
                                 </div>
                             </div>
                         ) : (

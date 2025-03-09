@@ -1,7 +1,9 @@
 'use client'
-import { createContext, Dispatch, SetStateAction, useContext, useEffect, useState } from "react"
+import { createContext, Dispatch, SetStateAction, useContext, useState } from "react"
 
 interface IAiMessage {
+    historyChats: ChatHistoryResponse | null;
+    setHistoryChats: Dispatch<SetStateAction<ChatHistoryResponse | null>>;
     messages: MessageResponse[];
     setMessages: Dispatch<SetStateAction<MessageResponse[]>>;
     currentChatID: number | null;
@@ -14,21 +16,26 @@ interface IAiMessage {
 
 const MessageContext = createContext<IAiMessage | null>(null);
 
-export const AiMessageWrapper = ({ children, chat }: { children: React.ReactNode, chat: ChatResponse | null }) => {
-    const [currentChatID, setCurrentChatID] = useState<number | null>(null);
+export const AiMessageWrapper = ({ children }: { children: React.ReactNode }) => {
     const [messages, setMessages] = useState<MessageResponse[]>([]);
+    const [historyChats, setHistoryChats] = useState<ChatHistoryResponse | null>(null);
+    const [currentChatID, setCurrentChatID] = useState<number | null>(null);
+    const [openHistory, setOpenHistory] = useState(false);
     const [loading, setLoading] = useState(false);
-    const [openHistory, setOpenHistory] = useState(true);
-
-    useEffect(() => {
-        if (chat) {
-            setMessages(chat.messages);
-            setCurrentChatID(chat.chatId);
-        }
-    }, [chat]);
 
     return (
-        <MessageContext.Provider value={{ messages, setMessages, currentChatID, setCurrentChatID, loading, setLoading, openHistory, setOpenHistory }}>
+        <MessageContext.Provider value={{
+            historyChats,
+            setHistoryChats,
+            messages,
+            setMessages,
+            currentChatID,
+            setCurrentChatID,
+            loading,
+            setLoading,
+            openHistory,
+            setOpenHistory
+        }}>
             {children}
         </MessageContext.Provider>
     )

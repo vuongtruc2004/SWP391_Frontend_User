@@ -12,36 +12,37 @@ const ChatInput = () => {
     const [userInput, setUserInput] = useState("");
 
     const handleSubmit = async () => {
-        if (!userInput.trim()) return;
+        const input = userInput.trim();
+        if (!input.length) return;
+
+        setUserInput("");
         setLoading(true);
-        setMessages(prev => [...prev, { role: 'USER', content: userInput }]);
+        setMessages(prev => [...prev, { role: 'USER', content: input }]);
 
         const response = await sendRequest<ApiResponse<string>>({
             url: '/api/chat',
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: {
-                prompt: userInput,
+                prompt: input,
                 messages: messages
             }
         });
 
         if (response.status === 200) {
             setMessages(prev => [...prev, { role: "MODEL", content: response.data }]);
-            setUserInput("");
-            handleSaveChat(response.data);
+            handleSaveChat(input, response.data);
         }
         setLoading(false);
     };
 
-    const handleSaveChat = async (result: string) => {
+    const handleSaveChat = async (input: string, result: string) => {
         if (status === "authenticated") {
             const messagesRequest: CreateMessageRequest = {
                 chatId: currentChatID,
-                messages: [{ content: userInput, role: 'USER' }, { content: result, role: 'MODEL' }]
+                messages: [{ content: input, role: 'USER' }, { content: result, role: 'MODEL' }]
             }
-
-            const chatResponse = await sendRequest<ApiResponse<ChatResponse>>({
+            const response = await sendRequest<ApiResponse<ChatResponse>>({
                 url: `${apiUrl}/chats`,
                 method: 'POST',
                 headers: {
@@ -50,9 +51,8 @@ const ChatInput = () => {
                 },
                 body: messagesRequest
             });
-
-            if (chatResponse.status === 201) {
-                setCurrentChatID(chatResponse.data.chatId);
+            if (response.status === 201) {
+                setCurrentChatID(response.data.chatId);
             }
         }
     }
