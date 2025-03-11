@@ -6,7 +6,7 @@ import { SetStateAction, useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import AutoStoriesOutlinedIcon from '@mui/icons-material/AutoStoriesOutlined';
 import SmartDisplayOutlinedIcon from '@mui/icons-material/SmartDisplayOutlined';
-import { formatDuration, formatDurationWithTail } from "@/helper/course.details.helper";
+import { formatDuration } from "@/helper/course.details.helper";
 import { useUserProgress } from "@/wrapper/user-progress/user.progress.wrapper";
 import QuizOutlinedIcon from '@mui/icons-material/QuizOutlined';
 
@@ -152,9 +152,9 @@ const SingleChapter = ({ chapter, index, chapterExpand, setChapterExpand }: {
                                 <p className="text-gray-300 text-sm flex items-center gap-x-1">
                                     <span>Bài kiểm tra</span>
                                     <span>•</span>
-                                    <span>{formatDurationWithTail(chapter.quizInfo.duration)}</span>
-                                    <span>•</span>
                                     <span>{chapter.quizInfo.totalQuestions} câu hỏi</span>
+                                    <span>•</span>
+                                    <span>{formatDuration(chapter.quizInfo.duration)}</span>
                                 </p>
                             </div>
                         </div>

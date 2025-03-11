@@ -1,10 +1,13 @@
 import { formatDate } from "@/helper/blog.helper";
 import { useCourseView } from "@/wrapper/course-view/course.view.wrapper";
+import { useUserProgress } from "@/wrapper/user-progress/user.progress.wrapper";
 import { Button, Divider } from "@mui/material";
 import { ArrowLeftIcon, ArrowRightIcon } from '@mui/x-date-pickers/icons';
+import CheckIcon from '@mui/icons-material/Check';
 
 const LessonDocument = () => {
     const { lessons, currentPlayIndex, setCurrentPlayIndex } = useCourseView();
+    const { userProgresses } = useUserProgress();
 
     const currentLesson = lessons[currentPlayIndex];
 
@@ -45,9 +48,21 @@ const LessonDocument = () => {
 
             <div className="mb-5" dangerouslySetInnerHTML={{ __html: currentLesson.documentContent }} />
 
-            <Button color="primary" variant="contained">
-                Đánh dấu đã hoàn thành
-            </Button>
+            {userProgresses.find(progress => progress.lessonId === currentLesson.lessonId) ? (
+                <div className="flex items-center gap-x-3">
+                    <Button color="primary" variant="contained">
+                        Đánh dấu đã hoàn thành
+                    </Button>
+                    <p className="flex items-center gap-x-1">
+                        <CheckIcon sx={{ fontSize: '1.2rem' }} className="text-green-500" />
+                        <span className="text-gray-300 text-sm">Đã hoàn thành</span>
+                    </p>
+                </div>
+            ) : (
+                <Button color="primary" variant="contained">
+                    Đánh dấu đã hoàn thành
+                </Button>
+            )}
         </>
     )
 }
