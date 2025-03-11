@@ -1,6 +1,6 @@
 import { formatDate } from "@/helper/blog.helper";
 import { useCourseView } from "@/wrapper/course-view/course.view.wrapper";
-import { Divider } from "@mui/material";
+import { Button, Divider } from "@mui/material";
 import { ArrowLeftIcon, ArrowRightIcon } from '@mui/x-date-pickers/icons';
 
 const LessonDocument = () => {
@@ -43,7 +43,11 @@ const LessonDocument = () => {
 
             <Divider sx={{ marginBlock: '10px' }} />
 
-            <div dangerouslySetInnerHTML={{ __html: currentLesson.documentContent }} />
+            <div className="mb-5" dangerouslySetInnerHTML={{ __html: currentLesson.documentContent }} />
+
+            <Button color="primary" variant="contained">
+                Đánh dấu đã hoàn thành
+            </Button>
         </>
     )
 }

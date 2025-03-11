@@ -29,8 +29,25 @@ const theme = createTheme({
         MuiButton: {
             styleOverrides: {
                 root: {
-                    textTransform: 'capitalize',
+                    textTransform: 'none',
                 },
+                contained: ({ ownerState }) =>
+                    ownerState.color === 'primary'
+                        ? {
+                            backgroundColor: '#0056d2',
+                            color: 'white',
+                            '&:hover': {
+                                backgroundColor: '#0048b0',
+                            }
+                        }
+                        : {},
+                // outlined: ({ ownerState }) =>
+                //     ownerState.color === 'primary'
+                //         ? {
+                //             borderColor: '#1e72eb',
+                //             color: '#1e72eb'
+                //         }
+                //         : {},
             },
         },
         MuiSkeleton: {

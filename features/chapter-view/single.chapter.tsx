@@ -3,12 +3,9 @@ import { Accordion, AccordionSummary, FacebookCircularProgress } from "./style";
 import { countCompletionOfAChapter, countTotalTimeOfAChapter } from "@/helper/lesson.helper";
 import { useCourseView } from "@/wrapper/course-view/course.view.wrapper";
 import { SetStateAction, useEffect, useState } from "react";
-import { sendRequest } from "@/utils/fetch.api";
-import { apiUrl } from "@/utils/url";
 import { useSession } from "next-auth/react";
 import AutoStoriesOutlinedIcon from '@mui/icons-material/AutoStoriesOutlined';
 import SmartDisplayOutlinedIcon from '@mui/icons-material/SmartDisplayOutlined';
-import FlagIcon from '@mui/icons-material/Flag';
 import { formatDuration, formatDurationWithTail } from "@/helper/course.details.helper";
 import { useUserProgress } from "@/wrapper/user-progress/user.progress.wrapper";
 import QuizOutlinedIcon from '@mui/icons-material/QuizOutlined';
@@ -26,28 +23,6 @@ const SingleChapter = ({ chapter, index, chapterExpand, setChapterExpand }: {
     const [completionOfChapter, setCompletionOfChapter] = useState(0);
     const [playingChapter, setPlayingChapter] = useState<number | null>(null);
     const [completedItems, setCompletedItems] = useState<Set<number>>(new Set());
-
-    const handleChangeStatus = async (lessonId: number) => {
-        if (status === "authenticated") {
-            const request: UserProgressRequest = {
-                courseId: course.courseId,
-                chapterId: chapter.chapterId,
-                lessonId: lessonId,
-            }
-            const userProgressResponse = await sendRequest<ApiResponse<UserProgressResponse>>({
-                url: `${apiUrl}/progress`,
-                method: 'POST',
-                headers: {
-                    Authorization: `Bearer ${session.accessToken}`,
-                    'Content-Type': 'application/json'
-                },
-                body: request
-            });
-            if (userProgressResponse.status === 200) {
-                setUserProgresses(prev => [...prev, userProgressResponse.data]);
-            }
-        }
-    }
 
     const handleChangeCurrentPlayIndex = (clickID: number, type: "lessonId" | "quizId") => {
         //@ts-ignore
@@ -87,13 +62,13 @@ const SingleChapter = ({ chapter, index, chapterExpand, setChapterExpand }: {
                         value={completionOfChapter}
                         percentage={(
                             <p className={`text-sm ${completionOfChapter >= 99.9 ? "text-green-400" : (completionOfChapter === 0 ? "text-gray-300" : "text-purple-300")}`}>
-                                {playingChapter === chapter.chapterId ? <FlagIcon sx={{ fontSize: '1rem' }} /> : `${index + 1}`}
+                                {index + 1}
                             </p>
                         )}
                     />
 
-                    <div className="flex flex-col">
-                        <p className="text-wrap line-clamp-1">{chapter.title}</p>
+                    <div className="flex flex-col max-w-[260px]">
+                        <p className={`text-wrap line-clamp-1 ${playingChapter === chapter.chapterId && 'text-purple-300'}`}>{chapter.title}</p>
                         <div className="text-gray-300 text-sm flex items-center gap-x-2">
                             <p>{chapter.lessons.length} bài giảng</p>
                             <p>•</p>
@@ -152,7 +127,6 @@ const SingleChapter = ({ chapter, index, chapterExpand, setChapterExpand }: {
                             <Checkbox
                                 size="small"
                                 checked={completedItems.has(lesson.lessonId)}
-                                onChange={() => handleChangeStatus(lesson.lessonId)}
                                 disabled
                             />
                         </Box>
