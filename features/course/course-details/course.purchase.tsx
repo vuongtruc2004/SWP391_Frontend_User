@@ -5,7 +5,7 @@ import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import { formatDate } from "@/helper/blog.helper";
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import LoopIcon from '@mui/icons-material/Loop';
-import { countTotalTime, displayPurchasedButton } from "@/helper/course.details.helper";
+import { countTotalTimeForACourse, displayPurchasedButton } from "@/helper/course.details.helper";
 import LocalMallOutlinedIcon from '@mui/icons-material/LocalMallOutlined';
 import StayCurrentPortraitOutlinedIcon from '@mui/icons-material/StayCurrentPortraitOutlined';
 import AllInclusiveOutlinedIcon from '@mui/icons-material/AllInclusiveOutlined';
@@ -48,7 +48,7 @@ const CoursePurchase = ({ course }: { course: CourseDetailsResponse }) => {
                 averageRating: course.averageRating,
                 totalRating: course.totalRating,
                 totalChapters: course.chapters.length,
-                totalTime: countTotalTime(course),
+                totalTime: countTotalTimeForACourse(course),
                 totalPurchased: course.totalPurchased,
                 author: course.expert.user.fullname,
                 buyLater: false
@@ -107,7 +107,7 @@ const CoursePurchase = ({ course }: { course: CourseDetailsResponse }) => {
                 </li>
                 <li className="flex items-center gap-x-2 py-1.5">
                     <AccessTimeIcon sx={{ fontSize: '1.2rem' }} />
-                    <p>Tổng thời lượng: <span className="font-semibold text-green-500">{countTotalTime(course)}</span></p>
+                    <p>Tổng thời lượng: <span className="font-semibold text-green-500">{countTotalTimeForACourse(course)}</span></p>
                 </li>
                 <li className="flex items-center gap-x-2 py-1.5">
                     <AllInclusiveOutlinedIcon sx={{ fontSize: '1.2rem' }} />

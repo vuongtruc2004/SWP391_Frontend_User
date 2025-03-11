@@ -8,7 +8,7 @@ const LessonDocument = () => {
 
     const currentLesson = lessons[currentPlayIndex];
 
-    if (!currentLesson.documentContent) {
+    if (!("lessonId" in currentLesson) || !currentLesson.documentContent) {
         return null;
     }
 

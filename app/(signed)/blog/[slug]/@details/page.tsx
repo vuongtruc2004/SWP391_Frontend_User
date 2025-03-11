@@ -3,11 +3,8 @@ import InteractOnBlog from "@/features/blog/blog-details/interact.on.blog";
 import { sendRequest } from "@/utils/fetch.api";
 import { apiUrl } from "@/utils/url";
 
-const DetailsPage = async ({
-    params,
-}: {
-    params: Promise<{ slug: string }>
-}) => {
+const DetailsPage = async ({ params }: { params: Promise<{ slug: string }> }) => {
+
     const slug = (await params).slug;
     const id = slug.split("-").pop() || "";
     const blogResponse = await sendRequest<ApiResponse<BlogResponse>>({

@@ -17,7 +17,7 @@ const LessonVideo = () => {
     const avatarSrc = course?.expert?.user?.avatar?.startsWith("http") ? course?.expert?.user?.avatar : `${storageUrl}/avatar/${course?.expert?.user?.avatar}`;
     const currentLesson = lessons[currentPlayIndex];
 
-    if (!currentLesson.videoUrl) {
+    if (!("lessonId" in currentLesson) || !currentLesson.videoUrl) {
         return null;
     }
 

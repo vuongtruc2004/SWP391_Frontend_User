@@ -92,6 +92,47 @@ declare global {
         title: string;
         description: string;
         lessons: LessonResponse[];
+        quizInfo: QuizInfoResponse;
+    }
+
+    interface QuizInfoResponse {
+        quizId: number;
+        title: string;
+        published: boolean;
+        allowSeeAnswers: boolean;
+        duration: number;
+        description: string;
+        updatedAt: string;
+        totalQuestions: number;
+        chapterId: number;
+    }
+
+    interface QuizResponse {
+        quizId: number;
+        title: string;
+        published: boolean;
+        allowSeeAnswers: boolean;
+        description: string;
+        duration: number;
+        createdAt: string;
+        updatedAt: string;
+        questions: QuestionResponse[];
+    }
+
+    interface QuizAttemptResponse {
+
+    }
+
+    interface QuestionResponse {
+        questionId: number;
+        title: string;
+        answers: AnswerResponse[];
+    }
+
+    interface AnswerResponse {
+        answerId: number;
+        content: string;
+        correct: boolean;
     }
 
     interface LessonResponse {
@@ -104,6 +145,7 @@ declare global {
         lessonType: "VIDEO" | "DOCUMENT";
         videoUrl: string | null;
         documentContent: string | null;
+        chapterId: number;
     }
 
     interface ExpertResponse {

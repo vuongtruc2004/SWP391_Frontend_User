@@ -1,5 +1,8 @@
-export const countTotalTimeInAChapter = (chapter: ChapterResponse) => {
-    const totalSeconds = chapter.lessons.reduce((sum, lesson) => sum + lesson.duration, 0);
+export const countTotalTimeOfAChapter = (chapter: ChapterResponse) => {
+    let totalSeconds = chapter.lessons.reduce((sum, lesson) => sum + lesson.duration, 0);
+    if (chapter.quizInfo) {
+        totalSeconds += chapter.quizInfo.duration;
+    }
 
     const hours = Math.floor(totalSeconds / 3600);
     let minutes = Math.ceil((totalSeconds % 3600) / 60);

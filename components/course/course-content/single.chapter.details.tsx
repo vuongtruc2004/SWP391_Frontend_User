@@ -1,6 +1,6 @@
 import { Accordion, AccordionSummary } from "./style";
 import { AccordionDetails, Box } from "@mui/material";
-import { convertSecondToTime } from "@/helper/course.details.helper";
+import { formatDuration } from "@/helper/course.details.helper";
 import AutoStoriesOutlinedIcon from '@mui/icons-material/AutoStoriesOutlined';
 import SmartDisplayOutlinedIcon from '@mui/icons-material/SmartDisplayOutlined';
 
@@ -45,7 +45,7 @@ const SingleChapterDetails = ({ chapter, index, chaptersExpand, toggleChapter }:
                                             <p className="text-gray-300 text-sm">Video</p>
                                         </div>
                                     </div>
-                                    <p className="text-gray-300 text-sm">{convertSecondToTime(lesson.duration)}</p>
+                                    <p className="text-gray-300 text-sm">{formatDuration(lesson.duration)}</p>
                                 </>
                             ) : (
                                 <>

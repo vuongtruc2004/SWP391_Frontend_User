@@ -28,8 +28,8 @@ const RightSidebar = () => {
             borderLeft: '1px solid #25272c',
             flexShrink: 0,
             width: {
-                xs: '400px',
-                xl: '450px',
+                xs: '420px',
+                xl: '480px',
             }
         }}>
             {openProgressBar && (

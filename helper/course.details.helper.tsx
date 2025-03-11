@@ -43,7 +43,7 @@ export const getEmojiOnAvgStars = (avg: number): string => {
     }
 };
 
-export const convertSecondToTime = (second: number): string => {
+export const formatDuration = (second: number): string => {
     const hours = Math.floor(second / 3600);
     const minutes = Math.floor((second % 3600) / 60);
     const seconds = second % 60;
@@ -61,7 +61,28 @@ export const convertSecondToTime = (second: number): string => {
     return arr.map(unit => unit.toString().padStart(2, '0')).join(':');
 };
 
-export const countTotalTime = (course: CourseDetailsResponse): string => {
+export const formatDurationWithTail = (second: number): string => {
+    const hours = Math.floor(second / 3600);
+    const minutes = Math.floor((second % 3600) / 60);
+    const seconds = second % 60;
+
+    let parts: string[] = [];
+
+    if (hours > 0) {
+        parts.push(`${hours} tiếng`);
+    }
+    if (minutes > 0) {
+        parts.push(`${minutes} phút`);
+    }
+    if (seconds > 0 || parts.length === 0) {
+        parts.push(`${seconds} giây`);
+    }
+
+    return parts.join(' ');
+};
+
+
+export const countTotalTimeForACourse = (course: CourseDetailsResponse): string => {
     let totalSeconds = 0;
     for (let chapter of course.chapters) {
         totalSeconds += chapter.lessons.reduce((sum, lesson) => sum + Math.max(lesson.duration || 0, 60), 0);
