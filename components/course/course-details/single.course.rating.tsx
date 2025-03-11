@@ -1,19 +1,28 @@
-import { Avatar, Button, Divider, IconButton, Popover, Rating } from "@mui/material";
+import { Avatar, Button, Divider, IconButton, Popover, Rating, Snackbar } from "@mui/material";
 import FlagIcon from '@mui/icons-material/Flag';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import { useState } from "react";
+import React, { useState } from "react";
 import { formatDate } from "@/helper/blog.helper";
-
+import { useSession } from "next-auth/react";
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
+import DeleteCourseRating from "@/features/course/course-rating/delete.rating";
+import UpdateCourseRating from "@/features/course/course-rating/update.course.rating";
 const SingleCourseRating = ({ rate, index, avatarSrc }: {
     rate: RateResponse;
     index: number;
     avatarSrc: string;
 }) => {
     const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
+    const { data: session } = useSession();
+    const [openDeleteModal, setOpenDeleteModal] = React.useState(false);
+    const [openUpdate, setOpenUpdate] = React.useState(false);
+    const [openSnackbar, setOpenSnackbar] = useState(false);
 
     const handleOpenPopover = (event: React.MouseEvent<HTMLButtonElement>) => {
         setAnchorEl(event.currentTarget);
     };
+
 
     return (
         <>
@@ -49,16 +58,61 @@ const SingleCourseRating = ({ rate, index, avatarSrc }: {
                             horizontal: 'right',
                         }}
                     >
-                        <Button startIcon={<FlagIcon />} color="secondary" variant="text">
-                            Báo Cáo
-                        </Button>
+                        {rate?.user?.userId === session?.user?.userId ?
+                            <div className="flex flex-col items-start p-2">
+                                <Button
+                                    startIcon={<EditIcon />}
+                                    color="secondary"
+                                    variant="text"
+                                    onClick={() => {
+                                        setOpenUpdate(true)
+                                        setAnchorEl(null);
+                                    }}
+                                    sx={{ "&:hover": { color: "#2b7fff" } }}
+                                >
+                                    Chỉnh sửa
+                                </Button>
+                                <Button startIcon={<DeleteIcon />}
+                                    color="secondary"
+                                    variant="text"
+                                    onClick={() => {
+                                        setOpenDeleteModal(true);
+                                        setAnchorEl(null);
+                                    }}
+                                    sx={{ "&:hover": { color: "red" }, width: '100%', justifyContent: 'flex-start' }}
+                                >
+                                    Xóa
+                                </Button>
+                            </div>
+                            :
+                            <Button startIcon={<FlagIcon />} color="secondary" variant="text">
+                                Báo Cáo
+                            </Button>
+                        }
+
                     </Popover>
 
-                </div>
+                </div >
                 <p className="text-gray-100 mt-3 line-clamp-3">{rate.content}</p>
                 <p className="flex items-center gap-x-1 mt-1 ml-1 text-sm text-gray-300">Đã đánh giá<Rating name="read-only" value={rate.stars} readOnly size="small" /></p>
-            </div>
+            </div >
             <Divider />
+            <DeleteCourseRating
+                open={openDeleteModal}
+                setOpen={setOpenDeleteModal}
+                rate={rate}
+                openSnackbar={openSnackbar}
+                setOpenSnackbar={setOpenSnackbar}
+            />
+            <Snackbar open={openSnackbar} autoHideDuration={3000} message="Đã xóa đánh giá của bạn" />
+
+            {openUpdate &&
+                <UpdateCourseRating
+                    rate={rate}
+                    setOpenUpdate={setOpenUpdate}
+                />
+            }
+
         </>
     )
 }

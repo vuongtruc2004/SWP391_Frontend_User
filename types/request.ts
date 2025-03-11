@@ -66,4 +66,10 @@ declare global {
             role: "USER" | "MODEL" | "FUNCTION" | "SYSTEM";
         }[];
     }
+
+    interface RateRequest {
+        content: string;
+        stars: number | null;
+        courseId?: number;
+    }
 }

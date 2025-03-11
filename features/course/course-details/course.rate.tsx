@@ -7,13 +7,16 @@ import StarIcon from '@mui/icons-material/Star';
 import { sendRequest } from "@/utils/fetch.api";
 import SingleCourseRating from "@/components/course/course-details/single.course.rating";
 import ListEmpty from "@/components/empty/list.empty";
+import CreateCourseRating from "../course-rating/create.course.rating";
+import { useCourseRate } from "@/wrapper/course-rate/course.rate.wrapper";
+import { useSession } from "next-auth/react";
 
 const CourseRate = ({ course }: { course: CourseDetailsResponse }) => {
-    const [rateList, setRateList] = useState<RateResponse[]>([]);
-    const [page, setPage] = useState(1);
-    const [totalPages, setTotalPages] = useState(0);
-    const [starsFilter, setStarsFilter] = useState<number>(0);
+    const { setPage, setStarsFilter, page, starsFilter, rateList, totalPages } = useCourseRate();
     const [ratingCounts, setRatingCounts] = useState<Record<number, number>>({});
+    const { data: session } = useSession();
+    const [myRating, setMyRating] = useState<RateResponse | null>(null);
+    const [myOrder, setMyOrder] = useState<OrderDetailsResponse | null>(null);
 
     const handleStarsFilter = (stars: number) => {
         setStarsFilter(stars);
@@ -36,25 +39,42 @@ const CourseRate = ({ course }: { course: CourseDetailsResponse }) => {
     }, []);
 
     useEffect(() => {
-        const fetchRatePage = async () => {
-            const ratePageResponse = await sendRequest<ApiResponse<PageDetailsResponse<RateResponse[]>>>({
-                url: `${apiUrl}/rates`,
-                queryParams: {
-                    page: page,
-                    size: 5,
-                    sort: 'stars,desc',
-                    filter: `${starsFilter !== 0 ? `stars : ${starsFilter} and ` : ""}course.courseId : ${course.courseId}`
-                }
-            });
-
-            if (ratePageResponse.status === 200) {
-                setRateList(ratePageResponse.data.content);
-                setPage(ratePageResponse.data.currentPage);
-                setTotalPages(ratePageResponse.data.totalPages);
+        const fetchData = async () => {
+            try {
+                const response = await sendRequest<ApiResponse<RateResponse>>({
+                    url: `${apiUrl}/rates/my-rate/${course?.courseId}`,
+                    headers: {
+                        Authorization: `Bearer ${session?.accessToken}`,
+                        "Content-Type": "application/json",
+                    },
+                });
+                setMyRating(response.data);
+            } catch (error) {
+                console.error("Error fetching data:", error);
             }
-        }
-        fetchRatePage();
-    }, [page, starsFilter]);
+        };
+
+        fetchData();
+    }, [session?.accessToken, course, rateList]);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await sendRequest<ApiResponse<OrderDetailsResponse>>({
+                    url: `${apiUrl}/orderDetails/order_purchased/${course?.courseId}`,
+                    headers: {
+                        Authorization: `Bearer ${session?.accessToken}`,
+                        "Content-Type": "application/json",
+                    },
+                });
+                setMyOrder(response.data);
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+        };
+
+        fetchData();
+    }, [session?.accessToken, course, rateList]);
 
     return (
         <div className="p-5">
@@ -89,6 +109,8 @@ const CourseRate = ({ course }: { course: CourseDetailsResponse }) => {
                 })}
             </div>
 
+            {(myRating === null && myOrder !== null) && <CreateCourseRating course={course} />}
+
             {rateList.length ? (
                 <>
                     {rateList.map((rate, index) => {
@@ -96,7 +118,7 @@ const CourseRate = ({ course }: { course: CourseDetailsResponse }) => {
                             rate?.user?.avatar :
                             `${storageUrl}/avatar/${rate?.user?.avatar}`;
                         return (
-                            <SingleCourseRating key={rate.rateId + "_" + rate.user.userId} rate={rate} index={index} avatarSrc={avatarSrc} />
+                            <SingleCourseRating key={rate.rateId + "_" + rate.user?.userId} rate={rate} index={index} avatarSrc={avatarSrc} />
                         )
                     })}
                     <Pagination

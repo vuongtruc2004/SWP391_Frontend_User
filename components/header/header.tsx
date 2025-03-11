@@ -39,6 +39,11 @@ const Header = () => {
             key: 'blog',
             link: '/blog',
             name: 'Bài viết',
+        },
+        {
+            key: 'expert',
+            link: '/expert',
+            name: 'Đội ngũ chuyên gia',
         }
     ]
     const [position, setPosition] = useState({

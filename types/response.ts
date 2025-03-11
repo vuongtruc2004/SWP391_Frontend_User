@@ -85,6 +85,10 @@ declare global {
         chapters: ChapterResponse[];
         averageRating: number;
         totalRating: number;
+        orderStatus: string;
+        orderDetails: OrderDetailsResponse[];
+        totalAmount: number;
+        course: CourseResponse;
     }
 
     interface ChapterResponse {
@@ -221,6 +225,7 @@ declare global {
     interface OrderDetailsResponse {
         orderDetailsId: number;
         courseId: number;
+        course: CourseResponse;
     }
 
     interface ChatResponse {

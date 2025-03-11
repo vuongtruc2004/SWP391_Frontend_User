@@ -3,6 +3,7 @@ import Avatar from '@mui/material/Avatar';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
+import HistoryIcon from '@mui/icons-material/History';
 import AutoStoriesIcon from '@mui/icons-material/AutoStories';
 import Divider from '@mui/material/Divider';
 import Settings from '@mui/icons-material/Settings';
@@ -146,6 +147,24 @@ export default function AccountMenu({ anchorEl, setAnchorEl, transformOrigin, an
                         <AutoStoriesIcon fontSize="small" />
                     </ListItemIcon>
                     <p>Khóa học của tôi</p>
+                </Link>
+            </MenuItem>
+
+            <MenuItem sx={{
+                padding: 0,
+                marginBottom: '2px',
+                'a': {
+                    display: 'flex',
+                    alignItems: 'center',
+                    width: '100%',
+                    padding: '6px 16px',
+                }
+            }}>
+                <Link href={"/user/history-purchased"}>
+                    <HistoryIcon>
+                        <AutoStoriesIcon fontSize="small" />
+                    </HistoryIcon>
+                    <p className='ml-3'>Lịch sử mua hàng</p>
                 </Link>
             </MenuItem>
 

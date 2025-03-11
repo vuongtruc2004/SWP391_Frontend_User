@@ -8,6 +8,7 @@ import PersonIcon from '@mui/icons-material/Person';
 import AutoStoriesIcon from '@mui/icons-material/AutoStories';
 import SettingsIcon from '@mui/icons-material/Settings';
 import NotificationsIcon from '@mui/icons-material/Notifications';
+import HistoryIcon from '@mui/icons-material/History';
 
 const UserSidebar = () => {
     const pathname = usePathname();
@@ -29,6 +30,12 @@ const UserSidebar = () => {
             link: '/user/my-course',
             name: 'Khóa học của tôi',
             icon: <AutoStoriesIcon />
+        },
+        {
+            key: 'history-purchased',
+            link: '/user/history-purchased',
+            name: 'Lịch sử mua hàng',
+            icon: <HistoryIcon />
         },
         {
             key: 'notification',
