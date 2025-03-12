@@ -28,7 +28,7 @@ const RightSidebar = () => {
             borderLeft: '1px solid #25272c',
             flexShrink: 0,
             width: {
-                xs: '420px',
+                xs: '425px',
                 xl: '480px',
             }
         }}>

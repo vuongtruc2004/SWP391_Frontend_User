@@ -172,17 +172,7 @@ const CourseExpertFilter = ({ expertList, priceFrom, priceTo, expertIds }: {
                         fullWidth
                     />
                 </div>
-                <Button
-                    variant='contained'
-                    fullWidth
-                    type='submit'
-                    sx={{
-                        textTransform: 'none',
-                        bgcolor: '#4ade80',
-                        '&:hover': {
-                            bgcolor: '#00c951'
-                        }
-                    }}>
+                <Button variant='contained' fullWidth type='submit' color="warning">
                     Áp Dụng
                 </Button>
             </form>

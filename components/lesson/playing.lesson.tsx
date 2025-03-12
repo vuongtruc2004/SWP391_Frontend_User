@@ -6,6 +6,7 @@ import LessonDocument from './lesson.document';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { useEffect, useRef, useState } from "react";
 import LessonQuiz from "./lesson.quiz";
+import PlayingLessonHeader from "./playing.lesson.header";
 
 const PlayingLesson = () => {
     const { currentPlayIndex, lessons } = useCourseView();
@@ -30,8 +31,10 @@ const PlayingLesson = () => {
     }, []);
 
     return (
-        <div className="relative h-screen flex-1">
-            <div className="p-5 h-screen overflow-y-auto" ref={ref}>
+        <div className="relative h-screen flex-1 flex flex-col">
+            <PlayingLessonHeader title={lessons[currentPlayIndex].title} updatedAt={lessons[currentPlayIndex].updatedAt} />
+
+            <div className="p-5 pt-0 flex-1 overflow-y-auto" ref={ref}>
                 {"lessonId" in lessons[currentPlayIndex] && lessons[currentPlayIndex].lessonType === "VIDEO" && (
                     <LessonVideo />
                 )}

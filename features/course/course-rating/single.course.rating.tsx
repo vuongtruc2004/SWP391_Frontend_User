@@ -1,13 +1,14 @@
 import { Avatar, Button, Divider, IconButton, Popover, Rating, Snackbar } from "@mui/material";
 import FlagIcon from '@mui/icons-material/Flag';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import React, { useState } from "react";
+import { useState } from "react";
 import { formatDate } from "@/helper/blog.helper";
 import { useSession } from "next-auth/react";
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import DeleteCourseRating from "@/features/course/course-rating/delete.rating";
 import UpdateCourseRating from "@/features/course/course-rating/update.course.rating";
+
 const SingleCourseRating = ({ rate, index, avatarSrc }: {
     rate: RateResponse;
     index: number;
@@ -15,14 +16,13 @@ const SingleCourseRating = ({ rate, index, avatarSrc }: {
 }) => {
     const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
     const { data: session } = useSession();
-    const [openDeleteModal, setOpenDeleteModal] = React.useState(false);
-    const [openUpdate, setOpenUpdate] = React.useState(false);
+    const [openDeleteModal, setOpenDeleteModal] = useState(false);
+    const [openUpdate, setOpenUpdate] = useState(false);
     const [openSnackbar, setOpenSnackbar] = useState(false);
 
     const handleOpenPopover = (event: React.MouseEvent<HTMLButtonElement>) => {
         setAnchorEl(event.currentTarget);
     };
-
 
     return (
         <>
@@ -96,7 +96,9 @@ const SingleCourseRating = ({ rate, index, avatarSrc }: {
                 <p className="text-gray-100 mt-3 line-clamp-3">{rate.content}</p>
                 <p className="flex items-center gap-x-1 mt-1 ml-1 text-sm text-gray-300">Đã đánh giá<Rating name="read-only" value={rate.stars} readOnly size="small" /></p>
             </div >
+
             <Divider />
+
             <DeleteCourseRating
                 open={openDeleteModal}
                 setOpen={setOpenDeleteModal}

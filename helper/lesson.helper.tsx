@@ -17,12 +17,6 @@ export const countTotalTimeOfAChapter = (chapter: ChapterResponse) => {
     return result.trim();
 };
 
-export const countCompletionOfAChapter = (chapter: ChapterResponse, userProgresses: UserProgressResponse[]) => {
-    const completed = userProgresses.filter(progress => progress.chapterId === chapter.chapterId).length;
-    const total = chapter.lessons.length;
-    return total > 0 ? (completed / total) * 100 : 0;
-}
-
 export const formatTotalFollowers = (total: number): string => {
     if (total >= 1000000000) {
         const value = total / 1000000000;
@@ -38,11 +32,17 @@ export const formatTotalFollowers = (total: number): string => {
     }
 };
 
+export const countCompletionOfAChapter = (chapter: ChapterResponse, userProgresses: UserProgressResponse[]) => {
+    const completed = userProgresses.filter(progress => progress.chapterId === chapter.chapterId).length;
+    const total = chapter.lessons.length + (chapter.quizInfo ? 1 : 0);
+    return total > 0 ? (completed / total) * 100 : 0;
+}
+
 export const countCompletedLessonsOfACourse = (course: CourseDetailsResponse | CourseResponse, userProgresses: UserProgressResponse[]): number => {
     return userProgresses.filter(progress => progress.courseId === course.courseId).length;
 }
 
-export const countCompletionOfACourse = (course: CourseDetailsResponse | CourseResponse, userProgresses: UserProgressResponse[]): number => {
+export const countCompletedPercentOfACourse = (course: CourseDetailsResponse | CourseResponse, userProgresses: UserProgressResponse[]): number => {
     const completed = userProgresses.filter(progress => progress.courseId === course.courseId).length;
-    return (completed / course.totalLessons) * 100;
+    return (completed / (course.totalLessons + course.totalQuizzes)) * 100;
 }

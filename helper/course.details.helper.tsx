@@ -63,8 +63,7 @@ export const formatDuration = (second: number): string => {
 
 export const formatDurationWithTail = (second: number): string => {
     const hours = Math.floor(second / 3600);
-    const minutes = Math.floor((second % 3600) / 60);
-    const seconds = second % 60;
+    const minutes = Math.ceil((second % 3600) / 60);
 
     let parts: string[] = [];
 
@@ -73,9 +72,6 @@ export const formatDurationWithTail = (second: number): string => {
     }
     if (minutes > 0) {
         parts.push(`${minutes} phút`);
-    }
-    if (seconds > 0 || parts.length === 0) {
-        parts.push(`${seconds} giây`);
     }
 
     return parts.join(' ');
@@ -86,6 +82,9 @@ export const countTotalTimeForACourse = (course: CourseDetailsResponse): string 
     let totalSeconds = 0;
     for (let chapter of course.chapters) {
         totalSeconds += chapter.lessons.reduce((sum, lesson) => sum + Math.max(lesson.duration || 0, 60), 0);
+        if (chapter.quizInfo) {
+            totalSeconds += chapter.quizInfo.duration;
+        }
     }
 
     const totalMinutes = Math.floor(totalSeconds / 60);

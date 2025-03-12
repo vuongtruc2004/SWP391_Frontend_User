@@ -1,10 +1,7 @@
-import React, { useEffect, useRef, useState } from 'react';
-import Image from 'next/image';
 import { Box, Pagination } from '@mui/material';
 import SingleAllPurchased from '@/features/history-purchased/single.all.purchased';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import ListEmpty from '../empty/list.empty';
-
 
 const AllPurchased = (props: { courseData: ApiResponse<PageDetailsResponse<CourseDetailsResponse[]>> }) => {
 
@@ -18,8 +15,6 @@ const AllPurchased = (props: { courseData: ApiResponse<PageDetailsResponse<Cours
         params.set('page', value.toString());
         router.replace(`${pathname}?${params}`);
     }
-
-    console.log(">>>leng", courseData?.data?.content?.length)
 
     return (
         <div>

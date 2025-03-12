@@ -1,8 +1,6 @@
-import { formatDate, slugifyText } from "@/helper/blog.helper";
+import { slugifyText } from "@/helper/blog.helper";
 import { useCourseView } from "@/wrapper/course-view/course.view.wrapper"
 import { Button, Divider } from "@mui/material";
-import { ArrowLeftIcon, ArrowRightIcon } from '@mui/x-date-pickers/icons';
-import UpdateIcon from '@mui/icons-material/Update';
 import TimelapseIcon from '@mui/icons-material/Timelapse';
 import QuestionMarkIcon from '@mui/icons-material/QuestionMark';
 import { formatDurationWithTail } from "@/helper/course.details.helper";
@@ -10,7 +8,7 @@ import { useState } from "react";
 import Link from "next/link";
 
 const LessonQuiz = () => {
-    const { lessons, currentPlayIndex, setCurrentPlayIndex } = useCourseView();
+    const { lessons, currentPlayIndex } = useCourseView();
 
     const [showDescription, setShowDescription] = useState(false);
 
@@ -22,38 +20,9 @@ const LessonQuiz = () => {
 
     return (
         <>
-            <div className="flex items-center justify-between">
-                <h1 className="text-xl font-semibold">{quiz.title}</h1>
-
-                <ul className='flex items-center'>
-                    <li className={`flex items-center gap-x-1 rounded-tl-full rounded-bl-full py-1 px-3 cursor-pointer hover:text-blue-400 ${currentPlayIndex === 0 && "pointer-events-none text-gray-400"}`}
-                        onClick={() => setCurrentPlayIndex(prev => prev - 1)}
-                    >
-                        <ArrowLeftIcon sx={{ fontSize: '1.2rem' }} />
-                        <p>
-                            Trước
-                        </p>
-                    </li>
-                    <Divider orientation='vertical' sx={{ height: '20px' }} />
-                    <li className={`flex items-center gap-x-1 rounded-tr-full rounded-br-full py-1 px-3 cursor-pointer hover:text-blue-400 ${currentPlayIndex === lessons.length - 1 && "pointer-events-none text-gray-400"}`}
-                        onClick={() => setCurrentPlayIndex(prev => prev + 1)}
-                    >
-                        <p>
-                            Tiếp
-                        </p>
-                        <ArrowRightIcon sx={{ fontSize: '1.2rem' }} />
-                    </li>
-                </ul>
-            </div>
+            <Divider sx={{ marginBottom: '20px' }} />
 
             <ul className="flex flex-col gap-y-2 my-5">
-                <li className="flex items-center text-sm">
-                    <p className="flex items-center gap-x-2 w-[180px]">
-                        <UpdateIcon sx={{ fontSize: '1rem' }} />
-                        <span>Cập nhật lần cuối</span>
-                    </p>
-                    <p className="text-purple-300 font-semibold">{formatDate(quiz.updatedAt)}</p>
-                </li>
                 <li className="flex items-center text-sm">
                     <p className="flex items-center gap-x-2 w-[180px]">
                         <TimelapseIcon sx={{ fontSize: '1rem' }} />

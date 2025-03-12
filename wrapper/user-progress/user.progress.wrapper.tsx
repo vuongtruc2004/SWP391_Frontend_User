@@ -9,7 +9,7 @@ interface IUserProgress {
     setLoading: Dispatch<SetStateAction<boolean>>;
     userProgresses: UserProgressResponse[];
     setUserProgresses: Dispatch<SetStateAction<UserProgressResponse[]>>;
-    handleChangeStatus: (lessonId?: number, quizId?: number) => Promise<void>;
+    handleChangeStatus: (courseId: number, chapterId: number, lessonId?: number, quizId?: number) => Promise<void>;
 }
 const UserProgressContext = createContext<IUserProgress | null>(null);
 
@@ -18,30 +18,26 @@ export const UserProgressWrapper = ({ children }: { children: React.ReactNode })
     const [userProgresses, setUserProgresses] = useState<UserProgressResponse[]>([]);
     const [loading, setLoading] = useState(true);
 
-    const handleChangeStatus = async (lessonId?: number, quizId?: number) => {
+    const handleChangeStatus = async (courseId: number, chapterId: number, lessonId?: number, quizId?: number) => {
         if ((lessonId && quizId) || (!lessonId && !quizId)) {
-            throw new Error("Chỉ có 1 trong lessonId và quizId được truyền vào!");
+            throw new Error("Bạn chỉ được truyền 1 trong hai tham số lessonId hoặc quizId!");
         }
         if (status === "authenticated") {
-            let body;
-            if (quizId) {
-                body = {
-                    quizId: quizId
-                }
-            } else {
-                body = {
-                    lessonId: lessonId
-                }
-            }
             const userProgressResponse = await sendRequest<ApiResponse<UserProgressResponse>>({
-                url: `${apiUrl}/progress`,
+                url: `${apiUrl}/progresses`,
                 method: 'POST',
                 headers: {
                     Authorization: `Bearer ${session.accessToken}`,
                     'Content-Type': 'application/json'
                 },
-                body: body
+                body: {
+                    courseId: courseId,
+                    chapterId: chapterId,
+                    lessonId: lessonId ? lessonId : null,
+                    quizId: quizId ? quizId : null
+                }
             });
+
             if (userProgressResponse.status === 200) {
                 setUserProgresses(prev => [...prev, userProgressResponse.data]);
             }
@@ -52,7 +48,7 @@ export const UserProgressWrapper = ({ children }: { children: React.ReactNode })
         const fetchData = async () => {
             if (status === "authenticated") {
                 const userProgressResponse = await sendRequest<ApiResponse<UserProgressResponse[]>>({
-                    url: `${apiUrl}/progress`,
+                    url: `${apiUrl}/progresses`,
                     headers: {
                         Authorization: `Bearer ${session.accessToken}`
                     }

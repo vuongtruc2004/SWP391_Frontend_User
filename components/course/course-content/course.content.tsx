@@ -39,14 +39,14 @@ const CourseContent = ({ course }: { course: CourseDetailsResponse }) => {
         <>
             <h1 className="text-xl font-semibold mt-5 mb-1 flex items-center gap-x-1">Nội dung khóa học</h1>
             <div className="flex items-center justify-between text-gray-300 mb-4 px-1 text-sm">
-                <p className="flex items-center gap-x-1">
+                <p className="flex items-center gap-x-1.5">
                     <strong className="text-white">{course?.chapters.length}</strong> chương
                     <span>•</span>
                     <strong className="text-white">{getNumberOfLessonType(course, "VIDEO")}</strong> bài giảng
                     <span>•</span>
                     <strong className="text-white">{getNumberOfLessonType(course, 'DOCUMENT')}</strong> bài đọc
                     <span>•</span>
-                    <strong className="text-white">{0}</strong> bài kiểm tra
+                    <strong className="text-white">{course.totalQuizzes}</strong> bài kiểm tra
                 </p>
                 <p className="text-blue-500 hover:text-blue-700 cursor-pointer font-semibold" onClick={toggleAllLessons}>
                     {allExpand ? "Đóng tất cả" : "Mở rộng tất cả"}

@@ -72,6 +72,7 @@ declare global {
         expert: ExpertResponse;
         totalPurchased: number;
         totalLessons: number;
+        totalQuizzes: number;
         createdAt: string;
         updatedAt: string;
     }
@@ -189,7 +190,8 @@ declare global {
         userId: number;
         courseId: number;
         chapterId: number;
-        lessonId: number;
+        lessonId?: number;
+        quizId?: number;
     }
 
     interface UserNotificationResponse {

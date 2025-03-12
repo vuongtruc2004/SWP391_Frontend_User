@@ -1,20 +1,19 @@
-import { Box, Button, Divider, Fade, InputAdornment, Modal, Snackbar, TextField, Typography } from '@mui/material';
-import React, { Dispatch, SetStateAction, useState } from 'react'
+import { Box, Button, Fade, Modal } from '@mui/material';
+import { Dispatch, SetStateAction } from 'react'
 import Backdrop from '@mui/material/Backdrop';
 import { apiUrl } from '@/utils/url';
 import { sendRequest } from '@/utils/fetch.api';
 import { useCourseRate } from '@/wrapper/course-rate/course.rate.wrapper';
 
-const DeleteCourseRating = ({ open, setOpen, rate, setOpenSnackbar, openSnackbar }:
-    {
-        open: boolean,
-        setOpen: Dispatch<SetStateAction<boolean>>,
-        rate: RateResponse,
-        openSnackbar: boolean,
-        setOpenSnackbar: React.Dispatch<React.SetStateAction<boolean>>
-    }) => {
+const DeleteCourseRating = ({ open, setOpen, rate, setOpenSnackbar, openSnackbar }: {
+    open: boolean,
+    setOpen: Dispatch<SetStateAction<boolean>>,
+    rate: RateResponse,
+    openSnackbar: boolean,
+    setOpenSnackbar: React.Dispatch<React.SetStateAction<boolean>>
+}) => {
 
-    const { setPage, fetchRatePage } = useCourseRate();
+    const { fetchRatePage } = useCourseRate();
 
     const handleDelete = async (rateId: number) => {
         const deleteResponse = await sendRequest<ApiResponse<string>>({

@@ -18,7 +18,7 @@ import { useSession } from "next-auth/react";
 import { usePathname, useRouter } from "next/navigation";
 import { SlideTransition } from "@/components/course/course-content/style";
 import { useUserProgress } from "@/wrapper/user-progress/user.progress.wrapper";
-import { countCompletionOfACourse } from "@/helper/lesson.helper";
+import { countCompletedPercentOfACourse } from "@/helper/lesson.helper";
 import { useCoursePurchased } from "@/wrapper/course-purchased/course.purchased.wrapper";
 import { useCart } from "@/wrapper/course-cart/course.cart.wrapper";
 
@@ -72,7 +72,7 @@ const CoursePurchase = ({ course }: { course: CourseDetailsResponse }) => {
 
     useEffect(() => {
         if (purchasedCourseIds.find(id => id === course.courseId)) {
-            setCompletionOfACourse(countCompletionOfACourse(course, userProgresses));
+            setCompletionOfACourse(countCompletedPercentOfACourse(course, userProgresses));
         }
     }, [userProgresses, purchasedCourseIds]);
 

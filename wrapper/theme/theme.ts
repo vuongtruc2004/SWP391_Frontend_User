@@ -40,14 +40,9 @@ const theme = createTheme({
                                 backgroundColor: '#0048b0',
                             }
                         }
-                        : {},
-                // outlined: ({ ownerState }) =>
-                //     ownerState.color === 'primary'
-                //         ? {
-                //             borderColor: '#1e72eb',
-                //             color: '#1e72eb'
-                //         }
-                //         : {},
+                        : (ownerState.color === 'warning') ? {
+                            color: 'black'
+                        } : {},
             },
         },
         MuiSkeleton: {

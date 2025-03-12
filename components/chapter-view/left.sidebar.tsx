@@ -2,13 +2,13 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Avatar, Box, Tooltip } from "@mui/material";
-import AccountMenu from "../../header/account.menu";
 import { useState } from "react";
 import { useUserAvatar } from "@/wrapper/user-avatar/user.avatar.wrapper";
 import { useCourseView } from "@/wrapper/course-view/course.view.wrapper";
 import StarIcon from '@mui/icons-material/Star';
 import AiIcon from "@/components/ai-support/ai.icon";
 import MenuOpenIcon from '@mui/icons-material/MenuOpen';
+import AccountMenu from "../header/account.menu";
 
 const LeftSidebar = () => {
     const { setOpenProgressBar, setOpenAI, openProgressBar, openAI } = useCourseView();
@@ -72,6 +72,7 @@ const LeftSidebar = () => {
             <Avatar alt="avatar" onClick={(event) => setMenuAnchorEl(event.currentTarget)} sx={{ cursor: 'pointer' }} src={avatarSrc}>
                 {fullname.charAt(0).toUpperCase()}
             </Avatar>
+
             <AccountMenu
                 anchorEl={menuAnchorEl}
                 setAnchorEl={setMenuAnchorEl}

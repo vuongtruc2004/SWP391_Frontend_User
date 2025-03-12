@@ -6,7 +6,7 @@ import { SetStateAction, useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import AutoStoriesOutlinedIcon from '@mui/icons-material/AutoStoriesOutlined';
 import SmartDisplayOutlinedIcon from '@mui/icons-material/SmartDisplayOutlined';
-import { formatDuration } from "@/helper/course.details.helper";
+import { formatDuration, formatDurationWithTail } from "@/helper/course.details.helper";
 import { useUserProgress } from "@/wrapper/user-progress/user.progress.wrapper";
 import QuizOutlinedIcon from '@mui/icons-material/QuizOutlined';
 
@@ -35,7 +35,11 @@ const SingleChapter = ({ chapter, index, chapterExpand, setChapterExpand }: {
         if (userProgresses.length) {
             const set = new Set<number>();
             userProgresses.forEach(progress => {
-                set.add(progress.lessonId);
+                if (progress.lessonId) {
+                    set.add(progress.lessonId)
+                } else if (progress.quizId) {
+                    set.add(progress.quizId);
+                }
             });
             setCompletedItems(set);
         }
@@ -67,9 +71,9 @@ const SingleChapter = ({ chapter, index, chapterExpand, setChapterExpand }: {
                         )}
                     />
 
-                    <div className="flex flex-col max-w-[260px]">
+                    <div className="flex flex-col max-w-[290px]">
                         <p className={`text-wrap line-clamp-1 ${playingChapter === chapter.chapterId && 'text-purple-300'}`}>{chapter.title}</p>
-                        <div className="text-gray-300 text-sm flex items-center gap-x-2">
+                        <div className="text-gray-300 text-sm flex items-center gap-x-1.5">
                             <p>{chapter.lessons.length} bài giảng</p>
                             <p>•</p>
                             {chapter.quizInfo && (
@@ -104,7 +108,7 @@ const SingleChapter = ({ chapter, index, chapterExpand, setChapterExpand }: {
                                     <SmartDisplayOutlinedIcon sx={{ fontSize: '1.2rem' }} className="text-blue-300 mr-5" />
                                     <div className="max-w-[200px]">
                                         <p className={`${"lessonId" in lessons[currentPlayIndex] && lessons[currentPlayIndex].lessonId === lesson.lessonId ? "text-purple-300" : ""} text-wrap line-clamp-1`}>{lesson.title}</p>
-                                        <p className="text-gray-300 text-sm flex items-center gap-x-1">
+                                        <p className="text-gray-300 text-sm flex items-center gap-x-1.5">
                                             <span>Video</span>
                                             <span>•</span>
                                             <span>{formatDuration(lesson.duration)}</span>
@@ -116,7 +120,7 @@ const SingleChapter = ({ chapter, index, chapterExpand, setChapterExpand }: {
                                     <AutoStoriesOutlinedIcon sx={{ fontSize: '1.2rem' }} className="text-blue-300 mr-5" />
                                     <div className="max-w-[200px]">
                                         <p className={`${"lessonId" in lessons[currentPlayIndex] && lessons[currentPlayIndex].lessonId === lesson.lessonId ? "text-purple-300" : ""} text-wrap line-clamp-1`}>{lesson.title}</p>
-                                        <p className="text-gray-300 text-sm flex items-center gap-x-1">
+                                        <p className="text-gray-300 text-sm flex items-center gap-x-1.5">
                                             <span>Tài liệu đọc thêm</span>
                                             <span>•</span>
                                             <span>{Math.ceil(lesson.duration / 60)} phút đọc</span>
@@ -149,12 +153,10 @@ const SingleChapter = ({ chapter, index, chapterExpand, setChapterExpand }: {
                             <QuizOutlinedIcon sx={{ fontSize: '1.2rem' }} className="text-blue-300 mr-5" />
                             <div>
                                 <p className={`${"quizId" in lessons[currentPlayIndex] && lessons[currentPlayIndex].quizId === chapter.quizInfo.quizId ? "text-purple-300" : ""} text-wrap line-clamp-1`}>{chapter.quizInfo.title}</p>
-                                <p className="text-gray-300 text-sm flex items-center gap-x-1">
+                                <p className="text-gray-300 text-sm flex items-center gap-x-1.5">
                                     <span>Bài kiểm tra</span>
                                     <span>•</span>
-                                    <span>{chapter.quizInfo.totalQuestions} câu hỏi</span>
-                                    <span>•</span>
-                                    <span>{formatDuration(chapter.quizInfo.duration)}</span>
+                                    <span>{formatDurationWithTail(chapter.quizInfo.duration)}</span>
                                 </p>
                             </div>
                         </div>

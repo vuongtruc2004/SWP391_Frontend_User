@@ -2,12 +2,11 @@ import { Avatar, Box, Button, Divider } from "@mui/material"
 import { getVideoIdFromUrl } from "@/helper/course.details.helper";
 import { useCourseView } from "@/wrapper/course-view/course.view.wrapper";
 import { storageUrl } from "@/utils/url";
-import { ArrowLeftIcon, ArrowRightIcon } from '@mui/x-date-pickers/icons';
 import { formatDate } from "@/helper/blog.helper";
 import { useState } from "react";
 import KeyboardDoubleArrowUpIcon from '@mui/icons-material/KeyboardDoubleArrowUp';
 import { formatTotalFollowers } from "@/helper/lesson.helper";
-import ChapterCourseRate from "../chapter-view/chapter-course-rate/chapter.course.rate";
+import CourseRate from "@/features/course/course-rating/course.rate";
 
 const LessonVideo = () => {
     const { course, setCurrentPlayIndex, currentPlayIndex, lessons } = useCourseView();
@@ -40,71 +39,46 @@ const LessonVideo = () => {
             ) : (
                 <video src={`${storageUrl}/video/${currentLesson.videoUrl}`} controls autoPlay />
             )}
-            <div className="pt-5 pr-3">
-                <h1 className="text-xl font-semibold">{currentLesson.title}</h1>
 
-                <div className='flex items-center justify-between'>
-                    <div className="flex items-center my-2">
-                        <Avatar src={avatarSrc} sx={{
-                            width: '46px',
-                            height: '46px',
-                        }}>
-                            {course?.expert?.user?.fullname.charAt(0).toUpperCase()}
-                        </Avatar>
-                        <div className='ml-3 mr-10 max-w-[280px]'>
-                            <p className="font-semibold">{course?.expert?.user?.fullname}</p>
-                            <div className="flex items-center gap-x-1.5 text-sm text-gray-300">
-                                <p>{course?.expert?.job}</p>
-                                <p>•</p>
-                                <p>{formatTotalFollowers(course.expert.totalFollowers || 1237856912)} người theo dõi</p>
-                            </div>
-                        </div>
-                        <Button variant='contained' color='secondary' sx={{ borderRadius: '40px', height: '36px' }}>
-                            Theo dõi
-                        </Button>
+            <div className="flex items-center my-4">
+                <Avatar src={avatarSrc} sx={{
+                    width: '46px',
+                    height: '46px',
+                }}>
+                    {course?.expert?.user?.fullname.charAt(0).toUpperCase()}
+                </Avatar>
+                <div className='ml-3 mr-10 max-w-[280px]'>
+                    <p className="font-semibold">{course?.expert?.user?.fullname}</p>
+                    <div className="flex items-center gap-x-1.5 text-sm text-gray-300">
+                        <p>{course?.expert?.job}</p>
+                        <p>•</p>
+                        <p>{formatTotalFollowers(course.expert.totalFollowers || 1237856912)} người theo dõi</p>
                     </div>
-
-                    <ul className='flex items-center rounded-full bg-[#ffffff0d]'>
-                        <li className={`flex items-center gap-x-1 rounded-tl-full rounded-bl-full py-1 px-3 cursor-pointer hover:text-blue-400 ${currentPlayIndex === 0 && "pointer-events-none text-gray-400"}`}
-                            onClick={() => setCurrentPlayIndex(prev => prev - 1)}
-                        >
-                            <ArrowLeftIcon sx={{ fontSize: '1.2rem' }} />
-                            <p>Trước</p>
-                        </li>
-                        <Divider orientation='vertical' sx={{ height: '20px' }} />
-                        <li className={`flex items-center gap-x-1 rounded-tr-full rounded-br-full py-1 px-3 cursor-pointer hover:text-blue-400 ${currentPlayIndex === lessons.length - 1 && "pointer-events-none text-gray-400"}`}
-                            onClick={() => setCurrentPlayIndex(prev => prev + 1)}
-                        >
-                            <p>Tiếp</p>
-                            <ArrowRightIcon sx={{ fontSize: '1.2rem' }} />
-                        </li>
-                    </ul>
                 </div>
-
-                <div className="text-sm bg-[#ffffff0d] p-3 rounded-md mt-2">
-                    <p className="font-semibold">Cập nhật lần cuối: <span className="text-purple-300">{formatDate(currentLesson.updatedAt)}</span></p>
-                    <p className={`${!showDescription && "line-clamp-3 cursor-pointer"}`} onClick={() => setShowDescription(true)}>
-                        {currentLesson.description}
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Culpa, eaque omnis ipsum perferendis perspiciatis maiores veniam odio doloribus voluptatum eius.
-                        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Dolores commodi enim sit impedit id labore inventore, harum iusto incidunt minima quae minus quasi excepturi dolorem autem rerum amet consequuntur reiciendis.
-                        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Deleniti illo asperiores provident eius hic cupiditate dolore totam repudiandae. Doloremque nam voluptatem molestias alias dolore accusamus ab quod tenetur unde est.
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Commodi et, dicta consequuntur consequatur voluptatibus cupiditate provident quaerat. Velit vero quam esse dolorum itaque, nihil cumque neque hic voluptatum officia id.
-                        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Perspiciatis nam delectus, possimus aliquid ea consequuntur repellendus eligendi fuga illo modi sequi. Asperiores eius, odit odio sequi deserunt voluptas quaerat dicta!
-                    </p>
-
-                    {showDescription && (
-                        <>
-                            <Divider sx={{ marginBlock: '20px' }} />
-                            <p className="mt-2 cursor-pointer font-semibold flex items-center gap-x-1 hover:text-purple-300 w-max" onClick={() => setShowDescription(false)}>
-                                <KeyboardDoubleArrowUpIcon sx={{ fontSize: '1rem' }} />
-                                <span>Ẩn bớt</span>
-                            </p>
-                        </>
-                    )}
-                </div>
-
-                <ChapterCourseRate />
+                <Button variant='contained' color='secondary' sx={{ borderRadius: '40px', height: '36px' }}>
+                    Theo dõi
+                </Button>
             </div>
+
+            <div className="text-sm bg-[#ffffff0d] p-3 rounded-md mb-5">
+                <p className="font-semibold">Cập nhật lần cuối: <span className="text-purple-300">{formatDate(currentLesson.updatedAt)}</span></p>
+                <p className={`${!showDescription && "line-clamp-3 cursor-pointer"}`} onClick={() => setShowDescription(true)}>
+                    {currentLesson.description}
+                    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Sapiente dignissimos dolorem exercitationem quaerat perferendis sed possimus cumque rem fuga reiciendis in, est voluptatibus quidem provident neque assumenda libero quis voluptatem! Illo quae quasi autem asperiores, maxime facere vitae tempora ut iste mollitia similique! Reiciendis laudantium quas nihil saepe laborum ad, quidem dolor, nostrum temporibus perspiciatis modi vitae! Quisquam veritatis veniam quas reprehenderit nisi vero provident dolorum incidunt quo nam excepturi nostrum unde doloremque, inventore, cumque rem. Sed fugit consequatur vitae, ipsam, minus temporibus accusantium dolor et architecto harum quis accusamus tempora optio. Doloribus assumenda repellat corrupti unde quis ratione vel tempore rerum commodi corporis expedita, soluta aliquid exercitationem eligendi ipsa nam consequatur minus temporibus sint. Ipsa voluptate nam ut commodi cum fugit unde, tempora aliquam dolore. Mollitia, provident! Dolorem labore placeat fuga tempore, quaerat deleniti eos harum quisquam hic itaque? Repudiandae repellendus itaque ratione illum iusto incidunt, nemo quidem, a eligendi hic quibusdam blanditiis tempore harum iure adipisci? Laudantium, cum suscipit ducimus itaque quisquam molestiae voluptas saepe corporis quaerat non fugit eius minus est consectetur ad qui officia distinctio temporibus illo amet reiciendis. Nam delectus facere obcaecati provident mollitia consequatur vel ratione culpa. Esse ratione dicta asperiores ex perspiciatis quam.
+                </p>
+
+                {showDescription && (
+                    <>
+                        <Divider sx={{ marginBlock: '20px' }} />
+                        <p className="mt-2 cursor-pointer font-semibold flex items-center gap-x-1 hover:text-purple-300 w-max" onClick={() => setShowDescription(false)}>
+                            <KeyboardDoubleArrowUpIcon sx={{ fontSize: '1rem' }} />
+                            <span>Ẩn bớt</span>
+                        </p>
+                    </>
+                )}
+            </div>
+
+            <CourseRate course={course} />
         </Box>
     )
 }

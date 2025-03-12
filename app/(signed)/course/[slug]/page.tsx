@@ -5,9 +5,9 @@ import { Metadata } from "next";
 import CourseSubject from "@/components/course/course-details/course.subject";
 import CourseExpert from "@/components/course/course-details/course.expert";
 import CoursePurchase from "@/features/course/course-details/course.purchase";
-import CourseRate from "@/features/course/course-details/course.rate";
+import CourseRate from "@/features/course/course-rating/course.rate";
 import CourseObjectives from "@/components/course/course-details/course.objectives";
-import CourseIntroduction from "@/features/course/course-introduction/course.introduction";
+import CourseIntroduction from "@/features/course/course-details/course.introduction";
 import { CourseRateWrapper } from "@/wrapper/course-rate/course.rate.wrapper";
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
@@ -42,7 +42,9 @@ const CourseDetails = async ({ params }: { params: Promise<{ slug: string }> }) 
                         <CourseSubject course={courseResponse.data} />
                         <CourseContent course={courseResponse.data} />
                     </div>
-                    <CourseRate course={courseResponse.data} />
+                    <div className="p-5">
+                        <CourseRate course={courseResponse.data} />
+                    </div>
                 </div>
                 <div>
                     <CoursePurchase course={courseResponse.data} />

@@ -1,19 +1,7 @@
 import { apiUrl, storageUrl } from "@/utils/url";
-import {
-    Avatar,
-    Box,
-    Button,
-    CircularProgress,
-    IconButton,
-    InputAdornment,
-    Popover,
-    Rating,
-    Snackbar,
-    SnackbarContent,
-    TextField,
-} from "@mui/material";
+import { Avatar, Box, Button, CircularProgress, IconButton, InputAdornment, Popover, Rating, Snackbar, SnackbarContent, TextField } from "@mui/material";
 import { useSession } from "next-auth/react";
-import React, { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import EmojiPicker from "emoji-picker-react";
 import EmojiEmotionsIcon from "@mui/icons-material/EmojiEmotions";
 import { sendRequest } from "@/utils/fetch.api";
@@ -28,15 +16,7 @@ const CreateCourseRating = ({ course }: { course: CourseDetailsResponse }) => {
     const [isFocused, setIsFocused] = useState(false);
     const [loading, setLoading] = useState(false);
     const containerRef = useRef<HTMLDivElement>(null);
-    const [openSnackbar, setOpenSnackbar] = React.useState(false);
-
-    const handleOpen = (event: React.MouseEvent<HTMLButtonElement>) => {
-        setAnchorEl(event.currentTarget);
-    };
-
-    const handleClose = () => {
-        setAnchorEl(null);
-    };
+    const [openSnackbar, setOpenSnackbar] = useState(false);
 
     const handleEmojiClick = (emojiObject: any) => {
         setText((prevText) => prevText + emojiObject.emoji);
@@ -143,7 +123,7 @@ const CreateCourseRating = ({ course }: { course: CourseDetailsResponse }) => {
                                     input: {
                                         endAdornment: isFocused && (
                                             <InputAdornment position="end">
-                                                <IconButton onClick={handleOpen}>
+                                                <IconButton onClick={(event) => setAnchorEl(event.currentTarget)}>
                                                     <EmojiEmotionsIcon />
                                                 </IconButton>
                                             </InputAdornment>
@@ -155,7 +135,7 @@ const CreateCourseRating = ({ course }: { course: CourseDetailsResponse }) => {
                             <Popover
                                 open={Boolean(anchorEl)}
                                 anchorEl={anchorEl}
-                                onClose={handleClose}
+                                onClose={() => setAnchorEl(null)}
                                 anchorOrigin={{
                                     vertical: "bottom",
                                     horizontal: "left",

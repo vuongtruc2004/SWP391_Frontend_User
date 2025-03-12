@@ -1,19 +1,7 @@
 import { apiUrl, storageUrl } from "@/utils/url";
-import {
-    Avatar,
-    Box,
-    Button,
-    CircularProgress,
-    IconButton,
-    InputAdornment,
-    Popover,
-    Rating,
-    Snackbar,
-    SnackbarContent,
-    TextField,
-} from "@mui/material";
+import { Avatar, Box, Button, CircularProgress, IconButton, InputAdornment, Popover, Rating, Snackbar, SnackbarContent, TextField } from "@mui/material";
 import { useSession } from "next-auth/react";
-import React, { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import EmojiPicker from "emoji-picker-react";
 import EmojiEmotionsIcon from "@mui/icons-material/EmojiEmotions";
 import { sendRequest } from "@/utils/fetch.api";
@@ -28,7 +16,7 @@ const UpdateCourseRating = ({ rate, setOpenUpdate }: { rate: RateResponse, setOp
     const [isFocused, setIsFocused] = useState(false);
     const [loading, setLoading] = useState(false);
     const containerRef = useRef<HTMLDivElement>(null);
-    const [openSnackbar, setOpenSnackbar] = React.useState(false);
+    const [openSnackbar, setOpenSnackbar] = useState(false);
 
     const handleOpen = (event: React.MouseEvent<HTMLButtonElement>) => {
         setAnchorEl(event.currentTarget);

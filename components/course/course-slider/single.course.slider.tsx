@@ -10,7 +10,7 @@ import HowToRegIcon from '@mui/icons-material/HowToReg';
 import { Skeleton } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useUserProgress } from "@/wrapper/user-progress/user.progress.wrapper";
-import { countCompletionOfACourse } from "@/helper/lesson.helper";
+import { countCompletedPercentOfACourse } from "@/helper/lesson.helper";
 import { useCoursePurchased } from "@/wrapper/course-purchased/course.purchased.wrapper";
 
 const SingleCourseSlider = ({ course }: { course: CourseResponse }) => {
@@ -20,7 +20,7 @@ const SingleCourseSlider = ({ course }: { course: CourseResponse }) => {
 
     useEffect(() => {
         if (purchasedCourseIds.find(id => id === course.courseId)) {
-            setCompletionOfACourse(countCompletionOfACourse(course, userProgresses));
+            setCompletionOfACourse(countCompletedPercentOfACourse(course, userProgresses));
         }
     }, [userProgresses, purchasedCourseIds]);
 

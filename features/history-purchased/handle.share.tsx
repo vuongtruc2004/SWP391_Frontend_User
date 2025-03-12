@@ -1,4 +1,4 @@
-import { Box, Button, Divider, Fade, InputAdornment, Modal, Snackbar, TextField, Typography } from '@mui/material';
+import { Box, Button, Divider, Fade, InputAdornment, Modal, Snackbar, TextField } from '@mui/material';
 import React, { useState } from 'react'
 import Backdrop from '@mui/material/Backdrop';
 import CloseIcon from '@mui/icons-material/Close';
@@ -12,7 +12,6 @@ const HandleShare = (props: { open: boolean, closeShareModal: any, currentCourse
     const [copySuccess, setCopySuccess] = useState(false);
     const [openSnackbar, setOpenSnackbar] = React.useState(false);
 
-
     const handleCopy = () => {
         navigator.clipboard.writeText(link).then(() => {
             setCopySuccess(true);
@@ -23,6 +22,7 @@ const HandleShare = (props: { open: boolean, closeShareModal: any, currentCourse
             }, 3000);
         }).catch(err => console.error("Failed to copy: ", err));
     };
+
     return (
         <>
             <Modal

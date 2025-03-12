@@ -5,9 +5,9 @@ import { Pagination } from "@mui/material";
 import { apiUrl, storageUrl } from "@/utils/url";
 import StarIcon from '@mui/icons-material/Star';
 import { sendRequest } from "@/utils/fetch.api";
-import SingleCourseRating from "@/components/course/course-details/single.course.rating";
+import SingleCourseRating from "@/features/course/course-rating/single.course.rating";
 import ListEmpty from "@/components/empty/list.empty";
-import CreateCourseRating from "../course-rating/create.course.rating";
+import CreateCourseRating from "./create.course.rating";
 import { useCourseRate } from "@/wrapper/course-rate/course.rate.wrapper";
 import { useSession } from "next-auth/react";
 
@@ -77,7 +77,7 @@ const CourseRate = ({ course }: { course: CourseDetailsResponse }) => {
     }, [session?.accessToken, course, rateList]);
 
     return (
-        <div className="p-5">
+        <>
             <h1 className="text-xl font-semibold flex items-center gap-x-1">Đánh giá về khóa học</h1>
             <div className="text-gray-300 mb-2 mt-1 text-sm flex items-center gap-x-1">
                 <strong className="text-white flex items-center gap-x-1">
@@ -138,7 +138,7 @@ const CourseRate = ({ course }: { course: CourseDetailsResponse }) => {
             ) : (
                 <ListEmpty text="Không có đánh giá" />
             )}
-        </div>
+        </>
     )
 }
 
