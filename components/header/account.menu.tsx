@@ -18,6 +18,7 @@ import { useUserAvatar } from '@/wrapper/user-avatar/user.avatar.wrapper';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import { PopoverOrigin } from '@mui/material';
 import { usePathname } from 'next/navigation';
+import GroupIcon from '@mui/icons-material/Group';
 
 export default function AccountMenu({ anchorEl, setAnchorEl, transformOrigin, anchorOrigin }: {
     anchorEl: HTMLElement | null;
@@ -147,6 +148,24 @@ export default function AccountMenu({ anchorEl, setAnchorEl, transformOrigin, an
                         <AutoStoriesIcon fontSize="small" />
                     </ListItemIcon>
                     <p>Khóa học của tôi</p>
+                </Link>
+            </MenuItem>
+
+            <MenuItem sx={{
+                padding: 0,
+                marginBottom: '2px',
+                'a': {
+                    display: 'flex',
+                    alignItems: 'center',
+                    width: '100%',
+                    padding: '6px 16px',
+                }
+            }}>
+                <Link href={"/user/my-follow-experts"}>
+                    <GroupIcon>
+                        <AutoStoriesIcon fontSize="small" />
+                    </GroupIcon>
+                    <p className='ml-3'>Danh sách chuyên gia của tôi</p>
                 </Link>
             </MenuItem>
 

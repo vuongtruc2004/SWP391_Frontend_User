@@ -22,7 +22,8 @@ const UserLayout = ({ children }: { children: React.ReactNode }) => {
                     padding: '40px 20px',
                     borderRadius: '6px',
                     bgcolor: 'black',
-                    color: 'white'
+                    color: 'white',
+                    overflowX: 'hidden'
                 }}>
                     {children}
                 </Box>

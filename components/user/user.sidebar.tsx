@@ -9,6 +9,7 @@ import AutoStoriesIcon from '@mui/icons-material/AutoStories';
 import SettingsIcon from '@mui/icons-material/Settings';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import HistoryIcon from '@mui/icons-material/History';
+import GroupIcon from '@mui/icons-material/Group';
 
 const UserSidebar = () => {
     const pathname = usePathname();
@@ -30,6 +31,12 @@ const UserSidebar = () => {
             link: '/user/my-course',
             name: 'Khóa học của tôi',
             icon: <AutoStoriesIcon />
+        },
+        {
+            key: 'my-follow-experts',
+            link: '/user/my-follow-experts',
+            name: 'Danh sách chuyên gia của tôi',
+            icon: <GroupIcon />
         },
         {
             key: 'history-purchased',
@@ -78,7 +85,7 @@ const UserSidebar = () => {
             borderRadius: '6px',
             bgcolor: 'black',
             color: 'white',
-            height: 'max-content'
+            height: 'max-content',
         }}>
             <Box sx={{
                 display: 'flex',

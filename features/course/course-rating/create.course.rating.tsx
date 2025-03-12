@@ -17,6 +17,7 @@ const CreateCourseRating = ({ course }: { course: CourseDetailsResponse }) => {
     const [loading, setLoading] = useState(false);
     const containerRef = useRef<HTMLDivElement>(null);
     const [openSnackbar, setOpenSnackbar] = useState(false);
+    const isLearningPage = location.pathname.startsWith("/course/learning/");
 
     const handleEmojiClick = (emojiObject: any) => {
         setText((prevText) => prevText + emojiObject.emoji);
@@ -117,7 +118,7 @@ const CreateCourseRating = ({ course }: { course: CourseDetailsResponse }) => {
                                 placeholder={!isFocused ? "Nhập đánh giá của bạn..." : ""}
                                 onChange={(e) => setText(e.target.value)}
                                 onFocus={() => setIsFocused(true)}
-                                sx={{ width: "100%" }}
+                                sx={{ width: isLearningPage ? "132%" : "100%" }}
                                 value={text}
                                 slotProps={{
                                     input: {
@@ -145,7 +146,7 @@ const CreateCourseRating = ({ course }: { course: CourseDetailsResponse }) => {
                             </Popover>
 
                             {isFocused && (
-                                <div className="mt-3 flex justify-end">
+                                <div className={`mt-3 flex justify-end ${isLearningPage ? "w-[132%]" : "w-[100%]"}`}>
                                     <Button
                                         sx={{ padding: "5px 10px", borderRadius: "20px" }}
                                         variant="text"

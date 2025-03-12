@@ -85,28 +85,6 @@ const MenuTabClient = (props: { searchParams: any, keyword: string, page: string
                 </Tabs>
             </Box>
 
-            <Box>
-                <div>
-                    <TextField
-                        id="outlined-start-adornment"
-                        placeholder='Tìm kiếm tên khóa học'
-                        sx={{
-                            m: 3,
-                            width: '100%',
-                            marginLeft: '0'
-                        }}
-                        slotProps={{
-                            input: {
-                                readOnly: true,
-                                endAdornment:
-                                    <InputAdornment position="start">
-                                        <SearchIcon />
-                                    </InputAdornment>
-                            },
-                        }}
-                    />
-                </div>
-            </Box>
 
             <CustomTabPanel value={selectedTab} index="all">
                 <AllPurchased courseData={courseData} />
