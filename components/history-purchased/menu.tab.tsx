@@ -1,6 +1,5 @@
 "use client";
-
-import { Box, Button, InputAdornment, Tab, Tabs, TextField } from "@mui/material";
+import { Box, Tab, Tabs } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import AllPurchased from "./all.purchased";
 import PendingPurchased from "./pending.purchase";
@@ -9,8 +8,6 @@ import CancelPurchased from "./cancel.purchased";
 import { sendRequest } from "@/utils/fetch.api";
 import { apiUrl } from "@/utils/url";
 import { useSession } from "next-auth/react";
-import SearchIcon from '@mui/icons-material/Search';
-import { useRouter } from "next/navigation";
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -20,86 +17,67 @@ interface TabPanelProps {
 
 const CustomTabPanel = ({ children, value, index }: TabPanelProps) => {
     return (
-        <div role="tabpanel" hidden={value !== index} id={`tabpanel-${index}`} aria-labelledby={`tab-${index}`}>
-            {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
+        <div hidden={value !== index}>
+            {value === index && <div className="py-5 px-3">{children}</div>}
         </div>
     );
 };
 
-const MenuTabClient = (props: { searchParams: any, keyword: string, page: string | number }) => {
-
-    const { searchParams, keyword, page } = props
-    const router = useRouter()
+const MenuTabClient = ({ keyword, page }: { keyword: string, page: string | number }) => {
     const [selectedTab, setSelectedTab] = useState<string>("all");
-    const { data: session } = useSession();
-    const [courseData, setCourseData] = useState<any>(null);
-
+    const { data: session, status } = useSession();
+    const [orderPage, setOrderPage] = useState<PageDetailsResponse<OrderResponse[]> | null>(null);
 
     useEffect(() => {
         const fetchData = async () => {
-            try {
-                const response = await sendRequest<ApiResponse<PageDetailsResponse<CourseResponse[]>>>({
-                    url: `${apiUrl}/users/all_history_purchased/${selectedTab.toUpperCase()}`,
+            if (status === 'authenticated') {
+                const response = await sendRequest<ApiResponse<PageDetailsResponse<OrderResponse[]>>>({
+                    url: `${apiUrl}/users/my-history-purchased/${selectedTab.toUpperCase()}`,
                     headers: {
-                        Authorization: `Bearer ${session?.accessToken}`,
-                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${session.accessToken}`,
                     },
                     queryParams: {
                         page: page,
                         size: 5,
-                        // filter: filter
                     }
                 });
-                setCourseData(response);
-            } catch (error) {
-                console.error("Error fetching data:", error);
+                if (response.status === 200) {
+                    setOrderPage(response.data);
+                }
             }
         };
 
-
-        if (session?.accessToken) {
-            fetchData();
-        }
-    }, [selectedTab, session?.accessToken, page]);
+        fetchData();
+    }, [selectedTab, session, page]);
 
 
     const handleChange = (_event: React.SyntheticEvent, newValue: string) => {
         setSelectedTab(newValue);
-        router.push("/user/history-purchased")
     };
 
     return (
-        <Box sx={{ width: "100%" }}>
-            <Box sx={{
-                position: "sticky",
-                top: "70px",
-                zIndex: 1000,
-                borderBottom: 1,
-                backgroundColor: 'black'
-            }}>
-                <Tabs value={selectedTab} onChange={handleChange} aria-label="basic tabs example">
-                    <Tab label="Tất cả" value="all" />
-                    <Tab label="Chờ thanh toán" value="pending" />
-                    <Tab label="Hoàn thành" value="completed" />
-                    <Tab label="Đã hủy" value="cancelled" />
-                </Tabs>
-            </Box>
-
+        <>
+            <Tabs value={selectedTab} onChange={handleChange}>
+                <Tab label="Tất cả" value="all" />
+                <Tab label="Chờ thanh toán" value="pending" />
+                <Tab label="Hoàn thành" value="completed" />
+                <Tab label="Đã hủy" value="cancelled" />
+            </Tabs>
 
             <CustomTabPanel value={selectedTab} index="all">
-                <AllPurchased courseData={courseData} />
+                <AllPurchased orderPage={orderPage} />
             </CustomTabPanel>
-            <CustomTabPanel value={selectedTab} index="pending">
-                <PendingPurchased courseData={courseData} />
+            {/* <CustomTabPanel value={selectedTab} index="pending">
+                <PendingPurchased orderPage={orderPage} />
             </CustomTabPanel>
             <CustomTabPanel value={selectedTab} index="completed">
-                <CompletePurchased courseData={courseData} />
+                <CompletePurchased orderPage={orderPage} />
             </CustomTabPanel>
             <CustomTabPanel value={selectedTab} index="cancelled">
-                <CancelPurchased courseData={courseData} />
-            </CustomTabPanel>
+                <CancelPurchased orderPage={orderPage} />
+            </CustomTabPanel> */}
 
-        </Box>
+        </>
     );
 };
 

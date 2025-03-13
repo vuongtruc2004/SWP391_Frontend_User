@@ -217,11 +217,12 @@ declare global {
     interface OrderResponse {
         orderId: number;
         orderCode: string;
-        orderStatus: string;
+        orderStatus: "PENDING" | "COMPLETED" | "CANCELLED" | "EXPIRED";
         createdAt: string;
         updatedAt: string;
         expiredAt: string;
         userId: number;
+        totalAmount: number;
         orderDetails: OrderDetailsResponse[];
     }
 

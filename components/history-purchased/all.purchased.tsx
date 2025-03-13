@@ -2,10 +2,9 @@ import { Box, Pagination } from '@mui/material';
 import SingleAllPurchased from '@/features/history-purchased/single.all.purchased';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import ListEmpty from '../empty/list.empty';
+import SingleOrder from '@/features/history-purchased/single.order';
 
-const AllPurchased = (props: { courseData: ApiResponse<PageDetailsResponse<CourseDetailsResponse[]>> }) => {
-
-    const { courseData } = props
+const AllPurchased = ({ orderPage }: { orderPage: PageDetailsResponse<OrderResponse[]> | null }) => {
     const searchParams = useSearchParams();
     const router = useRouter();
     const pathname = usePathname();
@@ -16,35 +15,34 @@ const AllPurchased = (props: { courseData: ApiResponse<PageDetailsResponse<Cours
         router.replace(`${pathname}?${params}`);
     }
 
+    if (!orderPage || orderPage.content.length === 0) {
+        return (
+            <ListEmpty text="Không có lịch sửa mua hàng nào để hiển thị!" />
+        )
+    }
+
     return (
-        <div>
-            <Box sx={{
-                display: 'grid',
-                gap: '20px'
-            }}>
-                {(!courseData?.data?.content?.length || courseData.data.content.length === 0) ? (
-                    <ListEmpty text="Không có lịch sửa mua hàng nào để hiển thị!" />
-                ) : (
-                    courseData?.data.content.map((item, index) => {
-                        return (
-                            <SingleAllPurchased course={item} key={index} />
-                        )
-                    }))}
-            </Box>
+        <>
+            <div className='flex flex-col gap-y-5 mb-5'>
+                {orderPage.content.map((order, index) => {
+                    return (
+                        <SingleOrder order={order} key={order.orderCode} />
+                    )
+                })}
+            </div>
             <Pagination
-                count={courseData?.data?.totalPages}
-                page={courseData?.data?.currentPage || 1}
+                count={orderPage.totalPages}
+                page={orderPage.currentPage || 1}
                 shape="rounded"
                 showFirstButton
                 showLastButton
                 sx={{
                     display: 'flex',
                     justifyContent: 'flex-end',
-                    marginTop: '20px',
                 }}
                 onChange={handleChangePage}
             />
-        </div>
+        </>
     )
 };
 

@@ -35,7 +35,7 @@ const UserSidebar = () => {
         {
             key: 'my-follow-experts',
             link: '/user/my-follow-experts',
-            name: 'Danh sách chuyên gia của tôi',
+            name: 'Danh sách chuyên gia đang theo dõi',
             icon: <GroupIcon />
         },
         {
@@ -81,11 +81,15 @@ const UserSidebar = () => {
 
     return (
         <Box sx={{
-            padding: '40px 20px',
+            padding: '20px',
             borderRadius: '6px',
             bgcolor: 'black',
             color: 'white',
             height: 'max-content',
+            position: 'sticky',
+            top: '90px',
+            left: 0,
+            boxShadow: '2px 2px 5px rgba(0,0,0,0.5)'
         }}>
             <Box sx={{
                 display: 'flex',

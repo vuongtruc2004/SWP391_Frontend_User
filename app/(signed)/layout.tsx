@@ -7,7 +7,7 @@ const SignedLayout = ({ children }: { children: React.ReactNode }) => {
     return (
         <NotificationWrapper>
             <CourseCartWrapper>
-                <div className="min-h-screen h-max bg-[#101010] pb-10 relative">
+                <div className="min-h-screen h-max bg-[#101010] relative pb-10">
                     <Header />
                     {children}
                     <MessengerIcon />
