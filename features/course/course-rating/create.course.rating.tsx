@@ -1,13 +1,13 @@
 import { apiUrl, storageUrl } from "@/utils/url";
 import { Avatar, Box, Button, CircularProgress, IconButton, InputAdornment, Popover, Rating, Snackbar, SnackbarContent, TextField } from "@mui/material";
 import { useSession } from "next-auth/react";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, Dispatch, SetStateAction } from "react";
 import EmojiPicker from "emoji-picker-react";
 import EmojiEmotionsIcon from "@mui/icons-material/EmojiEmotions";
 import { sendRequest } from "@/utils/fetch.api";
 import { useCourseRate } from "@/wrapper/course-rate/course.rate.wrapper";
 
-const CreateCourseRating = ({ course }: { course: CourseDetailsResponse }) => {
+const CreateCourseRating = ({ course, setOpenSnackbarSuccess }: { course: CourseDetailsResponse, setOpenSnackbarSuccess: Dispatch<SetStateAction<boolean>> }) => {
     const { fetchRatePage } = useCourseRate();
     const { data: session } = useSession();
     const [star, setStar] = useState<number | null>(0);
@@ -42,7 +42,6 @@ const CreateCourseRating = ({ course }: { course: CourseDetailsResponse }) => {
     const handleOk = async () => {
         setLoading(true);
         setTimeout(async () => {
-
             if (text.split(/\s+/).length > 50) {
                 setOpenSnackbar(true)
                 setTimeout(() => {
@@ -66,6 +65,13 @@ const CreateCourseRating = ({ course }: { course: CourseDetailsResponse }) => {
                 },
                 body: rateRequest
             });
+
+            if (ratingResponse.status === 200) {
+                setOpenSnackbarSuccess(true);
+                setTimeout(() => {
+                    setOpenSnackbarSuccess(false);
+                }, 3000)
+            }
 
             fetchRatePage();
 
@@ -142,7 +148,14 @@ const CreateCourseRating = ({ course }: { course: CourseDetailsResponse }) => {
                                     horizontal: "left",
                                 }}
                             >
-                                <EmojiPicker onEmojiClick={handleEmojiClick} />
+                                <Box sx={{
+                                    '.epr_-6npj90': { backgroundColor: 'black' },
+                                    '.epr_-xuzz9z': { backgroundColor: 'black' },
+                                    '.epr_-2zpaw9': { backgroundColor: '#212529' },
+                                    '.epr_qyh4cg': { display: 'none' },
+                                }}>
+                                    <EmojiPicker onEmojiClick={handleEmojiClick} />
+                                </Box>
                             </Popover>
 
                             {isFocused && (

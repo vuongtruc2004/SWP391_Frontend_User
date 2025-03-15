@@ -165,7 +165,7 @@ export default function AccountMenu({ anchorEl, setAnchorEl, transformOrigin, an
                     <GroupIcon>
                         <AutoStoriesIcon fontSize="small" />
                     </GroupIcon>
-                    <p className='ml-3'>Danh sách chuyên gia của tôi</p>
+                    <p className='ml-3'>Danh sách chuyên gia đang theo dõi</p>
                 </Link>
             </MenuItem>
 

@@ -5,7 +5,6 @@ import { Avatar, Box, Tooltip } from "@mui/material";
 import { useState } from "react";
 import { useUserAvatar } from "@/wrapper/user-avatar/user.avatar.wrapper";
 import { useCourseView } from "@/wrapper/course-view/course.view.wrapper";
-import StarIcon from '@mui/icons-material/Star';
 import AiIcon from "@/components/ai-support/ai.icon";
 import MenuOpenIcon from '@mui/icons-material/MenuOpen';
 import AccountMenu from "../header/account.menu";
@@ -43,11 +42,6 @@ const LeftSidebar = () => {
                         bgcolor: '#212121'
                     }
                 }}>
-                    <Tooltip title={"Đánh giá khóa học"} arrow placement="right">
-                        <div className={`flex items-center justify-center p-1.5 rounded-md text-gray-200 cursor-pointer`}>
-                            <span className="w-8 h-8 flex items-center justify-center"><StarIcon sx={{ fontSize: '1.25rem' }} /></span>
-                        </div>
-                    </Tooltip>
 
                     <Tooltip title="Tiến độ khóa học" arrow placement="right">
                         <div className={`flex items-center justify-center p-1.5 rounded-md text-gray-200 cursor-pointer mb-2 ${openProgressBar && 'active'}`} onClick={() => {

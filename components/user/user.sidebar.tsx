@@ -81,15 +81,12 @@ const UserSidebar = () => {
 
     return (
         <Box sx={{
-            padding: '20px',
-            borderRadius: '6px',
-            bgcolor: 'black',
+            padding: '90px 20px 20px',
             color: 'white',
-            height: 'max-content',
+            height: '100vh',
             position: 'sticky',
-            top: '90px',
+            top: 0,
             left: 0,
-            boxShadow: '2px 2px 5px rgba(0,0,0,0.5)'
         }}>
             <Box sx={{
                 display: 'flex',

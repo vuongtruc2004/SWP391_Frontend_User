@@ -1,13 +1,13 @@
 import { apiUrl, storageUrl } from "@/utils/url";
 import { Avatar, Box, Button, CircularProgress, IconButton, InputAdornment, Popover, Rating, Snackbar, SnackbarContent, TextField } from "@mui/material";
 import { useSession } from "next-auth/react";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, SetStateAction, Dispatch } from "react";
 import EmojiPicker from "emoji-picker-react";
 import EmojiEmotionsIcon from "@mui/icons-material/EmojiEmotions";
 import { sendRequest } from "@/utils/fetch.api";
 import { useCourseRate } from "@/wrapper/course-rate/course.rate.wrapper";
 
-const UpdateCourseRating = ({ rate, setOpenUpdate }: { rate: RateResponse, setOpenUpdate: React.Dispatch<React.SetStateAction<boolean>> }) => {
+const UpdateCourseRating = ({ rate, setOpenUpdate, setOpenSnackbarUpdate }: { rate: RateResponse, setOpenUpdate: React.Dispatch<React.SetStateAction<boolean>>, setOpenSnackbarUpdate: Dispatch<SetStateAction<boolean>> }) => {
     const { fetchRatePage } = useCourseRate();
     const { data: session } = useSession();
     const [star, setStar] = useState<number | null>(rate?.stars);
@@ -17,6 +17,7 @@ const UpdateCourseRating = ({ rate, setOpenUpdate }: { rate: RateResponse, setOp
     const [loading, setLoading] = useState(false);
     const containerRef = useRef<HTMLDivElement>(null);
     const [openSnackbar, setOpenSnackbar] = useState(false);
+    const isLearningPage = location.pathname.startsWith("/course/learning/");
 
     const handleOpen = (event: React.MouseEvent<HTMLButtonElement>) => {
         setAnchorEl(event.currentTarget);
@@ -73,10 +74,13 @@ const UpdateCourseRating = ({ rate, setOpenUpdate }: { rate: RateResponse, setOp
             });
 
             if (ratingResponse.status === 200) {
+                setOpenSnackbarUpdate(true);
+                setTimeout(() => {
+                    setOpenSnackbarUpdate(false);
+                }, 3000)
                 setOpenUpdate(false)
             }
             fetchRatePage();
-
             setLoading(false);
         }, 500);
     };
@@ -92,6 +96,7 @@ const UpdateCourseRating = ({ rate, setOpenUpdate }: { rate: RateResponse, setOp
                     sx={{ backgroundColor: "red", color: "white", fontWeight: "bold" }}
                 />
             </Snackbar>
+
             {loading ? <Box
                 sx={{
                     display: "flex",
@@ -126,7 +131,7 @@ const UpdateCourseRating = ({ rate, setOpenUpdate }: { rate: RateResponse, setOp
                                 placeholder={!isFocused ? "Nhập đánh giá của bạn..." : ""}
                                 onChange={(e) => setText(e.target.value)}
                                 onFocus={() => setIsFocused(true)}
-                                sx={{ width: "100%" }}
+                                sx={{ width: isLearningPage ? "132%" : "100%" }}
                                 value={text}
                                 slotProps={{
                                     input: {
@@ -150,11 +155,18 @@ const UpdateCourseRating = ({ rate, setOpenUpdate }: { rate: RateResponse, setOp
                                     horizontal: "left",
                                 }}
                             >
-                                <EmojiPicker onEmojiClick={handleEmojiClick} />
+                                <Box sx={{
+                                    '.epr_-6npj90': { backgroundColor: 'black' },
+                                    '.epr_-xuzz9z': { backgroundColor: 'black' },
+                                    '.epr_-2zpaw9': { backgroundColor: '#212529' },
+                                    '.epr_qyh4cg': { display: 'none' },
+                                }}>
+                                    <EmojiPicker onEmojiClick={handleEmojiClick} />
+                                </Box>
                             </Popover>
 
                             {isFocused && (
-                                <div className="mt-3 flex justify-end">
+                                <div className={`mt-3 flex justify-end ${isLearningPage ? "w-[132%]" : "w-[100%]"}`}>
                                     <Button
                                         sx={{ padding: "5px 10px", borderRadius: "20px" }}
                                         variant="text"
@@ -185,7 +197,6 @@ const UpdateCourseRating = ({ rate, setOpenUpdate }: { rate: RateResponse, setOp
                     </div>
                 </Box>
             }
-
 
         </>
 

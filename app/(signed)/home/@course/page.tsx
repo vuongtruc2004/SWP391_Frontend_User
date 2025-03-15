@@ -30,7 +30,10 @@ const CoursePage = async () => {
     }
 
     return (
-        <CourseSlider courseList={coursesResponse.data.content} />
+        <>
+            <h1 className='text-center font-bold uppercase text-2xl text-white mt-10'>Khóa học phổ biến</h1>
+            <CourseSlider courseList={coursesResponse.data.content} />
+        </>
     )
 }
 

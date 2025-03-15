@@ -1,7 +1,7 @@
 'use client'
 import Button from "@mui/material/Button";
 import { useEffect, useState } from "react";
-import { Pagination } from "@mui/material";
+import { Pagination, Snackbar, SnackbarContent } from "@mui/material";
 import { apiUrl, storageUrl } from "@/utils/url";
 import StarIcon from '@mui/icons-material/Star';
 import { sendRequest } from "@/utils/fetch.api";
@@ -17,6 +17,7 @@ const CourseRate = ({ course }: { course: CourseDetailsResponse }) => {
     const { data: session } = useSession();
     const [myRating, setMyRating] = useState<RateResponse | null>(null);
     const [myOrder, setMyOrder] = useState<OrderDetailsResponse | null>(null);
+    const [openSnackbarSuccess, setOpenSnackbarSuccess] = useState(false);
 
     const handleStarsFilter = (stars: number) => {
         setStarsFilter(stars);
@@ -109,7 +110,7 @@ const CourseRate = ({ course }: { course: CourseDetailsResponse }) => {
                 })}
             </div>
 
-            {(myRating === null && myOrder !== null) && <CreateCourseRating course={course} />}
+            {(myRating === null && myOrder !== null) && <CreateCourseRating course={course} setOpenSnackbarSuccess={setOpenSnackbarSuccess} />}
 
             {rateList.length ? (
                 <>
@@ -118,7 +119,12 @@ const CourseRate = ({ course }: { course: CourseDetailsResponse }) => {
                             rate?.user?.avatar :
                             `${storageUrl}/avatar/${rate?.user?.avatar}`;
                         return (
-                            <SingleCourseRating key={rate.rateId + "_" + rate.user?.userId} rate={rate} index={index} avatarSrc={avatarSrc} />
+                            <SingleCourseRating
+                                key={rate.rateId + "_" + rate.user?.userId}
+                                rate={rate}
+                                index={index}
+                                avatarSrc={avatarSrc}
+                            />
                         )
                     })}
                     <Pagination
@@ -138,6 +144,16 @@ const CourseRate = ({ course }: { course: CourseDetailsResponse }) => {
             ) : (
                 <ListEmpty text="Không có đánh giá" />
             )}
+
+            <Snackbar
+                open={openSnackbarSuccess}
+                anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+            >
+                <SnackbarContent
+                    message="Thêm đánh giá thành công!"
+                    sx={{ backgroundColor: "#212529", color: "white", fontWeight: "bold" }}
+                />
+            </Snackbar>
         </>
     )
 }

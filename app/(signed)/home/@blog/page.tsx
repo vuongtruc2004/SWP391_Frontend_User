@@ -11,12 +11,17 @@ const BlogPage = async () => {
             size: 6
         }
     });
+
+    console.log(">>> check blog res: ", blogListResponse);
+
     if (blogListResponse.status !== 200) {
         return null;
     }
+
     return (
         <BlogSlider blogList={blogListResponse.data.content} />
     )
+    // return null;
 }
 
 export default BlogPage

@@ -67,7 +67,7 @@ const MenuTabClient = ({ keyword, page }: { keyword: string, page: string | numb
             <CustomTabPanel value={selectedTab} index="all">
                 <AllPurchased orderPage={orderPage} />
             </CustomTabPanel>
-            {/* <CustomTabPanel value={selectedTab} index="pending">
+            <CustomTabPanel value={selectedTab} index="pending">
                 <PendingPurchased orderPage={orderPage} />
             </CustomTabPanel>
             <CustomTabPanel value={selectedTab} index="completed">
@@ -75,7 +75,7 @@ const MenuTabClient = ({ keyword, page }: { keyword: string, page: string | numb
             </CustomTabPanel>
             <CustomTabPanel value={selectedTab} index="cancelled">
                 <CancelPurchased orderPage={orderPage} />
-            </CustomTabPanel> */}
+            </CustomTabPanel>
 
         </>
     );

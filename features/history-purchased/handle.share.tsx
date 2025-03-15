@@ -51,11 +51,10 @@ const HandleShare = (props: { open: boolean, closeShareModal: any, currentCourse
                         p: 4
                     }}
                     >
-                        <div className='flex justify-between'>
+                        <div className='flex justify-between mb-10'>
                             <p>Chia sẻ khóa học này</p>
                             <CloseIcon onClick={closeShareModal} />
                         </div>
-                        <Divider sx={{ bgcolor: "white", marginTop: '10px', marginBottom: '30px' }} />
                         <div>
                             <TextField
                                 label="Sao chép liên kết"

@@ -5,12 +5,11 @@ import { apiUrl } from '@/utils/url';
 import { sendRequest } from '@/utils/fetch.api';
 import { useCourseRate } from '@/wrapper/course-rate/course.rate.wrapper';
 
-const DeleteCourseRating = ({ open, setOpen, rate, setOpenSnackbar, openSnackbar }: {
+const DeleteCourseRating = ({ open, setOpen, rate, setOpenSnackbarDelete }: {
     open: boolean,
     setOpen: Dispatch<SetStateAction<boolean>>,
     rate: RateResponse,
-    openSnackbar: boolean,
-    setOpenSnackbar: React.Dispatch<React.SetStateAction<boolean>>
+    setOpenSnackbarDelete: Dispatch<SetStateAction<boolean>>
 }) => {
 
     const { fetchRatePage } = useCourseRate();
@@ -24,10 +23,14 @@ const DeleteCourseRating = ({ open, setOpen, rate, setOpenSnackbar, openSnackbar
             }
         });
         if (deleteResponse.status === 200) {
-            setOpenSnackbar(true);
-            fetchRatePage();
+            setOpenSnackbarDelete(true);
+            setTimeout(() => {
+                setOpenSnackbarDelete(false);
+            }, 3000)
         }
         setOpen(false);
+        // fetchRatePage();
+
     }
 
     return (

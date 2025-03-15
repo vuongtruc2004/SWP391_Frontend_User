@@ -3,23 +3,17 @@ import Box from "@mui/material/Box";
 
 const UserLayout = ({ children }: { children: React.ReactNode }) => {
     return (
-        <div className="bg-[#101010] pt-[90px]">
+        <div className="bg-[#101010]">
             <Box sx={{
                 display: 'grid',
-                gridTemplateColumns: '1fr 3fr',
-                gap: '20px',
+                gridTemplateColumns: '300px 1fr',
                 width: '100%',
-                maxWidth: '1200px',
-                margin: '0 auto',
             }}>
                 <UserSidebar />
                 <Box sx={{
-                    padding: '20px',
-                    borderRadius: '6px',
-                    bgcolor: 'black',
+                    padding: '90px 20px 20px',
                     color: 'white',
                     overflowX: 'hidden',
-                    boxShadow: '2px 2px 5px rgba(0,0,0,0.5)',
                 }}>
                     {children}
                 </Box>

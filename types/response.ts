@@ -13,7 +13,6 @@ declare global {
         accountType: string;
         createdAt: string;
         updatedAt: string;
-        experts: ExpertResponse[];
     }
     interface ApiResponse<T> {
         status: number;

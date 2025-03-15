@@ -1,12 +1,11 @@
-import React, { useEffect, useRef, useState } from 'react';
-import Image from 'next/image';
-import { Box, Pagination } from '@mui/material';
-import SingleAllPurchased from '@/features/history-purchased/single.all.purchased';
+import { Box, Button, Pagination } from '@mui/material';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import ListEmpty from '../empty/list.empty';
+import SingleOrder from '@/features/history-purchased/single.order';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import Link from 'next/link';
 
-const PendingPurchased = (props: { courseData: ApiResponse<PageDetailsResponse<CourseDetailsResponse[]>> }) => {
-    const { courseData } = props
+const PendingPurchased = ({ orderPage }: { orderPage: PageDetailsResponse<OrderResponse[]> | null }) => {
     const searchParams = useSearchParams();
     const router = useRouter();
     const pathname = usePathname();
@@ -17,36 +16,42 @@ const PendingPurchased = (props: { courseData: ApiResponse<PageDetailsResponse<C
         router.replace(`${pathname}?${params}`);
     }
 
-    return (
-        <div>
-            <Box sx={{
-                display: 'grid',
-                gap: '20px'
-            }}>
+    if (!orderPage || orderPage.content.length === 0) {
+        return (
+            <div className='text-center'>
+                <ListEmpty text="Không có lịch sửa mua hàng nào để hiển thị!" />
+                <Box sx={{ '.mui-1pnqca8-MuiButtonBase-root-MuiButton-root': { marginTop: '-25vh', borderRadius: '20px' } }}>
+                    <Link href={'/course'}>
+                        <Button variant='outlined'><ShoppingCartIcon className='mr-2' />Mua sắm ngay!</Button>
+                    </Link>
+                </Box>
 
-                {(!courseData?.data?.content?.length || courseData.data.content.length === 0) ? (
-                    <ListEmpty text="Không có lịch sửa mua hàng nào để hiển thị!" />
-                ) : (
-                    courseData?.data.content.map((item, index) => {
-                        return (
-                            <SingleAllPurchased course={item} key={index} />
-                        )
-                    }))}
-            </Box>
+            </div>
+        )
+    }
+
+    return (
+        <>
+            <div className='flex flex-col gap-y-5 mb-5'>
+                {orderPage.content.map((order, index) => {
+                    return (
+                        <SingleOrder order={order} key={order.orderCode} />
+                    )
+                })}
+            </div>
             <Pagination
-                count={courseData?.data?.totalPages}
-                page={courseData?.data?.currentPage || 1}
+                count={orderPage.totalPages}
+                page={orderPage.currentPage || 1}
                 shape="rounded"
                 showFirstButton
                 showLastButton
                 sx={{
                     display: 'flex',
                     justifyContent: 'flex-end',
-                    marginTop: '20px',
                 }}
                 onChange={handleChangePage}
             />
-        </div>
+        </>
     )
 };
 

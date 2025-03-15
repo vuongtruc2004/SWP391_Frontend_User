@@ -1,4 +1,4 @@
-import { Avatar, Button, Divider, IconButton, Popover, Rating, Snackbar } from "@mui/material";
+import { Avatar, Button, Divider, IconButton, Popover, Rating, Snackbar, SnackbarContent } from "@mui/material";
 import FlagIcon from '@mui/icons-material/Flag';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { useState } from "react";
@@ -18,7 +18,8 @@ const SingleCourseRating = ({ rate, index, avatarSrc }: {
     const { data: session } = useSession();
     const [openDeleteModal, setOpenDeleteModal] = useState(false);
     const [openUpdate, setOpenUpdate] = useState(false);
-    const [openSnackbar, setOpenSnackbar] = useState(false);
+    const [openSnackbarUpdate, setOpenSnackbarUpdate] = useState(false);
+    const [openSnackbarDelete, setOpenSnackbarDelete] = useState(false);
 
     const handleOpenPopover = (event: React.MouseEvent<HTMLButtonElement>) => {
         setAnchorEl(event.currentTarget);
@@ -103,17 +104,36 @@ const SingleCourseRating = ({ rate, index, avatarSrc }: {
                 open={openDeleteModal}
                 setOpen={setOpenDeleteModal}
                 rate={rate}
-                openSnackbar={openSnackbar}
-                setOpenSnackbar={setOpenSnackbar}
+                setOpenSnackbarDelete={setOpenSnackbarDelete}
             />
-            <Snackbar open={openSnackbar} autoHideDuration={3000} message="Đã xóa đánh giá của bạn" />
 
             {openUpdate &&
                 <UpdateCourseRating
                     rate={rate}
                     setOpenUpdate={setOpenUpdate}
+                    setOpenSnackbarUpdate={setOpenSnackbarUpdate}
                 />
             }
+
+            <Snackbar
+                open={openSnackbarUpdate}
+                anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+            >
+                <SnackbarContent
+                    message="Cập nhật đánh giá thành công!"
+                    sx={{ backgroundColor: "#212529", color: "white", fontWeight: "bold" }}
+                />
+            </Snackbar>
+
+            <Snackbar
+                open={openSnackbarDelete}
+                anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+            >
+                <SnackbarContent
+                    message="Xóa đánh giá thành công!"
+                    sx={{ backgroundColor: "#212529", color: "white", fontWeight: "bold" }}
+                />
+            </Snackbar>
 
         </>
     )
