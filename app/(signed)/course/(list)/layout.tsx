@@ -13,7 +13,7 @@ const CourseLayout = ({ course, subject, expert }: { course: React.ReactNode, su
             minHeight: '100vh',
             bgcolor: '#101010',
             color: 'white',
-            paddingTop: '90px'
+            paddingBlock: '90px 40px'
         }}>
             <CourseListWrapper>
                 <Box sx={{

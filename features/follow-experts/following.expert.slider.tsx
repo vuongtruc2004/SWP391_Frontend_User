@@ -11,7 +11,7 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import { storageUrl } from '@/utils/url';
 import Link from 'next/link';
 
-const MyFollowingSlider = ({ followingExperts }: { followingExperts: ExpertDetailsResponse[] }) => {
+const FollowingExpertSlider = ({ followingExperts }: { followingExperts: ExpertDetailsResponse[] }) => {
     const sliderRef = useRef<SwiperRef>(null);
     const handlePrev = useCallback(() => {
         if (!sliderRef.current) return;
@@ -100,4 +100,4 @@ const MyFollowingSlider = ({ followingExperts }: { followingExperts: ExpertDetai
     )
 }
 
-export default MyFollowingSlider
+export default FollowingExpertSlider

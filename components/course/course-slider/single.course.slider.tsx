@@ -12,6 +12,8 @@ import { useEffect, useState } from "react";
 import { useUserProgress } from "@/wrapper/user-progress/user.progress.wrapper";
 import { countCompletedPercentOfACourse } from "@/helper/lesson.helper";
 import { useCoursePurchased } from "@/wrapper/course-purchased/course.purchased.wrapper";
+import UpdateOutlinedIcon from '@mui/icons-material/UpdateOutlined';
+import SchoolOutlinedIcon from '@mui/icons-material/SchoolOutlined';
 
 const SingleCourseSlider = ({ course }: { course: CourseResponse }) => {
     const { userProgresses, loading } = useUserProgress();
@@ -46,7 +48,7 @@ const SingleCourseSlider = ({ course }: { course: CourseResponse }) => {
             <Link href={`/course/${slugifyText(course.courseName + "-" + course.courseId)}`} style={{
                 display: 'block',
                 width: '100%',
-                height: `220px`,
+                aspectRatio: '2/1.1',
                 position: 'relative',
             }}>
                 <Image src={`${storageUrl}/course/${course.thumbnail}`} alt={course.courseName} priority fill sizes="(max-width: 1000px) 100vw" style={{
@@ -67,26 +69,31 @@ const SingleCourseSlider = ({ course }: { course: CourseResponse }) => {
 
                 {displayProgressbar(completionOfACourse, course)}
 
-                <p className='text-gray-300 my-1 line-clamp-2'>
+                <p className='text-gray-300 mt-1 mb-2 line-clamp-3'>
                     {course.description}
                     Lorem ipsum dolor, sit amet consectetur adipisicing elit. Hic commodi enim facere ullam corrupti nisi tenetur doloremque aliquam ratione quod.
                 </p>
 
-                <div className='text-sm'>
-                    <div className="flex items-center gap-x-2">
-                        <p className="text-gray-300 font-semibold">Giảng viên:</p>
-                        <p className="text-green-500">{course.expert.user.fullname}</p>
-                    </div>
-                    <div className='flex items-center gap-x-2'>
-                        <p className='text-gray-300 font-semibold'>Cập nhật lần cuối:</p>
-                        <p className='text-purple-300'>{formatDate(course.updatedAt ?? course.createdAt)}</p>
-                    </div>
+                <div className="flex items-center gap-x-2">
+                    <p className="flex items-center gap-x-1.5">
+                        <SchoolOutlinedIcon className="text-gray-400" sx={{ fontSize: '1.25rem' }} />
+                        <span className="text-gray-300 text-nowrap">Giảng viên:</span>
+                    </p>
+                    <p className="text-green-500 line-clamp-1">{course.expert.user.fullname}</p>
+                </div>
+
+                <div className='flex items-center gap-x-2'>
+                    <p className='flex items-center gap-x-1.5'>
+                        <UpdateOutlinedIcon className="text-gray-400" sx={{ fontSize: '1.25rem' }} />
+                        <span className="text-gray-300 "> Cập nhật lần cuối:</span>
+                    </p>
+                    <p className='text-purple-300'>{formatDate(course.updatedAt ?? course.createdAt)}</p>
                 </div>
 
                 <Divider sx={{ marginBlock: '10px' }} />
 
                 {displayPrice(course, completionOfACourse)}
-            </div>
+            </div >
         </Box >
     )
 }

@@ -1,5 +1,5 @@
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-import CourseSlider from "@/components/course/course-slider/course.slider";
+import FollowingExpertCourses from "@/features/follow-experts/following.expert.courses";
 import { sendRequest } from "@/utils/fetch.api";
 import { apiUrl } from "@/utils/url";
 import { getServerSession } from "next-auth";
@@ -11,7 +11,7 @@ const CoursePage = async () => {
         return null;
     }
 
-    const response = await sendRequest<ApiResponse<CourseDetailsResponse[]>>({
+    const response = await sendRequest<ApiResponse<CourseResponse[]>>({
         url: `${apiUrl}/courses/latest-courses`,
         headers: {
             Authorization: `Bearer ${session.accessToken}`,
@@ -25,8 +25,8 @@ const CoursePage = async () => {
 
     return (
         <>
-            <h1 className='text-center font-bold uppercase text-xl text-white mt-10'>Khóa học mới nhất</h1>
-            <CourseSlider courseList={response.data} />
+            <h1 className='text-center font-bold uppercase text-xl text-white my-5'>Khóa học mới nhất</h1>
+            <FollowingExpertCourses courses={response.data} />
         </>
     )
 }

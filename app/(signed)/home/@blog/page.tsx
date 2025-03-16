@@ -12,8 +12,6 @@ const BlogPage = async () => {
         }
     });
 
-    console.log(">>> check blog res: ", blogListResponse);
-
     if (blogListResponse.status !== 200) {
         return null;
     }
@@ -21,7 +19,6 @@ const BlogPage = async () => {
     return (
         <BlogSlider blogList={blogListResponse.data.content} />
     )
-    // return null;
 }
 
 export default BlogPage

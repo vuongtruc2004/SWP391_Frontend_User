@@ -68,7 +68,8 @@ const BlogPage = async (props: {
         <Box sx={{
             width: '95%',
             maxWidth: '1200px',
-            margin: '0 auto'
+            margin: '0 auto',
+            paddingBottom: '40px'
         }}>
             <Box sx={{
                 display: 'grid',

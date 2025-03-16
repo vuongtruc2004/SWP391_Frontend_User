@@ -227,7 +227,6 @@ declare global {
 
     interface OrderDetailsResponse {
         orderDetailsId: number;
-        courseId: number;
         course: CourseResponse;
     }
 

@@ -1,24 +1,17 @@
 'use client'
 import Avatar from '@mui/material/Avatar';
 import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import HistoryIcon from '@mui/icons-material/History';
-import AutoStoriesIcon from '@mui/icons-material/AutoStories';
 import Divider from '@mui/material/Divider';
-import Settings from '@mui/icons-material/Settings';
 import Logout from '@mui/icons-material/Logout';
 import Button from "@mui/material/Button";
-import PersonIcon from '@mui/icons-material/Person';
 import { signOut, useSession } from 'next-auth/react';
 import { apiUrl } from '@/utils/url';
 import { sendRequest } from '@/utils/fetch.api';
 import Link from 'next/link';
 import { useUserAvatar } from '@/wrapper/user-avatar/user.avatar.wrapper';
-import NotificationsIcon from '@mui/icons-material/Notifications';
-import { PopoverOrigin } from '@mui/material';
+import { Box, PopoverOrigin } from '@mui/material';
 import { usePathname } from 'next/navigation';
-import GroupIcon from '@mui/icons-material/Group';
+import { bottomLinks, topLinks } from '../user-sidebar/sidebar.properties';
 
 export default function AccountMenu({ anchorEl, setAnchorEl, transformOrigin, anchorOrigin }: {
     anchorEl: HTMLElement | null;
@@ -26,36 +19,33 @@ export default function AccountMenu({ anchorEl, setAnchorEl, transformOrigin, an
     transformOrigin?: PopoverOrigin;
     anchorOrigin?: PopoverOrigin;
 }) {
-    const { data: session } = useSession();
-    const open = Boolean(anchorEl);
+    const { data: session, status } = useSession();
     const { avatarSrc, fullname } = useUserAvatar();
     const pathname = usePathname();
 
-    const handleClose = () => {
-        setAnchorEl(null);
-    };
-
     const handleLogout = async () => {
-        if (pathname.startsWith("/course/learning")) {
-            sessionStorage.removeItem('prevUrl');
-        }
-
-        await sendRequest({
-            url: `${apiUrl}/auth/logout`,
-            queryParams: {
-                refresh_token: session?.refreshToken
+        if (status === 'authenticated') {
+            if (pathname.startsWith("/course/learning")) {
+                sessionStorage.removeItem('prevUrl');
             }
-        })
-        signOut();
+
+            await sendRequest({
+                url: `${apiUrl}/auth/logout`,
+                queryParams: {
+                    refresh_token: session.refreshToken
+                }
+            })
+            signOut();
+        }
     }
 
     return (
         <Menu
             aria-hidden={false}
             anchorEl={anchorEl}
-            open={open}
-            onClose={handleClose}
-            onClick={handleClose}
+            open={Boolean(anchorEl)}
+            onClose={() => setAnchorEl(null)}
+            onClick={() => setAnchorEl(null)}
             slotProps={{
                 paper: {
                     elevation: 0,
@@ -103,7 +93,7 @@ export default function AccountMenu({ anchorEl, setAnchorEl, transformOrigin, an
             transformOrigin={transformOrigin ? transformOrigin : { horizontal: 'right', vertical: 'top' }}
             anchorOrigin={anchorOrigin ? anchorOrigin : { horizontal: 'right', vertical: 'bottom' }}
         >
-            <div className='flex items-center justify-between py-1.5 px-4 gap-x-5'>
+            <div className='flex items-center justify-start py-1.5 px-4 gap-x-3'>
                 <Avatar src={avatarSrc} alt='avatar'>
                     {fullname.charAt(0).toUpperCase()}
                 </Avatar>
@@ -115,116 +105,37 @@ export default function AccountMenu({ anchorEl, setAnchorEl, transformOrigin, an
 
             <Divider sx={{ marginBlock: '10px' }} />
 
-            <MenuItem sx={{
-                padding: 0,
-                marginBottom: '2px',
+            <Box sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                rowGap: '4px',
                 'a': {
-                    display: 'flex',
-                    alignItems: 'center',
-                    width: '100%',
-                    padding: '6px 16px',
+                    transition: 'all .3s',
+                    '&.active': {
+                        bgcolor: '#212121',
+                    },
+                    ':not(.active):hover': {
+                        color: '#2b7fff'
+                    }
                 }
             }}>
-                <Link href={"/user/profile"}>
-                    <ListItemIcon>
-                        <PersonIcon fontSize="small" />
-                    </ListItemIcon>
-                    <p>Tài khoản của tôi</p>
-                </Link>
-            </MenuItem>
+                {[...topLinks, ...bottomLinks].map(item => {
+                    return (
+                        <Link
+                            href={item.link}
+                            key={item.key}
+                            className={`flex items-center gap-x-5 rounded-md py-1.5 px-3 ${pathname.startsWith(item.link) && "active"}`}
+                        >
+                            {item.icon}
+                            {item.name}
+                        </Link>
+                    )
+                })}
+            </Box>
 
-            <MenuItem sx={{
-                padding: 0,
-                marginBottom: '2px',
-                'a': {
-                    display: 'flex',
-                    alignItems: 'center',
-                    width: '100%',
-                    padding: '6px 16px',
-                }
-            }}>
-                <Link href={"/user/my-course"}>
-                    <ListItemIcon>
-                        <AutoStoriesIcon fontSize="small" />
-                    </ListItemIcon>
-                    <p>Khóa học của tôi</p>
-                </Link>
-            </MenuItem>
+            <Divider sx={{ marginBlock: '10px 15px' }} />
 
-            <MenuItem sx={{
-                padding: 0,
-                marginBottom: '2px',
-                'a': {
-                    display: 'flex',
-                    alignItems: 'center',
-                    width: '100%',
-                    padding: '6px 16px',
-                }
-            }}>
-                <Link href={"/user/my-follow-experts"}>
-                    <GroupIcon>
-                        <AutoStoriesIcon fontSize="small" />
-                    </GroupIcon>
-                    <p className='ml-3'>Danh sách chuyên gia đang theo dõi</p>
-                </Link>
-            </MenuItem>
-
-            <MenuItem sx={{
-                padding: 0,
-                marginBottom: '2px',
-                'a': {
-                    display: 'flex',
-                    alignItems: 'center',
-                    width: '100%',
-                    padding: '6px 16px',
-                }
-            }}>
-                <Link href={"/user/history-purchased"}>
-                    <HistoryIcon>
-                        <AutoStoriesIcon fontSize="small" />
-                    </HistoryIcon>
-                    <p className='ml-3'>Lịch sử mua hàng</p>
-                </Link>
-            </MenuItem>
-
-            <MenuItem sx={{
-                padding: 0,
-                marginBottom: '2px',
-                'a': {
-                    display: 'flex',
-                    alignItems: 'center',
-                    width: '100%',
-                    padding: '6px 16px',
-                }
-            }}>
-                <Link href={"/user/notification"}>
-                    <ListItemIcon>
-                        <NotificationsIcon fontSize="small" />
-                    </ListItemIcon>
-                    <p>Thông báo</p>
-                </Link>
-            </MenuItem>
-
-            <MenuItem sx={{
-                padding: 0,
-                marginBottom: '2px',
-                'a': {
-                    display: 'flex',
-                    alignItems: 'center',
-                    width: '100%',
-                    padding: '6px 16px',
-                }
-            }}>
-                <Link href={"/user/settings"}>
-                    <ListItemIcon>
-                        <Settings fontSize="small" />
-                    </ListItemIcon>
-                    <p>Cài đặt</p>
-                </Link>
-            </MenuItem>
-
-            <Divider sx={{ marginBlock: '10px' }} />
-            <Button variant='contained' color='error' startIcon={<Logout />} size='small' fullWidth sx={{ textTransform: 'capitalize' }} onClick={handleLogout}>Đăng xuất</Button>
+            <Button variant='contained' color='error' startIcon={<Logout />} size='small' fullWidth onClick={handleLogout}>Đăng xuất</Button>
         </Menu>
     );
 }

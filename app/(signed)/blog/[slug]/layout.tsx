@@ -27,7 +27,7 @@ const BlogDetailsLayout = ({ details, suggest }: { details: React.ReactNode, sug
             width: '95%',
             maxWidth: '1200px',
             alignItems: 'flex-start',
-            paddingTop: '90px',
+            paddingBlock: '90px 40px',
             color: 'white',
             margin: '0 auto'
         }}>

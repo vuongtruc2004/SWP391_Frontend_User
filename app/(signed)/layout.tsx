@@ -1,4 +1,4 @@
-import Header from "@/components/header/header"
+import AppHeader from "@/components/header/app.header"
 import MessengerIcon from "@/components/messenger-icon/messenger.icon"
 import { CourseCartWrapper } from "@/wrapper/course-cart/course.cart.wrapper"
 import { NotificationWrapper } from "@/wrapper/notification/notification.wrapper"
@@ -8,7 +8,7 @@ const SignedLayout = ({ children }: { children: React.ReactNode }) => {
         <NotificationWrapper>
             <CourseCartWrapper>
                 <div className="min-h-screen h-max bg-[#101010] relative">
-                    <Header />
+                    <AppHeader />
                     {children}
                     <MessengerIcon />
                 </div>

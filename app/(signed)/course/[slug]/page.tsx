@@ -42,7 +42,7 @@ const CourseDetails = async ({ params }: { params: Promise<{ slug: string }> }) 
                         <CourseSubject course={courseResponse.data} />
                         <CourseContent course={courseResponse.data} />
                     </div>
-                    <div className="p-5">
+                    <div className="p-5 pb-10">
                         <CourseRate course={courseResponse.data} />
                     </div>
                 </div>

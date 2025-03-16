@@ -1,6 +1,6 @@
 import { sendRequest } from "@/utils/fetch.api";
 import { apiUrl } from "@/utils/url";
-import { Box, Button, Skeleton } from "@mui/material"
+import { Box, Button, IconButton, Skeleton } from "@mui/material"
 import { useCallback, useEffect, useRef, useState } from "react";
 import SingleCourseSuggest from "./single.course.suggest";
 import { Swiper, SwiperRef, SwiperSlide } from 'swiper/react';
@@ -93,7 +93,7 @@ const SuggestCourse = () => {
                     boxShadow: '2px 2px 5px rgba(0,0,0,0.5)',
                     marginTop: '20px',
                     position: 'relative',
-                    '.mui-1yv1d02-MuiButtonBase-root-MuiButton-root': {
+                    '.mui-11ky3cr-MuiButtonBase-root-MuiButton-root': {
                         boxShadow: '2px 2px 5px rgba(0,0,0,0.5)',
                         borderRadius: '50%',
                         minWidth: '40px',

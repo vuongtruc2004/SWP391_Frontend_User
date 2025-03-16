@@ -119,7 +119,6 @@ const ProfileForm = ({ user }: {
                     gap: '20px',
                     marginBottom: '12px'
                 }}>
-
                     <div>
                         <label className="mb-[10px] block text-white"><span className="text-red-500 mr-1">*</span>Email:</label>
                         <TextField
@@ -155,7 +154,7 @@ const ProfileForm = ({ user }: {
 
                 <Box sx={{
                     display: 'grid',
-                    gridTemplateColumns: '50% 1fr',
+                    gridTemplateColumns: 'repeat(2, 1fr)',
                     columnGap: '20px',
                     alignItems: 'start',
                     marginBottom: '15px'
@@ -179,6 +178,7 @@ const ProfileForm = ({ user }: {
                                     },
                                 }}
                                 sx={{
+                                    width: '100%',
                                     'div': {
                                         height: '40px'
                                     }
@@ -208,13 +208,7 @@ const ProfileForm = ({ user }: {
                         Hủy bỏ thay đổi
                     </Button>
 
-                    <Button type="submit" variant="contained" startIcon={<AutorenewIcon />} sx={{
-                        textTransform: 'none',
-                        bgcolor: '#4ade80',
-                        '&:hover': {
-                            bgcolor: '#00c951'
-                        }
-                    }}>
+                    <Button type="submit" variant="contained" color="warning" startIcon={<AutorenewIcon />}>
                         Cập nhật thông tin
                     </Button>
                 </div>

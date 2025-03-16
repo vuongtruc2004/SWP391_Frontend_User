@@ -6,7 +6,7 @@ import { Button } from "@mui/material";
 import { getServerSession } from "next-auth";
 import Link from "next/link";
 import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
-import MyFollowingSlider from "@/features/my-follow-experts/my.following.slider";
+import FollowingExpertSlider from "@/features/follow-experts/following.expert.slider";
 
 const ExpertPage = async () => {
     const session = await getServerSession(authOptions);
@@ -27,7 +27,7 @@ const ExpertPage = async () => {
         return (
             <div className='flex items-center justify-center h-full'>
                 <div>
-                    <ListEmpty text="Bạn chưa theo dõi chuyên gia nào!" height={100} />
+                    <ListEmpty text="Bạn chưa theo dõi chuyên gia nào!" height={110} />
                     <Link href={'/expert'} className='flex items-center justify-center'>
                         <Button sx={{ borderRadius: '30px' }} variant='outlined' startIcon={<PersonAddAltIcon />}>Theo dõi ngay!</Button>
                     </Link>
@@ -37,7 +37,7 @@ const ExpertPage = async () => {
     }
 
     return (
-        <MyFollowingSlider followingExperts={response.data} />
+        <FollowingExpertSlider followingExperts={response.data} />
     )
 }
 
