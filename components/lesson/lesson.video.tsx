@@ -1,20 +1,45 @@
-import { Avatar, Box, Button, Divider } from "@mui/material"
-import { getVideoIdFromUrl } from "@/helper/course.details.helper";
-import { useCourseView } from "@/wrapper/course-view/course.view.wrapper";
-import { storageUrl } from "@/utils/url";
-import { formatDate } from "@/helper/blog.helper";
-import { useState } from "react";
-import KeyboardDoubleArrowUpIcon from '@mui/icons-material/KeyboardDoubleArrowUp';
-import { formatTotalFollowers } from "@/helper/lesson.helper";
 import CourseRate from "@/features/course/course-rating/course.rate";
+import { formatDate } from "@/helper/blog.helper";
+import { getVideoIdFromUrl } from "@/helper/course.details.helper";
+import { formatTotalFollowers } from "@/helper/lesson.helper";
+import { sendRequest } from "@/utils/fetch.api";
+import { apiUrl, storageUrl } from "@/utils/url";
+import { useCourseView } from "@/wrapper/course-view/course.view.wrapper";
+import { useUserExpert } from "@/wrapper/user-expert/user.expert.wrapper";
+import KeyboardDoubleArrowUpIcon from '@mui/icons-material/KeyboardDoubleArrowUp';
+import NotificationsActiveOutlinedIcon from '@mui/icons-material/NotificationsActiveOutlined';
+import { Avatar, Box, Button, Divider } from "@mui/material";
+import { useSession } from "next-auth/react";
+import { useState } from "react";
 
 const LessonVideo = () => {
-    const { course, setCurrentPlayIndex, currentPlayIndex, lessons } = useCourseView();
+    const { data: session, status } = useSession();
+    const { followExperts, setFollowExperts } = useUserExpert()
+    const { course, currentPlayIndex, lessons } = useCourseView();
 
     const [showDescription, setShowDescription] = useState(false);
 
     const avatarSrc = course?.expert?.user?.avatar?.startsWith("http") ? course?.expert?.user?.avatar : `${storageUrl}/avatar/${course?.expert?.user?.avatar}`;
     const currentLesson = lessons[currentPlayIndex];
+
+    const handleFollow = async () => {
+        if (status === 'authenticated') {
+            const response = await sendRequest<ApiResponse<ExpertDetailsResponse>>({
+                url: `${apiUrl}/experts/follow/${course.expert.expertId}`,
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${session.accessToken}`
+                }
+            });
+            if (response.status === 200) {
+                if (followExperts.find(expert => expert.expertId === course.expert.expertId)) {
+                    setFollowExperts(prev => prev.filter(expert => expert.expertId !== course.expert.expertId));
+                } else {
+                    setFollowExperts(prev => [...prev, response.data]);
+                }
+            }
+        }
+    }
 
     if (!("lessonId" in currentLesson) || !currentLesson.videoUrl) {
         return null;
@@ -55,9 +80,15 @@ const LessonVideo = () => {
                         <p>{formatTotalFollowers(course.expert.totalFollowers || 1237856912)} người theo dõi</p>
                     </div>
                 </div>
-                <Button variant='contained' color='secondary' sx={{ borderRadius: '40px', height: '36px' }}>
-                    Theo dõi
-                </Button>
+                {followExperts.find(expert => expert.expertId === course.expert.expertId) ? (
+                    <Button startIcon={<NotificationsActiveOutlinedIcon />} onClick={handleFollow} variant='outlined' color='secondary' sx={{ borderRadius: '40px', height: '36px' }}>
+                        Đang theo dõi
+                    </Button>
+                ) : (
+                    <Button onClick={handleFollow} variant='contained' color='secondary' sx={{ borderRadius: '40px', height: '36px' }}>
+                        Theo dõi
+                    </Button>
+                )}
             </div>
 
             <div className="text-sm bg-[#ffffff0d] p-3 rounded-md mb-5">
