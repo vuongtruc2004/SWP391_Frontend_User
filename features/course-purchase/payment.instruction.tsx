@@ -7,22 +7,19 @@ import { apiUrl, storageUrl } from "@/utils/url";
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ErrorOutlineRoundedIcon from '@mui/icons-material/ErrorOutlineRounded';
 import { sendRequest } from "@/utils/fetch.api";
+import CouponList from "./coupon.list";
 
 const PaymentInstruction = ({ open, setOpen, courses }: {
     open: boolean;
     setOpen: React.Dispatch<SetStateAction<boolean>>;
     courses: CourseDetailsResponse[] | CourseResponse[] | CartCourse[];
 }) => {
-
     const { data: session, status } = useSession();
 
     const [totalPrice, setTotalPrice] = useState(0);
     const [loading, setLoading] = useState(false);
+    const [openCouponList, setOpenCouponList] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
-
-    const handleClose = () => {
-        setOpen(false);
-    }
 
     const handleCreateOrder = async () => {
         if (status === "authenticated") {
@@ -62,7 +59,6 @@ const PaymentInstruction = ({ open, setOpen, courses }: {
     return (
         <Dialog
             aria-hidden={false}
-            onClose={handleClose}
             open={open}
             sx={{
                 '.mui-16bx961-MuiPaper-root-MuiDialog-paper': {
@@ -74,7 +70,7 @@ const PaymentInstruction = ({ open, setOpen, courses }: {
             }}
         >
             <DialogContent sx={{
-                padding: '25px',
+                padding: '20px',
                 bgcolor: '#101010',
                 borderRadius: '6px',
                 position: 'relative',
@@ -151,7 +147,7 @@ const PaymentInstruction = ({ open, setOpen, courses }: {
                         <p>Mã giảm giá từ LearnGo</p>
                     </div>
 
-                    <div className="flex items-center gap-x-1 text-gray-300 cursor-pointer hover:text-purple-300">
+                    <div className="flex items-center gap-x-1 text-gray-300 cursor-pointer hover:text-purple-300" onClick={() => setOpenCouponList(true)}>
                         <p className="text-sm">Chọn hoặc nhập mã</p>
                         <ChevronRightIcon sx={{ fontSize: '1rem' }} />
                     </div>
@@ -165,21 +161,24 @@ const PaymentInstruction = ({ open, setOpen, courses }: {
                 </div>
 
                 <div className="flex items-center justify-end gap-x-3 mt-3">
-                    <Button variant="outlined" color="secondary" startIcon={<CloseIcon />} onClick={handleClose}>
+                    <Button variant="outlined" color="secondary" startIcon={<CloseIcon />} onClick={() => setOpen(false)}>
                         Hủy
                     </Button>
                     <Button variant="contained" color="primary" onClick={handleCreateOrder} loading={loading}>
                         Tiếp tục
                     </Button>
                 </div>
+
                 {errorMessage !== "" && (
                     <span className="flex items-center gap-x-1 text-sm text-red-500 font-semibold">
                         <ErrorOutlineRoundedIcon sx={{ fontSize: '16px' }} />
                         {errorMessage}
                     </span>
                 )}
+
+                <CouponList open={openCouponList} setOpen={setOpenCouponList} courseIds={courses.map(course => course.courseId)} />
             </DialogContent >
-        </Dialog >
+        </Dialog>
     )
 }
 

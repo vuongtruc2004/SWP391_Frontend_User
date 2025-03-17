@@ -13,7 +13,7 @@ import HowToRegOutlinedIcon from '@mui/icons-material/HowToRegOutlined';
 import Link from "next/link";
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import { useEffect, useState } from "react";
-import PaymentInstruction from "../../cart/payment.instruction";
+import PaymentInstruction from "../../course-purchase/payment.instruction";
 import { useSession } from "next-auth/react";
 import { usePathname, useRouter } from "next/navigation";
 import { SlideTransition } from "@/components/course/course-content/style";

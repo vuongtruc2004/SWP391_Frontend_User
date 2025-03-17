@@ -256,4 +256,20 @@ declare global {
         content: string;
         role: "USER" | "MODEL" | "FUNCTION" | "SYSTEM";
     }
+
+    interface CouponResponse {
+        couponId: number;
+        couponName: string;
+        couponDescription: string;
+        couponCode: string;
+        discountType: 'FIXED' | 'PERCENTAGE';
+        discountRange: 'ALL' | 'COURSES';
+        discountValue: number;
+        maxDiscountAmount: number;
+        minOrderValue: number;
+        maxUses: number;
+        usedCount: number;
+        startTime: string;
+        endTime: string;
+    }
 }

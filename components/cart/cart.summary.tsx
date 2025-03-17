@@ -1,6 +1,6 @@
 import { Box, Button } from "@mui/material";
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import PaymentInstruction from "@/features/cart/payment.instruction";
+import PaymentInstruction from "@/features/course-purchase/payment.instruction";
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { usePathname, useRouter } from "next/navigation";
