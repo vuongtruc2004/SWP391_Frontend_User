@@ -1,5 +1,5 @@
 'use client'
-import { Box, Button, Tooltip, Typography } from '@mui/material';
+import { Box, Button, Tooltip } from '@mui/material';
 import { Navigation } from 'swiper/modules';
 import { Swiper, SwiperRef, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
@@ -25,7 +25,7 @@ const FollowingExpertSlider = ({ followingExperts }: { followingExperts: ExpertD
 
     return (
         <>
-            <h1 className='text-center font-bold uppercase text-xl text-white mb-10'>Danh sách chuyên gia đang theo dõi</h1>
+            <h1 className='text-center font-bold uppercase text-xl text-white mb-8'>Danh sách chuyên gia đang theo dõi</h1>
             <Box sx={{
                 '.swiper-slide': {
                     width: 'max-content'
@@ -54,27 +54,10 @@ const FollowingExpertSlider = ({ followingExperts }: { followingExperts: ExpertD
                         grabCursor={true}
                         modules={[Navigation]}
                     >
-                        {followingExperts.map((expert, index) => (
-                            <SwiperSlide key={index}>
-                                <Tooltip
-                                    title={
-                                        <div>
-                                            <Typography variant="body1" color="inherit">
-                                                {expert.user.fullname}
-                                            </Typography>
-                                            <Typography variant="inherit" color="inherit">
-                                                {expert.user.email}
-                                                <span className="ml-2 mr-2">•</span>
-                                                {expert.totalFollowers ?? 0} người theo dõi
-                                            </Typography>
-                                            <Typography variant="inherit" color="inherit">
-                                                {expert.achievement}
-                                            </Typography>
-                                        </div>
-                                    }
-                                    arrow
-                                >
-                                    <Link href={`/course?page=1&expertIds=${expert.expertId}`} className="block relative w-[70px] h-[70px]">
+                        {followingExperts.map(expert => (
+                            <SwiperSlide key={expert.expertId}>
+                                <Tooltip title={expert.user.fullname} arrow>
+                                    <Link href={`/course?page=1&expertIds=${expert.expertId}`} className="block relative w-[60px] h-[60px]">
                                         <Image
                                             className="rounded-full object-cover"
                                             src={`${storageUrl}/avatar/${expert.user.avatar}`}
@@ -83,7 +66,6 @@ const FollowingExpertSlider = ({ followingExperts }: { followingExperts: ExpertD
                                         />
                                     </Link>
                                 </Tooltip>
-
                             </SwiperSlide>
                         ))}
                     </Swiper>

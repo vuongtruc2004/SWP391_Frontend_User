@@ -25,7 +25,7 @@ const CoursePage = async () => {
 
     return (
         <>
-            <h1 className='text-center font-bold uppercase text-xl text-white my-5'>Khóa học mới nhất</h1>
+            <h1 className='text-center font-bold uppercase text-xl text-white my-8'>Khóa học mới nhất</h1>
             <FollowingExpertCourses courses={response.data} />
         </>
     )

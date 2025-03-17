@@ -40,19 +40,6 @@ const SingleOrder = ({ order }: { order: OrderResponse }) => {
                             <p className="text-gray-400 font-semibold">Tổng tiền</p>
                             <p className="text-white">{formatPrice(order.totalAmount)}₫</p>
                         </li>
-
-                        <li className="flex flex-col gap-y-1.5 items-start">
-                            <p className="text-gray-400 font-semibold">Trạng thái</p>
-                            {order.orderStatus === 'COMPLETED' ? (
-                                <p className="text-green-500">Đã thanh toán</p>
-                            ) : (order.orderStatus === 'PENDING') ? (
-                                <p className="text-orange-500">Đang chờ thanh toán</p>
-                            ) : (order.orderStatus === 'CANCELLED') ? (
-                                <p className="text-red-500">Đã hủy</p>
-                            ) : (
-                                <p className="text-red-500">Đã quá hạn</p>
-                            )}
-                        </li>
                     </ul>
                 </AccordionSummary>
 

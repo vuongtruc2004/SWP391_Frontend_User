@@ -25,8 +25,8 @@ export const topLinks = [
         icon: <GroupIcon sx={{ fontSize: '1.2rem' }} />
     },
     {
-        key: 'history-purchased',
-        link: '/user/history-purchased',
+        key: 'purchase-history',
+        link: '/user/purchase-history',
         name: 'Lịch sử mua hàng',
         icon: <HistoryIcon sx={{ fontSize: '1.2rem' }} />
     }

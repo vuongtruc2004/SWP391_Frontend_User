@@ -216,7 +216,7 @@ declare global {
     interface OrderResponse {
         orderId: number;
         orderCode: string;
-        orderStatus: "PENDING" | "COMPLETED" | "CANCELLED" | "EXPIRED";
+        orderStatus: "PENDING" | "COMPLETED" | "EXPIRED";
         createdAt: string;
         updatedAt: string;
         expiredAt: string;
