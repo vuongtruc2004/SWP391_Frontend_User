@@ -1,7 +1,7 @@
 import { Avatar, Button, Divider, IconButton, Popover, Rating, Snackbar, SnackbarContent } from "@mui/material";
 import FlagIcon from '@mui/icons-material/Flag';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import { useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { formatDate } from "@/helper/blog.helper";
 import { useSession } from "next-auth/react";
 import EditIcon from '@mui/icons-material/Edit';
@@ -9,10 +9,11 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import DeleteCourseRating from "@/features/course/course-rating/delete.rating";
 import UpdateCourseRating from "@/features/course/course-rating/update.course.rating";
 
-const SingleCourseRating = ({ rate, index, avatarSrc }: {
+const SingleCourseRating = ({ rate, index, avatarSrc, setMyRating }: {
     rate: RateResponse;
     index: number;
     avatarSrc: string;
+    setMyRating: Dispatch<SetStateAction<RateResponse | null>>
 }) => {
     const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
     const { data: session } = useSession();
@@ -105,6 +106,7 @@ const SingleCourseRating = ({ rate, index, avatarSrc }: {
                 setOpen={setOpenDeleteModal}
                 rate={rate}
                 setOpenSnackbarDelete={setOpenSnackbarDelete}
+                setMyRating={setMyRating}
             />
 
             {openUpdate &&

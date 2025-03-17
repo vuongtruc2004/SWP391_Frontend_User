@@ -5,11 +5,12 @@ import { apiUrl } from '@/utils/url';
 import { sendRequest } from '@/utils/fetch.api';
 import { useCourseRate } from '@/wrapper/course-rate/course.rate.wrapper';
 
-const DeleteCourseRating = ({ open, setOpen, rate, setOpenSnackbarDelete }: {
+const DeleteCourseRating = ({ open, setOpen, rate, setOpenSnackbarDelete, setMyRating }: {
     open: boolean,
     setOpen: Dispatch<SetStateAction<boolean>>,
     rate: RateResponse,
     setOpenSnackbarDelete: Dispatch<SetStateAction<boolean>>
+    setMyRating: Dispatch<SetStateAction<RateResponse | null>>
 }) => {
 
     const { fetchRatePage } = useCourseRate();
@@ -29,8 +30,8 @@ const DeleteCourseRating = ({ open, setOpen, rate, setOpenSnackbarDelete }: {
             }, 3000)
         }
         setOpen(false);
-        // fetchRatePage();
-
+        setMyRating(null)
+        fetchRatePage();
     }
 
     return (

@@ -41,17 +41,18 @@ const CourseRate = ({ course }: { course: CourseDetailsResponse }) => {
 
     useEffect(() => {
         const fetchData = async () => {
-            try {
-                const response = await sendRequest<ApiResponse<RateResponse>>({
-                    url: `${apiUrl}/rates/my-rate/${course?.courseId}`,
-                    headers: {
-                        Authorization: `Bearer ${session?.accessToken}`,
-                        "Content-Type": "application/json",
-                    },
-                });
+            if (!session?.accessToken) return;
+
+            const response = await sendRequest<ApiResponse<RateResponse>>({
+                url: `${apiUrl}/rates/my-rate/${course?.courseId}`,
+                headers: {
+                    Authorization: `Bearer ${session?.accessToken}`,
+                    "Content-Type": "application/json",
+                },
+            });
+
+            if (response.status === 200) {
                 setMyRating(response.data);
-            } catch (error) {
-                console.error("Error fetching data:", error);
             }
         };
 
@@ -60,17 +61,18 @@ const CourseRate = ({ course }: { course: CourseDetailsResponse }) => {
 
     useEffect(() => {
         const fetchData = async () => {
-            try {
-                const response = await sendRequest<ApiResponse<OrderDetailsResponse>>({
-                    url: `${apiUrl}/orderDetails/order_purchased/${course?.courseId}`,
-                    headers: {
-                        Authorization: `Bearer ${session?.accessToken}`,
-                        "Content-Type": "application/json",
-                    },
-                });
+
+            if (!session?.accessToken || !course?.courseId) return;
+
+            const response = await sendRequest<ApiResponse<OrderDetailsResponse>>({
+                url: `${apiUrl}/orderDetails/order_purchased/${course?.courseId}`,
+                headers: {
+                    Authorization: `Bearer ${session?.accessToken}`,
+                    "Content-Type": "application/json",
+                },
+            });
+            if (response.status === 200) {
                 setMyOrder(response.data);
-            } catch (error) {
-                console.error("Error fetching data:", error);
             }
         };
 
@@ -124,6 +126,7 @@ const CourseRate = ({ course }: { course: CourseDetailsResponse }) => {
                                 rate={rate}
                                 index={index}
                                 avatarSrc={avatarSrc}
+                                setMyRating={setMyRating}
                             />
                         )
                     })}

@@ -67,6 +67,7 @@ const CreateCourseRating = ({ course, setOpenSnackbarSuccess }: { course: Course
             });
 
             if (ratingResponse.status === 200) {
+                setIsFocused(false)
                 setOpenSnackbarSuccess(true);
                 setTimeout(() => {
                     setOpenSnackbarSuccess(false);
