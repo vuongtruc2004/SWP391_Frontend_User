@@ -8,6 +8,9 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ErrorOutlineRoundedIcon from '@mui/icons-material/ErrorOutlineRounded';
 import { sendRequest } from "@/utils/fetch.api";
 import CouponList from "./coupon.list";
+import { countDiscountValue } from "@/helper/coupon.helper";
+import { formatSalePrice } from "@/helper/course.list.helper";
+import CachedIcon from '@mui/icons-material/Cached';
 
 const PaymentInstruction = ({ open, setOpen, courses }: {
     open: boolean;
@@ -19,6 +22,7 @@ const PaymentInstruction = ({ open, setOpen, courses }: {
     const [totalPrice, setTotalPrice] = useState(0);
     const [loading, setLoading] = useState(false);
     const [openCouponList, setOpenCouponList] = useState(false);
+    const [selectedCoupon, setSelectedCoupon] = useState<CouponResponse | null>(null);
     const [errorMessage, setErrorMessage] = useState("");
 
     const handleCreateOrder = async () => {
@@ -57,18 +61,14 @@ const PaymentInstruction = ({ open, setOpen, courses }: {
     }, [session, courses]);
 
     return (
-        <Dialog
-            aria-hidden={false}
-            open={open}
-            sx={{
-                '.mui-16bx961-MuiPaper-root-MuiDialog-paper': {
-                    width: '650px',
-                    maxWidth: '650px',
-                    boxShadow: 'none',
-                    backgroundImage: 'none'
-                }
-            }}
-        >
+        <Dialog aria-hidden={false} open={open} sx={{
+            '.mui-16bx961-MuiPaper-root-MuiDialog-paper': {
+                width: '650px',
+                maxWidth: '650px',
+                boxShadow: 'none',
+                backgroundImage: 'none'
+            }
+        }}>
             <DialogContent sx={{
                 padding: '20px',
                 bgcolor: '#101010',
@@ -82,7 +82,7 @@ const PaymentInstruction = ({ open, setOpen, courses }: {
                 <h1 className="text-2xl font-semibold text-center">Thanh toán</h1>
                 <p className="text-gray-300 text-center">Cảm ơn bạn đã lựa chọn LearnGo!</p>
 
-                <h1 className="text-lg font-semibold my-3">Thông tin đơn hàng ({courses.length} khóa học)</h1>
+                <h2 className="text-lg font-semibold my-3">Thông tin đơn hàng ({courses.length} khóa học)</h2>
 
                 <Box sx={{
                     display: 'flex',
@@ -106,9 +106,6 @@ const PaymentInstruction = ({ open, setOpen, courses }: {
                     },
                     '&::-webkit-scrollbar-thumb:hover': {
                         background: '#1976D2',
-                    },
-                    'img': {
-                        objectFit: 'cover'
                     }
                 }}>
                     {courses.map(course => {
@@ -144,12 +141,18 @@ const PaymentInstruction = ({ open, setOpen, courses }: {
                             sizes="(max-width: 1000px) 100vw"
                             priority={true}
                         />
-                        <p>Mã giảm giá từ LearnGo</p>
+                        <p>Mã giảm giá từ LearnGo:</p>
                     </div>
 
-                    <div className="flex items-center gap-x-1 text-gray-300 cursor-pointer hover:text-purple-300" onClick={() => setOpenCouponList(true)}>
-                        <p className="text-sm">Chọn hoặc nhập mã</p>
-                        <ChevronRightIcon sx={{ fontSize: '1rem' }} />
+                    <div className="flex items-center gap-x-1 text-gray-300 cursor-pointer" onClick={() => setOpenCouponList(true)}>
+                        {selectedCoupon ? (
+                            <p>Đã áp dụng mã <span className="font-semibold">{selectedCoupon.couponCode}</span>, giảm <span className="text-green-500 font-semibold text-lg">₫{formatSalePrice(countDiscountValue(selectedCoupon, totalPrice))}</span></p>
+                        ) : (
+                            <>
+                                <p className="text-sm hover:text-purple-300">Chọn hoặc nhập mã</p>
+                                <ChevronRightIcon sx={{ fontSize: '1rem' }} className="hover:text-purple-300" />
+                            </>
+                        )}
                     </div>
                 </div>
 
@@ -176,7 +179,7 @@ const PaymentInstruction = ({ open, setOpen, courses }: {
                     </span>
                 )}
 
-                <CouponList open={openCouponList} setOpen={setOpenCouponList} courseIds={courses.map(course => course.courseId)} />
+                <CouponList open={openCouponList} setOpen={setOpenCouponList} totalPrice={totalPrice} selectedCoupon={selectedCoupon} setSelectedCoupon={setSelectedCoupon} />
             </DialogContent >
         </Dialog>
     )

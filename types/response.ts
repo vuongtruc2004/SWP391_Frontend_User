@@ -263,6 +263,7 @@ declare global {
         couponDescription: string;
         couponCode: string;
         discountType: 'FIXED' | 'PERCENTAGE';
+        discountPercent: number;
         discountValue: number;
         maxDiscountAmount: number;
         minOrderValue: number;
