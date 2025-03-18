@@ -30,8 +30,8 @@
   overflow: hidden;
   top: 0;
   width: var(--vc-card-height, 7.375rem);
-  --vc-card-left-border-color: #0466c8;
-  --vc-card-left-fill-color: #0466c8;
+  --vc-card-left-border-color: #ee4d2d;
+  --vc-card-left-fill-color: #ee4d2d;
 }
 
 .PcmVqR {
@@ -58,43 +58,6 @@
   bottom: calc(var(--vc-card-sawtooth-margin, 0.25rem) - 0.0625rem);
   top: calc(var(--vc-card-sawtooth-margin, 0.25rem) - 0.0625rem);
   width: 100%;
-  --vc-card-left-border-color: #0466c8;
-  --vc-card-left-fill-color: #0466c8;
-}
-
-.cnFM7k {
-  align-items: center;
-  background-color: #0466c8;
-  border-radius: var(
-    --vc-right-corner-border-radius,
-    0.625rem 0.125rem 0 0.625rem
-  );
-  color: white;
-  font-size: 0.75rem;
-  height: 1.125rem;
-  right: var(--vc-right-corner-right, -0.25rem);
-  top: var(--vc-right-corner-top, 0.25rem);
-  width: 2.3125rem;
-}
-
-.cnFM7k {
-  display: flex;
-  font-weight: 500;
-  justify-content: center;
-  position: absolute;
-}
-
-.cnFM7k:after {
-  border-bottom: var(--vc-right-corner-after-border-width, 0.1875rem) solid
-    transparent;
-  border: var(--vc-right-corner-after-border-width, 0.1875rem) solid transparent;
-  border-bottom-color: #ff9a86;
-  content: "";
-  height: 0;
-  position: absolute;
-  right: var(--vc-right-corner-after-right, 0.0625rem);
-  top: var(--vc-right-corner-after-top, calc(100% + 1px));
-  transform: rotate(-45deg) translate(50%, -50%);
-  width: 0;
-  z-index: 0;
+  --vc-card-left-border-color: #ee4d2d;
+  --vc-card-left-fill-color: #ee4d2d;
 }

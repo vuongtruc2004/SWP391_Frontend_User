@@ -11,6 +11,16 @@ export const formatPrice = (price: number): string => {
     return price.toLocaleString('vi-VN');
 };
 
+export const formatSalePrice = (price: number): string => {
+    if (price >= 1000000) {
+        return (price / 1000000).toFixed(0) + 'tr';
+    } else if (price >= 1000) {
+        return (price / 1000).toFixed(0) + 'k';
+    } else {
+        return price.toFixed(0);
+    }
+}
+
 export const getSalePercent = (originalPrice: number, salePrice: number): number => {
     const percent = (originalPrice - salePrice) / originalPrice * 100;
     return Math.round(percent);

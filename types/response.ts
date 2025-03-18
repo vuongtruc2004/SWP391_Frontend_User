@@ -263,7 +263,6 @@ declare global {
         couponDescription: string;
         couponCode: string;
         discountType: 'FIXED' | 'PERCENTAGE';
-        discountRange: 'ALL' | 'COURSES';
         discountValue: number;
         maxDiscountAmount: number;
         minOrderValue: number;

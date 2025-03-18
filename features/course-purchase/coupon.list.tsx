@@ -19,9 +19,6 @@ const CouponList = ({ open, setOpen, courseIds }: {
             setLoading(true);
             const response = await sendRequest<ApiResponse<CouponResponse[]>>({
                 url: `${apiUrl}/coupons/available`,
-                queryParams: {
-                    courseIds: courseIds
-                }
             });
             if (response.status === 200) {
                 setCoupons(response.data);
@@ -69,7 +66,7 @@ const CouponList = ({ open, setOpen, courseIds }: {
                         <CircularProgress />
                     </div>
                 ) : (
-                    <div className="px-5">
+                    <div className="px-5 max-h-[290px] overflow-auto">
                         <h2 className="text-lg font-semibold">Mã giảm giá có thể áp dụng cho hóa đơn này ({coupons.length})</h2>
                         <p className="text-gray-300 mb-5">Có thể chọn 1 mã</p>
 
