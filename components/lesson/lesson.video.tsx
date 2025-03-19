@@ -1,25 +1,28 @@
 import CourseRate from "@/features/course/course-rating/course.rate";
 import { formatDate } from "@/helper/blog.helper";
-import { getVideoIdFromUrl } from "@/helper/course.details.helper";
 import { formatTotalFollowers } from "@/helper/lesson.helper";
 import { sendRequest } from "@/utils/fetch.api";
 import { apiUrl, storageUrl } from "@/utils/url";
 import { useCourseView } from "@/wrapper/course-view/course.view.wrapper";
 import { useUserExpert } from "@/wrapper/user-expert/user.expert.wrapper";
+import { useUserProgress } from "@/wrapper/user-progress/user.progress.wrapper";
 import KeyboardDoubleArrowUpIcon from '@mui/icons-material/KeyboardDoubleArrowUp';
 import NotificationsActiveOutlinedIcon from '@mui/icons-material/NotificationsActiveOutlined';
 import { Avatar, Box, Button, Divider } from "@mui/material";
 import { useSession } from "next-auth/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import ReactPlayer from "react-player";
 
 const LessonVideo = () => {
     const { data: session, status } = useSession();
     const { followExperts, setFollowExperts } = useUserExpert()
     const { course, currentPlayIndex, lessons } = useCourseView();
+    const { userProgresses, handleChangeStatus } = useUserProgress();
 
+    const [totalFollowers, setTotalFollowers] = useState(0);
     const [showDescription, setShowDescription] = useState(false);
 
-    const avatarSrc = course?.expert?.user?.avatar?.startsWith("http") ? course?.expert?.user?.avatar : `${storageUrl}/avatar/${course?.expert?.user?.avatar}`;
+    const avatarSrc = course.expert.user.avatar.startsWith("http") ? course.expert.user.avatar : `${storageUrl}/avatar/${course.expert.user.avatar}`;
     const currentLesson = lessons[currentPlayIndex];
 
     const handleFollow = async () => {
@@ -34,12 +37,29 @@ const LessonVideo = () => {
             if (response.status === 200) {
                 if (followExperts.find(expert => expert.expertId === course.expert.expertId)) {
                     setFollowExperts(prev => prev.filter(expert => expert.expertId !== course.expert.expertId));
+                    setTotalFollowers(prev => prev - 1);
                 } else {
                     setFollowExperts(prev => [...prev, response.data]);
+                    setTotalFollowers(prev => prev + 1);
                 }
             }
         }
     }
+
+    const handleProgress = ({ played }: { played: number }) => {
+        if (!("lessonId" in currentLesson) || !currentLesson.videoUrl) {
+            return;
+        }
+        if (!userProgresses.find(progress => progress.lessonId === currentLesson.lessonId) && played >= 0.8) {
+            handleChangeStatus(course.courseId, currentLesson.chapterId, currentLesson.lessonId);
+        }
+    };
+
+    useEffect(() => {
+        if (course) {
+            setTotalFollowers(course.expert.totalFollowers);
+        }
+    }, [course]);
 
     if (!("lessonId" in currentLesson) || !currentLesson.videoUrl) {
         return null;
@@ -55,34 +75,33 @@ const LessonVideo = () => {
                 aspectRatio: 16 / 9,
             }
         }}>
-            {currentLesson.videoUrl.startsWith("http") ? (
-                <iframe
-                    src={`https://www.youtube.com/embed/${getVideoIdFromUrl(currentLesson.videoUrl)}?autoplay=0`}
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope"
-                    allowFullScreen
-                />
-            ) : (
-                <video src={`${storageUrl}/video/${currentLesson.videoUrl}`} controls autoPlay />
-            )}
+            <ReactPlayer
+                url={currentLesson.videoUrl.startsWith("http") ? currentLesson.videoUrl : `${storageUrl}/video/${currentLesson.videoUrl}`}
+                controls
+                width="100%"
+                height="100%"
+                onProgress={handleProgress}
+            />
 
             <div className="flex items-center my-4">
                 <Avatar src={avatarSrc} sx={{
                     width: '46px',
                     height: '46px',
                 }}>
-                    {course?.expert?.user?.fullname.charAt(0).toUpperCase()}
+                    {course.expert.user.fullname.charAt(0).toUpperCase()}
                 </Avatar>
                 <div className='ml-3 mr-10 max-w-[280px]'>
                     <p className="font-semibold">{course?.expert?.user?.fullname}</p>
                     <div className="flex items-center gap-x-1.5 text-sm text-gray-300">
                         <p>{course?.expert?.job}</p>
                         <p>•</p>
-                        <p>{formatTotalFollowers(course.expert.totalFollowers || 1237856912)} người theo dõi</p>
+                        <p>{formatTotalFollowers(totalFollowers)} người theo dõi</p>
                     </div>
                 </div>
+
                 {followExperts.find(expert => expert.expertId === course.expert.expertId) ? (
                     <Button startIcon={<NotificationsActiveOutlinedIcon />} onClick={handleFollow} variant='outlined' color='secondary' sx={{ borderRadius: '40px', height: '36px' }}>
-                        Đang theo dõi
+                        Hủy theo dõi
                     </Button>
                 ) : (
                     <Button onClick={handleFollow} variant='contained' color='secondary' sx={{ borderRadius: '40px', height: '36px' }}>

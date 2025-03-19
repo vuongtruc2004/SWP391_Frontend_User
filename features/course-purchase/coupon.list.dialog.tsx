@@ -4,7 +4,6 @@ import { Dispatch, FormEvent, SetStateAction, useEffect, useState } from "react"
 import { sendRequest } from "@/utils/fetch.api";
 import { apiUrl } from "@/utils/url";
 import SingleCoupon from "./single.coupon";
-import dayjs from "dayjs";
 import { countDiscountValue, optimizeDisplayCoupons } from "@/helper/coupon.helper";
 import { formatSalePrice } from "@/helper/course.list.helper";
 import ListEmpty from "@/components/empty/list.empty";
@@ -18,6 +17,7 @@ const CouponListDialog = ({ open, setOpen, totalPrice, selectedCoupon, setSelect
 }) => {
     const [coupons, setCoupons] = useState<CouponResponse[]>([]);
     const [searchCode, setSearchCode] = useState("");
+    const [totalAvailable, setTotalAvailable] = useState(0);
     const [loading, setLoading] = useState(true);
 
     const handleCancel = () => {
@@ -42,7 +42,9 @@ const CouponListDialog = ({ open, setOpen, totalPrice, selectedCoupon, setSelect
                 }
             });
             if (response.status === 200) {
-                setCoupons(optimizeDisplayCoupons(response.data, totalPrice));
+                const optimizeCoupons = optimizeDisplayCoupons(response.data, totalPrice);
+                setCoupons(optimizeCoupons.coupons);
+                setTotalAvailable(optimizeCoupons.totalAvailable);
             }
             setLoading(false);
         }
@@ -83,15 +85,14 @@ const CouponListDialog = ({ open, setOpen, totalPrice, selectedCoupon, setSelect
                 ) : (
                     coupons.length ? (
                         <div className="max-h-[360px] overflow-auto">
-                            <h2 className="font-semibold">Mã giảm giá có thể áp dụng cho hóa đơn này ({coupons.length})</h2>
+                            <h2 className="font-semibold">Mã giảm giá có thể áp dụng cho hóa đơn này ({totalAvailable})</h2>
                             <p className="text-gray-300 mb-3">Có thể chọn 1 mã</p>
 
                             <div className="flex flex-col gap-y-5">
                                 {coupons.map(coupon => {
-                                    const canApply = !dayjs().isAfter(coupon.endTime) && (!coupon.minOrderValue || totalPrice >= coupon.minOrderValue);
                                     return (
                                         <SingleCoupon
-                                            canApply={canApply}
+                                            totalPrice={totalPrice}
                                             coupon={coupon}
                                             key={coupon.couponId + "_" + coupon.couponCode}
                                             selectedCoupon={selectedCoupon}
