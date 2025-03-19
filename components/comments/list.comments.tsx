@@ -21,6 +21,7 @@ const CommentList = ({ blog, comments, setComments, hasParent, refreshBlog }: {
     const [page, setPage] = useState(1);
     const [loading, setLoading] = useState(false);
     const [hasMore, setHasMore] = useState(true);
+    const [commentUpdateByWS, setCommentUpdateByWS] = useState<boolean>(false);
     const [stompClient, setStompClient] = useState<Client | null>(null);
     // const [listAllComment, setListAllComment] = useState<CommentResponse[]>()
     const observerRef = useRef<IntersectionObserver | null>(null);
@@ -71,31 +72,11 @@ const CommentList = ({ blog, comments, setComments, hasParent, refreshBlog }: {
     //         client.deactivate();
     //     };
     // }, [blog.blogId]);
-    const getPageComment = async () => {
-        setLoading(true);
-        await new Promise(res => setTimeout(res, 3000));
-        const commentPageResponse = await sendRequest<ApiResponse<PageDetailsResponse<CommentResponse[]>>>({
-            url: `${apiUrl}/comments?page=${page}&size=5&filter=blog.blogId:${blog.blogId} and parentComment is null&sort=createdAt,desc&sort=commentId,asc`,
-        });
 
-        if (commentPageResponse.status === 200) {
-            setComments((prev) => {
-                const newComments = commentPageResponse.data.content.filter(newComment =>
-                    !prev.some(comment => comment.commentId === newComment.commentId)
-                );
-                return [...prev, ...newComments];
-            });
-
-            if (page >= commentPageResponse.data.totalPages) {
-                setHasMore(false);
-            }
-        }
-        setLoading(false);
-    }
 
     useEffect(() => {
+        if (hasParent > -1) return;
         const fetch = async () => {
-            if (hasParent > -1) return;
             setLoading(true);
             await new Promise(res => setTimeout(res, 3000));
             const commentPageResponse = await sendRequest<ApiResponse<PageDetailsResponse<CommentResponse[]>>>({
@@ -116,18 +97,18 @@ const CommentList = ({ blog, comments, setComments, hasParent, refreshBlog }: {
             }
             setLoading(false);
         }
+
+
         fetch()
         if (hasMore) {
             fetch();
         }
-
     }, [page, hasMore]);
 
 
 
     useEffect(() => {
         if (hasParent > -1) return;
-
         const client = new Client({
             brokerURL: "ws://localhost:8386/ws/websocket",
             reconnectDelay: 5000, // Thử kết nối lại sau 5s nếu mất kết nối
@@ -137,6 +118,9 @@ const CommentList = ({ blog, comments, setComments, hasParent, refreshBlog }: {
                 // Subscribe đến topic nhận bình luận mới
                 client.subscribe(`/topic/comments/${blog.blogId}`, (message) => {
                     const newComment = JSON.parse(message.body);
+                    console.log("session: ", session?.user.userId)
+                    if (newComment.user.userId === session?.user.userId) return;
+                    console.log("check newComment ", newComment.user.userId)
                     if (newComment.parentComment === null) {
                         setComments((prev) => {
                             const isDuplicate = prev.some(comment => comment.commentId === newComment.commentId);
@@ -162,7 +146,7 @@ const CommentList = ({ blog, comments, setComments, hasParent, refreshBlog }: {
         return () => {
             client.deactivate();
         };
-    }, [blog.blogId]);
+    }, [blog.blogId, session]);
 
     return (
         <>

@@ -66,6 +66,7 @@ const Comment = ({ commentResponse, blog, setComments, refreshBlog }: {
                 // Subscribe đến topic nhận bình luận mới
                 client.subscribe(`/topic/comments/${blog.blogId}`, (message) => {
                     const newComment = JSON.parse(message.body);
+                    if (newComment.parentComment.commentId !== commentResponse.commentId) return;
                     setChildCommentList((prev) => {
                         if (!prev || !Array.isArray(prev)) {
                             return [newComment]; // Nếu prev là null hoặc không phải mảng, gán thành mảng mới
@@ -104,7 +105,7 @@ const Comment = ({ commentResponse, blog, setComments, refreshBlog }: {
 
 
 
-    const tymComment = async () => {
+    const likeAComment = async () => {
         if (!likeComment) {
             const likeRequest: LikeRequest = {
                 blogId: undefined,
@@ -203,7 +204,7 @@ const Comment = ({ commentResponse, blog, setComments, refreshBlog }: {
                         <div className='flex gap-x-3'>
                             <Tooltip title="Nhấn để thích bài viết này" placement="top" arrow>
                                 {/* <IconButton color={statusLike === false ? "default" : "primary"}> */}
-                                <IconButton color={likeComment ? 'error' : 'default'} onClick={tymComment}>
+                                <IconButton color={likeComment ? 'error' : 'default'} onClick={likeAComment}>
                                     <FavoriteSharpIcon />
                                 </IconButton>
                             </Tooltip>

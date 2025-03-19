@@ -1,3 +1,4 @@
+import MyCourse from "@/components/course/my-course/my.course";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -5,7 +6,7 @@ export const metadata: Metadata = {
 };
 const MyCoursePage = () => {
     return (
-        <div>MyCoursePage</div>
+        <MyCourse />
     )
 }
 
