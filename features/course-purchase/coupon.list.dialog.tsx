@@ -5,11 +5,11 @@ import { sendRequest } from "@/utils/fetch.api";
 import { apiUrl } from "@/utils/url";
 import SingleCoupon from "./single.coupon";
 import dayjs from "dayjs";
-import { countDiscountValue } from "@/helper/coupon.helper";
+import { countDiscountValue, optimizeDisplayCoupons } from "@/helper/coupon.helper";
 import { formatSalePrice } from "@/helper/course.list.helper";
 import ListEmpty from "@/components/empty/list.empty";
 
-const CouponList = ({ open, setOpen, totalPrice, selectedCoupon, setSelectedCoupon }: {
+const CouponListDialog = ({ open, setOpen, totalPrice, selectedCoupon, setSelectedCoupon }: {
     open: boolean;
     setOpen: Dispatch<SetStateAction<boolean>>;
     totalPrice: number;
@@ -22,7 +22,6 @@ const CouponList = ({ open, setOpen, totalPrice, selectedCoupon, setSelectedCoup
 
     const handleCancel = () => {
         setSearchCode("");
-        setSelectedCoupon(null);
         setOpen(false);
     }
 
@@ -43,7 +42,7 @@ const CouponList = ({ open, setOpen, totalPrice, selectedCoupon, setSelectedCoup
                 }
             });
             if (response.status === 200) {
-                setCoupons(response.data);
+                setCoupons(optimizeDisplayCoupons(response.data, totalPrice));
             }
             setLoading(false);
         }
@@ -113,7 +112,7 @@ const CouponList = ({ open, setOpen, totalPrice, selectedCoupon, setSelectedCoup
 
                 <div className="flex items-center justify-end gap-x-3 mt-3">
                     <Button variant="outlined" color="secondary" startIcon={<CloseIcon />} onClick={handleCancel}>
-                        Hủy
+                        Đóng
                     </Button>
                     <Button variant="contained" onClick={() => setOpen(false)}>
                         Áp Dụng
@@ -124,4 +123,4 @@ const CouponList = ({ open, setOpen, totalPrice, selectedCoupon, setSelectedCoup
     )
 }
 
-export default CouponList
+export default CouponListDialog

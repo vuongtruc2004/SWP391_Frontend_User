@@ -13,11 +13,11 @@ export const formatPrice = (price: number): string => {
 
 export const formatSalePrice = (price: number): string => {
     if (price >= 1000000) {
-        return (price / 1000000).toFixed(0) + 'tr';
+        return (Number.isInteger((price / 1000000)) ? (price / 1000000) : (price / 1000000).toFixed(1)) + 'tr';
     } else if (price >= 1000) {
-        return (price / 1000).toFixed(0) + 'k';
+        return (Number.isInteger((price / 1000)) ? (price / 1000) : (price / 1000).toFixed(1)) + 'k';
     } else {
-        return price.toFixed(0);
+        return Number.isInteger(price) ? price.toString() : price.toFixed(1);
     }
 }
 

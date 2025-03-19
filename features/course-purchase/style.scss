@@ -61,3 +61,34 @@
   --vc-card-left-border-color: #ee4d2d;
   --vc-card-left-fill-color: #ee4d2d;
 }
+
+.o3ut9x {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  max-width: 100%;
+  padding: 4px 8px;
+  position: relative;
+  background-color: rgba(208, 1, 27, 0.15);
+  font-weight: 500;
+  color: #ee4d2d;
+  white-space: nowrap;
+  z-index: 1;
+}
+.o3ut9x:before {
+  left: -3px;
+}
+.o3ut9x:after {
+  right: -3px;
+}
+.o3ut9x:after,
+.o3ut9x:before {
+  background-image: radial-gradient(#101010 2px, transparent 0);
+  background-position-x: -6px;
+  background-size: 6px 6px;
+  content: "";
+  height: calc(100% - 5px);
+  position: absolute;
+  top: 2.5px;
+  width: 6px;
+}

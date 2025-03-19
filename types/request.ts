@@ -56,7 +56,7 @@ declare global {
     interface PurchaseRequest {
         courseIds: number[];
         totalPrice: number;
-        couponCode?: string;
+        couponId: number | null;
     }
 
     interface CreateMessageRequest {

@@ -1,4 +1,4 @@
-import { Box, Button, Dialog, DialogContent, Divider } from "@mui/material";
+import { Button, Dialog, DialogContent, Divider } from "@mui/material";
 import { SetStateAction, useEffect, useState } from "react";
 import CloseIcon from '@mui/icons-material/Close';
 import { useSession } from "next-auth/react";
@@ -7,10 +7,10 @@ import { apiUrl, storageUrl } from "@/utils/url";
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ErrorOutlineRoundedIcon from '@mui/icons-material/ErrorOutlineRounded';
 import { sendRequest } from "@/utils/fetch.api";
-import CouponList from "./coupon.list";
 import { countDiscountValue } from "@/helper/coupon.helper";
-import { formatSalePrice } from "@/helper/course.list.helper";
-import CachedIcon from '@mui/icons-material/Cached';
+import { formatPrice, formatSalePrice } from "@/helper/course.list.helper";
+import CourseInOrder from "./course.in.order";
+import CouponListDialog from "./coupon.list.dialog";
 
 const PaymentInstruction = ({ open, setOpen, courses }: {
     open: boolean;
@@ -30,7 +30,8 @@ const PaymentInstruction = ({ open, setOpen, courses }: {
             setLoading(true);
             const purchaseRequest: PurchaseRequest = {
                 courseIds: courses.map(course => course.courseId),
-                totalPrice: courses.reduce((sum, course) => sum + course.price, 0)
+                totalPrice: courses.reduce((sum, course) => sum + course.price, 0),
+                couponId: selectedCoupon?.couponId || null
             }
 
             const purchaseResponse = await sendRequest<ApiResponse<PurchaseResponse>>({
@@ -52,6 +53,12 @@ const PaymentInstruction = ({ open, setOpen, courses }: {
             }
             setLoading(false);
         }
+    }
+
+    const handleClosePaymentInstruction = () => {
+        setSelectedCoupon(null);
+        setErrorMessage("");
+        setOpen(false);
     }
 
     useEffect(() => {
@@ -84,52 +91,7 @@ const PaymentInstruction = ({ open, setOpen, courses }: {
 
                 <h2 className="text-lg font-semibold my-3">Thông tin đơn hàng ({courses.length} khóa học)</h2>
 
-                <Box sx={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    rowGap: '20px',
-                    overflow: 'auto',
-                    maxHeight: '209px',
-                    paddingRight: '20px',
-                    '&::-webkit-scrollbar': {
-                        display: 'block',
-                        width: '2px',
-                        borderRadius: '6px',
-                    },
-                    '&::-webkit-scrollbar-track': {
-                        background: '#495057',
-                        borderRadius: '6px',
-                    },
-                    '&::-webkit-scrollbar-thumb': {
-                        background: '#60a5fa',
-                        borderRadius: '6px',
-                    },
-                    '&::-webkit-scrollbar-thumb:hover': {
-                        background: '#1976D2',
-                    }
-                }}>
-                    {courses.map(course => {
-                        return (
-                            <div key={course.courseId + "_" + course.courseName} className="flex items-center justify-between w-full">
-                                <div className="flex items-center gap-x-3">
-                                    <Image
-                                        src={`${storageUrl}/course/${course.thumbnail}`}
-                                        width={100} height={60}
-                                        alt="course thumbnail"
-                                        sizes="(max-width: 1000px) 100vw"
-                                        priority={true}
-                                        className="rounded-sm"
-                                    />
-                                    <div className="max-w-[250px]">
-                                        <p className="line-clamp-1">{course.courseName}</p>
-                                        <p className="text-sm text-gray-300">{"author" in course ? course.author : course.expert.user.fullname}</p>
-                                    </div>
-                                </div>
-                                <p className="font-semibold">{course.price.toLocaleString('vi-VN')}₫</p>
-                            </div>
-                        )
-                    })}
-                </Box>
+                <CourseInOrder courses={courses} />
 
                 <Divider sx={{ marginBlock: '20px' }} />
 
@@ -144,27 +106,35 @@ const PaymentInstruction = ({ open, setOpen, courses }: {
                         <p>Mã giảm giá từ LearnGo:</p>
                     </div>
 
-                    <div className="flex items-center gap-x-1 text-gray-300 cursor-pointer" onClick={() => setOpenCouponList(true)}>
-                        {selectedCoupon ? (
-                            <p>Đã áp dụng mã <span className="font-semibold">{selectedCoupon.couponCode}</span>, giảm <span className="text-green-500 font-semibold text-lg">₫{formatSalePrice(countDiscountValue(selectedCoupon, totalPrice))}</span></p>
-                        ) : (
-                            <>
-                                <p className="text-sm hover:text-purple-300">Chọn hoặc nhập mã</p>
-                                <ChevronRightIcon sx={{ fontSize: '1rem' }} className="hover:text-purple-300" />
-                            </>
-                        )}
-                    </div>
+                    {selectedCoupon ? (
+                        <div className="flex items-center gap-x-1 cursor-pointer" onClick={() => setOpenCouponList(true)}>
+                            <div className="o3ut9x">
+                                <span>Giảm ₫{formatSalePrice(countDiscountValue(selectedCoupon, totalPrice))}</span>
+                            </div>
+                            <ChevronRightIcon sx={{ fontSize: '1.2rem' }} />
+                        </div>
+                    ) : (
+                        <div className="flex items-center gap-x-1 text-gray-300 cursor-pointer hover:text-purple-300" onClick={() => setOpenCouponList(true)}>
+                            <p className="text-sm">Chọn hoặc nhập mã</p>
+                            <ChevronRightIcon sx={{ fontSize: '1.2rem' }} />
+                        </div>
+                    )}
                 </div>
 
-                <div>
-                    <div className="flex items-center justify-between">
-                        <p className="text-gray-300"><span className="font-semibold text-white text-lg">Tổng tiền</span> ({courses.length} khóa học):</p>
-                        <p className="font-semibold text-lg">{totalPrice.toLocaleString('vi-VN')}₫</p>
-                    </div>
+                <div className="flex items-center justify-between">
+                    <p className="text-gray-300"><span className="font-semibold text-white text-lg">Tổng tiền</span> ({courses.length} khóa học):</p>
+                    {selectedCoupon ? (
+                        <div className="flex items-end gap-x-3">
+                            <p className="font-semibold text-lg">{formatPrice(Math.max(totalPrice - countDiscountValue(selectedCoupon, totalPrice), 0))}₫</p>
+                            <p className="text-gray-300 line-through">{formatPrice(totalPrice)}₫</p>
+                        </div>
+                    ) : (
+                        <p className="font-semibold text-lg">{formatPrice(totalPrice)}₫</p>
+                    )}
                 </div>
 
                 <div className="flex items-center justify-end gap-x-3 mt-3">
-                    <Button variant="outlined" color="secondary" startIcon={<CloseIcon />} onClick={() => setOpen(false)}>
+                    <Button variant="outlined" color="secondary" startIcon={<CloseIcon />} onClick={handleClosePaymentInstruction}>
                         Hủy
                     </Button>
                     <Button variant="contained" color="primary" onClick={handleCreateOrder} loading={loading}>
@@ -179,7 +149,7 @@ const PaymentInstruction = ({ open, setOpen, courses }: {
                     </span>
                 )}
 
-                <CouponList open={openCouponList} setOpen={setOpenCouponList} totalPrice={totalPrice} selectedCoupon={selectedCoupon} setSelectedCoupon={setSelectedCoupon} />
+                <CouponListDialog open={openCouponList} setOpen={setOpenCouponList} totalPrice={totalPrice} selectedCoupon={selectedCoupon} setSelectedCoupon={setSelectedCoupon} />
             </DialogContent >
         </Dialog>
     )
