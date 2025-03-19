@@ -83,4 +83,16 @@ declare global {
         blog: number,
         parentComment: number | null,
     }
+    interface QuizAttemptRequest {
+        quizAttemptId?: number;
+        userId?: number;
+        quizId: number;
+        attemptNumber?: number;
+        score?: number;
+        userAnswers: UserAnswerRequest[];
+    }
+    interface UserAnswerRequest {
+        questionId: number;
+        answerIds: number[];
+    }
 }

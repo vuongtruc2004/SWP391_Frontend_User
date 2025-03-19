@@ -297,4 +297,19 @@ declare global {
         comment: CommentResponse,
         createdAt: string,
     }
+
+    interface QuizAttemptResponse {
+        quizAttemptId: number;
+        userId: number;
+        attemptNumber: number;
+        score: number;
+        startTime: string;
+        endTime: string;
+        userAnswers: UserAnswerResponse[];
+    }
+
+    interface UserAnswerResponse {
+        questionId: number;
+        answerIds: number[];
+    }
 }

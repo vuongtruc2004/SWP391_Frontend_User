@@ -6,6 +6,9 @@ import QuestionMarkIcon from '@mui/icons-material/QuestionMark';
 import { formatDurationWithTail } from "@/helper/course.details.helper";
 import { useState } from "react";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
+import { sendRequest } from "@/utils/fetch.api";
+import { apiUrl } from "@/utils/url";
 
 const LessonQuiz = () => {
     const { lessons, currentPlayIndex } = useCourseView();
@@ -17,6 +20,27 @@ const LessonQuiz = () => {
     if (!("quizId" in quiz)) {
         return null;
     }
+    const { data: session } = useSession();
+
+    const handleOpenQuiz = async () => {
+        const response = await sendRequest<ApiResponse<QuizAttemptResponse>>({
+            url: `${apiUrl}/quizzes-attempt/save`,
+            method: 'POST',
+            headers: {
+                Authorization: `Bearer ${session?.accessToken}`,
+                "Content-Type": "application/json"
+            },
+            body: {
+                userId: session?.user.userId,
+                quizId: quiz.quizId,
+                userAnswers: []
+            }
+        });
+
+        if (response.data) {
+            localStorage.setItem("quizAttemptId", response.data.quizAttemptId.toString());
+        }
+    };
 
     return (
         <>
@@ -50,7 +74,7 @@ const LessonQuiz = () => {
 
             <div className="flex justify-center mt-5">
                 <Link href={`/quiz/start/${slugifyText(quiz.title + "-" + quiz.quizId)}`}>
-                    <Button variant="outlined" color="secondary">
+                    <Button onClick={handleOpenQuiz} variant="outlined" color="secondary">
                         Làm bài ngay
                     </Button>
                 </Link>
