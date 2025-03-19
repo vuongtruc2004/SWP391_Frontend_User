@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { sendRequest } from "@/utils/fetch.api";
 import { apiUrl } from "@/utils/url";
 import { useSession } from "next-auth/react";
-import { Box, Button, Modal, Typography } from "@mui/material";
+import { Box, Button, Divider, Modal, Typography } from "@mui/material";
 import StarOutlineIcon from '@mui/icons-material/StarOutline';
 import SaveIcon from '@mui/icons-material/Save';
 import LibraryAddCheckOutlinedIcon from '@mui/icons-material/LibraryAddCheckOutlined';
@@ -43,15 +43,24 @@ const DoQuiz = ({ quiz }: { quiz: QuizResponse }) => {
         const savedStartTime = localStorage.getItem("quizStartTime");
         const now = Math.floor(Date.now() / 1000);
         const durationSeconds = quiz.duration * 60;
-
+        console.log("duration>>>", quiz.duration);
         let remainingTime;
         if (savedStartTime) {
             const elapsedTime = now - parseInt(savedStartTime, 10);
-            remainingTime = Math.max(durationSeconds - elapsedTime, 0);
+
+            if (elapsedTime > durationSeconds) {
+                console.log("Quiz đã hết thời gian trước đó, đặt lại thời gian mới.");
+                localStorage.setItem("quizStartTime", now.toString());
+                remainingTime = durationSeconds;
+            } else {
+                remainingTime = Math.max(durationSeconds - elapsedTime, 0);
+            }
         } else {
             localStorage.setItem("quizStartTime", now.toString());
             remainingTime = durationSeconds;
         }
+
+        console.log("remainingTime sau tính toán:", remainingTime);
 
         setTimeLeft(remainingTime);
         const selectOption = localStorage.getItem("selectedOptions")
@@ -194,15 +203,6 @@ const DoQuiz = ({ quiz }: { quiz: QuizResponse }) => {
         localStorage.removeItem("quizStartTime");
     };
 
-    const handleRepeatQuiz = () => {
-        setQuizCompleted(false);
-        setSelectedOptions(new Array(quizBank.length).fill([]));
-        setCurrentQuestionIndex(0);
-        setTimeLeft(0);
-        setQuestionColors(new Array(quizBank.length).fill("bg-gray-400"));
-        setBookmarkedQuestions([]);
-    };
-
     const isAllQuestionsAnswered = () => {
         return selectedOptions.every(ans => Array.isArray(ans) && ans.length > 0);
     };
@@ -212,7 +212,12 @@ const DoQuiz = ({ quiz }: { quiz: QuizResponse }) => {
     const currentQuestion = quizBank[currentQuestionIndex];
     const handleClose = () => {
         setShowResultModal(false);
-        router.push("/course");
+        setQuizCompleted(false);
+        setSelectedOptions(new Array(quizBank.length).fill([]));
+        setCurrentQuestionIndex(0);
+        setTimeLeft(0);
+        setQuestionColors(new Array(quizBank.length).fill("bg-gray-400"));
+        setBookmarkedQuestions([]);
     };
 
     const formatTime = (seconds: number) => {
@@ -287,37 +292,41 @@ const DoQuiz = ({ quiz }: { quiz: QuizResponse }) => {
 
 
     return (
-        <div className="flex h-screen p-4 bg-white">
+        <div className="flex gap-2 h-screen p-4 bg-white">
             {/* Sidebar danh sách câu hỏi */}
-            <div className="flex w-1/3 flex-col items-center border-r border-gray-300 p-4 mt-4">
-                <div className="text-black text-lg font-semibold mb-5">Tiêu đề bài kiểm tra: {title}</div>
+            <div className="flex w-1/3 flex-col items-center border-gray-400 p-4 border">
 
                 <div className="text-lg font-semibold text-black mb-5">
                     Số câu đã hoàn thành: {countAnsweredQuestions()}/{quizBank.length}
                 </div>
-
+                <div className="text-xl font-semibold text-red-500 mb-5 flex items-center">
+                    <span className={`${!quizCompleted ? 'animate-rotate' : ''} mr-2`}>⏳</span> {formatTime(timeLeft)}
+                </div>
                 {/* Thanh tiến trình */}
-                <div className="w-3/4 bg-gray-200 rounded-xs  h-5 mb-5">
+                <div className="w-2/3 bg-gray-200 rounded-xs  h-5 mb-5">
                     <div
                         className="bg-green-500 h-5 rounded-xs transition-all duration-300"
                         style={{ width: `${(countAnsweredQuestions() / quizBank.length) * 100}%` }}
                     ></div>
                 </div>
 
-                <div className="grid grid-cols-5 mb-5 gap-x-0.5 gap-y-0.5">
+
+                <div className=" h-[1px] bg-gray-500 w-[301px] mb-5 opacity-50"></div>
+
+                <div className="grid grid-cols-5 mb-5 gap-x-0.5 h-[300px] gap-y-0.5 overflow-auto">
                     {quizBank.map((_, index) => {
                         const isBookmarked = bookmarkedQuestions.includes(index);
                         const isAnswered = selectedOptions[index]?.length > 0;
                         const isCurrent = index === currentQuestionIndex;
 
-                        let questionColor = "bg-gray-400"; // Mặc định màu xám
-                        if (isBookmarked) questionColor = "bg-yellow-400"; // Đánh dấu
-                        else if (isAnswered) questionColor = "bg-blue-600"; // Đã trả lời
+                        let questionColor = "bg-gray-400";
+                        if (isBookmarked) questionColor = "bg-yellow-400";
+                        else if (isAnswered) questionColor = "bg-blue-600";
 
                         return (
                             <button
                                 key={index}
-                                className={`w-10 h-10 flex items-center justify-center border rounded text-sm 
+                                className={`w-15 h-10 flex items-center justify-center border rounded text-sm 
                     ${questionColor} 
                     ${isCurrent ? "border-2 border-black" : ""}`}
                                 onClick={() => setCurrentQuestionIndex(index)}
@@ -328,17 +337,16 @@ const DoQuiz = ({ quiz }: { quiz: QuizResponse }) => {
                     })}
                 </div>
 
-                <div className="text-xl font-semibold text-red-500 mb-5 flex items-center">
-                    <span className={`${!quizCompleted ? 'animate-rotate' : ''} mr-2`}>⏳</span> {formatTime(timeLeft)}
-                </div>
+                <div className=" h-[0.5px] bg-gray-500 w-[301px] mb-5 mt-3 opacity-50"></div>
 
 
-                <div className="flex items-center">
+                <div className="flex items-center justify-center w-full">
 
                     <Button
                         startIcon={<SaveIcon />}
                         disabled={quizCompleted}
                         style={{
+                            width: '33%',
                             color: '#155dfc',
                             border: '1px solid #155dfc',
                             borderTopRightRadius: 0,
@@ -351,6 +359,7 @@ const DoQuiz = ({ quiz }: { quiz: QuizResponse }) => {
                     <Button
                         startIcon={<LibraryAddCheckOutlinedIcon />}
                         style={{
+                            width: '33%',
                             border: '1px solid #155dfc',
                             borderTopLeftRadius: 0,
                             borderBottomLeftRadius: 0,
@@ -364,7 +373,7 @@ const DoQuiz = ({ quiz }: { quiz: QuizResponse }) => {
 
                 <Modal
                     open={showResultModal}
-                    // onClose={handleClose}
+                    onClose={handleClose}
                     aria-labelledby="modal-modal-title"
                     aria-describedby="modal-modal-description"
 
@@ -382,34 +391,18 @@ const DoQuiz = ({ quiz }: { quiz: QuizResponse }) => {
                             <p className="font-normal text-black"><span className="font-semibold">Điểm: </span>{score.toFixed(2)}/10</p>
                             <Button onClick={() => setShowResultModal(false)} style={{ backgroundColor: 'blue', color: 'white', marginLeft: '150px', width: '10px' }}>Đóng</Button>
                         </Typography>
-                        {/* Đặt nút Đóng trong Box để căn giữa */}
-                        <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
-                            <Link href={`/course`}>
-                                <Button
-                                    onClick={() => setShowResultModal(false)}
-                                    sx={{
-                                        backgroundColor: 'blue',
-                                        color: 'white',
-                                        ':hover': { backgroundColor: 'darkblue' },
-                                        borderRadius: '8px',
-                                        padding: '10px 20px'
-                                    }}
-                                >
-                                    Đóng
-                                </Button>
-                            </Link>
-                        </Box>
+
                     </Box>
                 </Modal>
             </div>
 
             {/* Nội dung câu hỏi */}
-            <div className="flex-1 flex flex-col justify-start items-center p-4">
-                <div className="w-full max-w-2xl p-4">
+            <div className="flex flex-1 flex-col h-[60%] border border-gray-400">
+                <div className="w-full p-6 relative">
                     <div className="flex justify-between">
                         <p className="text-lg font-semibold text-black flex-1">Câu hỏi {currentQuestionIndex + 1}
                             {currentQuestion.answers.filter(answer => answer.correct).length > 1 ? <span className="font-medium text-sm italic"> &lt;Chọn nhiều đáp án&gt; </span> : <span className="font-medium text-sm italic"> &lt;Chọn một đáp án&gt; </span>}
-                            <br /><span className="font-normal block mt-2">{currentQuestion.title}</span></p>
+                        </p>
 
                         <div className="mb-5">
                             <Button
@@ -417,8 +410,9 @@ const DoQuiz = ({ quiz }: { quiz: QuizResponse }) => {
                                 startIcon={<StarOutlineIcon className="text-" />}
                                 variant="outlined"
                                 style={{
-                                    color: bookmarkedQuestions.includes(currentQuestionIndex) ? "#ffb703" : "#ccc",
-                                    borderColor: bookmarkedQuestions.includes(currentQuestionIndex) ? "#ffb703" : "#ccc",
+                                    color: bookmarkedQuestions.includes(currentQuestionIndex) ? "white" : "#ffb703",
+                                    borderColor: bookmarkedQuestions.includes(currentQuestionIndex) ? "white" : "#ffb703",
+                                    backgroundColor: bookmarkedQuestions.includes(currentQuestionIndex) ? "#ffb703" : '',
                                     borderRadius: '5px'
                                 }}
                             >
@@ -426,7 +420,15 @@ const DoQuiz = ({ quiz }: { quiz: QuizResponse }) => {
                             </Button>
                         </div>
                     </div>
-                    <div className="mt-4 space-y-2">
+
+
+                    <div className=" absolute left-0 right-0 h-[1px] bg-gray-500 w-full mb-10 opacity-50"></div>
+
+                    <p className="font-normal text-black block mt-5 mb-5">{currentQuestion.title}</p>
+
+                    <div className=" absolute left-0 right-0 h-[0.5px] bg-gray-500 w-full mb-5 opacity-50"></div>
+
+                    <div className=" space-y-3 mt-10">
                         {currentQuestion.answers.map((answer) => {
                             const isSelected = Array.isArray(selectedOptions[currentQuestionIndex])
                                 ? selectedOptions[currentQuestionIndex].includes(answer.answerId.toString())
@@ -443,11 +445,11 @@ const DoQuiz = ({ quiz }: { quiz: QuizResponse }) => {
                                         className="hidden"
                                     />
                                     <div
-                                        className={`w-3 h-3 border-2 rounded-full flex items-center justify-center transition ${isSelected ? "border-gray-500 bg-gray-500 " : "border-gray-400"}`}
+                                        className={`w-3 h-3 border-2 rounded-full flex flex-shrink-0 items-center justify-center transition ${isSelected ? "border-gray-500 bg-gray-500 " : "border-gray-400"}`}
                                     >
                                         {isSelected && <div className="w-0.5 h-0.5 bg-red rounded-full"></div>}
                                     </div>
-                                    <span className="text-black">{answer.content}</span>
+                                    <span className="text-black break-words">{answer.content}</span>
                                 </label>
                             );
                         })}
