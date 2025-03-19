@@ -7,11 +7,13 @@ import { useSession } from "next-auth/react";
 import ListEmpty from "../empty/list.empty";
 import Link from "next/link";
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import { orderStatuses } from "./order.status.properties";
 import SingleOrder from "@/features/purchase-history/single.order";
 
-const PurchaseHistory = () => {
+const PurchaseHistoryTabs = () => {
     const { data: session, status } = useSession();
 
+    const [selectedTab, setSelectedTab] = useState<string>("ALL");
     const [orderList, setOrderList] = useState<OrderResponse[]>([]);
     const [loading, setLoading] = useState(true);
 
@@ -20,7 +22,7 @@ const PurchaseHistory = () => {
             if (status === 'authenticated') {
                 setLoading(true);
                 const response = await sendRequest<ApiResponse<OrderResponse[]>>({
-                    url: `${apiUrl}/users/purchase-history`,
+                    url: `${apiUrl}/users/purchase-history/${selectedTab}`,
                     headers: {
                         Authorization: `Bearer ${session.accessToken}`,
                     },
@@ -33,11 +35,39 @@ const PurchaseHistory = () => {
         };
 
         fetchData();
-    }, [session]);
+    }, [selectedTab, session]);
 
     return (
         <>
             <h1 className="font-semibold text-xl mb-5">Lịch sử mua hàng của bạn</h1>
+            <Box sx={{
+                display: 'flex',
+                alignItems: 'center',
+                columnGap: '12px',
+                bgcolor: 'black',
+                padding: '8px',
+                borderRadius: '6px',
+                width: 'max-content',
+                'div': {
+                    '&.active': {
+                        bgcolor: '#212121',
+                    },
+                    ':not(.active):hover': {
+                        color: '#2b7fff'
+                    }
+                }
+            }}>
+                {orderStatuses.map(item => {
+                    return (
+                        <div className={`transition-all duration-300 py-1.5 px-5 rounded-md cursor-pointer ${selectedTab === item.en && 'active'}`}
+                            key={item.key}
+                            onClick={() => setSelectedTab(item.en)}
+                        >
+                            {item.vi}
+                        </div>
+                    )
+                })}
+            </Box>
 
             {loading ? (
                 <div className="flex items-center justify-center mt-20">
@@ -69,4 +99,4 @@ const PurchaseHistory = () => {
     );
 };
 
-export default PurchaseHistory;
+export default PurchaseHistoryTabs;

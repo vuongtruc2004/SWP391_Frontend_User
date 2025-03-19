@@ -1,4 +1,4 @@
-import PurchaseHistory from '@/components/purchase-history/purchase.history';
+import PurchaseHistoryTabs from '@/components/purchase-history/purchase.history.tabs';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -7,7 +7,7 @@ export const metadata: Metadata = {
 
 const HistoryPurchased = () => {
     return (
-        <PurchaseHistory />
+        <PurchaseHistoryTabs />
     )
 }
 

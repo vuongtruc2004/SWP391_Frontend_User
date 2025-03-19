@@ -5,23 +5,18 @@ export const orderStatuses = [
         vi: 'Tất cả'
     },
     {
-        key: 'pending',
-        en: 'PENDING',
-        vi: 'Đang chờ thanh toán'
-    },
-    {
         key: 'completed',
         en: 'COMPLETED',
         vi: 'Đã hoàn thành'
     },
     {
+        key: 'pending',
+        en: 'PENDING',
+        vi: 'Đang chờ thanh toán'
+    },
+    {
         key: 'expired',
         en: 'EXPIRED',
         vi: 'Đã hết hạn'
-    },
-    {
-        key: 'cancelled',
-        en: 'CANCELLED',
-        vi: 'Đã hủy'
     }
 ];

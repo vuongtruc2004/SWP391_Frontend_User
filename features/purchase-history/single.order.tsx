@@ -11,6 +11,7 @@ import SchoolOutlinedIcon from '@mui/icons-material/SchoolOutlined';
 import ShareIcon from '@mui/icons-material/Share';
 import ShareCourseDialog from "./share.course.dialog";
 import DoneAllIcon from '@mui/icons-material/DoneAll';
+import { displayOrderStatus } from "@/helper/purchase.history.helper"
 
 const SingleOrder = ({ order }: { order: OrderResponse }) => {
     const [openShare, setOpenShare] = useState(false);
@@ -40,6 +41,8 @@ const SingleOrder = ({ order }: { order: OrderResponse }) => {
                             <p className="text-gray-400 font-semibold">Tổng tiền</p>
                             <p className="text-white">{formatPrice(order.totalAmount)}₫</p>
                         </li>
+
+                        {displayOrderStatus(order)}
                     </ul>
                 </AccordionSummary>
 
