@@ -48,6 +48,7 @@ const PaymentInstruction = ({ open, setOpen, courses }: {
                 window.open(purchaseResponse.data.redirectUrl, "_blank");
                 setErrorMessage("");
                 setOpen(false);
+                setSelectedCoupon(null);
             } else {
                 setErrorMessage(purchaseResponse.message.toString());
             }

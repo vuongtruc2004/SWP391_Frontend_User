@@ -7,6 +7,7 @@ import Image from "next/image"
 import { storageUrl } from "@/utils/url";
 import CircleOutlinedIcon from '@mui/icons-material/CircleOutlined';
 import RadioButtonCheckedOutlinedIcon from '@mui/icons-material/RadioButtonCheckedOutlined';
+import { BorderLinearProgress, GradientLinearProgress } from "@/components/course/course-slider/custom.progress"
 
 const SingleCoupon = ({ coupon, selectedCoupon, setSelectedCoupon, canApply }: {
     coupon: CouponResponse,
@@ -55,9 +56,18 @@ const SingleCoupon = ({ coupon, selectedCoupon, setSelectedCoupon, canApply }: {
                         )}
                     </div>
 
-                    <p className="text-gray-300">Đơn tối thiểu <span className="font-semibold">₫{formatSalePrice(coupon.minOrderValue)}</span></p>
+                    <p className="text-gray-300 mb-2">Đơn tối thiểu <span className="font-semibold">₫{formatSalePrice(coupon.minOrderValue)}</span></p>
 
-                    <p className="text-gray-300">Hạn sử dụng: <span className="font-semibold text-purple-300">{formatDateTime(coupon.endTime)}</span></p>
+                    {coupon.usedCount >= 1 && (
+                        <GradientLinearProgress variant="determinate" value={coupon.usedCount / coupon.maxUses * 100} height={4} />
+                    )}
+
+                    <div className="flex items-center gap-x-1 text-gray-300 text-sm mt-1">
+                        {coupon.usedCount >= 1 && (
+                            <p>Đã sử dụng <span className="text-purple-300 font-semibold">{Math.round(coupon.usedCount / coupon.maxUses * 100)}%</span>,</p>
+                        )}
+                        <p className="text-gray-300">HSD: <span className="font-semibold text-purple-300">{formatDateTime(coupon.endTime)}</span></p>
+                    </div>
                 </div>
             </div>
 
