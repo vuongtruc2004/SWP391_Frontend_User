@@ -1,15 +1,7 @@
 'use server'
-
-export interface CommentFieldResponse {
-    comment: {
-        error: boolean;
-        message?: string | React.ReactNode;
-        value: string | undefined;
-    }
-}
-export const comment = async (prevState: any, formData: FormData): Promise<CommentFieldResponse> => {
-    const comment = formData.get('comment')?.toString();
-    if (!comment || comment.trim() === '') {
+export const comment = async (prevState: any, formData: FormData): Promise<{ comment: ErrorResponse }> => {
+    const comment = formData.get('comment')?.toString() || "";
+    if (comment.trim() === '') {
         return {
             comment: {
                 error: true,
@@ -21,7 +13,7 @@ export const comment = async (prevState: any, formData: FormData): Promise<Comme
     return {
         comment: {
             error: false,
-            value: ''
+            value: comment
         }
     }
 }

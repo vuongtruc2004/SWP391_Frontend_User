@@ -11,6 +11,7 @@ const DetailsPage = async ({ params }: { params: Promise<{ slug: string }> }) =>
         url: `${apiUrl}/blogs/${id}`,
     });
 
+
     if (blogResponse.status !== 200) {
         throw new Error(blogResponse.message.toString());
     }
@@ -19,6 +20,7 @@ const DetailsPage = async ({ params }: { params: Promise<{ slug: string }> }) =>
         <div className="flex flex-col gap-y-5">
             <BlogDetails blog={blogResponse.data} />
             <InteractOnBlog blog={blogResponse.data} />
+
         </div>
     )
 }

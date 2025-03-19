@@ -72,4 +72,15 @@ declare global {
         stars: number | null;
         courseId?: number;
     }
+
+    interface LikeRequest {
+        blogId: number | undefined,
+        commentId: number | undefined,
+    }
+
+    interface CommentRequest {
+        content: string,
+        blog: number,
+        parentComment: number | null,
+    }
 }

@@ -6,20 +6,26 @@ import TextField from "@mui/material/TextField";
 import Tooltip from "@mui/material/Tooltip";
 import ThumbUpOutlinedIcon from '@mui/icons-material/ThumbUpOutlined';
 import ChatBubbleOutlineOutlinedIcon from '@mui/icons-material/ChatBubbleOutlineOutlined';
-import { useActionState, useRef } from "react";
+import { useActionState, useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
-import { comment, CommentFieldResponse } from "./blog.interact.action";
+import { comment } from "./blog.interact.action";
 import ErrorOutlineRoundedIcon from '@mui/icons-material/ErrorOutlineRounded';
 import { slugifyText } from "@/helper/blog.helper";
+import { sendRequest } from "@/utils/fetch.api";
+import { apiUrl } from "@/utils/url";
+import CommentList from "@/components/comments/list.comments";
+import { Divider } from "@mui/material";
 
-const initState: CommentFieldResponse | null = null;
 const InteractOnBlog = ({ blog }: { blog: BlogResponse }) => {
     const { data: session, status } = useSession();
     const router = useRouter();
     const inputRef = useRef<HTMLInputElement>(null);
 
-    const [state, formAction, pending] = useActionState(comment, initState);
+    const [state, formAction, pending] = useActionState(comment, null);
+    const [statusLike, setStatusLike] = useState<Boolean>(false);
+    const [comments, setComments] = useState<CommentResponse[]>([]);
+    const [blogRefresh, setBlogRefresh] = useState<BlogResponse>(blog);
 
     const redirectToLogin = () => {
         if (!session) {
@@ -28,7 +34,105 @@ const InteractOnBlog = ({ blog }: { blog: BlogResponse }) => {
         }
     }
 
-    const likeBlog = () => {
+    const refreshBlog = async () => {
+        const blogResponse = await sendRequest<ApiResponse<BlogResponse>>({
+            url: `${apiUrl}/blogs/${blog.blogId}`,
+        });
+        if (blogResponse.status === 200) {
+            setBlogRefresh(blogResponse.data);
+        }
+    }
+
+    useEffect(() => {
+        const fetchLikeStatus = async () => {
+            try {
+                const checkMethod = await sendRequest<ApiResponse<Boolean>>({
+                    url: `${apiUrl}/likes/check-like/${blog.blogId}`,
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${session?.accessToken}`
+                    },
+                });
+
+                if (checkMethod.status === 200) {
+                    setStatusLike(checkMethod.data); // Gán giá trị trả về từ API
+                }
+            } catch (error) {
+                console.error("Lỗi khi kiểm tra like:", error);
+            }
+        };
+
+        fetchLikeStatus();
+    }, [session?.accessToken]);
+
+    useEffect(() => {
+        const createComment = async () => {
+            if (status === 'authenticated') {
+                const commentRequest: CommentRequest = {
+                    content: state?.comment.value ?? '',
+                    blog: blog.blogId,
+                    parentComment: null,
+                }
+                const createComment = await sendRequest<ApiResponse<CommentResponse>>({
+                    url: `${apiUrl}/comments/create-comment`,
+                    method: 'POST',
+                    body: commentRequest,
+                    headers: {
+                        'Authorization': `Bearer ${session?.accessToken}`,
+                        'Content-Type': 'application/json'
+                    },
+                });
+                if (createComment.status === 200) {
+                    setComments(prev => [createComment.data, ...prev]);
+                    refreshBlog();
+                }
+            }
+        };
+
+        if (state && !state.comment.error) {
+            createComment();
+
+        }
+    }, [state]);
+
+
+
+    const likeBlog = async () => {
+        if (!statusLike) {
+            const likeRequest: LikeRequest = {
+                blogId: blog.blogId,
+                commentId: undefined,
+            }
+            const likeBlog = await sendRequest<ApiResponse<LikeResponse>>({
+                url: `${apiUrl}/likes`,
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${session?.accessToken}`,
+                    'Content-Type': 'application/json'
+                },
+                body: likeRequest
+            });
+
+            if (likeBlog.status === 200) {
+                setStatusLike(true)
+                refreshBlog()
+            }
+
+        } else {
+
+            const dislikeBlog = await sendRequest<ApiResponse<String>>({
+                url: `${apiUrl}/likes/dislike-blog/${blog.blogId}`,
+                method: 'DELETE',
+                headers: {
+                    'Authorization': `Bearer ${session?.accessToken}`,
+                },
+
+            });
+            if (dislikeBlog.status === 200) {
+                setStatusLike(false)
+                refreshBlog()
+            }
+        }
 
     }
 
@@ -38,23 +142,25 @@ const InteractOnBlog = ({ blog }: { blog: BlogResponse }) => {
             borderRadius: '6px',
             padding: '20px',
             boxShadow: '2px 2px 5px rgba(0, 0, 0, 0.5)',
+            position: 'relative'
         }}>
             <ul className="flex items-center gap-x-10">
                 <li className="flex items-center gap-x-1">
                     <Tooltip title="Nhấn để thích bài viết này" placement="top" arrow>
-                        <IconButton color="primary" onClick={likeBlog}>
+                        <IconButton color={statusLike === false ? "default" : "primary"} onClick={likeBlog}>
                             <ThumbUpOutlinedIcon />
                         </IconButton>
                     </Tooltip>
-                    <p>{blog.totalLikes}</p>
+                    <p>{blogRefresh.totalLikes}</p>
                 </li>
                 <li className="flex items-center gap-x-1">
                     <IconButton color="primary" onClick={() => inputRef.current?.focus()}>
                         <ChatBubbleOutlineOutlinedIcon />
                     </IconButton>
-                    <p>{blog.totalComments}</p>
+                    <p>{blogRefresh.totalComments}</p>
                 </li>
             </ul>
+            <Divider />
 
             <form action={formAction} className="my-5">
                 <TextField
@@ -65,7 +171,6 @@ const InteractOnBlog = ({ blog }: { blog: BlogResponse }) => {
                     inputRef={inputRef}
                     onFocus={redirectToLogin}
                     name="comment"
-                    defaultValue={state?.comment.value}
                     error={state?.comment.error}
                     helperText={state?.comment.error && (
                         <span className="flex items-center gap-x-1">
@@ -76,7 +181,7 @@ const InteractOnBlog = ({ blog }: { blog: BlogResponse }) => {
                     disabled={status !== "authenticated"}
                 />
                 <Button
-                    disabled={pending || status !== "authenticated"}
+                    loading={pending}
                     variant="contained"
                     color="primary"
                     sx={{ textTransform: 'none', marginTop: '20px' }}
@@ -85,6 +190,14 @@ const InteractOnBlog = ({ blog }: { blog: BlogResponse }) => {
                     Đăng bình luận
                 </Button>
             </form>
+
+            <CommentList
+                blog={blog}
+                comments={comments}
+                setComments={setComments}
+                hasParent={-1}
+                refreshBlog={refreshBlog}
+            />
         </Box>
     )
 }

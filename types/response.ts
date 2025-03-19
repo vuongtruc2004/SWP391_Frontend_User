@@ -57,6 +57,11 @@ declare global {
         hashtags: HashtagResponse[];
     }
 
+    interface BlogDetailsResponse extends BlogResponse {
+        comments: CommentResponse[],
+        likes: LikeResponse[],
+    }
+
     interface HashtagResponse {
         tagId: number;
         tagName: string;
@@ -271,5 +276,25 @@ declare global {
         usedCount: number;
         startTime: string;
         endTime: string;
+    }
+
+    interface CommentResponse {
+        commentId: number,
+        content: string,
+        createdAt: string,
+        updatedAt: string,
+        user: UserResponse,
+        parentComment: CommentResponse,
+        replies: CommentResponse[],
+        likes: LikeResponse[],
+        blog: BlogResponse,
+
+    }
+
+    interface LikeResponse {
+        user: UserResponse,
+        blog: BlogResponse,
+        comment: CommentResponse,
+        createdAt: string,
     }
 }
