@@ -12,10 +12,20 @@ import ShareIcon from '@mui/icons-material/Share';
 import ShareCourseDialog from "./share.course.dialog";
 import DoneAllIcon from '@mui/icons-material/DoneAll';
 import { displayOrderStatus } from "@/helper/purchase.history.helper"
+import PaymentInstruction from "../course-purchase/payment.instruction"
+import ShoppingCartCheckoutOutlinedIcon from '@mui/icons-material/ShoppingCart';
+import { usePathname, useRouter } from "next/navigation"
+import { useSession } from "next-auth/react"
+import CloseIcon from '@mui/icons-material/Close'; // Import CloseIcon
 
-const SingleOrder = ({ order }: { order: OrderResponse }) => {
+
+const SingleOrder = ({ order, orderList }: { order: OrderResponse, orderList: OrderResponse[] }) => {
+    const pathname = usePathname();
+    const { status } = useSession();
+    const { push } = useRouter();
     const [openShare, setOpenShare] = useState(false);
     const [currentCourse, setCurrentCourse] = useState<CourseResponse | null>(null);
+    const [openInstruction, setOpenInstruction] = useState(false);
 
     const openShareModal = (currentCourse: CourseResponse) => {
         setOpenShare(true);
@@ -48,11 +58,50 @@ const SingleOrder = ({ order }: { order: OrderResponse }) => {
 
                 <AccordionDetails sx={{ padding: 0 }}>
                     <div className="flex items-center justify-center py-5 px-10">
-                        <div className="border rounded-md border-green-500 py-2 px-4 flex items-center justify-between flex-1">
-                            <p>Bạn đã thanh toán hóa đơn này lúc: {formatDateTime(order.updatedAt)}</p>
-                            <DoneAllIcon sx={{ fontSize: '1.2rem' }} className="text-green-500" />
+                        <div className={`border rounded-md py-2 px-4 flex items-center justify-between flex-1 
+    ${order.orderStatus === 'COMPLETED' ? 'border-green-500'
+                                : order.orderStatus === 'PENDING' ? 'border-orange-500'
+                                    : 'border-red-500'}`}>
+                            {order.orderStatus === 'COMPLETED' ? (
+                                <p>Bạn đã thanh toán hóa đơn này lúc: {formatDateTime(order.updatedAt)}</p>
+                            ) :
+                                <p>Bạn chưa thanh toán hóa đơn này</p>
+                            }
+                            <div>
+                                {order.orderStatus !== 'COMPLETED' && (
+                                    <Button
+                                        color="info"
+                                        variant="outlined"
+                                        startIcon={<ShoppingCartCheckoutOutlinedIcon />}
+                                        onClick={() => setOpenInstruction(true)}
+                                        className="!mr-2"
+                                    >
+                                        Mua lại
+                                    </Button>
+                                )}
+
+                                {order.orderStatus === 'COMPLETED' ? (
+                                    <DoneAllIcon
+                                        sx={{
+                                            fontSize: '1.2rem',
+                                            color: 'green'
+                                        }}
+                                    />
+                                ) : (
+                                    <CloseIcon
+                                        sx={{
+                                            fontSize: '1.2rem',
+                                            color: order.orderStatus === 'PENDING' ? 'orange' : 'red'
+                                        }}
+                                    />
+                                )}
+
+                            </div>
+
                         </div>
                     </div>
+
+
 
                     <ul>
                         {order.orderDetails && order.orderDetails.map((orderDetails, index) => {
@@ -108,6 +157,7 @@ const SingleOrder = ({ order }: { order: OrderResponse }) => {
                                                         Xem chi tiết khóa học
                                                     </Button>
                                                 </Link>
+
                                             </div>
                                         </div>
 
@@ -131,6 +181,13 @@ const SingleOrder = ({ order }: { order: OrderResponse }) => {
                 setOpen={setOpenShare}
                 course={currentCourse}
             />
+
+            <PaymentInstruction
+                open={openInstruction}
+                setOpen={setOpenInstruction}
+                courses={order.orderDetails.map(detail => detail.course)}
+            />
+
         </>
 
     )

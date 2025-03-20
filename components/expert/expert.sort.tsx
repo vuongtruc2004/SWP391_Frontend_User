@@ -13,10 +13,8 @@ import SearchIcon from '@mui/icons-material/Search';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import { InputAdornment, TextField } from "@mui/material";
 
-const ExpertSort = ({ totalElements, expertSort, direction }: {
+const ExpertSort = ({ totalElements }: {
     totalElements: number,
-    expertSort: string;
-    direction: string;
 }) => {
 
     const [orderBy, setOrderby] = useState<string>("yearOfExperience");
@@ -82,111 +80,47 @@ const ExpertSort = ({ totalElements, expertSort, direction }: {
             }}>
                 <p><strong className="text-blue-500 text-lg">{totalElements}</strong> chuyên gia</p>
 
-                <div className="flex items-center gap-x-10">
-                    <label>Sắp xếp theo:</label>
+                <form ref={formRef} onSubmit={handleSubmitKeyword} className="flex items-center justify-center gap-x-1 w-[70%]">
+                    <TextField
+                        variant="outlined"
+                        slotProps={{
+                            input: {
+                                startAdornment: (
+                                    <InputAdornment position="start">
+                                        <SearchIcon />
+                                    </InputAdornment>
+                                ),
+                            },
+                        }}
+                        size='small'
+                        placeholder='Nhập tên chuyên gia, thành tích, mô tả'
+                        name='keyword'
+                        defaultValue={currentKeyword}
+                        fullWidth
+                    />
 
-                    <div className="flex items-center gap-x-3">
-                        <Select
-                            value={orderBy}
-                            onChange={handleChangeSortOption}
-                            size="small"
+                    <Tooltip title="Làm mới bộ lọc" arrow placement="top">
+                        <Button
+                            variant="contained"
+                            color='info'
+                            onClick={handleResetFilter}
+                            sx={{
+                                width: '40px',
+                                minWidth: '40px',
+                                aspectRatio: 1,
+                                display: 'flex',
+                                justifyContent: 'center',
+                                alignItems: 'center'
+                            }}
                         >
-                            <MenuItem value={"yearOfExperience"}>Năm kinh nghiệm</MenuItem>
-                            <MenuItem value={"totalStudents"}>Số lượng học viên</MenuItem>
-                            <MenuItem value={"totalFollowers"}>Số lượng người đăng kí</MenuItem>
-                        </Select>
-
-                        <Tooltip title="Giảm dần" placement="top" arrow>
-                            <Button
-                                variant="outlined"
-                                onClick={() => handleChangeDirection("desc")}
-                                color={direction === "desc" ? 'primary' : 'secondary'}
-                                className={`${direction === "desc" ? "active" : ""}`}
-                            >
-                                <Image
-                                    src={`/desc.webp`}
-                                    alt={"descending icon"}
-                                    width={0}
-                                    height={0}
-                                    sizes="(max-width: 1000px) 100vw"
-                                    style={{
-                                        objectFit: 'cover',
-                                        objectPosition: 'center',
-                                        width: 'auto',
-                                        height: '24px',
-                                        margin: '0 auto',
-                                        transition: 'all .5s',
-                                    }}
-                                />
-                            </Button>
-                        </Tooltip>
-
-                        <Tooltip title="Tăng dần" placement="top" arrow>
-                            <Button
-                                variant="outlined"
-                                onClick={() => handleChangeDirection("asc")}
-                                color={direction === "asc" ? 'primary' : 'secondary'}
-                                className={`${direction === "asc" ? "active" : ""}`}
-                            >
-                                <Image
-                                    src={`/asc.webp`}
-                                    alt={"ascending icon"}
-                                    width={0}
-                                    height={0}
-                                    sizes="(max-width: 1000px) 100vw"
-                                    style={{
-                                        objectFit: 'cover',
-                                        objectPosition: 'center',
-                                        width: 'auto',
-                                        height: '24px',
-                                        margin: '0 auto',
-                                        transition: 'all .5s',
-                                    }}
-                                />
-                            </Button>
-                        </Tooltip>
-                    </div>
-                </div>
+                            <RefreshIcon />
+                        </Button>
+                    </Tooltip>
+                </form>
 
             </Box >
 
-            <form ref={formRef} onSubmit={handleSubmitKeyword} className="flex items-center justify-center gap-x-1">
-                <TextField
-                    variant="outlined"
-                    slotProps={{
-                        input: {
-                            startAdornment: (
-                                <InputAdornment position="start">
-                                    <SearchIcon />
-                                </InputAdornment>
-                            ),
-                        },
-                    }}
-                    size='small'
-                    placeholder='Nhập tên chuyên gia, thành tích, mô tả'
-                    name='keyword'
-                    defaultValue={currentKeyword}
-                    fullWidth
-                />
 
-                <Tooltip title="Làm mới bộ lọc" arrow placement="top">
-                    <Button
-                        variant="contained"
-                        color='info'
-                        onClick={handleResetFilter}
-                        sx={{
-                            width: '40px',
-                            minWidth: '40px',
-                            aspectRatio: 1,
-                            display: 'flex',
-                            justifyContent: 'center',
-                            alignItems: 'center'
-                        }}
-                    >
-                        <RefreshIcon />
-                    </Button>
-                </Tooltip>
-            </form>
         </Box>
 
     )

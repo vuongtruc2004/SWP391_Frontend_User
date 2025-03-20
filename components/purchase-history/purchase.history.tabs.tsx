@@ -79,7 +79,7 @@ const PurchaseHistoryTabs = () => {
                         <ul className="flex flex-col gap-y-3">
                             {orderList.map(order => {
                                 return (
-                                    <SingleOrder order={order} key={order.orderCode} />
+                                    <SingleOrder order={order} key={order.orderCode} orderList={orderList} />
                                 )
                             })}
                         </ul>
@@ -95,6 +95,7 @@ const PurchaseHistoryTabs = () => {
                     )}
                 </div>
             )}
+
         </>
     );
 };

@@ -11,10 +11,19 @@ const HomePage = async () => {
             size: 30
         }
     });
+
+
+    const campaignResponse = await sendRequest<ApiResponse<CampaignResponse[]>>({
+        url: `${apiUrl}/campaigns/all`
+    });
+
     return (
         <div className='relative'>
             <Banner />
-            <SubjectSlider subjectList={subjectResponse.data.content} />
+            <SubjectSlider
+                subjectList={subjectResponse.data.content}
+                campaign={campaignResponse.data}
+            />
         </div>
     )
 }

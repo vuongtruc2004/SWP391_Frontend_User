@@ -29,7 +29,7 @@ const SingleExpertList = ({ expert }: { expert: ExpertDetailsResponse }) => {
             bgcolor: "black",
             color: "white",
             boxShadow: "2px 2px 5px rgba(0,0,0,0.5)",
-            height: "30vh",
+            minHeight: "30vh",
             width: "50vw",
             overflow: "hidden",
             display: "flex",

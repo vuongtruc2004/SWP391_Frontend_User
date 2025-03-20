@@ -312,4 +312,20 @@ declare global {
         questionId: number;
         answerIds: number[];
     }
+
+
+    interface CampaignResponse {
+        campaignId: number;
+        campaignName: string;
+        campaignDescription: string;
+        discountPercentage: number;
+        discountType: string;
+        discountRange: string;
+        thumbnail: string;
+        startTime: string;
+        endTime: string;
+        createdAt: string;
+        updatedAt: string;
+        courses: CourseDetailsResponse[];
+    }
 }

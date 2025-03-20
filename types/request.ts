@@ -95,4 +95,18 @@ declare global {
         questionId: number;
         answerIds: number[];
     }
+
+
+    interface CampaignRequest {
+        campaignId?: number;
+        campaignName: string;
+        campaignDescription: string;
+        discountPercentage?: number;
+        discountType: string;
+        discountRange: string;
+        thumbnail: string;
+        startTime: string;
+        endTime: string;
+        courseIds?: number[];
+    }
 }

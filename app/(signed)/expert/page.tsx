@@ -10,31 +10,17 @@ export const metadata: Metadata = {
     title: 'Đội ngũ chuyên gia'
 }
 
-const getExpertSort = (expertSort: string): string => {
-    if (!expertSort ||
-        (expertSort !== "yearOfExperience" &&
-            expertSort !== "courses" &&
-            expertSort !== "users")
-    ) {
-        return "yearOfExperience";
-    }
-    return expertSort;
-}
 
 const ExpersPage = async (props: {
     searchParams: Promise<{
         keyword?: string;
         page?: string;
-        direction: string;
-        expertSort: string;
     }>
 }) => {
 
     const searchParams = await props.searchParams;
     const page = searchParams.page || 1;
     const keyword = searchParams.keyword || "";
-    const direction = (!searchParams.direction || (searchParams.direction !== "asc" && searchParams.direction !== "desc")) ? "desc" : searchParams.direction;
-    const expertSort = getExpertSort(searchParams.expertSort);
     let filter = `(description ~ '${keyword}' or achievement ~ '${keyword}' or user.fullname ~ '${keyword}')`;
 
     const queryParams: Record<string, any> = {
@@ -43,19 +29,10 @@ const ExpersPage = async (props: {
         filter: filter,
     };
 
-    if (["yearOfExperience", "totalStudents", "totalFollowers"].includes(expertSort)) {
-        queryParams.sort = `${expertSort},${direction}`;
-    } else {
-        queryParams.sort = `expertId,${direction}`;
-    }
-
     const expertListResponse = await sendRequest<ApiResponse<PageDetailsResponse<ExpertDetailsResponse[]>>>({
         url: `${apiUrl}/experts`,
         queryParams: queryParams
     })
-
-    console.log("Check", queryParams)
-    console.log("Check 22", expertListResponse)
 
     return (
         <Box sx={{
@@ -63,7 +40,7 @@ const ExpersPage = async (props: {
             flexDirection: 'column',
             alignItems: 'center',
             width: '100%',
-            minHeight: '100vh',
+            // minHeight: '100vh',
             bgcolor: '#101010',
             color: 'white',
             paddingTop: '90px',
@@ -71,8 +48,6 @@ const ExpersPage = async (props: {
         }}>
             <ExpertSort
                 totalElements={expertListResponse.data?.totalElements || 0}
-                expertSort={expertSort}
-                direction={direction}
             />
 
             {(!expertListResponse.data?.content.length || expertListResponse.data.content.length === 0) ? (
