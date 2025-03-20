@@ -10,27 +10,23 @@ import SingleBlogSlider from './single.blog.slider';
 import SliderNavigation from './slider.navigation';
 
 const BlogSlider = ({ blogList }: { blogList: BlogResponse[]; }) => {
-    const swiperRef = useRef<SwiperRef | null>(null);
+    const swiperRef = useRef<SwiperRef>(null);
 
     return (
-        <Box
-            sx={{
-                marginTop: '40px',
-                '.swiper': { width: '95%', maxWidth: '1200px', paddingTop: '40px', paddingBottom: '50px' },
-                '.swiper-slide': {
-                    width: 'max-content',
-                    borderRadius: '6px'
-                },
-                '.swiper-pagination-bullet': { width: '18px', height: '6px', borderRadius: '20px', transition: 'all .3s', background: '#adb5bd' },
-                '.swiper-pagination-bullet-active': { width: '25px', background: '#60a5fa' },
-                position: 'relative'
-            }}
-        >
-            <div className='relative flex items-center justify-center'>
-                <h1 className='text-center font-bold uppercase text-2xl text-white'>
-                    Bài viết mới nhất
-                </h1>
-            </div>
+        <Box sx={{
+            marginTop: '40px',
+            '.swiper': { width: '95%', maxWidth: '1200px', paddingTop: '40px', paddingBottom: '50px' },
+            '.swiper-slide': {
+                width: 'max-content',
+                borderRadius: '6px'
+            },
+            '.swiper-pagination-bullet': { width: '18px', height: '6px', borderRadius: '20px', transition: 'all .3s', background: '#adb5bd' },
+            '.swiper-pagination-bullet-active': { width: '25px', background: '#60a5fa' },
+            position: 'relative'
+        }}>
+            <h1 className='text-center font-bold uppercase text-2xl text-white'>
+                Bài viết mới nhất
+            </h1>
 
             <Swiper
                 ref={swiperRef}

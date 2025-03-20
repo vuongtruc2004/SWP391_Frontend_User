@@ -1,7 +1,6 @@
 'use client'
 import { formatPrice } from "@/helper/course.list.helper";
-import { Alert, Button, Divider, Skeleton, Snackbar } from "@mui/material";
-import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
+import { Button, Divider, Skeleton } from "@mui/material";
 import { formatDate } from "@/helper/blog.helper";
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import LoopIcon from '@mui/icons-material/Loop';
@@ -10,56 +9,24 @@ import LocalMallOutlinedIcon from '@mui/icons-material/LocalMallOutlined';
 import StayCurrentPortraitOutlinedIcon from '@mui/icons-material/StayCurrentPortraitOutlined';
 import AllInclusiveOutlinedIcon from '@mui/icons-material/AllInclusiveOutlined';
 import HowToRegOutlinedIcon from '@mui/icons-material/HowToRegOutlined';
-import Link from "next/link";
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import { useEffect, useState } from "react";
 import PaymentInstruction from "../../course-purchase/payment.instruction";
 import { useSession } from "next-auth/react";
 import { usePathname, useRouter } from "next/navigation";
-import { SlideTransition } from "@/components/course/course-content/style";
 import { useUserProgress } from "@/wrapper/user-progress/user.progress.wrapper";
 import { countCompletedPercentOfACourse } from "@/helper/lesson.helper";
 import { useCoursePurchased } from "@/wrapper/course-purchased/course.purchased.wrapper";
-import { useCart } from "@/wrapper/course-cart/course.cart.wrapper";
+import CourseCartButton from "./course.cart.button";
 
 const CoursePurchase = ({ course }: { course: CourseDetailsResponse }) => {
-    const { cart, setCart } = useCart();
     const { userProgresses, loading } = useUserProgress();
     const { purchasedCourseIds } = useCoursePurchased();
     const [completionOfACourse, setCompletionOfACourse] = useState(-1);
+    const [openInstruction, setOpenInstruction] = useState(false);
 
     const { status } = useSession();
     const { push } = useRouter();
     const pathname = usePathname();
-
-    const [openNotification, setOpenNotification] = useState(false);
-    const [openInstruction, setOpenInstruction] = useState(false);
-
-    const handleCart = () => {
-        let cartFromStorage: CartCourse[] = JSON.parse(localStorage.getItem('cart') || "[]");
-
-        const isExist = cartFromStorage.some(item => item.courseId === course.courseId);
-        if (!isExist) {
-            const newItem: CartCourse = {
-                courseId: course.courseId,
-                courseName: course.courseName,
-                thumbnail: course.thumbnail,
-                price: course.price,
-                averageRating: course.averageRating,
-                totalRating: course.totalRating,
-                totalChapters: course.chapters.length,
-                totalTime: countTotalTimeForACourse(course),
-                totalPurchased: course.totalPurchased,
-                author: course.expert.user.fullname,
-                buyLater: false
-            };
-
-            const newCart = [...cartFromStorage, newItem];
-            localStorage.setItem('cart', JSON.stringify(newCart));
-            setCart(newCart);
-            setOpenNotification(true);
-        }
-    };
 
     const handleOpenInstruction = () => {
         if (status !== "authenticated") {
@@ -120,68 +87,20 @@ const CoursePurchase = ({ course }: { course: CourseDetailsResponse }) => {
             </ul>
 
             {completionOfACourse < 0 ? (
-                cart.some(item => item.courseId === course.courseId) ? (
-                    <Link href={"/cart"}>
-                        <Button
-                            variant="outlined"
-                            color="info"
-                            fullWidth
-                            endIcon={<ChevronRightIcon />}
-                            sx={{ marginBlock: '10px 12px' }}
-                        >
-                            Chuyển đến giỏ hàng
-                        </Button>
-                    </Link>
-                ) : (
-                    <>
-                        <Button
-                            variant="outlined"
-                            color="secondary"
-                            fullWidth
-                            startIcon={<AddShoppingCartIcon />}
-                            sx={{ marginBlock: '10px 12px' }}
-                            onClick={handleCart}
-                        >
-                            Thêm vào giỏ hàng
-                        </Button>
-                        <Snackbar
-                            open={openNotification}
-                            autoHideDuration={3000}
-                            onClose={() => setOpenNotification(false)}
-                            anchorOrigin={{
-                                vertical: 'top',
-                                horizontal: 'center'
-                            }}
-                            TransitionComponent={SlideTransition}
-                            key={SlideTransition.name}
-                        >
-                            <Alert
-                                severity="success"
-                                onClose={() => setOpenNotification(false)}
-                                sx={{ width: '100%', color: 'white' }}
-                                variant="filled"
-                            >
-                                Khóa học đã được thêm vào giỏ hàng!
-                            </Alert>
-                        </Snackbar>
-                    </>
-                )
-            ) : (
-                <>
-                    <Divider />
-                    {displayPurchasedButton(completionOfACourse, course)}
-                </>
-            )}
-
-            {completionOfACourse < 0 && (
-                <>
+                <div className="flex flex-col gap-y-3 mt-3">
+                    <CourseCartButton course={course} />
                     <Button variant="contained" color="primary" fullWidth startIcon={<LocalMallOutlinedIcon />} onClick={handleOpenInstruction}>
                         Mua ngay
                     </Button>
                     <PaymentInstruction open={openInstruction} setOpen={setOpenInstruction} courses={[course]} />
+                </div>
+            ) : (
+                <>
+                    <Divider sx={{ marginTop: '12px' }} />
+                    {displayPurchasedButton(completionOfACourse, course)}
                 </>
             )}
-        </div>
+        </div >
     )
 }
 

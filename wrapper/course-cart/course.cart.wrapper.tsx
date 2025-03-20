@@ -3,8 +3,6 @@ import { createContext, Dispatch, SetStateAction, useContext, useEffect, useStat
 import { useCoursePurchased } from "../course-purchased/course.purchased.wrapper";
 
 interface ICartCourse {
-    change: number;
-    setChange: Dispatch<SetStateAction<number>>;
     cart: CartCourse[];
     setCart: Dispatch<SetStateAction<CartCourse[]>>;
     loading: boolean;
@@ -14,7 +12,6 @@ const CartContext = createContext<ICartCourse | null>(null);
 export const CourseCartWrapper = ({ children }: { children: React.ReactNode }) => {
     const { purchasedCourseIds } = useCoursePurchased();
     const [cart, setCart] = useState<CartCourse[]>([]);
-    const [change, setChange] = useState(0);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -35,7 +32,7 @@ export const CourseCartWrapper = ({ children }: { children: React.ReactNode }) =
     }, [purchasedCourseIds]);
 
     return (
-        <CartContext.Provider value={{ cart, setCart, loading, change, setChange }}>
+        <CartContext.Provider value={{ cart, setCart, loading }}>
             {children}
         </CartContext.Provider>
     )

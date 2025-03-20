@@ -1,42 +1,32 @@
 import { sendRequest } from "@/utils/fetch.api";
 import { apiUrl } from "@/utils/url";
-import { Box, Button, IconButton, Skeleton } from "@mui/material"
-import { useCallback, useEffect, useRef, useState } from "react";
+import { Box, Skeleton } from "@mui/material"
+import { useEffect, useRef, useState } from "react";
 import SingleCourseSuggest from "./single.course.suggest";
 import { Swiper, SwiperRef, SwiperSlide } from 'swiper/react';
-import { Navigation } from "swiper/modules";
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import { Pagination } from "swiper/modules";
 import { useSession } from "next-auth/react";
-import 'swiper/css';
 import { useCart } from "@/wrapper/course-cart/course.cart.wrapper";
+import SliderNavigation from "@/components/blog/blog-slider/slider.navigation";
+import 'swiper/css';
+import 'swiper/css/pagination';
 
 const SuggestCourse = () => {
-    const { cart, change } = useCart();
+    const { cart } = useCart();
     const { data: session, status } = useSession();
     const [loading, setLoading] = useState(false);
-    const [courses, setCourses] = useState<CourseDetailsResponse[]>([]);
+    const [courses, setCourses] = useState<CourseResponse[]>([]);
 
-    const sliderRef = useRef<SwiperRef>(null);
-
-    const handlePrev = useCallback(() => {
-        if (!sliderRef.current) return;
-        sliderRef.current.swiper.slidePrev();
-    }, []);
-
-    const handleNext = useCallback(() => {
-        if (!sliderRef.current) return;
-        sliderRef.current.swiper.slideNext();
-    }, []);
+    const swiperRef = useRef<SwiperRef>(null);
 
     useEffect(() => {
         const fetchSuggestCourses = async () => {
             setLoading(true);
             const courseIds = cart.map(item => item.courseId);
-            let coursesResponse: ApiResponse<CourseDetailsResponse[]>;
+            let coursesResponse: ApiResponse<CourseResponse[]>;
 
             if (status === "authenticated") {
-                coursesResponse = await sendRequest<ApiResponse<CourseDetailsResponse[]>>({
+                coursesResponse = await sendRequest<ApiResponse<CourseResponse[]>>({
                     url: `${apiUrl}/courses/suggestion`,
                     headers: {
                         Authorization: `Bearer ${session.accessToken}`
@@ -46,7 +36,7 @@ const SuggestCourse = () => {
                     }
                 });
             } else {
-                coursesResponse = await sendRequest<ApiResponse<CourseDetailsResponse[]>>({
+                coursesResponse = await sendRequest<ApiResponse<CourseResponse[]>>({
                     url: `${apiUrl}/courses/suggestion`,
                     queryParams: {
                         courseIds: courseIds.join(',')
@@ -60,7 +50,7 @@ const SuggestCourse = () => {
             setLoading(false);
         }
         fetchSuggestCourses();
-    }, [change, session]);
+    }, [cart, session]);
 
     if (loading) {
         return (
@@ -93,28 +83,20 @@ const SuggestCourse = () => {
                     boxShadow: '2px 2px 5px rgba(0,0,0,0.5)',
                     marginTop: '20px',
                     position: 'relative',
-                    '.mui-11ky3cr-MuiButtonBase-root-MuiButton-root': {
-                        boxShadow: '2px 2px 5px rgba(0,0,0,0.5)',
-                        borderRadius: '50%',
-                        minWidth: '40px',
-                        width: '40px',
-                        height: '40px',
-                        display: 'flex',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        position: 'absolute',
-                        top: '50%',
-                        transform: 'translateY(-50%)',
-                        zIndex: '8',
-                    }
+                    '.swiper': { width: '95%', maxWidth: '1200px', paddingBottom: '50px' },
+                    '.swiper-pagination-bullet': { width: '18px', height: '6px', borderRadius: '20px', transition: 'all .3s', background: '#adb5bd' },
+                    '.swiper-pagination-bullet-active': { width: '25px', background: '#60a5fa' },
                 }}>
                     <h1 className="text-lg font-semibold mb-5">Có thể bạn cũng thích</h1>
+
                     <Swiper
-                        ref={sliderRef}
+                        ref={swiperRef}
                         slidesPerView={5}
                         spaceBetween={15}
                         grabCursor={true}
-                        modules={[Navigation]}
+                        modules={[Pagination]}
+                        pagination={{ clickable: true }}
+                        loop={true}
                     >
                         {courses.map(course => {
                             return (
@@ -124,12 +106,7 @@ const SuggestCourse = () => {
                             )
                         })}
                     </Swiper>
-                    <Button onClick={handlePrev} variant="contained" color="primary" className="left-0">
-                        <ChevronLeftIcon />
-                    </Button>
-                    <Button onClick={handleNext} variant="contained" color="primary" className="right-0">
-                        <ChevronRightIcon />
-                    </Button>
+                    <SliderNavigation swiperRef={swiperRef} />
                 </Box>
             )}
         </>

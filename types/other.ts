@@ -12,11 +12,6 @@ declare global {
         courseName: string;
         thumbnail: string;
         price: number;
-        averageRating: number;
-        totalRating: number;
-        totalChapters: number;
-        totalTime: string;
-        totalPurchased: number;
         author: string;
         buyLater: boolean;
     }

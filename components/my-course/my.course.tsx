@@ -4,12 +4,11 @@ import { useEffect, useState } from "react";
 import { sendRequest } from "@/utils/fetch.api";
 import { apiUrl } from "@/utils/url";
 import { useSession } from "next-auth/react";
-import ListEmpty from "../../empty/list.empty";
+import ShoppingCartCheckoutOutlinedIcon from '@mui/icons-material/ShoppingCartCheckoutOutlined';
 import Link from "next/link";
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import { courseStatuses } from "./order.status.properties";
-import SingleOrder from "@/features/purchase-history/single.order";
-import SingleCourseSlider from "../course-slider/single.course.slider";
+import SingleCourseSlider from "../course/course-slider/single.course.slider";
+import ListEmpty from "../empty/list.empty";
+import { courseStatuses } from "./course.status.properties";
 
 const MyCourse = () => {
     const { data: session, status } = useSession();
@@ -40,7 +39,7 @@ const MyCourse = () => {
 
     return (
         <>
-            <h1 className="font-semibold text-xl mb-5">Khóa học của bạn: </h1>
+            <h1 className="font-semibold text-xl mb-5">Khóa học của bạn</h1>
             <Box sx={{
                 display: 'flex',
                 alignItems: 'center',
@@ -71,7 +70,7 @@ const MyCourse = () => {
             </Box>
 
             {loading ? (
-                <div className="flex items-center justify-center mt-20">
+                <div className="flex items-center justify-center mt-40">
                     <CircularProgress />
                 </div>
             ) : (
@@ -86,8 +85,13 @@ const MyCourse = () => {
                         </ul>
                     ) : (
                         <div className='flex items-center justify-center'>
-                            <div>
-                                <ListEmpty text="Không có khóa học nào đã đăng kí!" height={110} />
+                            <div className="flex flex-col items-center">
+                                <ListEmpty text="Không có khóa học nào để hiển thị" height={160} />
+                                <Link href={"/course"}>
+                                    <Button color="info" variant="outlined" startIcon={<ShoppingCartCheckoutOutlinedIcon />}>
+                                        Mua ngay
+                                    </Button>
+                                </Link>
                             </div>
                         </div>
                     )}

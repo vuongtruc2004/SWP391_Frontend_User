@@ -72,6 +72,7 @@ declare global {
         courseName: string;
         description: string;
         thumbnail: string;
+        objectives: string[];
         introduction: string;
         price: number;
         expert: ExpertResponse;
@@ -84,7 +85,6 @@ declare global {
 
     interface CourseDetailsResponse extends CourseResponse {
         introduction: string;
-        objectives: string[];
         accepted: boolean;
         expert: ExpertDetailsResponse;
         subjects: SubjectResponse[];

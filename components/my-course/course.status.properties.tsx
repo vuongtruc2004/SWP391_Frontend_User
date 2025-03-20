@@ -14,4 +14,9 @@ export const courseStatuses = [
         en: 'PROGRESS',
         vi: 'Đang học'
     },
+    {
+        key: 'start',
+        en: 'START',
+        vi: 'Bắt đầu học'
+    },
 ];

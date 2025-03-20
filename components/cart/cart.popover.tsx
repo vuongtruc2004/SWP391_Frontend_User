@@ -85,7 +85,7 @@ const CartPopover = ({ anchorEl, setAnchorEl }: {
 
                                             <div className='max-w-[200px]'>
                                                 <Link href={`/course/${slugifyText(item.courseName + "-" + item.courseId)}`} onClick={handleClose} className='line-clamp-1 font-semibold hover:underline hover:text-blue-500'>{item.courseName}</Link>
-                                                <p className='text-sm text-gray-300'>{item.author}</p>
+                                                <p className='text-sm text-gray-300'>Bởi {item.author}</p>
                                                 <p className='font-semibold'>{formatPrice(item.price)}₫</p>
                                             </div>
                                         </div>
@@ -95,7 +95,7 @@ const CartPopover = ({ anchorEl, setAnchorEl }: {
                             })}
                         </Box>
                         <Link href={"/cart"}>
-                            <Button variant='outlined' color='primary' fullWidth endIcon={<ChevronRightIcon />} onClick={handleClose}>
+                            <Button variant='outlined' color='info' fullWidth endIcon={<ChevronRightIcon />} onClick={handleClose}>
                                 Chuyển đến giỏ hàng
                             </Button>
                         </Link>

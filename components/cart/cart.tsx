@@ -8,6 +8,7 @@ import SuggestCourse from "@/features/cart/suggest.course";
 import { useCart } from "@/wrapper/course-cart/course.cart.wrapper";
 import CartBuyList from "./cart.buy.list";
 import CartBuyLaterList from "./cart.buy.later.list";
+import ShoppingCartCheckoutOutlinedIcon from '@mui/icons-material/ShoppingCartCheckoutOutlined';
 
 const Cart = () => {
     const { cart, loading } = useCart();
@@ -40,11 +41,11 @@ const Cart = () => {
                     borderRadius: '6px',
                     boxShadow: '2px 2px 5px rgba(0, 0, 0, 0.5)',
                 }}>
-                    <ListEmpty text='Giỏ hàng của bạn đang trống' height={220} />
-                    <div className="flex justify-center">
-                        <Link href={"/course"} className="inline-block max-w-[200px]">
-                            <Button variant='text' color='info' fullWidth>
-                                Tiếp tục mua sắm
+                    <div className="flex flex-col items-center">
+                        <ListEmpty text="Không có khóa học nào để hiển thị" height={160} />
+                        <Link href={"/course"}>
+                            <Button color="info" variant="outlined" startIcon={<ShoppingCartCheckoutOutlinedIcon />}>
+                                Mua ngay
                             </Button>
                         </Link>
                     </div>

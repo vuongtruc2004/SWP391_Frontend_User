@@ -5,7 +5,7 @@ import MuiAccordionSummary, {
     accordionSummaryClasses,
 } from '@mui/material/AccordionSummary';
 import ChevronRightOutlinedIcon from '@mui/icons-material/ChevronRightOutlined';
-import { Slide, SlideProps } from '@mui/material';
+import { Tooltip, tooltipClasses, TooltipProps } from '@mui/material';
 
 export const Accordion = styled((props: AccordionProps) => (
     <MuiAccordion disableGutters elevation={0} square {...props} />
@@ -39,22 +39,15 @@ export const AccordionSummary = styled((props: AccordionSummaryProps) => (
     }),
 }));
 
-export const CustomTabPanel = (props: {
-    children?: React.ReactNode;
-    index: number;
-    value: number;
-}) => {
-    const { children, value, index } = props;
-
-    return (
-        <div hidden={value !== index}>
-            {value === index && (
-                <>{children}</>
-            )}
-        </div>
-    );
-}
-
-export function SlideTransition(props: SlideProps) {
-    return <Slide {...props} direction="down" />;
-}
+export const BootstrapTooltip = styled(({ className, ...props }: TooltipProps) => (
+    <Tooltip {...props} arrow classes={{ popper: className }} />
+))(({ theme }) => ({
+    [`& .${tooltipClasses.arrow}`]: {
+        color: '#171717',
+    },
+    [`& .${tooltipClasses.tooltip}`]: {
+        backgroundColor: '#171717',
+        maxWidth: '350px',
+        boxShadow: '-2px -2px 5px rgba(0,0,0,0.5)'
+    },
+}));
