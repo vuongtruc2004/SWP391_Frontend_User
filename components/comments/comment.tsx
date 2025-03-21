@@ -87,11 +87,11 @@ const Comment = ({ commentResponse, blog, setComments, refreshBlog }: {
 
                 });
 
-                client.subscribe(`/topic/likes/dislike`, (message) => {
+                client.subscribe(`/topic/likes/dislike/${commentResponse.commentId}`, (message) => {
                     const refreshComment = JSON.parse(message.body);
                     console.log("dislike Comment: ", refreshComment);
                     if (refreshComment.commentId === commentResponse.commentId) {
-                        setLikeCount(refreshComment?.likes?.length)
+                        setLikeCount(refreshComment?.likes?.length);
                     }
                 })
                 // Gọi API lấy danh sách bình luận ban đầu
@@ -108,7 +108,7 @@ const Comment = ({ commentResponse, blog, setComments, refreshBlog }: {
         return () => {
             client.deactivate();
         };
-    }, [commentResponse.commentId]);
+    }, [commentResponse.commentId, likeCount]);
 
     const handleDeleteComment = async () => {
         const deleteComment = await sendRequest<ApiResponse<String>>({
@@ -146,7 +146,7 @@ const Comment = ({ commentResponse, blog, setComments, refreshBlog }: {
             }
 
         } else {
-            console.log("khong vao day dau")
+            console.log("Bat dau chuyen trang thai true->false")
             const dislikeComment = await sendRequest<ApiResponse<String>>({
                 url: `${apiUrl}/likes/dislike-comment/${commentResponse.commentId}`,
                 method: 'DELETE',
@@ -155,10 +155,10 @@ const Comment = ({ commentResponse, blog, setComments, refreshBlog }: {
                 },
 
             });
-            console.log(dislikeComment);
+            console.log(dislikeComment.status)
             if (dislikeComment.status === 200) {
-                setLikeComment(false)
-
+                setLikeComment(false);
+                console.log(likeComment)
             }
         }
 
