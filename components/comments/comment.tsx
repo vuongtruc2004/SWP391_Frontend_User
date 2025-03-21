@@ -13,6 +13,7 @@ import { useSession } from 'next-auth/react'
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { Client } from '@stomp/stompjs';
 import { comment } from '@/features/blog/blog-details/blog.interact.action';
+import { isNumberObject } from 'util/types';
 
 const dateFormatter = new Intl.DateTimeFormat(undefined, {
     dateStyle: 'medium',
@@ -32,13 +33,12 @@ const Comment = ({ commentResponse, blog, setComments, refreshBlog }: {
     const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
     const { data: session, status } = useSession();
     const [likeCount, setLikeCount] = useState(commentResponse?.likes?.length || 0);
-    const [commentCount, setCommentCount] = useState(childCommentList?.length);
     const [stompClient, setStompClient] = useState<Client | null>(null);
 
 
 
     useEffect(() => {
-        const fetchCheckTymComment = async () => {
+        const fetchCheckLikeComment = async () => {
             const checkTym = await sendRequest<ApiResponse<Boolean>>({
                 url: `${apiUrl}/likes/check-like-comment/${commentResponse.commentId}`,
                 method: 'GET',
@@ -52,7 +52,7 @@ const Comment = ({ commentResponse, blog, setComments, refreshBlog }: {
             }
         }
 
-        fetchCheckTymComment();
+        fetchCheckLikeComment();
     }, [session?.accessToken]);
 
     useEffect(() => {
@@ -76,6 +76,24 @@ const Comment = ({ commentResponse, blog, setComments, refreshBlog }: {
                     });
                     // getPageComment();
                 });
+
+                client.subscribe(`/topic/likes/${commentResponse.commentId}`, (message) => {
+                    const newLikeComment = JSON.parse(message.body);
+                    console.log("newLikeComment: ", newLikeComment);
+                    if (newLikeComment.comment.commentId === commentResponse.commentId) {
+                        console.log("Co check dung id nhe va so luong like: ", newLikeComment?.comment.likes.length);
+                        setLikeCount(newLikeComment?.comment.likes.length);
+                    }
+
+                });
+
+                client.subscribe(`/topic/likes/dislike`, (message) => {
+                    const refreshComment = JSON.parse(message.body);
+                    console.log("dislike Comment: ", refreshComment);
+                    if (refreshComment.commentId === commentResponse.commentId) {
+                        setLikeCount(refreshComment?.likes?.length)
+                    }
+                })
                 // Gọi API lấy danh sách bình luận ban đầu
 
             },
@@ -123,11 +141,7 @@ const Comment = ({ commentResponse, blog, setComments, refreshBlog }: {
 
             if (likeBlog.status === 200) {
                 console.log("vao roi nhe")
-                setLikeComment(prev => ({
-                    ...prev,
-                    [commentResponse.commentId]: true
-                }))
-                setLikeCount(prev => prev + 1);
+                setLikeComment(true);
                 // router.refresh();
             }
 
@@ -144,7 +158,7 @@ const Comment = ({ commentResponse, blog, setComments, refreshBlog }: {
             console.log(dislikeComment);
             if (dislikeComment.status === 200) {
                 setLikeComment(false)
-                setLikeCount(prev => prev - 1);
+
             }
         }
 

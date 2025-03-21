@@ -40,40 +40,6 @@ const CommentList = ({ blog, comments, setComments, hasParent, refreshBlog }: {
         if (node) observerRef.current.observe(node);
     }, [loading, hasMore]);
 
-    // useEffect(() => {
-    //     if (hasParent > -1) return;
-    //     const client = new Client({
-    //         brokerURL: "ws://localhost:8386/ws/websocket",
-    //         reconnectDelay: 5000, // Thử kết nối lại sau 5s nếu mất kết nối
-    //         onConnect: () => {
-    //             console.log("Connected to WebSocket");
-
-    //             // Subscribe đến topic nhận bình luận mới
-    //             client.subscribe(`/topic/comments/${blog.blogId}`, (message) => {
-    //                 const newComment = JSON.parse(message.body);
-    //                 setComments((prev) => {
-    //                     if (prev.some(comment => comment.commentId === newComment.commentId)) {
-    //                         return [...prev]
-    //                     }
-
-    //                     return [newComment, ...prev]
-    //                 }); // Cập nhật danh sách bình luận
-    //             });
-    //         },
-    //         onStompError: (error) => {
-    //             console.error("STOMP Error", error);
-    //         },
-    //     });
-
-    //     client.activate();
-    //     setStompClient(client);
-
-    //     return () => {
-    //         client.deactivate();
-    //     };
-    // }, [blog.blogId]);
-
-
     useEffect(() => {
         if (hasParent > -1) return;
         const fetch = async () => {
@@ -128,10 +94,10 @@ const CommentList = ({ blog, comments, setComments, hasParent, refreshBlog }: {
                         }
                         )
                     }
-
-
                     // getPageComment();
                 });
+
+
                 // Gọi API lấy danh sách bình luận ban đầu
 
             },

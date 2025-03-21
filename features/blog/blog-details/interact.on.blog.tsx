@@ -16,6 +16,7 @@ import { sendRequest } from "@/utils/fetch.api";
 import { apiUrl } from "@/utils/url";
 import CommentList from "@/components/comments/list.comments";
 import { Divider } from "@mui/material";
+import { Client } from "@stomp/stompjs";
 
 const InteractOnBlog = ({ blog }: { blog: BlogResponse }) => {
     const { data: session, status } = useSession();
@@ -26,7 +27,7 @@ const InteractOnBlog = ({ blog }: { blog: BlogResponse }) => {
     const [statusLike, setStatusLike] = useState<Boolean>(false);
     const [comments, setComments] = useState<CommentResponse[]>([]);
     const [blogRefresh, setBlogRefresh] = useState<BlogResponse>(blog);
-
+    const [stompClient, setStompClient] = useState<Client | null>(null)
     const redirectToLogin = () => {
         if (!session) {
             sessionStorage.setItem('prevUrl', `/blog/${slugifyText(blog.title + "-" + blog.blogId)}`);
@@ -94,6 +95,31 @@ const InteractOnBlog = ({ blog }: { blog: BlogResponse }) => {
 
         }
     }, [state]);
+
+    useEffect(() => {
+        const client = new Client({
+            brokerURL: 'ws://localhost:8386/ws/websocket',
+            reconnectDelay: 5000,
+            onConnect: () => {
+                console.log("Connect websocket in interact");
+                client.subscribe(`/topic/comments/${blog.blogId}`, (message) => {
+                    refreshBlog();
+                });
+
+                client.subscribe(`/topic/likes`, (message) => {
+                    refreshBlog();
+                })
+            },
+            onStompError: (error) => {
+                console.log('Connect websocket interact error', error);
+            },
+        });
+        client.activate();
+        setStompClient(client);
+        return () => {
+            client.deactivate();
+        };
+    }, [blog.blogId])
 
 
 

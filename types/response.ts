@@ -295,7 +295,7 @@ declare global {
         user: UserResponse,
         blog: BlogResponse,
         comment: CommentResponse,
-        createdAt: string,
+
     }
 
     interface QuizAttemptResponse {
