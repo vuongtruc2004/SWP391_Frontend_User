@@ -8,24 +8,29 @@ import { Divider } from '@mui/material';
 
 const SingleCampaignSlider = ({ campaign }: { campaign: CampaignResponse; }) => {
     return (
+
         <Box sx={{
-            // 
-            width: '700px',
-            borderRadius: '6px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            width: '100%',
+            height: '500px',
+            position: 'relative',
         }}>
-            <Box sx={{
-                display: 'block',
-                width: '100%',
-                height: `280px`,
-                position: 'relative',
-            }}>
-                <Image src={`${storageUrl}/campaign/${campaign.thumbnail}`} alt={campaign.campaignName} fill sizes="(max-width: 1000px) 100vw" priority={true} style={{
+            <Image
+                src={`${storageUrl}/campaign/${campaign.thumbnail}`}
+                alt={campaign.campaignName}
+                fill
+                sizes="(max-width: 1000px) 100vw"
+                priority={true}
+                style={{
                     objectFit: 'cover',
                     borderRadius: '6px',
                     objectPosition: 'center',
-                }} />
-            </Box>
+                }}
+            />
         </Box>
+
     )
 }
 

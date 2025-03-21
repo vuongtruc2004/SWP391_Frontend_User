@@ -60,7 +60,7 @@ const SingleCourseRating = ({ rate, index, avatarSrc, setMyRating }: {
                             horizontal: 'right',
                         }}
                     >
-                        {rate?.user?.userId === session?.user?.userId ?
+                        {rate?.user?.userId === session?.user?.userId &&
                             <div className="flex flex-col items-start p-2">
                                 <Button
                                     startIcon={<EditIcon />}
@@ -86,10 +86,6 @@ const SingleCourseRating = ({ rate, index, avatarSrc, setMyRating }: {
                                     Xóa
                                 </Button>
                             </div>
-                            :
-                            <Button startIcon={<FlagIcon />} color="secondary" variant="text">
-                                Báo Cáo
-                            </Button>
                         }
 
                     </Popover>

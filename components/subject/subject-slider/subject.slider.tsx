@@ -33,13 +33,13 @@ const SubjectSlider = ({ subjectList, campaign }: { subjectList: SubjectResponse
         const hasClosedDialog = sessionStorage.getItem("hasClosedDialog");
 
         if (!hasClosedDialog) {
-            setOpen(true); // 🔹 Chỉ mở modal nếu chưa đóng trong session hiện tại
+            setOpen(true);
         }
     }, []);
 
     const handleClose = () => {
         setOpen(false);
-        sessionStorage.setItem("hasClosedDialog", "true"); // 🔹 Chỉ lưu trong session hiện tại
+        sessionStorage.setItem("hasClosedDialog", "true");
     };
 
     return (
@@ -109,14 +109,25 @@ const SubjectSlider = ({ subjectList, campaign }: { subjectList: SubjectResponse
             </Box>
 
             {campaign.length > 0 && (
-                <Dialog open={open} onClose={handleClose}>
-                    <div className="relative w-[500px] bg-[#010101a1] p-5 rounded-md">
+                <Dialog
+                    open={open}
+                    onClose={handleClose}
+                    maxWidth="md"
+                    fullWidth
+                    slotProps={{
+                        paper: {
+                            style: { borderRadius: "12px", overflow: "visible" },
+                        },
+                    }}
+                >
+                    <div className="relative w-full bg-[#010101a1] rounded-md">
                         <button
                             onClick={handleClose}
-                            className="absolute top-2 right-2 z-50 bg-blue-300 text-white rounded-full p-1 hover:bg-black transition-all duration-200"
+                            className="absolute -top-3 -right-3 z-50 border border-black bg-gray-300 text-black rounded-full p-2 hover:bg-gray-500 transition-all duration-200 cursor-pointer shadow-lg"
                         >
                             <CloseIcon className="w-5 h-5" />
                         </button>
+
 
                         <div className="w-full">
                             <Swiper

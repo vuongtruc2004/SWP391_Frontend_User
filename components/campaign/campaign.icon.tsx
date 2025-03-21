@@ -11,6 +11,12 @@ const CampaignIcon = () => {
     const [openModal, setOpenModal] = useState<boolean>(false)
     const [campaignData, setCampaignData] = useState<CampaignResponse[]>([]);
 
+    const openCampaignModal = (e: React.MouseEvent<HTMLDivElement>) => {
+        if (!isDragging) {
+            setOpenModal(true)
+        }
+    };
+
     useEffect(() => {
         const fetchCampaigns = async () => {
             try {
@@ -52,9 +58,7 @@ const CampaignIcon = () => {
                     outline: 'none',
                 }}
                 whileTap={{ cursor: 'grabbing' }}
-                onClick={() => {
-                    setOpenModal(true)
-                }}
+                onClick={openCampaignModal}
             />
             <CamapignModal open={openModal} setOpen={setOpenModal} campaign={campaignData} />
         </>
