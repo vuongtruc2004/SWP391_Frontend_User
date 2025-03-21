@@ -11,7 +11,7 @@ import { sendRequest } from "@/utils/fetch.api";
 import { apiUrl } from "@/utils/url";
 
 const LessonQuiz = () => {
-    const { lessons, currentPlayIndex } = useCourseView();
+    const { lessons, currentPlayIndex, course } = useCourseView();
 
     const [showDescription, setShowDescription] = useState(false);
 
@@ -73,7 +73,7 @@ const LessonQuiz = () => {
             <p className="text-center">...</p>
 
             <div className="flex justify-center mt-5">
-                <Link href={`/quiz/start/${slugifyText(quiz.title + "-" + quiz.quizId)}`}>
+                <Link href={`${slugifyText(course.courseName + "-" + course.courseId)}/quiz/start/${slugifyText(quiz.title + "-" + quiz.quizId)}`}>
                     <Button onClick={handleOpenQuiz} variant="outlined" color="secondary">
                         Làm bài ngay
                     </Button>

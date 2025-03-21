@@ -10,3 +10,19 @@ export const getQuizByQuizId = async (id: number | string): Promise<QuizResponse
     }
     return quizResponse.data;
 }
+
+export const countCompletionPercent = (quiz: QuizResponse, userAnswers: UserAnswerRequest[]) => {
+    const completeQuestions = quiz.questions.filter(q => {
+        const userAnswer = userAnswers.find(u => u.questionId === q.questionId);
+        return userAnswer && userAnswer.answerIds.length > 0;
+    });
+    if (quiz.questions.length === 0) return 100;
+    return completeQuestions.length / quiz.questions.length * 100;
+}
+
+export const formatDurationToMinuteAndSecond = (second: number): string => {
+    const minute = Math.floor(second / 60);
+    const seconds = second - minute * 60;
+
+    return [minute, seconds].map(unit => unit.toString().padStart(2, '0')).join(':');
+};

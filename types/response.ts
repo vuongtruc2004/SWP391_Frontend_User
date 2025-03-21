@@ -129,10 +129,6 @@ declare global {
         questions: QuestionResponse[];
     }
 
-    interface QuizAttemptResponse {
-
-    }
-
     interface QuestionResponse {
         questionId: number;
         title: string;
@@ -302,7 +298,7 @@ declare global {
         quizAttemptId: number;
         userId: number;
         attemptNumber: number;
-        score: number;
+        numberOfCorrects: number;
         startTime: string;
         endTime: string;
         userAnswers: UserAnswerResponse[];
