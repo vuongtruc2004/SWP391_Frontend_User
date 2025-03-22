@@ -6,15 +6,11 @@ import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import DoneAllIcon from '@mui/icons-material/DoneAll';
 import { slugifyText } from '@/helper/blog.helper';
 
-const ShareCourseDialog = ({ open, setOpen, course }: {
-    open: boolean,
-    setOpen: Dispatch<SetStateAction<boolean>>,
-    course: CourseResponse | null
-}) => {
+const ShareCourseDialog = ({ open, setOpen, course }: { open: boolean, setOpen: Dispatch<SetStateAction<boolean>>, course: CourseResponse }) => {
     const [copied, setCopied] = useState(false);
     const [link, setLink] = useState("");
 
-    const handleCopyLink = (event: React.MouseEvent<HTMLDivElement>) => {
+    const handleCopyLink = () => {
         navigator.clipboard.writeText(link)
             .then(() => {
                 setCopied(true);
@@ -29,16 +25,12 @@ const ShareCourseDialog = ({ open, setOpen, course }: {
         }
     }, [course]);
 
-    if (!course) {
-        return null;
-    }
-
     return (
         <Dialog open={open} onClose={() => setOpen(false)}>
             <div className='bg-[#101010] p-5 rounded-md w-[500px]'>
 
                 <div className='flex justify-between'>
-                    <h1 className='font-semibold text-lg'>Chia sẻ khóa học</h1>
+                    <h1 className='font-semibold'>Chia sẻ khóa học</h1>
                     <CloseIcon onClick={() => setOpen(false)} className='hover:text-gray-400 cursor-pointer transition-all duration-200' />
                 </div>
 

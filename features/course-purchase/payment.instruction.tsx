@@ -28,24 +28,26 @@ const PaymentInstruction = ({ open, setOpen, courses }: {
     const handleCreateOrder = async () => {
         if (status === "authenticated") {
             setLoading(true);
-            const purchaseRequest: PurchaseRequest = {
-                courseIds: courses.map(course => course.courseId),
-                totalPrice: courses.reduce((sum, course) => sum + course.price, 0),
-                couponId: selectedCoupon?.couponId || null
+            const orderRequest: OrderRequest = {
+                couponId: selectedCoupon?.couponId || null,
+                orderDetails: courses.map(course => ({
+                    courseId: course.courseId,
+                    priceAtTimeOfPurchase: course.price
+                }))
             }
 
-            const purchaseResponse = await sendRequest<ApiResponse<PurchaseResponse>>({
+            const purchaseResponse = await sendRequest<ApiResponse<string>>({
                 url: `${apiUrl}/purchase`,
                 method: 'POST',
                 headers: {
                     Authorization: `Bearer ${session.accessToken}`,
                     'Content-Type': 'application/json'
                 },
-                body: purchaseRequest
+                body: orderRequest
             });
 
-            if (purchaseResponse.status === 200) {
-                window.open(purchaseResponse.data.redirectUrl, "_blank");
+            if (purchaseResponse.status === 201) {
+                window.open(purchaseResponse.data, '_blank');
                 setErrorMessage("");
                 setOpen(false);
                 setSelectedCoupon(null);
@@ -139,7 +141,7 @@ const PaymentInstruction = ({ open, setOpen, courses }: {
                         Hủy
                     </Button>
                     <Button variant="contained" color="primary" onClick={handleCreateOrder} loading={loading}>
-                        Tiếp tục
+                        Tạo hóa đơn
                     </Button>
                 </div>
 

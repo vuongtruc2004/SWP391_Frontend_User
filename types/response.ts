@@ -221,26 +221,23 @@ declare global {
         createdAt: string;
     }
 
-    interface PurchaseResponse {
-        order: OrderResponse;
-        redirectUrl: string;
-    }
-
     interface OrderResponse {
         orderId: number;
         orderCode: string;
-        orderStatus: "PENDING" | "COMPLETED" | "EXPIRED";
+        paymentUrl: string;
         createdAt: string;
-        updatedAt: string;
         expiredAt: string;
-        userId: number;
-        totalAmount: number;
+        paidAt: string | null;
+        totalPrice: number;
+        user: UserResponse;
         orderDetails: OrderDetailsResponse[];
+        coupon: CouponResponse;
     }
 
     interface OrderDetailsResponse {
         orderDetailsId: number;
         course: CourseResponse;
+        priceAtTimeOfPurchase: number;
     }
 
     interface ChatResponse {

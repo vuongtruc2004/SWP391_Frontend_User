@@ -5,6 +5,7 @@ const CourseTooltip = ({ course }: { course: CourseResponse }) => {
     return (
         <div className='bg-[#171717] p-5'>
             <h1 className='font-semibold text-xl'>{course.courseName}</h1>
+
             <p className='text-base text-gray-300 mt-1 mb-2 line-clamp-2'>{course.description}</p>
             <ul className='flex flex-col gap-y-2 mb-5'>
                 {course.objectives.map(item => {

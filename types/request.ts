@@ -54,12 +54,6 @@ declare global {
         lessonId: number;
     }
 
-    interface PurchaseRequest {
-        courseIds: number[];
-        totalPrice: number;
-        couponId: number | null;
-    }
-
     interface CreateMessageRequest {
         chatId: number | null;
         messages: {
@@ -95,7 +89,6 @@ declare global {
         answerIds: number[];
     }
 
-
     interface CampaignRequest {
         campaignId?: number;
         campaignName: string;
@@ -112,5 +105,15 @@ declare global {
     interface StorageCourseRequest {
         courseId: number;
         status: "NOW" | "LATER"
+    }
+
+    interface OrderRequest {
+        orderDetails: OrderDetailsRequest[];
+        couponId: number | null;
+    }
+
+    interface OrderDetailsRequest {
+        courseId: number;
+        priceAtTimeOfPurchase: number;
     }
 }

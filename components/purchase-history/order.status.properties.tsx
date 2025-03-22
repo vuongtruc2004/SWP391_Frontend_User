@@ -12,11 +12,6 @@ export const orderStatuses = [
     {
         key: 'pending',
         en: 'PENDING',
-        vi: 'Đang chờ thanh toán'
-    },
-    {
-        key: 'expired',
-        en: 'EXPIRED',
-        vi: 'Đã hết hạn'
+        vi: 'Chưa thanh toán'
     }
 ];

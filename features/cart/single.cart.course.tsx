@@ -15,7 +15,9 @@ const SingleCartCourse = ({ course }: { course: CartCourse }) => {
     const { data: session, status } = useSession();
     const { setCart, cart } = useCart();
 
-    const handleDeleteItem = async (courseId: number) => {
+    const handleDeleteItem = async () => {
+        const newCart = cart.filter(item => item.courseId !== course.courseId);
+
         if (status === 'authenticated') {
             await sendRequest<ApiResponse<void>>({
                 url: `${apiUrl}/carts`,
@@ -24,20 +26,29 @@ const SingleCartCourse = ({ course }: { course: CartCourse }) => {
                     Authorization: `Bearer ${session.accessToken}`
                 },
                 queryParams: {
-                    courseIds: [courseId]
+                    courseIds: [course.courseId]
                 }
             });
-            setCart(prev => prev.filter(item => item.courseId !== courseId));
         } else {
-            const newCart = cart.filter(item => item.courseId !== courseId);
             localStorage.setItem('cart', JSON.stringify(newCart));
-            setCart(newCart);
         }
+        setCart(newCart);
     }
 
-    const handleBuyLaterItem = (courseId: number) => {
-        const newCart = cart.map(item => item.courseId === courseId ? { ...item, buyLater: !item.buyLater } : item);
-        localStorage.setItem('cart', JSON.stringify(newCart));
+    const handleBuyLaterItem = async () => {
+        const newCart = cart.map(item => item.courseId === course.courseId ? { ...item, buyLater: !item.buyLater } : item);
+
+        if (status === 'authenticated') {
+            await sendRequest<ApiResponse<void>>({
+                url: `${apiUrl}/carts/${course.courseId}`,
+                method: 'PATCH',
+                headers: {
+                    Authorization: `Bearer ${session.accessToken}`
+                }
+            });
+        } else {
+            localStorage.setItem('cart', JSON.stringify(newCart));
+        }
         setCart(newCart);
     };
 
@@ -72,12 +83,12 @@ const SingleCartCourse = ({ course }: { course: CartCourse }) => {
                         size="small"
                         variant="text"
                         startIcon={course.buyLater ? <AddOutlinedIcon /> : <WatchLaterOutlinedIcon />}
-                        onClick={() => handleBuyLaterItem(course.courseId)}
+                        onClick={handleBuyLaterItem}
                     >
                         {course.buyLater ? "Thêm vào giỏ hàng" : "Lưu để mua sau"}
                     </Button>
 
-                    <Button color="info" variant="text" size="small" startIcon={<CloseIcon />} onClick={() => handleDeleteItem(course.courseId)}>
+                    <Button color="info" variant="text" size="small" startIcon={<CloseIcon />} onClick={handleDeleteItem}>
                         Xóa khỏi giỏ hàng
                     </Button>
                 </div>

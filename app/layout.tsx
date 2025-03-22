@@ -8,6 +8,7 @@ import { UserExpertWrapper } from '@/wrapper/user-expert/user.expert.wrapper';
 import UserProgressWrapper from '@/wrapper/user-progress/user.progress.wrapper';
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter';
 import "./globals.css";
+import { UserOrderWrapper } from '@/wrapper/user-order/user.order.wrapper';
 
 export default function RootLayout({
   children,
@@ -26,15 +27,17 @@ export default function RootLayout({
             <NextAuthWrapper>
               <ProgressBarWrapper>
 
-                <UserExpertWrapper>
-                  <UserProgressWrapper>
-                    <CoursePurchasedWrapper>
-                      <UserAvatarWrapper>
-                        {children}
-                      </UserAvatarWrapper>
-                    </CoursePurchasedWrapper>
-                  </UserProgressWrapper>
-                </UserExpertWrapper>
+                <UserOrderWrapper>
+                  <UserExpertWrapper>
+                    <UserProgressWrapper>
+                      <CoursePurchasedWrapper>
+                        <UserAvatarWrapper>
+                          {children}
+                        </UserAvatarWrapper>
+                      </CoursePurchasedWrapper>
+                    </UserProgressWrapper>
+                  </UserExpertWrapper>
+                </UserOrderWrapper>
 
               </ProgressBarWrapper>
             </NextAuthWrapper>
