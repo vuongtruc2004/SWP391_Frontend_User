@@ -20,9 +20,6 @@ const theme = createTheme({
         warning: {
             main: '#00c951'
         },
-        error: {
-            main: '#ff8904'
-        },
         mode: 'dark'
     },
     typography: {

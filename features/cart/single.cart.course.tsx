@@ -1,5 +1,5 @@
 import { formatPrice } from "@/helper/course.list.helper";
-import { storageUrl } from "@/utils/url";
+import { apiUrl, storageUrl } from "@/utils/url";
 import { useCart } from "@/wrapper/course-cart/course.cart.wrapper";
 import CloseIcon from '@mui/icons-material/Close';
 import { Button, Divider } from "@mui/material";
@@ -8,23 +8,35 @@ import Link from "next/link";
 import WatchLaterOutlinedIcon from '@mui/icons-material/WatchLaterOutlined';
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
 import { slugifyText } from "@/helper/blog.helper";
+import { sendRequest } from "@/utils/fetch.api";
+import { useSession } from "next-auth/react";
 
 const SingleCartCourse = ({ course }: { course: CartCourse }) => {
+    const { data: session, status } = useSession();
+    const { setCart, cart } = useCart();
 
-    const { setCart } = useCart();
-
-    const handleDeleteItem = (courseId: number) => {
-        let cartFromStorage: CartCourse[] = JSON.parse(localStorage.getItem('cart') || "[]");
-        const newCart = cartFromStorage.filter(item => item.courseId !== courseId);
-
-        localStorage.setItem('cart', JSON.stringify(newCart));
-        setCart(newCart);
+    const handleDeleteItem = async (courseId: number) => {
+        if (status === 'authenticated') {
+            await sendRequest<ApiResponse<void>>({
+                url: `${apiUrl}/carts`,
+                method: 'DELETE',
+                headers: {
+                    Authorization: `Bearer ${session.accessToken}`
+                },
+                queryParams: {
+                    courseIds: [courseId]
+                }
+            });
+            setCart(prev => prev.filter(item => item.courseId !== courseId));
+        } else {
+            const newCart = cart.filter(item => item.courseId !== courseId);
+            localStorage.setItem('cart', JSON.stringify(newCart));
+            setCart(newCart);
+        }
     }
 
     const handleBuyLaterItem = (courseId: number) => {
-        let cartFromStorage: CartCourse[] = JSON.parse(localStorage.getItem('cart') || "[]");
-        const newCart = cartFromStorage.map(item => item.courseId === courseId ? { ...item, buyLater: !item.buyLater } : item);
-
+        const newCart = cart.map(item => item.courseId === courseId ? { ...item, buyLater: !item.buyLater } : item);
         localStorage.setItem('cart', JSON.stringify(newCart));
         setCart(newCart);
     };

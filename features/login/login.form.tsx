@@ -45,9 +45,14 @@ const LoginForm = () => {
                     if (!emailInput.includes("@")) {
                         emailInput += "@gmail.com";
                     }
+
+                    const cart = localStorage.getItem("cart");
+                    const courseIds = cart ? JSON.parse(cart).map((item: any) => item.courseId) : [];
+
                     const response = await signIn("credentials", {
                         email: emailInput,
                         password: state.password?.value,
+                        courseIds: JSON.stringify(courseIds),
                         redirect: false
                     });
 

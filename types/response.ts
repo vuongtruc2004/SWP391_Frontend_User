@@ -13,6 +13,7 @@ declare global {
         accountType: string;
         createdAt: string;
         updatedAt: string;
+        cart: CartResponse;
     }
     interface ApiResponse<T> {
         status: number;
@@ -103,6 +104,17 @@ declare global {
         description: string;
         lessons: LessonResponse[];
         quizInfo: QuizInfoResponse;
+    }
+
+    interface CartResponse {
+        cartId: number;
+        cartCourses: CartCourseResponse[];
+    }
+
+    interface CartCourseResponse {
+        cartCourseId: number;
+        course: CourseResponse;
+        status: "NOW" | "LATER";
     }
 
     interface QuizInfoResponse {

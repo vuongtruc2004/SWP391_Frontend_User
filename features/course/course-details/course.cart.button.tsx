@@ -3,14 +3,17 @@ import { Button } from "@mui/material";
 import Link from "next/link";
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
+import { sendRequest } from "@/utils/fetch.api";
+import { apiUrl } from "@/utils/url";
+import { useSession } from "next-auth/react";
 
 const CourseCartButton = ({ course }: { course: CourseDetailsResponse | CourseResponse }) => {
+    const { data: session, status } = useSession();
     const { cart, setCart } = useCart();
 
-    const handleCart = () => {
-        let cartFromStorage: CartCourse[] = JSON.parse(localStorage.getItem('cart') || "[]");
+    const handleCart = async () => {
+        const isExist = cart.some(item => item.courseId === course.courseId);
 
-        const isExist = cartFromStorage.some(item => item.courseId === course.courseId);
         if (!isExist) {
             const newItem: CartCourse = {
                 courseId: course.courseId,
@@ -20,9 +23,27 @@ const CourseCartButton = ({ course }: { course: CourseDetailsResponse | CourseRe
                 author: course.expert.user.fullname,
                 buyLater: false
             };
+            const newCart = [...cart, newItem];
 
-            const newCart = [...cartFromStorage, newItem];
-            localStorage.setItem('cart', JSON.stringify(newCart));
+            if (status === 'authenticated') {
+                const request: StorageCourseRequest = {
+                    courseId: course.courseId,
+                    status: 'NOW'
+                }
+
+                await sendRequest<ApiResponse<void>>({
+                    url: `${apiUrl}/carts/add`,
+                    method: 'POST',
+                    headers: {
+                        Authorization: `Bearer ${session.accessToken}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: request
+                });
+
+            } else {
+                localStorage.setItem('cart', JSON.stringify(newCart));
+            }
             setCart(newCart);
         }
     };

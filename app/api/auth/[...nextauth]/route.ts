@@ -12,12 +12,14 @@ export const authOptions: AuthOptions = {
             name: "Credentials",
             credentials: {
                 email: { type: "text" },
-                password: { type: "password" }
+                password: { type: "password" },
+                courseIds: { type: "courseIds" }
             },
             async authorize(credentials) {
                 const request: CredentialsLoginRequest = {
                     email: credentials?.email ?? "",
                     password: credentials?.password ?? "",
+                    courseIds: credentials?.courseIds ? JSON.parse(credentials.courseIds) : []
                 }
 
                 const credentialsLoginResponse = await sendRequest<ApiResponse<LoginResponse>>({
@@ -39,7 +41,7 @@ export const authOptions: AuthOptions = {
                     }
                     return user;
                 } else {
-                    throw new Error("Sai tên tài khoản hoặc mật khẩu!");
+                    throw new Error(credentialsLoginResponse.message ? credentialsLoginResponse.message.toString() : "Sai tên tài khoản hoặc mật khẩu!");
                 }
             }
         }),

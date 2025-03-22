@@ -71,45 +71,45 @@ const SuggestCourse = () => {
         )
     }
 
-    return (
-        <>
-            {courses.length !== 0 && (
-                <Box sx={{
-                    bgcolor: 'black',
-                    width: '100%',
-                    maxWidth: '1200px',
-                    borderRadius: '6px',
-                    padding: '20px',
-                    boxShadow: '2px 2px 5px rgba(0,0,0,0.5)',
-                    marginTop: '20px',
-                    position: 'relative',
-                    '.swiper': { width: '95%', maxWidth: '1200px', paddingBottom: '50px' },
-                    '.swiper-pagination-bullet': { width: '18px', height: '6px', borderRadius: '20px', transition: 'all .3s', background: '#adb5bd' },
-                    '.swiper-pagination-bullet-active': { width: '25px', background: '#60a5fa' },
-                }}>
-                    <h1 className="text-lg font-semibold mb-5">Có thể bạn cũng thích</h1>
+    if (!courses.length) {
+        return null;
+    }
 
-                    <Swiper
-                        ref={swiperRef}
-                        slidesPerView={5}
-                        spaceBetween={15}
-                        grabCursor={true}
-                        modules={[Pagination]}
-                        pagination={{ clickable: true }}
-                        loop={true}
-                    >
-                        {courses.map(course => {
-                            return (
-                                <SwiperSlide key={course.courseId}>
-                                    <SingleCourseSuggest course={course} />
-                                </SwiperSlide>
-                            )
-                        })}
-                    </Swiper>
-                    <SliderNavigation swiperRef={swiperRef} />
-                </Box>
-            )}
-        </>
+    return (
+        <Box sx={{
+            bgcolor: 'black',
+            width: '100%',
+            maxWidth: '1200px',
+            borderRadius: '6px',
+            padding: '20px',
+            boxShadow: '2px 2px 5px rgba(0,0,0,0.5)',
+            marginTop: '20px',
+            position: 'relative',
+            '.swiper': { width: '95%', maxWidth: '1200px', paddingBottom: '50px' },
+            '.swiper-pagination-bullet': { width: '18px', height: '6px', borderRadius: '20px', transition: 'all .3s', background: '#adb5bd' },
+            '.swiper-pagination-bullet-active': { width: '25px', background: '#60a5fa' },
+        }}>
+            <h1 className="text-lg font-semibold mb-5">Có thể bạn cũng thích</h1>
+
+            <Swiper
+                ref={swiperRef}
+                slidesPerView={5}
+                spaceBetween={15}
+                grabCursor={true}
+                modules={[Pagination]}
+                pagination={{ clickable: true }}
+                loop={true}
+            >
+                {courses.map(course => {
+                    return (
+                        <SwiperSlide key={course.courseId}>
+                            <SingleCourseSuggest course={course} />
+                        </SwiperSlide>
+                    )
+                })}
+            </Swiper>
+            <SliderNavigation swiperRef={swiperRef} />
+        </Box>
     )
 }
 

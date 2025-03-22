@@ -13,7 +13,7 @@ const SliderNavigation = ({ swiperRef }: { swiperRef: React.RefObject<SwiperRef 
             width: '100%',
             maxWidth: '1280px',
             position: 'absolute',
-            zIndex: 1000,
+            zIndex: 0,
             top: '50%',
             left: '50%',
             transform: 'translate(-50%, -50%)',

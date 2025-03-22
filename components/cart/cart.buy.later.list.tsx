@@ -1,6 +1,6 @@
 import { useCart } from '@/wrapper/course-cart/course.cart.wrapper';
 import { Box } from '@mui/material';
-import SingleCartCourse from './single.cart.course';
+import SingleCartCourse from '../../features/cart/single.cart.course';
 
 const CartBuyLaterList = () => {
     const { cart } = useCart();

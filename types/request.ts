@@ -22,6 +22,7 @@ declare global {
     interface CredentialsLoginRequest {
         email: string;
         password: string;
+        courseIds: number[];
     }
 
     interface SocialsLoginRequest {
@@ -106,5 +107,10 @@ declare global {
         startTime: string;
         endTime: string;
         courseIds?: number[];
+    }
+
+    interface StorageCourseRequest {
+        courseId: number;
+        status: "NOW" | "LATER"
     }
 }

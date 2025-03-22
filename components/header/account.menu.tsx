@@ -28,13 +28,14 @@ export default function AccountMenu({ anchorEl, setAnchorEl, transformOrigin, an
             if (pathname.startsWith("/course/learning")) {
                 sessionStorage.removeItem('prevUrl');
             }
+            localStorage.removeItem('cart');
 
             await sendRequest({
                 url: `${apiUrl}/auth/logout`,
                 queryParams: {
                     refresh_token: session.refreshToken
                 }
-            })
+            });
             signOut();
         }
     }
