@@ -67,7 +67,6 @@ const SingleCampaignRightSide = ({ campaign, setOpenModal }: { campaign: Campaig
                         <h2 className="text-xl font-semibold">Ưu đãi</h2>
                         <p className="text-gray-300 pl-4"><span>Giảm </span>
                             {campaign.discountPercentage}
-                            {campaign.discountType === 'FIXED' ? ' ₫' : ' %'}
                             {campaign.discountRange === 'ALL' ? ' tất cả giá trị đơn hàng' : ' một số giá trị đơn hàng'}
                         </p>
                     </div>

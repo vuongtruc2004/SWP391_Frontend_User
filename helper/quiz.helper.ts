@@ -26,3 +26,20 @@ export const formatDurationToMinuteAndSecond = (second: number): string => {
 
     return [minute, seconds].map(unit => unit.toString().padStart(2, '0')).join(':');
 };
+
+export const formatDurationToDayHoursMinuteAndSecond = (totalSeconds: number) => {
+    const totalMinutes = Math.floor(totalSeconds / 60);
+    const days = Math.floor(totalMinutes / 1440);
+    const hours = Math.floor((totalMinutes % 1440) / 60);
+    const minutes = Math.floor(totalMinutes % 60);
+    const seconds = totalSeconds % 60;
+
+    const timeString = [
+        String(hours).padStart(2, "0"),
+        String(minutes).padStart(2, "0"),
+        String(seconds).padStart(2, "0")
+    ].join(":");
+
+    return days > 0 ? `${days} ngày ${timeString}` : timeString;
+};
+

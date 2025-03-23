@@ -4,14 +4,16 @@ import React, { Dispatch, SetStateAction, useState } from 'react'
 import CloseIcon from '@mui/icons-material/Close';
 import SingleCampaignRightSide from './single.campaign.rightside';
 import ListEmpty from '@/components/empty/list.empty';
+import { useCampaign } from '@/wrapper/course-campaign/course.campaign.wrapper';
 
-const CamapignModal = ({ open, setOpen, campaign }: {
+const CamapignModal = ({ open, setOpen }: {
     open: boolean,
     setOpen: Dispatch<SetStateAction<boolean>>,
-    campaign: CampaignResponse[]
 }) => {
 
+    const { campaigns } = useCampaign()
     const [selectedCampaign, setSelectedCampaign] = useState<CampaignResponse>();
+
 
     return (
         <Box>
@@ -36,7 +38,7 @@ const CamapignModal = ({ open, setOpen, campaign }: {
                 <div className='bg-[#101010] p-5 w-full rounded-b-xl flex'>
                     <div className="w-1/4 max-w-[200px] flex flex-col">
                         <div className="overflow-y-auto max-h-[400px] pr-2">
-                            {campaign.map((item) => (
+                            {campaigns.map((item) => (
                                 <div
                                     key={item.campaignId}
                                     className={`cursor-pointer mb-3 p-2 transition duration-300 border-b-2 ${selectedCampaign?.campaignId === item.campaignId

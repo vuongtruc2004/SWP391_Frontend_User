@@ -1,5 +1,4 @@
 'use client'
-import { formatPrice } from "@/helper/course.list.helper";
 import { Button, Divider, Skeleton } from "@mui/material";
 import { formatDate } from "@/helper/blog.helper";
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
@@ -17,6 +16,7 @@ import { useUserProgress } from "@/wrapper/user-progress/user.progress.wrapper";
 import { countCompletedPercentOfACourse } from "@/helper/lesson.helper";
 import { useCoursePurchased } from "@/wrapper/course-purchased/course.purchased.wrapper";
 import CourseCartButton from "./course.cart.button";
+import DisplayCoursePrice from "@/components/course/course-slider/display.course.price";
 
 const CoursePurchase = ({ course }: { course: CourseDetailsResponse }) => {
     const { userProgresses, loading } = useUserProgress();
@@ -55,9 +55,7 @@ const CoursePurchase = ({ course }: { course: CourseDetailsResponse }) => {
         }}>
             {completionOfACourse < 0 && (
                 <>
-                    <div className="flex items-center justify-between">
-                        <h1 className='text-3xl font-semibold'>{formatPrice(course.price)}<span className="text-sm">₫</span></h1>
-                    </div>
+                    <DisplayCoursePrice course={course} fontSize="base" />
                     <Divider sx={{ marginBlock: '10px' }} />
                 </>
             )}

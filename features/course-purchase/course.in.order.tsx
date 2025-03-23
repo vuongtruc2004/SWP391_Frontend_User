@@ -1,3 +1,4 @@
+import { calculateCourseSalePrice } from "@/helper/course.list.helper"
 import { storageUrl } from "@/utils/url"
 import { Box } from "@mui/material"
 import Image from "next/image"
@@ -45,7 +46,11 @@ const CourseInOrder = ({ courses }: { courses: CourseDetailsResponse[] | CourseR
                                 <p className="text-sm text-gray-300">{"author" in course ? course.author : course.expert.user.fullname}</p>
                             </div>
                         </div>
-                        <p className="font-semibold">{course.price.toLocaleString('vi-VN')}₫</p>
+                        <div>
+                            {/* {calculateCourseSalePrice(course) !== 0} */}
+                            <p className="font-semibold">{course.price.toLocaleString('vi-VN')}₫</p>
+
+                        </div>
                     </div>
                 )
             })}

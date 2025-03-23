@@ -82,6 +82,7 @@ declare global {
         totalQuizzes: number;
         createdAt: string;
         updatedAt: string;
+        campaign: CampaignResponse;
     }
 
     interface CourseDetailsResponse extends CourseResponse {
@@ -324,13 +325,11 @@ declare global {
         campaignName: string;
         campaignDescription: string;
         discountPercentage: number;
-        discountType: string;
-        discountRange: string;
+        discountRange: "ALL" | "COURSES";
         thumbnail: string;
         startTime: string;
         endTime: string;
         createdAt: string;
         updatedAt: string;
-        courses: CourseDetailsResponse[];
     }
 }

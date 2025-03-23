@@ -1,36 +1,18 @@
 'use client'
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { motion } from "framer-motion";
 import CamapignModal from "@/features/campaign/campaign.modal";
-import { apiUrl } from "@/utils/url";
-import { sendRequest } from "@/utils/fetch.api";
 
 const CampaignIcon = () => {
     const [isDragging, setIsDragging] = useState(false);
     const containerRef = useRef(null);
     const [openModal, setOpenModal] = useState<boolean>(false)
-    const [campaignData, setCampaignData] = useState<CampaignResponse[]>([]);
 
     const openCampaignModal = (e: React.MouseEvent<HTMLDivElement>) => {
         if (!isDragging) {
             setOpenModal(true)
         }
     };
-
-    useEffect(() => {
-        const fetchCampaigns = async () => {
-            try {
-                const campaignResponse = await sendRequest<ApiResponse<CampaignResponse[]>>({
-                    url: `${apiUrl}/campaigns/all`
-                });
-                setCampaignData(campaignResponse.data);
-            } catch (error) {
-                console.error("Error fetching campaigns:", error);
-            }
-        };
-
-        fetchCampaigns();
-    }, []);
 
     return (
         <>
@@ -60,7 +42,7 @@ const CampaignIcon = () => {
                 whileTap={{ cursor: 'grabbing' }}
                 onClick={openCampaignModal}
             />
-            <CamapignModal open={openModal} setOpen={setOpenModal} campaign={campaignData} />
+            <CamapignModal open={openModal} setOpen={setOpenModal} />
         </>
     );
 }

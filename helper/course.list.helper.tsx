@@ -2,10 +2,9 @@ import Link from "next/link";
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import { BorderLinearProgress } from "@/components/course/course-slider/custom.progress";
 import DoneAllIcon from '@mui/icons-material/DoneAll';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { Box, Button } from "@mui/material";
-import ReplayIcon from '@mui/icons-material/Replay';
 import { slugifyText } from "./blog.helper";
+import dayjs from "dayjs";
 
 export const formatPrice = (price: number): string => {
     return price.toLocaleString('vi-VN');
@@ -118,45 +117,13 @@ export const displayProgressbar = (status: number, course: CourseResponse): Reac
     }
 }
 
-export const displayPrice = (course: CourseResponse, status: number): React.ReactNode => {
-    if (status < 0) {
-        return (
-            <>
-                <h1 className='text-xl font-semibold'>{formatPrice(course.price)}₫</h1>
-                <Link href={`/course/${slugifyText(course.courseName + "-" + course.courseId)}`} className="block mt-2" color="secondary">
-                    <Button variant="outlined" startIcon={<ShoppingCartIcon />} fullWidth>
-                        Mua ngay
-                    </Button>
-                </Link>
-            </>
-        )
-    } else if (status === 0) {
-        return (
-            <Link href={`/course/learning/${slugifyText(course.courseName + "-" + course.courseId)}`}>
-                <Button variant='outlined' fullWidth startIcon={<PlayArrowIcon />}>
-                    Bắt đầu học
-                </Button>
-            </Link>
-        )
-
-    } else if (status > 0 && status < 100) {
-        return (
-            <Link href={`/course/learning/${slugifyText(course.courseName + "-" + course.courseId)}`}>
-                <Button variant='outlined' fullWidth startIcon={<PlayArrowIcon />}>
-                    Tiếp tục học
-                </Button>
-            </Link>
-        )
+export const calculateCourseSalePrice = (course: CourseResponse) => {
+    const campaign = course.campaign;
+    let salePrice = 0;
+    if (campaign && !dayjs(campaign.startTime).isAfter(dayjs()) && dayjs(campaign.endTime).isAfter(dayjs())) {
+        salePrice = course.price - ((course.price * campaign.discountPercentage) / 100)
     }
-    else if (status === 100) {
-        return (
-            <Link href={`/course/learning/${slugifyText(course.courseName + "-" + course.courseId)}`}>
-                <Button variant='outlined' fullWidth startIcon={<ReplayIcon />}>
-                    Xem lại khóa học
-                </Button>
-            </Link>
-        )
-    } else {
-        return null;
-    }
+    return salePrice;
 }
+
+

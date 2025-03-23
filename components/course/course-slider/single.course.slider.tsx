@@ -4,7 +4,7 @@ import Divider from "@mui/material/Divider";
 import Link from 'next/link'
 import { storageUrl } from '@/utils/url';
 import Image from 'next/image';
-import { displayPrice, displayProgressbar } from '@/helper/course.list.helper';
+import { displayProgressbar } from '@/helper/course.list.helper';
 import { formatDate, slugifyText } from '@/helper/blog.helper';
 import HowToRegIcon from '@mui/icons-material/HowToReg';
 import { Skeleton } from "@mui/material";
@@ -16,6 +16,7 @@ import UpdateOutlinedIcon from '@mui/icons-material/UpdateOutlined';
 import SchoolOutlinedIcon from '@mui/icons-material/SchoolOutlined';
 import CourseTooltip from "./course.tooltip";
 import { BootstrapTooltip } from "../course-content/style";
+import DisplayCourseStatus from "./display.course.status";
 
 const SingleCourseSlider = ({ course }: { course: CourseResponse }) => {
     const { userProgresses, loading } = useUserProgress();
@@ -95,7 +96,7 @@ const SingleCourseSlider = ({ course }: { course: CourseResponse }) => {
 
                     <Divider sx={{ marginBlock: '10px' }} />
 
-                    {displayPrice(course, completionOfACourse)}
+                    <DisplayCourseStatus course={course} status={completionOfACourse} />
                 </div >
             </Box >
         </BootstrapTooltip>
