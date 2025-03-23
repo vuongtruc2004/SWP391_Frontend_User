@@ -1,9 +1,9 @@
 import { Accordion, AccordionSummary } from "./style";
 import { AccordionDetails } from "@mui/material";
-import { formatDuration, formatDurationWithTail } from "@/helper/course.details.helper";
 import AutoStoriesOutlinedIcon from '@mui/icons-material/AutoStoriesOutlined';
 import SmartDisplayOutlinedIcon from '@mui/icons-material/SmartDisplayOutlined';
 import QuizOutlinedIcon from '@mui/icons-material/QuizOutlined';
+import { formatToHHMMSS, formatToText_HoursMinutes } from "@/utils/format";
 
 const SingleChapterDetails = ({ chapter, index, chaptersExpand, toggleChapter }: {
     chapter: ChapterResponse,
@@ -46,7 +46,7 @@ const SingleChapterDetails = ({ chapter, index, chaptersExpand, toggleChapter }:
                                             <p className="text-gray-300 text-sm">Video</p>
                                         </div>
                                     </div>
-                                    <p className="text-gray-300 text-sm">{formatDuration(lesson.duration)}</p>
+                                    <p className="text-gray-300 text-sm">{formatToHHMMSS(lesson.duration)}</p>
                                 </>
                             ) : (
                                 <>
@@ -73,7 +73,7 @@ const SingleChapterDetails = ({ chapter, index, chaptersExpand, toggleChapter }:
                                 <p className="text-gray-300 text-sm">Bài kiểm tra</p>
                             </div>
                         </div>
-                        <p className="text-gray-300 text-sm">{formatDurationWithTail(chapter.quizInfo.duration)}</p>
+                        <p className="text-gray-300 text-sm">{formatToText_HoursMinutes(chapter.quizInfo.duration)}</p>
                     </div>
                 )}
             </AccordionDetails>

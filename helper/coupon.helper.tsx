@@ -2,7 +2,7 @@ import dayjs from "dayjs";
 import relativeTime from 'dayjs/plugin/relativeTime'
 dayjs.extend(relativeTime)
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
-import { formatSalePrice } from "./course.list.helper";
+import { formatCouponSalePrice } from "@/utils/format";
 
 export const countDiscountValue = (coupon: CouponResponse, totalPrice: number): number => {
     if (coupon.discountType === 'FIXED') return parseFloat(coupon.discountAmount.toFixed(3));
@@ -58,7 +58,7 @@ export const displayCouponNotOKStatus = (coupon: CouponResponse, totalPrice: num
         return (
             <div className="flex items-center gap-x-1 mt-1.5 ml-2">
                 <ErrorOutlineIcon sx={{ fontSize: '1rem' }} />
-                <p className="text-gray-300 text-sm">Bạn hãy mua thêm ít nhất <span className="font-semibold">₫{formatSalePrice(coupon.minOrderValue - totalPrice)}</span> để có thể sử dụng hóa đơn này nhé!</p>
+                <p className="text-gray-300 text-sm">Bạn hãy mua thêm ít nhất <span className="font-semibold">₫{formatCouponSalePrice(coupon.minOrderValue - totalPrice)}</span> để có thể sử dụng hóa đơn này nhé!</p>
             </div>
         )
     }

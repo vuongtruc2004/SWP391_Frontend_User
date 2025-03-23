@@ -7,8 +7,7 @@ import CircleOutlinedIcon from '@mui/icons-material/CircleOutlined';
 import RadioButtonCheckedOutlinedIcon from '@mui/icons-material/RadioButtonCheckedOutlined';
 import { GradientLinearProgress } from "@/components/course/course-slider/custom.progress"
 import { displayCouponNotOKStatus, getCouponStatus } from "@/helper/coupon.helper";
-import { formatSalePrice } from "@/helper/course.list.helper";
-import { formatDateTime } from "@/helper/blog.helper";
+import { formatCouponSalePrice, formatDateTime } from "@/utils/format";
 
 const SingleCoupon = ({ coupon, selectedCoupon, setSelectedCoupon, totalPrice }: {
     coupon: CouponResponse,
@@ -50,16 +49,16 @@ const SingleCoupon = ({ coupon, selectedCoupon, setSelectedCoupon, totalPrice }:
 
                     <div>
                         <div className="flex items-center gap-x-2 font-semibold">
-                            <p>Giảm {coupon.discountType === 'FIXED' ? `₫${formatSalePrice(coupon.discountAmount)}` : `${coupon.discountPercent}%`}</p>
+                            <p>Giảm {coupon.discountType === 'FIXED' ? `₫${formatCouponSalePrice(coupon.discountAmount)}` : `${coupon.discountPercent}%`}</p>
                             {coupon.maxDiscountAmount && (
                                 <>
                                     <p>|</p>
-                                    <p>Giảm tối đa ₫{formatSalePrice(coupon.maxDiscountAmount)}</p>
+                                    <p>Giảm tối đa ₫{formatCouponSalePrice(coupon.maxDiscountAmount)}</p>
                                 </>
                             )}
                         </div>
 
-                        <p className="text-gray-300 mb-2">Đơn tối thiểu <span className="font-semibold">₫{formatSalePrice(coupon?.minOrderValue || 0)}</span></p>
+                        <p className="text-gray-300 mb-2">Đơn tối thiểu <span className="font-semibold">₫{formatCouponSalePrice(coupon?.minOrderValue || 0)}</span></p>
 
                         {coupon.usedCount >= 1 && (
                             <GradientLinearProgress variant="determinate" value={coupon.usedCount / coupon.maxUses * 100} height={4} />

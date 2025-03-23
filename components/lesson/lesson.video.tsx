@@ -1,7 +1,6 @@
 import CourseRate from "@/features/course/course-rating/course.rate";
-import { formatDate } from "@/helper/blog.helper";
-import { formatTotalFollowers } from "@/helper/lesson.helper";
 import { sendRequest } from "@/utils/fetch.api";
+import { formatDate, formatTotalFollowers } from "@/utils/format";
 import { apiUrl, storageUrl } from "@/utils/url";
 import { useCourseView } from "@/wrapper/course-view/course.view.wrapper";
 import { useUserExpert } from "@/wrapper/user-expert/user.expert.wrapper";

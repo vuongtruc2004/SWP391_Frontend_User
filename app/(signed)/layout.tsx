@@ -13,7 +13,7 @@ const SignedLayout = ({ children }: { children: React.ReactNode }) => {
                     <div className="min-h-screen h-max bg-[#101010] relative">
                         <AppHeader />
                         {children}
-                        {/* <CampaignIcon /> */}
+                        <CampaignIcon />
                         <MessengerIcon />
                     </div>
                 </CourseCartWrapper>

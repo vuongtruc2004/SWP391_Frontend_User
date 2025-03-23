@@ -8,9 +8,9 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ErrorOutlineRoundedIcon from '@mui/icons-material/ErrorOutlineRounded';
 import { sendRequest } from "@/utils/fetch.api";
 import { countDiscountValue } from "@/helper/coupon.helper";
-import { formatPrice, formatSalePrice } from "@/helper/course.list.helper";
 import CourseInOrder from "./course.in.order";
 import CouponListDialog from "./coupon.list.dialog";
+import { formatCouponSalePrice, formatPrice } from "@/utils/format";
 
 const PaymentInstruction = ({ open, setOpen, courses }: {
     open: boolean;
@@ -30,10 +30,7 @@ const PaymentInstruction = ({ open, setOpen, courses }: {
             setLoading(true);
             const orderRequest: OrderRequest = {
                 couponId: selectedCoupon?.couponId || null,
-                orderDetails: courses.map(course => ({
-                    courseId: course.courseId,
-                    priceAtTimeOfPurchase: course.price
-                }))
+                courseIds: courses.map(course => course.courseId)
             }
 
             const purchaseResponse = await sendRequest<ApiResponse<string>>({
@@ -112,7 +109,7 @@ const PaymentInstruction = ({ open, setOpen, courses }: {
                     {selectedCoupon ? (
                         <div className="flex items-center gap-x-1 cursor-pointer" onClick={() => setOpenCouponList(true)}>
                             <div className="o3ut9x">
-                                <span>Giảm ₫{formatSalePrice(countDiscountValue(selectedCoupon, totalPrice))}</span>
+                                <span>Giảm ₫{formatCouponSalePrice(countDiscountValue(selectedCoupon, totalPrice))}</span>
                             </div>
                             <ChevronRightIcon sx={{ fontSize: '1.2rem' }} />
                         </div>

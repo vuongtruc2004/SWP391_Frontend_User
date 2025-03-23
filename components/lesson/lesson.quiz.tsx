@@ -3,12 +3,12 @@ import { useCourseView } from "@/wrapper/course-view/course.view.wrapper"
 import { Button, Divider } from "@mui/material";
 import TimelapseIcon from '@mui/icons-material/Timelapse';
 import QuestionMarkIcon from '@mui/icons-material/QuestionMark';
-import { formatDurationWithTail } from "@/helper/course.details.helper";
 import { useState } from "react";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { sendRequest } from "@/utils/fetch.api";
 import { apiUrl } from "@/utils/url";
+import { formatToText_HoursMinutes } from "@/utils/format";
 
 const LessonQuiz = () => {
     const { lessons, currentPlayIndex, course } = useCourseView();
@@ -52,7 +52,7 @@ const LessonQuiz = () => {
                         <TimelapseIcon sx={{ fontSize: '1rem' }} />
                         <span>Thời gian làm bài</span>
                     </p>
-                    <p className="text-green-500 font-semibold">{formatDurationWithTail(quiz.duration)}</p>
+                    <p className="text-green-500 font-semibold">{formatToText_HoursMinutes(quiz.duration)}</p>
                 </li>
                 <li className="flex items-center text-sm">
                     <p className="flex items-center gap-x-2 w-[180px]">

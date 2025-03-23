@@ -1,10 +1,9 @@
 import { AccordionDetails, Divider } from "@mui/material"
 import { Accordion, AccordionSummary } from "./style"
-import { formatPrice } from "@/helper/course.list.helper"
-import { formatDateTime } from "@/helper/blog.helper"
 import { Fragment } from "react"
-import { displayOrderStatusBox, displayOrderStatusEnum } from "@/helper/purchase.history.helper"
 import SingleCourseInOrder from "./single.course.in.order"
+import OrderStatusBox from "./order.status.box"
+import { formatDateTime, formatPrice } from "@/utils/format"
 
 const SingleOrder = ({ order }: { order: OrderResponse }) => {
 
@@ -27,12 +26,19 @@ const SingleOrder = ({ order }: { order: OrderResponse }) => {
                         <p className="text-white">{formatPrice(order.totalPrice)}₫</p>
                     </li>
 
-                    {displayOrderStatusEnum(order)}
+                    <li className="flex flex-col gap-y-1.5 items-end w-[168px]">
+                        <p className="text-gray-400 font-semibold">Trạng thái</p>
+                        {order.paidAt !== null ? (
+                            <p className="text-green-500">Đã thanh toán</p>
+                        ) : (
+                            <p className="text-orange-500">Chưa thanh toán</p>
+                        )}
+                    </li>
                 </ul>
             </AccordionSummary>
 
             <AccordionDetails sx={{ padding: 0 }}>
-                {displayOrderStatusBox(order)}
+                <OrderStatusBox order={order} />
 
                 <ul>
                     {order.orderDetails && order.orderDetails.map((orderDetails, index) => {

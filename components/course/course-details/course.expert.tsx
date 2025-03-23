@@ -9,8 +9,8 @@ import { useState } from "react";
 import Image from "next/image";
 import { getEmojiOnAvgStars } from "@/helper/course.details.helper";
 import ListEmpty from "@/components/empty/list.empty";
-import { formatTotalFollowers } from "@/helper/lesson.helper";
 import HowToRegIcon from '@mui/icons-material/HowToReg';
+import { formatTotalFollowers } from "@/utils/format";
 
 const CourseExpert = ({ course }: { course: CourseDetailsResponse }) => {
     const [expandDescription, setExpandDescription] = useState(false);

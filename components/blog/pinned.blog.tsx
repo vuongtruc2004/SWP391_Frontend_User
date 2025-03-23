@@ -1,4 +1,5 @@
-import { calculateReadingTime, formatDate, slugifyText } from "@/helper/blog.helper";
+import { calculateReadingTime, slugifyText } from "@/helper/blog.helper";
+import { formatDate } from "@/utils/format";
 import { storageUrl } from "@/utils/url";
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import Box from "@mui/material/Box";

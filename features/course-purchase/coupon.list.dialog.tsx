@@ -5,8 +5,8 @@ import { sendRequest } from "@/utils/fetch.api";
 import { apiUrl } from "@/utils/url";
 import SingleCoupon from "./single.coupon";
 import { countDiscountValue, optimizeDisplayCoupons } from "@/helper/coupon.helper";
-import { formatSalePrice } from "@/helper/course.list.helper";
 import ListEmpty from "@/components/empty/list.empty";
+import { formatCouponSalePrice } from "@/utils/format";
 
 const CouponListDialog = ({ open, setOpen, totalPrice, selectedCoupon, setSelectedCoupon }: {
     open: boolean;
@@ -108,7 +108,7 @@ const CouponListDialog = ({ open, setOpen, totalPrice, selectedCoupon, setSelect
                 )}
 
                 {selectedCoupon && (
-                    <p className="mt-3 text-gray-300">Đã áp dụng mã <span className="font-semibold">{selectedCoupon.couponCode}</span>, giảm <span className="text-green-500 font-semibold text-lg">₫{formatSalePrice(countDiscountValue(selectedCoupon, totalPrice))}</span></p>
+                    <p className="mt-3 text-gray-300">Đã áp dụng mã <span className="font-semibold">{selectedCoupon.couponCode}</span>, giảm <span className="text-green-500 font-semibold text-lg">₫{formatCouponSalePrice(countDiscountValue(selectedCoupon, totalPrice))}</span></p>
                 )}
 
                 <div className="flex items-center justify-end gap-x-3 mt-3">

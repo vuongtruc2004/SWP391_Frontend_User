@@ -4,10 +4,10 @@ import { Fragment, SetStateAction } from 'react';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import Image from 'next/image';
 import { storageUrl } from '@/utils/url';
-import { formatPrice } from '@/helper/course.list.helper';
 import ListEmpty from '@/components/empty/list.empty';
 import { useCart } from '@/wrapper/course-cart/course.cart.wrapper';
 import { slugifyText } from '@/helper/blog.helper';
+import { formatPrice } from '@/utils/format';
 
 const CartPopover = ({ anchorEl, setAnchorEl }: {
     anchorEl: HTMLButtonElement | null;

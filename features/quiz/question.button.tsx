@@ -3,7 +3,6 @@ import { BorderLinearProgress } from '@/components/course/course-slider/custom.p
 import { Alert, Button, Snackbar } from '@mui/material'
 import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
 import { useDoQuiz } from '@/wrapper/do-quiz/do.quiz.wrapper';
-import { countCompletionPercent, formatDurationToMinuteAndSecond } from '@/helper/quiz.helper';
 import { useEffect, useState } from 'react';
 import dayjs from 'dayjs';
 import { sendRequest } from '@/utils/fetch.api';
@@ -11,6 +10,8 @@ import { apiUrl } from '@/utils/url';
 import { useSession } from 'next-auth/react';
 import CurrentQuestion from './current.question';
 import SubmitDialog from './submit.dialog';
+import { countCompletionPercent } from '@/helper/quiz.helper';
+import { formatToMMSS } from '@/utils/format';
 
 const QuestionButton = () => {
     const { data: session, status } = useSession();
@@ -104,7 +105,7 @@ const QuestionButton = () => {
 
                 <h2 className='font-semibold text-lg'>Thời gian còn lại</h2>
                 {remainingTime ? (
-                    <p className='text-gray-300'>{formatDurationToMinuteAndSecond(remainingTime)}</p>
+                    <p className='text-gray-300'>{formatToMMSS(remainingTime)}</p>
                 ) : (
                     <p className='text-gray-300'>00:00</p>
                 )}

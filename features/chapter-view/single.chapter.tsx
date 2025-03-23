@@ -6,9 +6,9 @@ import { SetStateAction, useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import AutoStoriesOutlinedIcon from '@mui/icons-material/AutoStoriesOutlined';
 import SmartDisplayOutlinedIcon from '@mui/icons-material/SmartDisplayOutlined';
-import { formatDuration, formatDurationWithTail } from "@/helper/course.details.helper";
 import { useUserProgress } from "@/wrapper/user-progress/user.progress.wrapper";
 import QuizOutlinedIcon from '@mui/icons-material/QuizOutlined';
+import { formatToHHMMSS, formatToText_HoursMinutes } from "@/utils/format";
 
 const SingleChapter = ({ chapter, index, chapterExpand, setChapterExpand }: {
     chapter: ChapterResponse,
@@ -111,7 +111,7 @@ const SingleChapter = ({ chapter, index, chapterExpand, setChapterExpand }: {
                                         <p className="text-gray-300 text-sm flex items-center gap-x-1.5">
                                             <span>Video</span>
                                             <span>•</span>
-                                            <span>{formatDuration(lesson.duration)}</span>
+                                            <span>{formatToHHMMSS(lesson.duration)}</span>
                                         </p>
                                     </div>
                                 </div>
@@ -156,7 +156,7 @@ const SingleChapter = ({ chapter, index, chapterExpand, setChapterExpand }: {
                                 <p className="text-gray-300 text-sm flex items-center gap-x-1.5">
                                     <span>Bài kiểm tra</span>
                                     <span>•</span>
-                                    <span>{formatDurationWithTail(chapter.quizInfo.duration)}</span>
+                                    <span>{formatToText_HoursMinutes(chapter.quizInfo.duration)}</span>
                                 </p>
                             </div>
                         </div>

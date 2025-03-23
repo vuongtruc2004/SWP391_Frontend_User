@@ -1,5 +1,5 @@
 'use client'
-import { calculateReadingTime, formatDate } from "@/helper/blog.helper";
+import { calculateReadingTime } from "@/helper/blog.helper";
 import { storageUrl } from "@/utils/url";
 import Avatar from "@mui/material/Avatar";
 import Box from "@mui/material/Box";
@@ -8,6 +8,7 @@ import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import LocalLibraryOutlinedIcon from '@mui/icons-material/LocalLibraryOutlined';
 import Link from "next/link";
 import Image from "next/image";
+import { formatDate } from "@/utils/format";
 
 const BlogDetails = ({ blog }: { blog: BlogResponse }) => {
     const avatarSrc = blog?.user?.avatar?.startsWith("http") ? blog?.user?.avatar : `${storageUrl}/avatar/${blog?.user?.avatar}`;

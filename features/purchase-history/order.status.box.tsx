@@ -1,8 +1,5 @@
-import { Alert, Button, Snackbar } from "@mui/material";
-import { formatDateTime } from "./blog.helper";
+import { Alert, Snackbar } from "@mui/material";
 import DoneAllIcon from '@mui/icons-material/DoneAll';
-import { formatSalePrice } from "./course.list.helper";
-import { countDiscountValue } from "./coupon.helper";
 import SellOutlinedIcon from '@mui/icons-material/SellOutlined';
 import { sendRequest } from "@/utils/fetch.api";
 import { apiUrl } from "@/utils/url";
@@ -10,21 +7,10 @@ import { useSession } from "next-auth/react";
 import { useUserOrder } from "@/wrapper/user-order/user.order.wrapper";
 import dayjs from "dayjs";
 import { useState } from "react";
+import { countDiscountValue } from "@/helper/coupon.helper";
+import { formatCouponSalePrice, formatDateTime } from "@/utils/format";
 
-export const displayOrderStatusEnum = (order: OrderResponse) => {
-    return (
-        <li className="flex flex-col gap-y-1.5 items-end w-[168px]">
-            <p className="text-gray-400 font-semibold">Trạng thái</p>
-            {order.paidAt !== null ? (
-                <p className="text-green-500">Đã thanh toán</p>
-            ) : (
-                <p className="text-orange-500">Chưa thanh toán</p>
-            )}
-        </li>
-    )
-}
-
-export const displayOrderStatusBox = (order: OrderResponse) => {
+const OrderStatusBox = ({ order }: { order: OrderResponse }) => {
     const { data: session, status } = useSession();
     const { setOrderList } = useUserOrder();
     const [open, setOpen] = useState(false);
@@ -59,7 +45,7 @@ export const displayOrderStatusBox = (order: OrderResponse) => {
                     <div>
                         <p>Bạn đã thanh toán đơn hàng này lúc: <strong>{formatDateTime(order.paidAt)}</strong></p>
                         {order.coupon && (
-                            <p className="flex items-center gap-x-1.5 mt-1"><SellOutlinedIcon className="text-orange-400" sx={{ fontSize: '1rem' }} /> Đã áp dụng mã {order.coupon.couponCode}, giảm <strong>₫{formatSalePrice(countDiscountValue(order.coupon, order.totalPrice))}</strong></p>
+                            <p className="flex items-center gap-x-1.5 mt-1"><SellOutlinedIcon className="text-orange-400" sx={{ fontSize: '1rem' }} /> Đã áp dụng mã {order.coupon.couponCode}, giảm <strong>₫{formatCouponSalePrice(countDiscountValue(order.coupon, order.totalPrice))}</strong></p>
                         )}
                     </div>
                     <DoneAllIcon className="text-green-500" sx={{ fontSize: '1.2rem' }} />
@@ -69,7 +55,7 @@ export const displayOrderStatusBox = (order: OrderResponse) => {
                     <div>
                         <p>Đơn hàng sẽ hết hạn lúc: <strong>{formatDateTime(order.expiredAt)}</strong></p>
                         {order.coupon && (
-                            <p className="flex items-center gap-x-1.5 mt-1"><SellOutlinedIcon className="text-orange-400" sx={{ fontSize: '1rem' }} /> Đã áp dụng mã {order.coupon.couponCode}, giảm <strong>₫{formatSalePrice(countDiscountValue(order.coupon, order.totalPrice))}</strong></p>
+                            <p className="flex items-center gap-x-1.5 mt-1"><SellOutlinedIcon className="text-orange-400" sx={{ fontSize: '1rem' }} /> Đã áp dụng mã {order.coupon.couponCode}, giảm <strong>₫{formatCouponSalePrice(countDiscountValue(order.coupon, order.totalPrice))}</strong></p>
                         )}
                     </div>
 
@@ -102,3 +88,5 @@ export const displayOrderStatusBox = (order: OrderResponse) => {
         </div>
     )
 }
+
+export default OrderStatusBox

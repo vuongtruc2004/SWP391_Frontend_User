@@ -1,5 +1,5 @@
 'use client'
-import { formatDate, slugifyText } from "@/helper/blog.helper";
+import { slugifyText } from "@/helper/blog.helper";
 import { storageUrl } from "@/utils/url";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -7,6 +7,7 @@ import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import Image from "next/image";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
+import { formatDate } from "@/utils/format";
 
 const BlogSuggest = ({ blogList, currentId }: {
     blogList: BlogResponse[];

@@ -1,4 +1,4 @@
-import { calculateReadingTime, formatDate, slugifyText } from '@/helper/blog.helper';
+import { calculateReadingTime, slugifyText } from '@/helper/blog.helper';
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
@@ -6,6 +6,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { storageUrl } from '@/utils/url';
 import { Divider } from '@mui/material';
+import { formatDate } from '@/utils/format';
 
 const SingleBlogSlider = ({ blog }: { blog: BlogResponse; }) => {
     return (

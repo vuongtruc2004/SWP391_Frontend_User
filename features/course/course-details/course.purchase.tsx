@@ -1,9 +1,8 @@
 'use client'
 import { Button, Divider, Skeleton } from "@mui/material";
-import { formatDate } from "@/helper/blog.helper";
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import LoopIcon from '@mui/icons-material/Loop';
-import { countTotalTimeForACourse, displayPurchasedButton } from "@/helper/course.details.helper";
+import { countTotalTimeForACourse } from "@/helper/course.details.helper";
 import LocalMallOutlinedIcon from '@mui/icons-material/LocalMallOutlined';
 import StayCurrentPortraitOutlinedIcon from '@mui/icons-material/StayCurrentPortraitOutlined';
 import AllInclusiveOutlinedIcon from '@mui/icons-material/AllInclusiveOutlined';
@@ -16,7 +15,9 @@ import { useUserProgress } from "@/wrapper/user-progress/user.progress.wrapper";
 import { countCompletedPercentOfACourse } from "@/helper/lesson.helper";
 import { useCoursePurchased } from "@/wrapper/course-purchased/course.purchased.wrapper";
 import CourseCartButton from "./course.cart.button";
-import DisplayCoursePrice from "@/components/course/course-slider/display.course.price";
+import DisplayCoursePrice from "@/components/course/display/display.course.price";
+import DisplayCoursePurchaseButton from "@/components/course/display/display.course.purchase.button";
+import { formatDate } from "@/utils/format";
 
 const CoursePurchase = ({ course }: { course: CourseDetailsResponse }) => {
     const { userProgresses, loading } = useUserProgress();
@@ -55,7 +56,7 @@ const CoursePurchase = ({ course }: { course: CourseDetailsResponse }) => {
         }}>
             {completionOfACourse < 0 && (
                 <>
-                    <DisplayCoursePrice course={course} fontSize="base" />
+                    <DisplayCoursePrice course={course} fontSize="large" displayEndTime={true} />
                     <Divider sx={{ marginBlock: '10px' }} />
                 </>
             )}
@@ -95,7 +96,7 @@ const CoursePurchase = ({ course }: { course: CourseDetailsResponse }) => {
             ) : (
                 <>
                     <Divider sx={{ marginTop: '12px' }} />
-                    {displayPurchasedButton(completionOfACourse, course)}
+                    <DisplayCoursePurchaseButton course={course} completionOfACourse={completionOfACourse} />
                 </>
             )}
         </div >

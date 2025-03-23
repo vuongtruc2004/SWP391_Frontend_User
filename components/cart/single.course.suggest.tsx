@@ -1,10 +1,10 @@
 import { BootstrapTooltip } from "@/components/course/course-content/style"
 import CourseTooltip from "@/components/course/course-slider/course.tooltip"
 import { slugifyText } from "@/helper/blog.helper"
-import { formatPrice } from "@/helper/course.list.helper"
 import { storageUrl } from "@/utils/url"
 import Image from "next/image"
 import Link from "next/link"
+import DisplayCoursePrice from "../course/display/display.course.price"
 
 const SingleCourseSuggest = ({ course }: { course: CourseResponse }) => {
     return (
@@ -25,7 +25,7 @@ const SingleCourseSuggest = ({ course }: { course: CourseResponse }) => {
                 </Link>
                 <Link href={`/course/${slugifyText(course.courseName + "-" + course.courseId)}`} className="transition-all duration-150 font-semibold line-clamp-1 hover:underline hover:text-blue-500 mt-2">{course.courseName}</Link>
                 <p className="text-gray-300 text-sm mb-0.5">Bởi {course.expert.user.fullname}</p>
-                <p className="font-semibold">{formatPrice(course.price)}₫</p>
+                <DisplayCoursePrice course={course} fontSize="small" />
             </div>
         </BootstrapTooltip>
     )

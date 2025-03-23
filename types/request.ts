@@ -108,12 +108,7 @@ declare global {
     }
 
     interface OrderRequest {
-        orderDetails: OrderDetailsRequest[];
+        courseIds: number[];
         couponId: number | null;
-    }
-
-    interface OrderDetailsRequest {
-        courseId: number;
-        priceAtTimeOfPurchase: number;
     }
 }

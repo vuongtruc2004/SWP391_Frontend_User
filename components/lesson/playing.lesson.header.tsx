@@ -1,4 +1,4 @@
-import { formatDate } from '@/helper/blog.helper';
+import { formatDate } from '@/utils/format';
 import { useCourseView } from '@/wrapper/course-view/course.view.wrapper';
 import { Divider } from '@mui/material';
 import { ArrowLeftIcon, ArrowRightIcon } from '@mui/x-date-pickers/icons';

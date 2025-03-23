@@ -1,5 +1,5 @@
 import Link from "next/link"
-import { formatDate, slugifyText } from "@/helper/blog.helper"
+import { slugifyText } from "@/helper/blog.helper"
 import { storageUrl } from "@/utils/url"
 import Image from "next/image"
 import { useState } from "react"
@@ -9,7 +9,7 @@ import ShareIcon from '@mui/icons-material/Share';
 import AttachMoneyOutlinedIcon from '@mui/icons-material/AttachMoneyOutlined';
 import ShareCourseDialog from "./share.course.dialog";
 import { Button } from "@mui/material"
-import { formatPrice } from "@/helper/course.list.helper"
+import { formatDate, formatPrice } from "@/utils/format"
 
 const SingleCourseInOrder = ({ orderDetails }: { orderDetails: OrderDetailsResponse }) => {
     const [openShare, setOpenShare] = useState(false);

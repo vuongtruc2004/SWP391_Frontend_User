@@ -1,13 +1,12 @@
 import { Avatar, Button, Divider, IconButton, Popover, Rating, Snackbar, SnackbarContent } from "@mui/material";
-import FlagIcon from '@mui/icons-material/Flag';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
-import { formatDate } from "@/helper/blog.helper";
+import { Dispatch, SetStateAction, useState } from "react";
 import { useSession } from "next-auth/react";
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import DeleteCourseRating from "@/features/course/course-rating/delete.rating";
 import UpdateCourseRating from "@/features/course/course-rating/update.course.rating";
+import { formatDateTime } from "@/utils/format";
 
 const SingleCourseRating = ({ rate, index, avatarSrc, setMyRating }: {
     rate: RateResponse;
@@ -38,8 +37,8 @@ const SingleCourseRating = ({ rate, index, avatarSrc, setMyRating }: {
                             {rate?.user?.fullname.charAt(0).toUpperCase()}
                         </Avatar>
                         <div>
-                            <p className="font-semibold line-clamp-1 text-sm">{rate?.user?.fullname}</p>
-                            <p className="text-sm text-gray-300">{formatDate(rate.updatedAt)}</p>
+                            <p className="font-semibold line-clamp-1 text-sm">{rate.user.fullname}</p>
+                            <p className="text-sm text-gray-300">{formatDateTime(rate.updatedAt)}</p>
                         </div>
                     </div>
 

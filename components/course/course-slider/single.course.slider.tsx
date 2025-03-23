@@ -4,8 +4,7 @@ import Divider from "@mui/material/Divider";
 import Link from 'next/link'
 import { storageUrl } from '@/utils/url';
 import Image from 'next/image';
-import { displayProgressbar } from '@/helper/course.list.helper';
-import { formatDate, slugifyText } from '@/helper/blog.helper';
+import { slugifyText } from '@/helper/blog.helper';
 import HowToRegIcon from '@mui/icons-material/HowToReg';
 import { Skeleton } from "@mui/material";
 import { useEffect, useState } from "react";
@@ -16,7 +15,9 @@ import UpdateOutlinedIcon from '@mui/icons-material/UpdateOutlined';
 import SchoolOutlinedIcon from '@mui/icons-material/SchoolOutlined';
 import CourseTooltip from "./course.tooltip";
 import { BootstrapTooltip } from "../course-content/style";
-import DisplayCourseStatus from "./display.course.status";
+import DisplayCourseProgress from "../display/display.course.progress";
+import { formatDate } from "@/utils/format";
+import DisplayCourseBottomButton from "../display/display.course.bottom.button";
 
 const SingleCourseSlider = ({ course }: { course: CourseResponse }) => {
     const { userProgresses, loading } = useUserProgress();
@@ -71,7 +72,7 @@ const SingleCourseSlider = ({ course }: { course: CourseResponse }) => {
                 <div className='p-5'>
                     <Link href={`/course/${slugifyText(course.courseName + "-" + course.courseId)}`} className='transition-all duration-150 text-xl font-semibold hover:underline hover:text-blue-500'>{course.courseName}</Link>
 
-                    {displayProgressbar(completionOfACourse, course)}
+                    <DisplayCourseProgress course={course} completionOfACourse={completionOfACourse} />
 
                     <p className='text-gray-300 mt-1 mb-2 line-clamp-3'>
                         {course.description}
@@ -96,7 +97,7 @@ const SingleCourseSlider = ({ course }: { course: CourseResponse }) => {
 
                     <Divider sx={{ marginBlock: '10px' }} />
 
-                    <DisplayCourseStatus course={course} status={completionOfACourse} />
+                    <DisplayCourseBottomButton course={course} completionOfACourse={completionOfACourse} />
                 </div >
             </Box >
         </BootstrapTooltip>

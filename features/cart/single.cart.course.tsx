@@ -1,4 +1,3 @@
-import { formatPrice } from "@/helper/course.list.helper";
 import { apiUrl, storageUrl } from "@/utils/url";
 import { useCart } from "@/wrapper/course-cart/course.cart.wrapper";
 import CloseIcon from '@mui/icons-material/Close';
@@ -10,6 +9,7 @@ import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
 import { slugifyText } from "@/helper/blog.helper";
 import { sendRequest } from "@/utils/fetch.api";
 import { useSession } from "next-auth/react";
+import { formatPrice } from "@/utils/format";
 
 const SingleCartCourse = ({ course }: { course: CartCourse }) => {
     const { data: session, status } = useSession();

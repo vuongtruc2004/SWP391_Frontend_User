@@ -1,20 +1,12 @@
 import { useEffect, useState } from "react";
-import { formatDurationToDayHoursMinuteAndSecond, formatDurationToMinuteAndSecond } from "@/helper/quiz.helper";
-import { calculateCourseSalePrice, formatPrice } from "@/helper/course.list.helper";
+import { calculateCourseSalePrice } from "@/helper/course.list.helper";
 import dayjs from "dayjs";
+import { formatPrice, formatToText_DaysHHMMSS } from "@/utils/format";
 
-const DisplayCoursePrice = ({ course, fontSize }: { course: CourseResponse, fontSize: 'small' | 'base' }) => {
+const DisplayCoursePrice = ({ course, fontSize, displayEndTime }: { course: CourseResponse, fontSize: 'small' | 'base' | 'large', displayEndTime?: boolean }) => {
     const [remainingTime, setRemainingTime] = useState<number | null>(null);
     const salePrice = calculateCourseSalePrice(course);
-
-    const fontSizes = [];
-    if (fontSize === 'small') {
-        fontSizes.push("text-xl");
-        fontSizes.push("text-sm")
-    } else {
-        fontSizes.push("text-3xl");
-        fontSizes.push("text-sm");
-    }
+    const fontSizes = fontSize === 'small' ? ["text-lg", "text-sm"] : fontSize === 'base' ? ["text-xl", "text-sm"] : ["text-3xl", "text-sm"];
 
     useEffect(() => {
         if (course.campaign) {
@@ -27,6 +19,7 @@ const DisplayCoursePrice = ({ course, fontSize }: { course: CourseResponse, font
                 setRemainingTime(updatedTime > 0 ? updatedTime : 0);
 
                 if (updatedTime <= 0) {
+                    course.campaign = null;
                     clearInterval(interval);
                 };
             }, 1000);
@@ -44,8 +37,8 @@ const DisplayCoursePrice = ({ course, fontSize }: { course: CourseResponse, font
             ) : (
                 <h1 className={`${fontSizes[0]} font-semibold`}>{formatPrice(course.price)}₫</h1>
             )}
-            {salePrice !== 0 && remainingTime && (
-                <p className={`text-gray-300 ${fontSizes[1]}`}>{formatDurationToDayHoursMinuteAndSecond(remainingTime)}</p>
+            {salePrice !== 0 && remainingTime !== null && remainingTime > 0 && displayEndTime && (
+                <p className={`text-gray-300 font-semibold ${fontSizes[1]}`}>{formatToText_DaysHHMMSS(remainingTime)}</p>
             )}
         </div>
     )

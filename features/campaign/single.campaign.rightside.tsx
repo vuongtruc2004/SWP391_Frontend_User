@@ -1,26 +1,18 @@
 import { storageUrl } from '@/utils/url'
 import { Box, Dialog } from '@mui/material'
 import Image from 'next/image'
-import Link from 'next/link'
-import React, { useState } from 'react'
+import { useState } from 'react'
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import { useRouter } from 'next/navigation'
 import dayjs from 'dayjs'
+import { formatDateTime } from '@/utils/format';
 
 const SingleCampaignRightSide = ({ campaign, setOpenModal }: { campaign: CampaignResponse, setOpenModal: React.Dispatch<React.SetStateAction<boolean>> }) => {
-
     const now = new Date();
     const campaignStartTime = new Date(campaign.startTime);
     const [open, setOpen] = useState(false);
     const [hover, setHover] = useState(false);
     const router = useRouter()
-
-    const formatDateTime = (dateTime: string) => {
-        return dayjs(dateTime)
-            .tz('Asia/Ho_Chi_Minh')
-            .locale('vi')
-            .format('DD-MM-YYYY HH:mm');
-    };
 
     const handleOpenPreview = () => {
         setOpen(true);

@@ -1,5 +1,6 @@
 'use client'
-import { formatDateTime, slugifyText } from "@/helper/blog.helper";
+import { slugifyText } from "@/helper/blog.helper";
+import { formatDateTime } from "@/utils/format";
 import { useCourseView } from "@/wrapper/course-view/course.view.wrapper";
 import { useDoQuiz } from "@/wrapper/do-quiz/do.quiz.wrapper";
 import { Button, Dialog, DialogContent } from "@mui/material"

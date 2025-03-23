@@ -1,11 +1,6 @@
 import { sendRequest } from "@/utils/fetch.api";
+import { formatToText_HoursMinutes_Short } from "@/utils/format";
 import { apiUrl } from "@/utils/url";
-import { Button } from "@mui/material";
-import PlayArrowIcon from '@mui/icons-material/PlayArrow';
-import { BorderLinearProgress } from "@/components/course/course-slider/custom.progress";
-import ReplayIcon from '@mui/icons-material/Replay';
-import Link from "next/link";
-import { slugifyText } from "./blog.helper";
 
 export const getCourseById = async (id: string): Promise<ApiResponse<CourseDetailsResponse>> => {
     const courseResponse = await sendRequest<ApiResponse<CourseDetailsResponse>>({
@@ -43,41 +38,6 @@ export const getEmojiOnAvgStars = (avg: number): string => {
     }
 };
 
-export const formatDuration = (second: number): string => {
-    const hours = Math.floor(second / 3600);
-    const minutes = Math.floor((second % 3600) / 60);
-    const seconds = second % 60;
-
-    let arr: number[] = [];
-
-    if (hours > 0) {
-        arr.push(hours, minutes, seconds);
-    } else if (minutes > 0) {
-        arr.push(minutes, seconds);
-    } else {
-        arr.push(seconds);
-    }
-
-    return arr.map(unit => unit.toString().padStart(2, '0')).join(':');
-};
-
-export const formatDurationWithTail = (second: number): string => {
-    const hours = Math.floor(second / 3600);
-    const minutes = Math.ceil((second % 3600) / 60);
-
-    let parts: string[] = [];
-
-    if (hours > 0) {
-        parts.push(`${hours} tiếng`);
-    }
-    if (minutes > 0) {
-        parts.push(`${minutes} phút`);
-    }
-
-    return parts.join(' ');
-};
-
-
 export const countTotalTimeForACourse = (course: CourseDetailsResponse): string => {
     let totalSeconds = 0;
     for (let chapter of course.chapters) {
@@ -86,68 +46,9 @@ export const countTotalTimeForACourse = (course: CourseDetailsResponse): string 
             totalSeconds += chapter.quizInfo.duration;
         }
     }
-
-    const totalMinutes = Math.floor(totalSeconds / 60);
-    const days = Math.floor(totalMinutes / 1440);
-    const hours = Math.floor((totalMinutes % 1440) / 60);
-    const minutes = Math.floor(totalMinutes % 60);
-
-    return [
-        days > 0 ? `${days} ngày` : "",
-        hours > 0 ? `${hours} giờ` : "",
-        minutes > 0 ? `${minutes} phút` : ""
-    ].filter(Boolean).join(" ") || "0 phút";
+    return formatToText_HoursMinutes_Short(totalSeconds);
 };
-
 
 export const getVideoIdFromUrl = (url: string) => {
     return url.substring(url.lastIndexOf("/") + 1, url.indexOf("?"));
-}
-
-export const displayPurchasedButton = (status: number, course: CourseResponse): React.ReactNode => {
-    if (status === 0) {
-        return (
-            <>
-                <div className='flex items-center gap-x-2 w-full my-2'>
-                    <BorderLinearProgress variant="determinate" value={0} sx={{ flex: 1 }} />
-                    <p className='text-gray-300 font-semibold'>{0}%</p>
-                </div>
-                <Link href={`/course/learning/${slugifyText(course.courseName + "-" + course.courseId)}`}>
-                    <Button variant="outlined" color="primary" fullWidth startIcon={<PlayArrowIcon />}>
-                        Bắt đầu học
-                    </Button>
-                </Link>
-            </>
-        )
-    } else if (status > 0 && status < 100) {
-        return (
-            <>
-                <div className='flex items-center gap-x-2 w-full my-2'>
-                    <BorderLinearProgress variant="determinate" value={status} sx={{ flex: 1 }} />
-                    <p className='text-purple-300 font-semibold'>{status.toFixed(1)}%</p>
-                </div>
-                <Link href={`/course/learning/${slugifyText(course.courseName + "-" + course.courseId)}`}>
-                    <Button variant="outlined" color="primary" fullWidth startIcon={<PlayArrowIcon />}>
-                        Tiếp tục học
-                    </Button>
-                </Link>
-            </>
-        )
-    } else if (status === 100) {
-        return (
-            <>
-                <div className='flex items-center gap-x-2 w-full my-2'>
-                    <BorderLinearProgress variant="determinate" value={100} sx={{ flex: 1 }} thumb_color="#00c951" />
-                    <p className='text-green-500 font-semibold'>{100}%</p>
-                </div>
-                <Link href={`/course/learning/${slugifyText(course.courseName + "-" + course.courseId)}`}>
-                    <Button variant="outlined" color="primary" fullWidth startIcon={<ReplayIcon />}>
-                        Xem lại khóa học
-                    </Button>
-                </Link>
-            </>
-        )
-    } else {
-        return null;
-    }
 }

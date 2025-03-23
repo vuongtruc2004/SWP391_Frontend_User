@@ -1,4 +1,5 @@
 import { calculateCourseSalePrice } from "@/helper/course.list.helper"
+import { formatPrice } from "@/utils/format"
 import { storageUrl } from "@/utils/url"
 import { Box } from "@mui/material"
 import Image from "next/image"
@@ -47,9 +48,7 @@ const CourseInOrder = ({ courses }: { courses: CourseDetailsResponse[] | CourseR
                             </div>
                         </div>
                         <div>
-                            {/* {calculateCourseSalePrice(course) !== 0} */}
-                            <p className="font-semibold">{course.price.toLocaleString('vi-VN')}₫</p>
-
+                            <p className="font-semibold">{formatPrice(course.price)}₫</p>
                         </div>
                     </div>
                 )

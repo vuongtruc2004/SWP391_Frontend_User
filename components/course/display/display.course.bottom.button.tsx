@@ -6,11 +6,11 @@ import ReplayIcon from '@mui/icons-material/Replay';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import DisplayCoursePrice from "./display.course.price";
 
-const DisplayCourseStatus = ({ course, status }: { course: CourseResponse, status: number }) => {
-    if (status < 0) {
+const DisplayCourseBottomButton = ({ course, completionOfACourse }: { course: CourseResponse, completionOfACourse: number }) => {
+    if (completionOfACourse < 0) {
         return (
             <>
-                <DisplayCoursePrice course={course} fontSize="small" />
+                <DisplayCoursePrice course={course} fontSize="base" displayEndTime={true} />
                 <Link href={`/course/${slugifyText(course.courseName + "-" + course.courseId)}`} className="block mt-2" color="secondary">
                     <Button variant="outlined" startIcon={<ShoppingCartIcon />} fullWidth>
                         Mua ngay
@@ -19,7 +19,7 @@ const DisplayCourseStatus = ({ course, status }: { course: CourseResponse, statu
             </>
         )
 
-    } else if (status === 0) {
+    } else if (completionOfACourse === 0) {
         return (
             <Link href={`/course/learning/${slugifyText(course.courseName + "-" + course.courseId)}`}>
                 <Button variant='outlined' fullWidth startIcon={<PlayArrowIcon />}>
@@ -28,7 +28,7 @@ const DisplayCourseStatus = ({ course, status }: { course: CourseResponse, statu
             </Link>
         )
 
-    } else if (status > 0 && status < 100) {
+    } else if (completionOfACourse > 0 && completionOfACourse < 100) {
         return (
             <Link href={`/course/learning/${slugifyText(course.courseName + "-" + course.courseId)}`}>
                 <Button variant='outlined' fullWidth startIcon={<PlayArrowIcon />}>
@@ -37,7 +37,7 @@ const DisplayCourseStatus = ({ course, status }: { course: CourseResponse, statu
             </Link>
         )
     }
-    else if (status === 100) {
+    else if (completionOfACourse === 100) {
         return (
             <Link href={`/course/learning/${slugifyText(course.courseName + "-" + course.courseId)}`}>
                 <Button variant='outlined' fullWidth startIcon={<ReplayIcon />}>
@@ -50,4 +50,4 @@ const DisplayCourseStatus = ({ course, status }: { course: CourseResponse, statu
     }
 }
 
-export default DisplayCourseStatus;
+export default DisplayCourseBottomButton;
