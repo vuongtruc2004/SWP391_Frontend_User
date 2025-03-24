@@ -11,7 +11,7 @@ import ClearIcon from '@mui/icons-material/Clear';
 
 const CreateCourseRating = ({ course, setOpenSnackbarSuccess }: { course: CourseDetailsResponse, setOpenSnackbarSuccess: Dispatch<SetStateAction<boolean>> }) => {
     const { fetchRatePage } = useCourseRate();
-    const { avatarSrc } = useUserAvatar();
+    const { avatarSrc, fullname } = useUserAvatar();
     const { data: session, status } = useSession();
     const [star, setStar] = useState<number | null>(0);
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -97,7 +97,9 @@ const CreateCourseRating = ({ course, setOpenSnackbarSuccess }: { course: Course
             ) : (
                 <div className="my-8" ref={containerRef}>
                     <div className="flex gap-5 items-center">
-                        <Avatar alt='User avatar' src={avatarSrc} sx={{ width: "60px", height: "60px" }} />
+                        <Avatar alt='User avatar' src={avatarSrc} sx={{ width: "60px", height: "60px" }}>
+                            {fullname.charAt(0).toUpperCase()}
+                        </Avatar>
 
                         <div className="flex-1 pr-8">
                             {isFocused && (

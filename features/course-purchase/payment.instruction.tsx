@@ -86,7 +86,7 @@ const PaymentInstruction = ({ open, setOpen, courses }: {
                     objectPosition: 'center'
                 }
             }}>
-                <h1 className="text-2xl font-semibold text-center">Thanh toán</h1>
+                <h1 className="text-2xl font-semibold text-center">Thông tin đơn hàng</h1>
                 <p className="text-gray-300 text-center">Cảm ơn bạn đã lựa chọn LearnGo!</p>
 
                 <h2 className="text-lg font-semibold my-3">Thông tin đơn hàng ({courses.length} khóa học)</h2>

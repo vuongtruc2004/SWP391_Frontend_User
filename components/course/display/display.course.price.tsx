@@ -4,11 +4,16 @@ import dayjs from "dayjs";
 import { formatPrice, formatToText_DaysHHMMSS } from "@/utils/format";
 import { useCampaign } from "@/wrapper/course-campaign/course.campaign.wrapper";
 
-const DisplayCoursePrice = ({ course, fontSize, displayEndTime }: { course: CourseResponse, fontSize: 'small' | 'base' | 'large', displayEndTime?: boolean }) => {
+const DisplayCoursePrice = ({ course, fontSize, displayEndTime, direction }: {
+    course: CourseResponse | CartCourse,
+    fontSize: 'small' | 'base' | 'large',
+    displayEndTime?: boolean,
+    direction?: 'vertical' | 'horizontal'
+}) => {
     const { campaigns } = useCampaign();
     const [remainingTime, setRemainingTime] = useState<number | null>(null);
     const [applyCampaign, setApplyCampaign] = useState<CampaignResponse | null>(null);
-    const fontSizes = fontSize === 'small' ? ["text-lg", "text-sm"] : fontSize === 'base' ? ["text-xl", "text-sm"] : ["text-3xl", "text-sm"];
+    const fontSizes = fontSize === 'small' ? ["text-base", "text-sm"] : fontSize === 'base' ? ["text-xl", "text-sm"] : ["text-3xl", "text-sm"];
 
     useEffect(() => {
         const campaign = campaigns.find(campaign =>
@@ -43,7 +48,7 @@ const DisplayCoursePrice = ({ course, fontSize, displayEndTime }: { course: Cour
             {fontSize === 'small' || fontSize === 'base' ? (
                 <div className="flex items-end justify-between">
                     {applyCampaign ? (
-                        <div className="flex items-end gap-x-2">
+                        <div className={`flex items-end ${direction === 'vertical' ? 'flex-col' : 'gap-x-2'}`}>
                             <h1 className={`${fontSizes[0]} font-semibold`}>{formatPrice(calculateCourseSalePrice(course, applyCampaign))}₫</h1>
                             <h2 className={`font-semibold line-through text-gray-300 ${fontSizes[1]}`}>{formatPrice(course.price)}₫</h2>
                         </div>

@@ -9,7 +9,7 @@ import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
 import { slugifyText } from "@/helper/blog.helper";
 import { sendRequest } from "@/utils/fetch.api";
 import { useSession } from "next-auth/react";
-import { formatPrice } from "@/utils/format";
+import DisplayCoursePrice from "@/components/course/display/display.course.price";
 
 const SingleCartCourse = ({ course }: { course: CartCourse }) => {
     const { data: session, status } = useSession();
@@ -73,7 +73,7 @@ const SingleCartCourse = ({ course }: { course: CartCourse }) => {
                     <div>
                         <Link href={`/course/${slugifyText(course.courseName + "-" + course.courseId)}`} className='transition-all duration-150 line-clamp-1 text-lg font-semibold hover:underline hover:text-blue-500'>{course.courseName}</Link>
                         <p className="text-gray-300 text-sm">Bởi {course.author}</p>
-                        <p className="font-semibold text-lg">{formatPrice(course.price)}₫</p>
+                        <DisplayCoursePrice course={course} fontSize="base" />
                     </div>
                 </div>
 

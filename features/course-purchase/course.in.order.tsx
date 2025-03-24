@@ -1,5 +1,4 @@
-import { calculateCourseSalePrice } from "@/helper/course.list.helper"
-import { formatPrice } from "@/utils/format"
+import DisplayCoursePrice from "@/components/course/display/display.course.price"
 import { storageUrl } from "@/utils/url"
 import { Box } from "@mui/material"
 import Image from "next/image"
@@ -47,9 +46,7 @@ const CourseInOrder = ({ courses }: { courses: CourseDetailsResponse[] | CourseR
                                 <p className="text-sm text-gray-300">{"author" in course ? course.author : course.expert.user.fullname}</p>
                             </div>
                         </div>
-                        <div>
-                            <p className="font-semibold">{formatPrice(course.price)}₫</p>
-                        </div>
+                        <DisplayCoursePrice course={course} fontSize="base" direction="vertical" />
                     </div>
                 )
             })}
