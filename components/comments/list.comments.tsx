@@ -21,7 +21,6 @@ const CommentList = ({ blog, comments, setComments, hasParent, refreshBlog }: {
     const [page, setPage] = useState(1);
     const [loading, setLoading] = useState(false);
     const [hasMore, setHasMore] = useState(true);
-    const [commentUpdateByWS, setCommentUpdateByWS] = useState<boolean>(false);
     const [stompClient, setStompClient] = useState<Client | null>(null);
     // const [listAllComment, setListAllComment] = useState<CommentResponse[]>()
     const observerRef = useRef<IntersectionObserver | null>(null);

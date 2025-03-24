@@ -25,9 +25,7 @@ const Comment = ({ commentResponse, blog, setComments, refreshBlog }: {
     setComments: Dispatch<SetStateAction<CommentResponse[]>>,
     refreshBlog: () => void,
 }) => {
-    const [statusLike, setStatusLike] = useState<Boolean>(false);
     const [childCommentList, setChildCommentList] = useState<CommentResponse[]>(commentResponse.replies);
-    const router = useRouter();
     const [childrenVisibility, setChildrenVisibility] = useState<{ [key: number]: boolean }>({});
     const [likeComment, setLikeComment] = useState<Boolean>(false);
     const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
@@ -188,8 +186,6 @@ const Comment = ({ commentResponse, blog, setComments, refreshBlog }: {
 
             if (getChildrenComment.status === 200) {
                 setChildCommentList(getChildrenComment.data)
-
-                console.log("Stop loop")
             }
         }
         fetchChildComment();
