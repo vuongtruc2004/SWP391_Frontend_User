@@ -82,7 +82,6 @@ declare global {
         totalQuizzes: number;
         createdAt: string;
         updatedAt: string;
-        campaign: CampaignResponse | null;
     }
 
     interface CourseDetailsResponse extends CourseResponse {
@@ -331,5 +330,6 @@ declare global {
         endTime: string;
         createdAt: string;
         updatedAt: string;
+        courses: CourseResponse[];
     }
 }

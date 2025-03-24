@@ -2,8 +2,8 @@ import PersonIcon from '@mui/icons-material/Person';
 import AutoStoriesIcon from '@mui/icons-material/AutoStories';
 import SettingsIcon from '@mui/icons-material/Settings';
 import NotificationsIcon from '@mui/icons-material/Notifications';
-import HistoryIcon from '@mui/icons-material/History';
 import GroupIcon from '@mui/icons-material/Group';
+import ReceiptLongOutlinedIcon from '@mui/icons-material/ReceiptLongOutlined';
 
 export const topLinks = [
     {
@@ -19,16 +19,16 @@ export const topLinks = [
         icon: <AutoStoriesIcon sx={{ fontSize: '1.2rem' }} />
     },
     {
+        key: 'my-order',
+        link: '/user/my-order',
+        name: 'Hóa đơn của tôi',
+        icon: <ReceiptLongOutlinedIcon sx={{ fontSize: '1.2rem' }} />
+    },
+    {
         key: 'my-follow-experts',
         link: '/user/my-follow-experts',
         name: 'Danh sách chuyên gia đang theo dõi',
         icon: <GroupIcon sx={{ fontSize: '1.2rem' }} />
-    },
-    {
-        key: 'purchase-history',
-        link: '/user/purchase-history',
-        name: 'Lịch sử mua hàng',
-        icon: <HistoryIcon sx={{ fontSize: '1.2rem' }} />
     }
 ]
 

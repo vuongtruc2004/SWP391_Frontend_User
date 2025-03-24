@@ -143,7 +143,7 @@ const PaymentInstruction = ({ open, setOpen, courses }: {
                 </div>
 
                 {errorMessage !== "" && (
-                    <span className="flex items-center gap-x-1 text-sm text-red-500 font-semibold">
+                    <span className="flex items-center gap-x-1 text-sm text-red-500 font-semibold mt-1 pr-5">
                         <ErrorOutlineRoundedIcon sx={{ fontSize: '16px' }} />
                         {errorMessage}
                     </span>

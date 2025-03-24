@@ -45,7 +45,7 @@ export const NotificationWrapper = ({ children }: { children: React.ReactNode })
         if (message === "READ") {
             getNotification();
         }
-    })
+    });
     useEffect(() => {
         if (status === "authenticated") {
             getNotification()

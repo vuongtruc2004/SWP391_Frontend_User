@@ -1,4 +1,5 @@
 'use client'
+import { useWebSocket } from "@/hooks/use.websocket";
 import { sendRequest } from "@/utils/fetch.api";
 import { apiUrl } from "@/utils/url";
 import { useSession } from "next-auth/react";
@@ -21,26 +22,34 @@ export const UserOrderWrapper = ({ children }: { children: React.ReactNode }) =>
     const [orderList, setOrderList] = useState<OrderResponse[]>([]);
     const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-        const fetchData = async () => {
-            if (status === 'authenticated') {
-                setLoading(true);
-                const response = await sendRequest<ApiResponse<OrderResponse[]>>({
-                    url: `${apiUrl}/users/purchase-history/${selectedTab}`,
-                    headers: {
-                        Authorization: `Bearer ${session.accessToken}`,
-                    },
-                });
+    const getMyOrders = async () => {
+        if (status === 'authenticated') {
+            setLoading(true);
+            const response = await sendRequest<ApiResponse<OrderResponse[]>>({
+                url: `${apiUrl}/users/purchase-history/${selectedTab}`,
+                headers: {
+                    Authorization: `Bearer ${session.accessToken}`,
+                },
+            });
 
-                if (response.status === 200) {
-                    setOrderList(response.data);
-                }
-                setLoading(false);
+            if (response.status === 200) {
+                setOrderList(response.data);
             }
-        };
+            setLoading(false);
+        }
+    };
 
-        fetchData();
+    useEffect(() => {
+        if (status === 'authenticated') {
+            getMyOrders();
+        }
     }, [selectedTab, session]);
+
+    useWebSocket(message => {
+        if (message === 'ORDER_EXPIRED') {
+            getMyOrders();
+        }
+    });
 
     return (
         <UserOrderContext.Provider value={{ orderList, setOrderList, selectedTab, setSelectedTab, loading, setLoading }}>

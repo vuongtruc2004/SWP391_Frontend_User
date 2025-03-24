@@ -1,9 +1,9 @@
 'use client'
 import MenuOpenIcon from '@mui/icons-material/MenuOpen';
-import HeaderSearchBox from "./header.search.box";
 import HeaderButtons from "./header.buttons";
 import { Box, Tooltip } from '@mui/material';
 import { useUserSidebar } from '@/wrapper/user-sidebar/user.sidebar.wrapper';
+import HeaderNavLinks from './header.nav.links';
 
 const UserHeader = () => {
     const { setCollapse, collapse } = useUserSidebar();
@@ -13,7 +13,7 @@ const UserHeader = () => {
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
-            padding: '15px 20px',
+            paddingInline: '20px',
             bgcolor: 'black',
             borderBottom: '1px solid #25272c',
             position: 'sticky',
@@ -30,7 +30,8 @@ const UserHeader = () => {
                         }} />
                     </span>
                 </Tooltip>
-                <HeaderSearchBox />
+
+                <HeaderNavLinks />
             </div>
 
             <HeaderButtons />

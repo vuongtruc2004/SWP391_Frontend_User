@@ -7,7 +7,7 @@ import { orderStatuses } from "./order.status.properties";
 import SingleOrder from "@/features/purchase-history/single.order";
 import { useUserOrder } from "@/wrapper/user-order/user.order.wrapper";
 
-const PurchaseHistoryTabs = () => {
+const MyOrderTabs = () => {
     const { setSelectedTab, orderList, loading, selectedTab } = useUserOrder();
 
     return (
@@ -73,4 +73,4 @@ const PurchaseHistoryTabs = () => {
     );
 };
 
-export default PurchaseHistoryTabs;
+export default MyOrderTabs;

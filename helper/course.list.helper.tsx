@@ -34,11 +34,10 @@ export const getCourseSort = (courseSort: string): string => {
     return courseSort;
 }
 
-export const calculateCourseSalePrice = (course: CourseResponse) => {
-    const campaign = course.campaign;
-    let salePrice = 0;
+export const calculateCourseSalePrice = (course: CourseResponse, campaign: CampaignResponse) => {
     if (campaign && !dayjs(campaign.startTime).isAfter(dayjs()) && dayjs(campaign.endTime).isAfter(dayjs())) {
-        salePrice = course.price - ((course.price * campaign.discountPercentage) / 100)
+        return course.price - ((course.price * campaign.discountPercentage) / 100)
+    } else {
+        return course.price;
     }
-    return salePrice;
 }
