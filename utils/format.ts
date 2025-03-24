@@ -23,6 +23,13 @@ export const formatDate = (date: string) => {
     return dayjs(date).locale('vi').format('D [tháng] M, YYYY');
 };
 
+export const formatDateTimeFull = (date: string) => {
+    const formattedDate = dayjs(date)
+        .locale('vi')
+        .format('dddd, D [tháng] M YYYY, HH:mm');
+
+    return formattedDate.charAt(0).toUpperCase() + formattedDate.slice(1);
+};
 export const formatDateTime = (dateTime: string) => {
     return dayjs(dateTime)
         .tz('Asia/Ho_Chi_Minh')

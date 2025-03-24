@@ -5,11 +5,14 @@ import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { usePathname, useRouter } from "next/navigation";
 import { useCart } from "@/wrapper/course-cart/course.cart.wrapper";
-import { sumOriginalPrice } from "@/helper/course.list.helper";
+import { useCampaign } from "@/wrapper/course-campaign/course.campaign.wrapper";
+import { formatPrice } from "@/utils/format";
 
 const CartSummary = () => {
     const { cart } = useCart();
+    const { campaigns } = useCampaign();
     const [buyCourses, setBuyCourses] = useState<CartCourse[]>([]);
+    const [totalPrice, setTotalPrice] = useState(0);
     const { status } = useSession();
     const { push } = useRouter();
     const pathname = usePathname();
@@ -29,6 +32,19 @@ const CartSummary = () => {
         setBuyCourses(cart.filter(item => !item.buyLater));
     }, [cart]);
 
+    useEffect(() => {
+        let totalPrice = 0;
+        buyCourses.forEach(course => {
+            const applyCampaign = campaigns.find(campaign => campaign.courses.some(item => item.courseId === course.courseId));
+            if (applyCampaign) {
+                totalPrice += course.price - course.price * applyCampaign.discountPercentage / 100;
+            } else {
+                totalPrice += course.price;
+            }
+        });
+        setTotalPrice(totalPrice);
+    }, [campaigns, buyCourses]);
+
     return (
         <Box sx={{
             bgcolor: 'black',
@@ -41,7 +57,7 @@ const CartSummary = () => {
             top: 90
         }}>
             <h1 className="font-semibold text-gray-300">Tổng:</h1>
-            <h2 className="font-semibold text-2xl mb-1">{sumOriginalPrice(buyCourses)}₫</h2>
+            <h2 className="font-semibold text-2xl mb-1">{formatPrice(totalPrice)}₫</h2>
 
             <Button variant="contained" color="primary" fullWidth endIcon={<ChevronRightIcon />} onClick={handleOpenInstruction}>
                 Tiến hành thanh toán

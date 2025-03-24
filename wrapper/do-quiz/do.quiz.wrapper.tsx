@@ -25,10 +25,6 @@ export const DoQuizWrapper = ({ children, quiz, quizAttempt }: { children: React
     }, [quizAttempt]);
 
     useEffect(() => {
-        localStorage.setItem('mark_question_ids', JSON.stringify(markQuestionIds));
-    }, [markQuestionIds]);
-
-    useEffect(() => {
         const storedMarkQuestionIds: number[] = JSON.parse(localStorage.getItem('mark_question_ids') || '[]');
         setMarkQuestionIds(storedMarkQuestionIds);
     }, []);

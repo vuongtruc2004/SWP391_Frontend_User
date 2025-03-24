@@ -42,6 +42,7 @@ const CouponListDialog = ({ open, setOpen, totalPrice, selectedCoupon, setSelect
                 }
             });
             if (response.status === 200) {
+                setCoupons(response.data);
                 const optimizeCoupons = optimizeDisplayCoupons(response.data, totalPrice);
                 setCoupons(optimizeCoupons.coupons);
                 setTotalAvailable(optimizeCoupons.totalAvailable);
@@ -49,7 +50,7 @@ const CouponListDialog = ({ open, setOpen, totalPrice, selectedCoupon, setSelect
             setLoading(false);
         }
         fetchData();
-    }, [searchCode]);
+    }, [searchCode, totalPrice]);
 
     return (
         <Dialog open={open} sx={{

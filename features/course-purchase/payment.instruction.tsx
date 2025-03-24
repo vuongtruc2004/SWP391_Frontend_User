@@ -11,6 +11,7 @@ import { countDiscountValue } from "@/helper/coupon.helper";
 import CourseInOrder from "./course.in.order";
 import CouponListDialog from "./coupon.list.dialog";
 import { formatCouponSalePrice, formatPrice } from "@/utils/format";
+import { useCampaign } from "@/wrapper/course-campaign/course.campaign.wrapper";
 
 const PaymentInstruction = ({ open, setOpen, courses }: {
     open: boolean;
@@ -19,6 +20,7 @@ const PaymentInstruction = ({ open, setOpen, courses }: {
 }) => {
     const { data: session, status } = useSession();
 
+    const { campaigns } = useCampaign();
     const [totalPrice, setTotalPrice] = useState(0);
     const [loading, setLoading] = useState(false);
     const [openCouponList, setOpenCouponList] = useState(false);
@@ -62,10 +64,18 @@ const PaymentInstruction = ({ open, setOpen, courses }: {
     }
 
     useEffect(() => {
-        if (status === "authenticated") {
-            setTotalPrice(courses.reduce((sum, course) => sum + course.price, 0));
-        }
-    }, [session, courses]);
+        let totalPrice = 0;
+        courses.forEach(course => {
+            const applyCampaign = campaigns.find(campaign => campaign.courses.some(item => item.courseId === course.courseId));
+            if (applyCampaign) {
+                totalPrice += course.price - course.price * applyCampaign.discountPercentage / 100;
+            } else {
+                totalPrice += course.price;
+            }
+        });
+        setTotalPrice(totalPrice);
+        setSelectedCoupon(null);
+    }, [campaigns, courses]);
 
     return (
         <Dialog aria-hidden={false} open={open} sx={{

@@ -32,8 +32,9 @@ const QuizStartPage = async ({ params }: { params: Promise<{ qslug: string }> })
             Authorization: `Bearer ${session.accessToken}`
         }
     });
+
     if (quizAttemptResponse.status !== 201) {
-        return null;
+        throw new Error("Bạn chưa thể truy cập bài kiểm tra này!");
     }
 
     return (

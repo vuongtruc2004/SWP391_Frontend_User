@@ -46,7 +46,7 @@ const CourseInOrder = ({ courses }: { courses: CourseDetailsResponse[] | CourseR
                                 <p className="text-sm text-gray-300">{"author" in course ? course.author : course.expert.user.fullname}</p>
                             </div>
                         </div>
-                        <DisplayCoursePrice course={course} fontSize="base" direction="vertical" />
+                        <DisplayCoursePrice course={course} fontSize="small" direction="vertical" />
                     </div>
                 )
             })}

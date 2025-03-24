@@ -48,11 +48,14 @@ const DoQuestion = () => {
     }
 
     const handleMarkQuestion = () => {
+        let newMarkQuestionIds;
         if (markQuestionIds.includes(currentQuestion.questionId)) {
-            setMarkQuestionIds(prev => prev.filter(id => id !== currentQuestion.questionId));
+            newMarkQuestionIds = markQuestionIds.filter(id => id !== currentQuestion.questionId);
         } else {
-            setMarkQuestionIds(prev => [...prev, currentQuestion.questionId]);
+            newMarkQuestionIds = [...markQuestionIds, currentQuestion.questionId];
         }
+        localStorage.setItem('mark_question_ids', JSON.stringify(newMarkQuestionIds));
+        setMarkQuestionIds(newMarkQuestionIds);
     }
 
     useEffect(() => {
@@ -67,7 +70,7 @@ const DoQuestion = () => {
                     onClick={handleMarkQuestion}
                     startIcon={<StarOutlineIcon />}
                     variant={markQuestionIds.includes(currentQuestion.questionId) ? "contained" : "outlined"}
-                    color="error"
+                    color="warning"
                 >
                     Đánh dấu
                 </Button>

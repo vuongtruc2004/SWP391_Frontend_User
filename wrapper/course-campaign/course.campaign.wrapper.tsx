@@ -3,6 +3,7 @@ import { createContext, Dispatch, SetStateAction, useContext, useEffect, useStat
 import { useSession } from "next-auth/react";
 import { sendRequest } from "@/utils/fetch.api";
 import { apiUrl } from "@/utils/url";
+import { useWebSocket } from "@/hooks/use.websocket";
 
 interface ICampaign {
     campaigns: CampaignResponse[];
@@ -14,24 +15,30 @@ export const CourseCampaignWrapper = ({ children }: { children: React.ReactNode 
     const { data: session, status } = useSession();
     const [campaigns, setCampaigns] = useState<CampaignResponse[]>([]);
 
-    useEffect(() => {
-        const getCampaign = async () => {
+    const getCampaign = async () => {
+        if (status === 'authenticated') {
+            const response = await sendRequest<ApiResponse<CampaignResponse[]>>({
+                url: `${apiUrl}/campaigns/all`,
+                headers: {
+                    Authorization: `Bearer ${session.accessToken}`,
+                },
+            });
 
-            if (status === 'authenticated') {
-                const response = await sendRequest<ApiResponse<CampaignResponse[]>>({
-                    url: `${apiUrl}/campaigns/all`,
-                    headers: {
-                        Authorization: `Bearer ${session.accessToken}`,
-                    },
-                });
-
-                if (response.status === 200) {
-                    setCampaigns(response.data)
-                }
+            if (response.status === 200) {
+                setCampaigns(response.data)
             }
         }
+    }
+
+    useEffect(() => {
         getCampaign();
     }, [session]);
+
+    useWebSocket((message) => {
+        if (message === 'CAMPAIGN_EXPIRED' || message === 'CAMPAIGN') {
+            getCampaign();
+        }
+    })
 
     return (
         <CampaignContext.Provider value={{ campaigns, setCampaigns }}>

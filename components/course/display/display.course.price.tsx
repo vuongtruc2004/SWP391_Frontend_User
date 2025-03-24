@@ -19,9 +19,7 @@ const DisplayCoursePrice = ({ course, fontSize, displayEndTime, direction }: {
         const campaign = campaigns.find(campaign =>
             campaign.courses.some(c => c.courseId === course.courseId)
         );
-        if (campaign) {
-            setApplyCampaign(campaign);
-        }
+        setApplyCampaign(campaign || null);
     }, [campaigns]);
 
     useEffect(() => {
@@ -35,7 +33,6 @@ const DisplayCoursePrice = ({ course, fontSize, displayEndTime, direction }: {
                 setRemainingTime(updatedTime > 0 ? updatedTime : 0);
 
                 if (updatedTime <= 0) {
-                    setApplyCampaign(null);
                     clearInterval(interval);
                 };
             }, 1000);

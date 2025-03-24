@@ -5,10 +5,6 @@ export const getSalePercent = (originalPrice: number, salePrice: number): number
     return Math.round(percent);
 }
 
-export const sumOriginalPrice = (cart: CartCourse[]): string => {
-    return cart.reduce((sum, item) => sum + item.price, 0).toLocaleString('vi-VN');
-}
-
 export const getInputPrice = (price: any): string => {
     if (!price || price.trim() === "") {
         return "";
