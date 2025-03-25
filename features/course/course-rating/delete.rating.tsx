@@ -4,6 +4,7 @@ import Backdrop from '@mui/material/Backdrop';
 import { apiUrl } from '@/utils/url';
 import { sendRequest } from '@/utils/fetch.api';
 import { useCourseRate } from '@/wrapper/course-rate/course.rate.wrapper';
+import { useSession } from 'next-auth/react';
 
 const DeleteCourseRating = ({ open, setOpen, rate, setOpenSnackbarDelete, setMyRating }: {
     open: boolean,
@@ -12,26 +13,28 @@ const DeleteCourseRating = ({ open, setOpen, rate, setOpenSnackbarDelete, setMyR
     setOpenSnackbarDelete: Dispatch<SetStateAction<boolean>>
     setMyRating: Dispatch<SetStateAction<RateResponse | null>>
 }) => {
-
+    const { data: session, status } = useSession();
     const { fetchRatePage } = useCourseRate();
 
     const handleDelete = async (rateId: number) => {
-        const deleteResponse = await sendRequest<ApiResponse<string>>({
-            url: `${apiUrl}/rates/delete/${rateId}`,
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json'
+        if (status === 'authenticated') {
+            const deleteResponse = await sendRequest<ApiResponse<string>>({
+                url: `${apiUrl}/rates/delete/${rateId}`,
+                method: 'DELETE',
+                headers: {
+                    Authorization: `Bearer ${session.accessToken}`
+                }
+            });
+            if (deleteResponse.status === 200) {
+                setOpenSnackbarDelete(true);
+                setTimeout(() => {
+                    setOpenSnackbarDelete(false);
+                }, 3000);
             }
-        });
-        if (deleteResponse.status === 200) {
-            setOpenSnackbarDelete(true);
-            setTimeout(() => {
-                setOpenSnackbarDelete(false);
-            }, 3000)
+            setOpen(false);
+            setMyRating(null)
+            fetchRatePage();
         }
-        setOpen(false);
-        setMyRating(null)
-        fetchRatePage();
     }
 
     return (

@@ -21,7 +21,7 @@ import { useSession } from "next-auth/react";
 const ProfileForm = ({ user }: {
     user: UserResponse;
 }) => {
-    const { data: session, update } = useSession();
+    const { data: session, update, status } = useSession();
 
     const [gender, setGender] = useState(user.gender ? user.gender : "none");
     const [fullname, setFullname] = useState(user.fullname ? user.fullname : "");
@@ -65,47 +65,50 @@ const ProfileForm = ({ user }: {
     };
 
     const handleSubmitForm = async (e: FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
+        if (status === 'authenticated') {
+            e.preventDefault();
 
-        const isFullnameValid = validateFullname(fullname);
-        const isDobValid = validateDob(dob);
+            const isFullnameValid = validateFullname(fullname);
+            const isDobValid = validateDob(dob);
 
-        if (isFullnameValid && isDobValid) {
-            if (fullname === user.fullname &&
-                (dob?.format('YYYY-MM-DD') || null) === user.dob &&
-                (gender === "none" ? null : gender) === user.gender
-            ) {
-                return;
-            }
+            if (isFullnameValid && isDobValid) {
+                if (fullname === user.fullname &&
+                    (dob?.format('YYYY-MM-DD') || null) === user.dob &&
+                    (gender === "none" ? null : gender) === user.gender
+                ) {
+                    return;
+                }
 
-            const updatedUser: UpdateUserRequest = {
-                userId: user.userId,
-                fullname,
-                dob: dob?.format('YYYY-MM-DD') || null,
-                gender: gender === "none" ? null : gender,
-            };
+                const updatedUser: UpdateUserRequest = {
+                    userId: user.userId,
+                    fullname,
+                    dob: dob?.format('YYYY-MM-DD') || null,
+                    gender: gender === "none" ? null : gender,
+                };
 
-            const updateResponse = await sendRequest<ApiResponse<UserResponse>>({
-                url: `${apiUrl}/users/profile`,
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: updatedUser
-            });
-
-            if (updateResponse.status === 201) {
-                await update({
-                    user: {
-                        ...session?.user,
-                        fullname: updatedUser.fullname,
-                        dob: updatedUser.dob,
-                        gender: updatedUser.gender,
-                    }
+                const updateResponse = await sendRequest<ApiResponse<UserResponse>>({
+                    url: `${apiUrl}/users/profile`,
+                    method: 'PUT',
+                    headers: {
+                        Authorization: `Bearer ${session.accessToken}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: updatedUser
                 });
-                setOpen(true);
+
+                if (updateResponse.status === 201) {
+                    await update({
+                        user: {
+                            ...session?.user,
+                            fullname: updatedUser.fullname,
+                            dob: updatedUser.dob,
+                            gender: updatedUser.gender,
+                        }
+                    });
+                    setOpen(true);
+                }
+                router.refresh();
             }
-            router.refresh();
         }
     };
 

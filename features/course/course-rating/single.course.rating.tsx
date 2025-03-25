@@ -41,10 +41,11 @@ const SingleCourseRating = ({ rate, index, avatarSrc, setMyRating }: {
                             <p className="text-sm text-gray-300">{formatDateTime(rate.updatedAt)}</p>
                         </div>
                     </div>
-
-                    <IconButton onClick={handleOpenPopover}>
-                        <MoreVertIcon />
-                    </IconButton>
+                    {rate.user.userId === session?.user?.userId &&
+                        <IconButton onClick={handleOpenPopover}>
+                            <MoreVertIcon />
+                        </IconButton>
+                    }
 
                     <Popover
                         open={Boolean(anchorEl)}
@@ -59,37 +60,34 @@ const SingleCourseRating = ({ rate, index, avatarSrc, setMyRating }: {
                             horizontal: 'right',
                         }}
                     >
-                        {rate?.user?.userId === session?.user?.userId &&
-                            <div className="flex flex-col items-start p-2">
-                                <Button
-                                    startIcon={<EditIcon />}
-                                    color="secondary"
-                                    variant="text"
-                                    onClick={() => {
-                                        setOpenUpdate(true)
-                                        setAnchorEl(null);
-                                    }}
-                                    sx={{ "&:hover": { color: "#2b7fff" } }}
-                                >
-                                    Chỉnh sửa
-                                </Button>
-                                <Button startIcon={<DeleteIcon />}
-                                    color="secondary"
-                                    variant="text"
-                                    onClick={() => {
-                                        setOpenDeleteModal(true);
-                                        setAnchorEl(null);
-                                    }}
-                                    sx={{ "&:hover": { color: "red" }, width: '100%', justifyContent: 'flex-start' }}
-                                >
-                                    Xóa
-                                </Button>
-                            </div>
-                        }
-
+                        <div className="flex flex-col items-start p-2">
+                            <Button
+                                startIcon={<EditIcon />}
+                                color="secondary"
+                                variant="text"
+                                onClick={() => {
+                                    setOpenUpdate(true)
+                                    setAnchorEl(null);
+                                }}
+                                sx={{ "&:hover": { color: "#2b7fff" } }}
+                            >
+                                Chỉnh sửa
+                            </Button>
+                            <Button startIcon={<DeleteIcon />}
+                                color="secondary"
+                                variant="text"
+                                onClick={() => {
+                                    setOpenDeleteModal(true);
+                                    setAnchorEl(null);
+                                }}
+                                sx={{ "&:hover": { color: "red" }, width: '100%', justifyContent: 'flex-start' }}
+                            >
+                                Xóa
+                            </Button>
+                        </div>
                     </Popover>
-
                 </div >
+
                 <p className="text-gray-100 mt-3 line-clamp-3">{rate.content}</p>
                 <p className="flex items-center gap-x-1 mt-1 ml-1 text-sm text-gray-300">Đã đánh giá<Rating name="read-only" value={rate.stars} readOnly size="small" /></p>
             </div >
