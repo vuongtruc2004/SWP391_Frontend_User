@@ -39,7 +39,8 @@ const LessonDocument = () => {
                 <Button color="primary" variant="contained" onClick={() => handleChangeStatus(
                     course.courseId,
                     currentLesson.chapterId,
-                    currentLesson.lessonId
+                    currentLesson.lessonId,
+                    null
                 )}>
                     Đánh dấu đã hoàn thành
                 </Button>

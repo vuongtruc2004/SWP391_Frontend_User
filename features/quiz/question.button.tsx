@@ -12,9 +12,13 @@ import CurrentQuestion from './current.question';
 import SubmitDialog from './submit.dialog';
 import { countCompletionPercent } from '@/helper/quiz.helper';
 import { formatToMMSS } from '@/utils/format';
+import { useUserProgress } from '@/wrapper/user-progress/user.progress.wrapper';
+import { useCourseView } from '@/wrapper/course-view/course.view.wrapper';
 
 const QuestionButton = () => {
     const { data: session, status } = useSession();
+    const { course, lessons, currentPlayIndex } = useCourseView();
+    const { handleChangeStatus, userProgresses } = useUserProgress();
     const { quiz, userAnswers, quizAttempt, setMarkQuestionIds } = useDoQuiz();
     const [openSnackbar, setOpenSnackbar] = useState(false);
     const [openDialog, setOpenDialog] = useState(false);
@@ -66,6 +70,9 @@ const QuestionButton = () => {
             });
 
             if (quizAttemptResponse.status === 200) {
+                if (!userProgresses.find(progress => progress.quizId === quiz.quizId)) {
+                    handleChangeStatus(course.courseId, lessons[currentPlayIndex].chapterId, null, quiz.quizId);
+                }
                 setResult(quizAttemptResponse.data);
                 setMarkQuestionIds([]);
                 setOpenDialog(true);

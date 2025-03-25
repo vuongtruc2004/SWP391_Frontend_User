@@ -125,7 +125,7 @@ declare global {
         duration: number;
         description: string;
         updatedAt: string;
-        totalQuestions: number;
+        questions: QuestionResponse[];
         chapterId: number;
     }
 

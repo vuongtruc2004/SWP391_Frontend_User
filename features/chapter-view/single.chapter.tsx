@@ -3,12 +3,12 @@ import { Accordion, AccordionSummary, FacebookCircularProgress } from "./style";
 import { countCompletionOfAChapter, countTotalTimeOfAChapter } from "@/helper/lesson.helper";
 import { useCourseView } from "@/wrapper/course-view/course.view.wrapper";
 import { SetStateAction, useEffect, useState } from "react";
-import { useSession } from "next-auth/react";
 import AutoStoriesOutlinedIcon from '@mui/icons-material/AutoStoriesOutlined';
 import SmartDisplayOutlinedIcon from '@mui/icons-material/SmartDisplayOutlined';
 import { useUserProgress } from "@/wrapper/user-progress/user.progress.wrapper";
 import QuizOutlinedIcon from '@mui/icons-material/QuizOutlined';
 import { formatToHHMMSS, formatToText_HoursMinutes } from "@/utils/format";
+import CheckIcon from '@mui/icons-material/Check';
 
 const SingleChapter = ({ chapter, index, chapterExpand, setChapterExpand }: {
     chapter: ChapterResponse,
@@ -16,13 +16,12 @@ const SingleChapter = ({ chapter, index, chapterExpand, setChapterExpand }: {
     chapterExpand: number,
     setChapterExpand: React.Dispatch<SetStateAction<number>>;
 }) => {
-    const { data: session, status } = useSession();
-    const { currentPlayIndex, setCurrentPlayIndex, course, lessons } = useCourseView();
-    const { userProgresses, setUserProgresses } = useUserProgress();
+    const { currentPlayIndex, setCurrentPlayIndex, lessons } = useCourseView();
+    const { userProgresses } = useUserProgress();
 
     const [completionOfChapter, setCompletionOfChapter] = useState(0);
     const [playingChapter, setPlayingChapter] = useState<number | null>(null);
-    const [completedItems, setCompletedItems] = useState<Set<number>>(new Set());
+    const [completedItems, setCompletedItems] = useState<Set<string>>(new Set());
 
     const handleChangeCurrentPlayIndex = (clickID: number, type: "lessonId" | "quizId") => {
         //@ts-ignore
@@ -33,12 +32,12 @@ const SingleChapter = ({ chapter, index, chapterExpand, setChapterExpand }: {
 
     useEffect(() => {
         if (userProgresses.length) {
-            const set = new Set<number>();
+            const set = new Set<string>();
             userProgresses.forEach(progress => {
                 if (progress.lessonId) {
-                    set.add(progress.lessonId)
+                    set.add(`lesson-${progress.lessonId}`);
                 } else if (progress.quizId) {
-                    set.add(progress.quizId);
+                    set.add(`quiz-${progress.quizId}`);
                 }
             });
             setCompletedItems(set);
@@ -128,11 +127,9 @@ const SingleChapter = ({ chapter, index, chapterExpand, setChapterExpand }: {
                                     </div>
                                 </div>
                             )}
-                            <Checkbox
-                                size="small"
-                                checked={completedItems.has(lesson.lessonId)}
-                                disabled
-                            />
+                            {completedItems.has(`lesson-${lesson.lessonId}`) && (
+                                <CheckIcon sx={{ fontSize: '1.2rem' }} className="text-green-500" />
+                            )}
                         </Box>
                     )
                 })}
@@ -160,11 +157,9 @@ const SingleChapter = ({ chapter, index, chapterExpand, setChapterExpand }: {
                                 </p>
                             </div>
                         </div>
-                        <Checkbox
-                            size="small"
-                            checked={completedItems.has(chapter.quizInfo.quizId)}
-                            disabled
-                        />
+                        {completedItems.has(`quiz-${chapter.quizInfo.quizId}`) && (
+                            <CheckIcon sx={{ fontSize: '1.2rem' }} className="text-green-500" />
+                        )}
                     </Box>
                 )}
             </AccordionDetails>

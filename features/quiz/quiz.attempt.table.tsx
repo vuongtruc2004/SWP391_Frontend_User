@@ -1,21 +1,23 @@
 'use client'
-
 import { sendRequest } from "@/utils/fetch.api";
-import { formatDateTimeFull } from "@/utils/format";
 import { apiUrl } from "@/utils/url";
-import { CircularProgress } from "@mui/material";
+import { Button } from "@mui/material";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react"
+import SingleQuizAttempt from "./single.quiz.attempt";
+import Link from "next/link";
+import { slugifyText } from "@/helper/blog.helper";
+import QuizReview from "@/components/quiz-review/quiz.review.dialog";
 
-const QuizAttemptTable = ({ quiz }: { quiz: QuizInfoResponse }) => {
+const QuizAttemptTable = ({ quiz, course }: { quiz: QuizInfoResponse, course: CourseResponse }) => {
     const { data: session, status } = useSession();
     const [quizAttempts, setQuizAttempts] = useState<QuizAttemptResponse[]>([]);
-    const [loading, setLoading] = useState(true);
+    const [openQuizReview, setOpenQuizReview] = useState(false);
+    const [selectQuizAttempt, setSelectQuizAttempt] = useState<QuizAttemptResponse | null>(null);
 
     useEffect(() => {
         const fetchData = async () => {
             if (status === 'authenticated') {
-                setLoading(true);
                 const response = await sendRequest<ApiResponse<QuizAttemptResponse[]>>({
                     url: `${apiUrl}/quiz-attempts/${quiz.quizId}`,
                     headers: {
@@ -25,56 +27,51 @@ const QuizAttemptTable = ({ quiz }: { quiz: QuizInfoResponse }) => {
                 if (response.status === 200) {
                     setQuizAttempts(response.data);
                 }
-                setLoading(false);
             }
         }
         fetchData();
     }, [quiz, session]);
 
-    if (loading) {
-        <div className="flex items-center justify-center w-full h-screen shrink-0">
-            <CircularProgress />
-        </div>
-    }
-
     return (
-        <table className="w-full">
-            <thead className="bg-[#212121]">
-                <tr>
-                    <td className="text-center p-3">Lần làm thứ</td>
-                    <td className="text-center p-3">Trạng thái</td>
-                    <td className="text-center p-3">Điểm số</td>
-                    <td className="text-center p-3">Số câu đúng</td>
-                    <td className="text-center p-3">Hành động</td>
-                </tr>
-            </thead>
+        <>
+            <h1 className="font-semibold text-lg mb-3">Tất cả lần làm bài của bạn</h1>
+            <table className="w-full border border-[#212121]">
+                <thead className="bg-[#212121]">
+                    <tr>
+                        <td className="text-center p-3">Lần làm thứ</td>
+                        <td className="text-center p-3">Trạng thái</td>
+                        <td className="text-center p-3">Điểm số / 10</td>
+                        <td className="text-center p-3">Số câu đúng</td>
+                        <td className="text-center p-3">Hành động</td>
+                    </tr>
+                </thead>
 
-            <tbody>
-                {quizAttempts.map((attempt, index) => {
-                    return (
-                        <tr key={attempt.quizAttemptId} className="border-b border-[#212121]">
-                            <td className="text-center p-3">{index + 1}</td>
-                            <td className="p-3">
-                                <p>{attempt.endTime ? "Đã hoàn thành" : "Chưa hoàn thành"}</p>
-                                {attempt.endTime && (
-                                    <p>{formatDateTimeFull(attempt.endTime)}</p>
-                                )}
-                            </td>
-                            <td className="text-center p-3">{attempt.endTime ? attempt.numberOfCorrects / quiz.totalQuestions * 10 : 0}</td>
-                            <td className="text-center p-3">{attempt.endTime ? `${attempt.numberOfCorrects}/${quiz.totalQuestions}` : 0}</td>
-                            <td className="text-center p-3">
-                                {attempt.endTime && quiz.allowSeeAnswers && (
-                                    <p>Xem đáp án</p>
-                                )}
-                                {!attempt.endTime && (
-                                    <p>Tiếp tục làm bài</p>
-                                )}
-                            </td>
-                        </tr>
-                    )
-                })}
-            </tbody>
-        </table>
+                <tbody>
+                    {quizAttempts.map((attempt) => {
+                        return (
+                            <SingleQuizAttempt
+                                quizAttempt={attempt}
+                                quiz={quiz}
+                                key={attempt.quizAttemptId}
+                                course={course}
+                                setOpen={setOpenQuizReview}
+                                setSelectQuizAttempt={setSelectQuizAttempt}
+                            />
+                        )
+                    })}
+                </tbody>
+            </table>
+
+            <div className="flex justify-center mt-5">
+                <Link href={`${slugifyText(course.courseName + "-" + course.courseId)}/quiz/start/${slugifyText(quiz.title + "-" + quiz.quizId)}`}>
+                    <Button variant="outlined" color="secondary">
+                        {quizAttempts.length === 0 ? "Làm bài ngay" : quizAttempts.find(attempt => attempt.endTime === null) ? "Tiếp tục làm bài" : "Làm lại"}
+                    </Button>
+                </Link>
+            </div>
+
+            <QuizReview quiz={quiz} quizAttempt={selectQuizAttempt} open={openQuizReview} setOpen={setOpenQuizReview} />
+        </>
     )
 }
 

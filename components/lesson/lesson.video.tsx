@@ -50,7 +50,7 @@ const LessonVideo = () => {
             return;
         }
         if (!userProgresses.find(progress => progress.lessonId === currentLesson.lessonId) && played >= 0.8) {
-            handleChangeStatus(course.courseId, currentLesson.chapterId, currentLesson.lessonId);
+            handleChangeStatus(course.courseId, currentLesson.chapterId, currentLesson.lessonId, null);
         }
     };
 

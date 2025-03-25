@@ -9,7 +9,7 @@ interface IUserProgress {
     setLoading: Dispatch<SetStateAction<boolean>>;
     userProgresses: UserProgressResponse[];
     setUserProgresses: Dispatch<SetStateAction<UserProgressResponse[]>>;
-    handleChangeStatus: (courseId: number, chapterId: number, lessonId?: number, quizId?: number) => Promise<void>;
+    handleChangeStatus: (courseId: number, chapterId: number, lessonId: number | null, quizId: number | null) => Promise<void>;
 }
 const UserProgressContext = createContext<IUserProgress | null>(null);
 
@@ -18,7 +18,7 @@ export const UserProgressWrapper = ({ children }: { children: React.ReactNode })
     const [userProgresses, setUserProgresses] = useState<UserProgressResponse[]>([]);
     const [loading, setLoading] = useState(true);
 
-    const handleChangeStatus = async (courseId: number, chapterId: number, lessonId?: number, quizId?: number) => {
+    const handleChangeStatus = async (courseId: number, chapterId: number, lessonId: number | null, quizId: number | null) => {
         if ((lessonId && quizId) || (!lessonId && !quizId)) {
             throw new Error("Bạn chỉ được truyền 1 trong hai tham số lessonId hoặc quizId!");
         }
