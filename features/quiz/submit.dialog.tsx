@@ -18,15 +18,15 @@ const SubmitDialog = ({ open, setOpen, quizAttempt }: {
     return (
         <Dialog open={open} onClose={() => setOpen(false)}>
             <DialogContent>
-                <h1>Kết quả bài kiểm tra</h1>
-                <p>Điểm số: {(quiz.questions.length ? quizAttempt.numberOfCorrects / quiz.questions.length * 10 : 0).toFixed(2)}</p>
-                <p>Số câu đúng: {quizAttempt.numberOfCorrects}/{quiz.questions.length}</p>
-                <p>Bắt đầu: {formatDateTime(quizAttempt.startTime)}</p>
-                <p>Kết thúc: {formatDateTime(quizAttempt.endTime)}</p>
+                <h1 className="text-lg font-black ml-3 mb-1">Kết quả bài kiểm tra</h1>
+                <p className="text-lg font-medium">Điểm số: <span className="text-green-400 font-light"> {(quiz.questions.length ? quizAttempt.numberOfCorrects / quiz.questions.length * 10 : 0).toFixed(2)} </span></p>
+                <p className="text-lg font-medium">Số câu đúng: <span className="text-green-400 font-light"> {quizAttempt.numberOfCorrects}/{quiz.questions.length}</span></p>
+                <p className="text-lg font-medium">Bắt đầu: <span className="font-light"> {formatDateTime(quizAttempt.startTime)}</span></p>
+                <p className="text-lg font-medium">Kết thúc: <span className="font-light">{formatDateTime(quizAttempt.endTime)}</span></p>
 
-                <div>
+                <div className="mt-3">
                     <Link href={`/course/learning/${slugifyText(course.courseName + "-" + course.courseId)}`}>
-                        <Button>
+                        <Button variant="outlined" >
                             Đóng
                         </Button>
                     </Link>

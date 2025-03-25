@@ -1,6 +1,6 @@
 'use client'
 import { BorderLinearProgress } from '@/components/course/course-slider/custom.progress'
-import { Alert, Button, Snackbar } from '@mui/material'
+import { Alert, Button, Popover, Snackbar, Typography } from '@mui/material'
 import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
 import { useDoQuiz } from '@/wrapper/do-quiz/do.quiz.wrapper';
 import { useEffect, useState } from 'react';
@@ -27,6 +27,7 @@ const QuestionButton = () => {
 
     const maxEndTime = dayjs(quizAttempt.startTime).add(quiz.duration, 'second');
 
+    const [popoverAnchor, setPopoverAnchor] = useState<null | HTMLElement>(null);
     const handleSaveQuizAttempt = async (hiddenMessage: boolean) => {
         if (status === 'authenticated') {
             const request: QuizAttemptRequest = {
@@ -123,12 +124,52 @@ const QuestionButton = () => {
                     <Button onClick={() => handleSaveQuizAttempt(false)} startIcon={<SaveOutlinedIcon />} variant='outlined' color='secondary' fullWidth>
                         Lưu bài làm
                     </Button>
-                    <Button onClick={handleSubmit} variant='contained' fullWidth>
+                    <Button onClick={(event) => setPopoverAnchor(event.currentTarget)} variant='contained' fullWidth>
                         Nộp bài
                     </Button>
                 </div>
             </div>
-
+            <Popover
+                open={Boolean(popoverAnchor)}
+                anchorEl={popoverAnchor}
+                onClose={() => setPopoverAnchor(null)}
+                anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'center',
+                }}
+                transformOrigin={{
+                    vertical: 'top',
+                    horizontal: 'center',
+                }}
+            >
+                <div className='p-5'>
+                    <Typography gutterBottom>
+                        <p className='text-lg font-semibold'> Xác nhận nộp bài</p>
+                    </Typography>
+                    <Typography variant="body2" gutterBottom>
+                        <p className=''>Bạn có chắc chắn muốn nộp bài ?</p>
+                        <p className='font-extralight ml-2'>(Số câu đã hoàn thành <span className='text-green-500'>{userAnswers.filter(answer => answer.answerIds.length > 0).length}/{quiz.questions.length})</span></p>
+                    </Typography>
+                    <div className='flex justify-end gap-x-2 mt-2'>
+                        <Button
+                            onClick={() => setPopoverAnchor(null)}
+                            variant='outlined'
+                        >
+                            Hủy
+                        </Button>
+                        <Button
+                            onClick={() => {
+                                handleSubmit();
+                                setPopoverAnchor(null);
+                            }}
+                            variant='contained'
+                            color='primary'
+                        >
+                            Xác nhận
+                        </Button>
+                    </div>
+                </div>
+            </Popover>
             <Snackbar
                 open={openSnackbar}
                 autoHideDuration={2000}

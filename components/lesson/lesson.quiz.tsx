@@ -29,7 +29,7 @@ const LessonQuiz = () => {
                         <QuestionMarkIcon sx={{ fontSize: '1rem' }} />
                         <span>Số câu hỏi</span>
                     </p>
-                    <p className="text-blue-500 font-semibold">{quiz.questions.length}</p>
+                    <p className="text-blue-500 font-semibold">{quiz.questions?.length}</p>
                 </li>
             </ul>
 
