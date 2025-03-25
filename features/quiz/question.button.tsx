@@ -143,13 +143,9 @@ const QuestionButton = () => {
                 }}
             >
                 <div className='p-5'>
-                    <Typography gutterBottom>
-                        <p className='text-lg font-semibold'> Xác nhận nộp bài</p>
-                    </Typography>
-                    <Typography variant="body2" gutterBottom>
-                        <p className=''>Bạn có chắc chắn muốn nộp bài ?</p>
-                        <p className='font-extralight ml-2'>(Số câu đã hoàn thành <span className='text-green-500'>{userAnswers.filter(answer => answer.answerIds.length > 0).length}/{quiz.questions.length})</span></p>
-                    </Typography>
+                    <p className='text-lg font-semibold'> Xác nhận nộp bài</p>
+                    <p className=''>Bạn có chắc chắn muốn nộp bài ?</p>
+                    <p className='font-extralight ml-2'>(Số câu đã hoàn thành <span className='text-green-500'>{userAnswers.filter(answer => answer.answerIds.length > 0).length}/{quiz.questions.length})</span></p>
                     <div className='flex justify-end gap-x-2 mt-2'>
                         <Button
                             onClick={() => setPopoverAnchor(null)}

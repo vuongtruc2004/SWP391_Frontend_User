@@ -66,6 +66,8 @@ const CoursePage = async (props: {
         queryParams: queryParams
     });
 
+    console.log(">>> dfdsfd: ", coursePageResponse.data);
+
     return (
         <Box sx={{
             display: 'flex',
