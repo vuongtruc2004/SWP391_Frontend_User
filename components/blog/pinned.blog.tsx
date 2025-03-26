@@ -7,6 +7,9 @@ import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
 import Image from "next/image";
 import Link from "next/link";
+import Markdown from "react-markdown";
+import rehypeRaw from "rehype-raw";
+import remarkGfm from "remark-gfm";
 
 const PinnedBlog = ({ blog }: { blog: BlogResponse }) => {
     return (
@@ -33,7 +36,17 @@ const PinnedBlog = ({ blog }: { blog: BlogResponse }) => {
                     {blog.title}
                 </Link>
 
-                <div className="line-clamp-5 text-sm my-1 text-gray-300" dangerouslySetInnerHTML={{ __html: blog.content }} />
+                <div className='line-clamp-5 my-1 text-sm text-gray-300'>
+                    <Markdown
+                        remarkPlugins={[remarkGfm]}
+                        rehypePlugins={[rehypeRaw]}
+                        components={{
+                            img: () => null,
+                        }}
+                    >
+                        {blog.content}
+                    </Markdown>
+                </div>
 
                 <div className="flex items-center gap-x-2 text-blue-500 text-sm">
                     <p className="text-green-400">Đăng bởi:</p>

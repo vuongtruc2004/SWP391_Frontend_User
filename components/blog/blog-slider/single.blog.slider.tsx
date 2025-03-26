@@ -7,6 +7,9 @@ import Image from 'next/image';
 import { storageUrl } from '@/utils/url';
 import { Divider } from '@mui/material';
 import { formatDate } from '@/utils/format';
+import Markdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
+import rehypeRaw from 'rehype-raw';
 
 const SingleBlogSlider = ({ blog }: { blog: BlogResponse; }) => {
     return (
@@ -40,7 +43,17 @@ const SingleBlogSlider = ({ blog }: { blog: BlogResponse; }) => {
                     {blog.title}
                 </Link>
 
-                <div className="line-clamp-3 text-sm my-1 text-gray-300" dangerouslySetInnerHTML={{ __html: blog.content }} />
+                <div className='line-clamp-3 my-1 text-sm text-gray-300'>
+                    <Markdown
+                        remarkPlugins={[remarkGfm]}
+                        rehypePlugins={[rehypeRaw]}
+                        components={{
+                            img: () => null,
+                        }}
+                    >
+                        {blog.content}
+                    </Markdown>
+                </div>
 
                 <div className="flex items-center gap-x-2 text-blue-500 text-sm">
                     <p className="text-green-400">Đăng bởi:</p>
@@ -60,7 +73,7 @@ const SingleBlogSlider = ({ blog }: { blog: BlogResponse; }) => {
                         Xem chi tiết
                     </Button>
                 </Link>
-            </Box >
+            </Box>
         </Box>
     )
 }

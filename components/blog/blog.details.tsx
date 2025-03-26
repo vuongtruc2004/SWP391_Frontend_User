@@ -9,6 +9,9 @@ import LocalLibraryOutlinedIcon from '@mui/icons-material/LocalLibraryOutlined';
 import Link from "next/link";
 import Image from "next/image";
 import { formatDate } from "@/utils/format";
+import Markdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+import rehypeRaw from "rehype-raw";
 
 const BlogDetails = ({ blog }: { blog: BlogResponse }) => {
     const avatarSrc = blog?.user?.avatar?.startsWith("http") ? blog?.user?.avatar : `${storageUrl}/avatar/${blog?.user?.avatar}`;
@@ -58,7 +61,7 @@ const BlogDetails = ({ blog }: { blog: BlogResponse }) => {
                 </section>
             </Box>
 
-            <div className="w-full h-[300px] relative">
+            <div className="w-full h-[300px] relative mb-7">
                 <Image src={`${storageUrl}/blog/${blog.thumbnail}`} alt={blog.title} fill sizes="(max-width: 1000px) 100vw" priority={true} style={{
                     objectFit: 'cover',
                     borderRadius: '6px',
@@ -66,12 +69,14 @@ const BlogDetails = ({ blog }: { blog: BlogResponse }) => {
                 }} />
             </div>
 
-            <div style={{
-                color: '#fff',
-                marginTop: '28px'
-            }}
-                dangerouslySetInnerHTML={{ __html: blog.content }}
-            />
+            <Markdown
+                remarkPlugins={[remarkGfm]}
+                rehypePlugins={[rehypeRaw]}
+            >
+                {blog.content}
+            </Markdown>
+
+            <a href={`${storageUrl}/blog/Dump20250325.sql`} download className="w-full h-10 bg-gray-300">Download file</a>
         </Box>
     )
 }

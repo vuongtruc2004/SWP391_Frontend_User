@@ -9,7 +9,6 @@ import ChatBubbleOutlineOutlinedIcon from '@mui/icons-material/ChatBubbleOutline
 import { useActionState, useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
-import { comment } from "./blog.interact.action";
 import ErrorOutlineRoundedIcon from '@mui/icons-material/ErrorOutlineRounded';
 import { slugifyText } from "@/helper/blog.helper";
 import { sendRequest } from "@/utils/fetch.api";
@@ -17,6 +16,7 @@ import { apiUrl } from "@/utils/url";
 import CommentList from "@/components/comments/list.comments";
 import { Divider } from "@mui/material";
 import { Client } from "@stomp/stompjs";
+import { comment } from "./blog.interact.action";
 
 const InteractOnBlog = ({ blog }: { blog: BlogResponse }) => {
     const { data: session, status } = useSession();

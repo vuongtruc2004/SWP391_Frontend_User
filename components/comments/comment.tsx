@@ -12,7 +12,7 @@ import PestControlIcon from '@mui/icons-material/PestControl';
 import { useSession } from 'next-auth/react'
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { Client } from '@stomp/stompjs';
-import { comment } from '@/features/blog/blog-details/blog.interact.action';
+import { comment } from '@/features/blog/blog.interact.action';
 import { isNumberObject } from 'util/types';
 
 const dateFormatter = new Intl.DateTimeFormat(undefined, {

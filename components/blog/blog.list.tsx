@@ -1,7 +1,7 @@
 'use client'
 import Box from "@mui/material/Box";
 import Pagination from "@mui/material/Pagination";
-import SingleBlogList from "../../components/blog/single.blog"
+import SingleBlogList from "./single.blog"
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import ListEmpty from "@/components/empty/list.empty";
 

@@ -1,5 +1,5 @@
-import BlogDetails from "@/components/blog/blog-details/blog.details";
-import InteractOnBlog from "@/features/blog/blog-details/interact.on.blog";
+import BlogDetails from "@/components/blog/blog.details";
+import InteractOnBlog from "@/features/blog/interact.on.blog";
 import { sendRequest } from "@/utils/fetch.api";
 import { apiUrl } from "@/utils/url";
 

@@ -1,5 +1,5 @@
 import { authOptions } from '@/app/api/auth/[...nextauth]/route';
-import BlogList from '@/features/blog/blog.list';
+import BlogList from '@/components/blog/blog.list';
 import BlogSearch from '@/features/blog/blog.search';
 import { sendRequest } from '@/utils/fetch.api';
 import { apiUrl } from '@/utils/url';

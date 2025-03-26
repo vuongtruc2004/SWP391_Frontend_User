@@ -4,7 +4,7 @@ import ErrorOutlineRoundedIcon from '@mui/icons-material/ErrorOutlineRounded';
 import { useSession } from 'next-auth/react';
 import { sendRequest } from '@/utils/fetch.api';
 import { apiUrl } from '@/utils/url';
-import { comment } from '@/features/blog/blog-details/blog.interact.action';
+import { comment } from '@/features/blog/blog.interact.action';
 import { Client } from '@stomp/stompjs';
 
 const ReplyComment = ({ blog, parentId, setChildComment, refreshBlog }: {
