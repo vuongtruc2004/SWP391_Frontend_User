@@ -6,12 +6,12 @@ import SingleCampaignRightSide from './single.campaign.rightside';
 import ListEmpty from '@/components/empty/list.empty';
 import { useCampaign } from '@/wrapper/course-campaign/course.campaign.wrapper';
 
-const CamapignModal = ({ open, setOpen }: {
+const CamapignModal = ({ open, setOpen, campaigns }: {
     open: boolean,
     setOpen: Dispatch<SetStateAction<boolean>>,
+    campaigns: CampaignResponse[]
 }) => {
 
-    const { campaigns } = useCampaign()
     const [selectedCampaign, setSelectedCampaign] = useState<CampaignResponse>();
 
 

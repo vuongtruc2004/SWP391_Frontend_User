@@ -2,6 +2,7 @@
 import { useRef, useState } from "react";
 import { motion } from "framer-motion";
 import CamapignModal from "@/features/campaign/campaign.modal";
+import { useCampaign } from "@/wrapper/course-campaign/course.campaign.wrapper";
 
 const CampaignIcon = () => {
     const [isDragging, setIsDragging] = useState(false);
@@ -13,6 +14,13 @@ const CampaignIcon = () => {
             setOpenModal(true)
         }
     };
+
+    const { campaigns } = useCampaign()
+
+    if (campaigns && campaigns.length === 0) {
+        return <>
+        </>
+    }
 
     return (
         <>
@@ -42,7 +50,7 @@ const CampaignIcon = () => {
                 whileTap={{ cursor: 'grabbing' }}
                 onClick={openCampaignModal}
             />
-            <CamapignModal open={openModal} setOpen={setOpenModal} />
+            <CamapignModal open={openModal} setOpen={setOpenModal} campaigns={campaigns} />
         </>
     );
 }
