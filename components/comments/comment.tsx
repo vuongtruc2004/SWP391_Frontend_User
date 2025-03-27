@@ -59,7 +59,6 @@ const Comment = ({ commentResponse, blog, setComments, refreshBlog }: {
             brokerURL: "ws://localhost:8386/ws/websocket",
             reconnectDelay: 5000, // Thử kết nối lại sau 5s nếu mất kết nối
             onConnect: () => {
-                console.log("Connected to WebSocket");
 
                 // Subscribe đến topic nhận bình luận mới
                 client.subscribe(`/topic/comments/${blog.blogId}`, (message) => {
@@ -77,9 +76,7 @@ const Comment = ({ commentResponse, blog, setComments, refreshBlog }: {
 
                 client.subscribe(`/topic/likes/${commentResponse.commentId}`, (message) => {
                     const newLikeComment = JSON.parse(message.body);
-                    console.log("newLikeComment: ", newLikeComment);
                     if (newLikeComment.comment.commentId === commentResponse.commentId) {
-                        console.log("Co check dung id nhe va so luong like: ", newLikeComment?.comment.likes.length);
                         setLikeCount(newLikeComment?.comment.likes.length);
                     }
 
@@ -87,12 +84,17 @@ const Comment = ({ commentResponse, blog, setComments, refreshBlog }: {
 
                 client.subscribe(`/topic/likes/dislike/${commentResponse.commentId}`, (message) => {
                     const refreshComment = JSON.parse(message.body);
-                    console.log("dislike Comment: ", refreshComment);
                     if (refreshComment.commentId === commentResponse.commentId) {
                         setLikeCount(refreshComment?.likes?.length);
                     }
                 })
                 // Gọi API lấy danh sách bình luận ban đầu
+                client.subscribe('/topic/comments/delete', (message) => {
+                    if (message.body.toString() === "deleteSuccess") {
+                        setComments(prev => prev.filter(comment => comment !== commentResponse));
+                        refreshBlog()
+                    }
+                })
 
             },
             onStompError: (error) => {
@@ -112,6 +114,9 @@ const Comment = ({ commentResponse, blog, setComments, refreshBlog }: {
         const deleteComment = await sendRequest<ApiResponse<String>>({
             url: `${apiUrl}/comments/delete-comment/${commentResponse.commentId}`,
             method: 'DELETE',
+            headers: {
+                Authorization: `Bearer ${session?.accessToken}`
+            }
         });
         if (deleteComment.status === 200) {
             setComments(prev => prev.filter(comment => comment !== commentResponse));
