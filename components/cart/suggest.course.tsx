@@ -101,7 +101,6 @@ const SuggestCourse = () => {
                 loop={true}
             >
                 {courses.map(course => {
-                    console.log(">>> check crs: ", course);
                     return (
                         <SwiperSlide key={course.courseId}>
                             <SingleCourseSuggest course={course} />

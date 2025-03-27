@@ -16,17 +16,12 @@ export const CourseCampaignWrapper = ({ children }: { children: React.ReactNode 
     const [campaigns, setCampaigns] = useState<CampaignResponse[]>([]);
 
     const getCampaign = async () => {
-        if (status === 'authenticated') {
-            const response = await sendRequest<ApiResponse<CampaignResponse[]>>({
-                url: `${apiUrl}/campaigns/all`,
-                headers: {
-                    Authorization: `Bearer ${session.accessToken}`,
-                },
-            });
+        const response = await sendRequest<ApiResponse<CampaignResponse[]>>({
+            url: `${apiUrl}/campaigns/all`,
+        });
 
-            if (response.status === 200) {
-                setCampaigns(response.data)
-            }
+        if (response.status === 200) {
+            setCampaigns(response.data)
         }
     }
 

@@ -152,10 +152,8 @@ const Comment = ({ commentResponse, blog, setComments, refreshBlog }: {
                 },
 
             });
-            console.log(dislikeComment.status)
             if (dislikeComment.status === 200) {
                 setLikeComment(false);
-                console.log(likeComment)
             }
         }
 
