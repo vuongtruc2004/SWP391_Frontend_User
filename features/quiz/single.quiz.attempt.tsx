@@ -45,7 +45,14 @@ const SingleQuizAttempt = ({ quizAttempt, quiz, course, setOpen, setSelectQuizAt
                 ) : (
                     <>
                         <p className="text-orange-500 font-semibold">Chưa hoàn thành</p>
-                        <p className="text-sm text-gray-300">Thời gian làm bài còn: <span>{remainingTime ? formatToHHMMSS(remainingTime) : "00:00:00"}</span></p>
+                        <p className="text-sm text-gray-300">
+                            {remainingTime !== null ?
+                                remainingTime > 0 ?
+                                    `Thời gian làm bài còn lại: ${formatToHHMMSS(remainingTime)}` :
+                                    "Đã hết thời gian làm bài" :
+                                'Đang tải...'}
+
+                        </p>
                     </>
                 )}
             </td>
@@ -55,7 +62,7 @@ const SingleQuizAttempt = ({ quizAttempt, quiz, course, setOpen, setSelectQuizAt
                 {quizAttempt.endTime && quiz.allowSeeAnswers && (
                     <p onClick={handleOpenQuizReview} className="cursor-pointer transition-all duration-200 text-green-500 hover:text-green-300 hover:underline">Xem bài làm</p>
                 )}
-                {!quizAttempt.endTime && (
+                {!quizAttempt.endTime && (remainingTime !== null && remainingTime > 0) && (
                     <Link href={`${slugifyText(course.courseName + "-" + course.courseId)}/quiz/start/${slugifyText(quiz.title + "-" + quiz.quizId)}`} className="text-orange-500 transition-all duration-200 hover:underline hover:text-orange-300">
                         Tiếp tục làm bài
                     </Link>
