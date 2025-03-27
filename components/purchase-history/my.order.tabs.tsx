@@ -4,7 +4,7 @@ import ListEmpty from "../empty/list.empty";
 import Link from "next/link";
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { orderStatuses } from "./order.status.properties";
-import SingleOrder from "@/features/purchase-history/single.order";
+import SingleOrder from "@/features/my-order/single.order";
 import { useUserOrder } from "@/wrapper/user-order/user.order.wrapper";
 
 const MyOrderTabs = () => {

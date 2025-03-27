@@ -83,11 +83,7 @@ const OrderStatusBox = ({ order }: { order: OrderResponse }) => {
                         )}
                     </div>
 
-                    <div className="flex items-center gap-x-3 font-semibold">
-                        <p onClick={handleContinuePurchase} className="text-purple-300 cursor-pointer hover:text-purple-400 transition-all duration-200">Tiếp tục thanh toán</p>
-                        <span>|</span>
-                        <p onClick={handleCancelOrder} className="text-gray-300 hover:text-gray-400 transition-all duration-200 cursor-pointer">Hủy</p>
-                    </div>
+                    <p onClick={handleContinuePurchase} className="text-purple-300 cursor-pointer hover:text-purple-400 transition-all duration-200">Tiếp tục thanh toán</p>
                 </div>
             )}
 
