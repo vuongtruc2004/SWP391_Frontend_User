@@ -14,9 +14,11 @@ import { slugifyText } from "@/helper/blog.helper";
 import { sendRequest } from "@/utils/fetch.api";
 import { apiUrl } from "@/utils/url";
 import CommentList from "@/components/comments/list.comments";
-import { Divider } from "@mui/material";
+import { Divider, InputAdornment, Popover } from "@mui/material";
 import { Client } from "@stomp/stompjs";
 import { comment } from "./blog.interact.action";
+import EmojiPicker from "emoji-picker-react";
+import EmojiEmotionsIcon from "@mui/icons-material/EmojiEmotions";
 
 const InteractOnBlog = ({ blog }: { blog: BlogResponse }) => {
     const { data: session, status } = useSession();
@@ -28,6 +30,18 @@ const InteractOnBlog = ({ blog }: { blog: BlogResponse }) => {
     const [comments, setComments] = useState<CommentResponse[]>([]);
     const [blogRefresh, setBlogRefresh] = useState<BlogResponse>(blog);
     const [stompClient, setStompClient] = useState<Client | null>(null)
+    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+    const [isFocused, setIsFocused] = useState(false);
+    const [text, setText] = useState("");
+
+    const formRef = useRef<HTMLFormElement>(null);  // Ref cho form
+
+    const handleEmojiClick = (emojiObject: any) => {
+        if (inputRef.current) {
+            inputRef.current.value += emojiObject.emoji; // Thêm emoji vào text
+        }
+    };
+
     const redirectToLogin = () => {
         if (!session) {
             sessionStorage.setItem('prevUrl', `/blog/${slugifyText(blog.title + "-" + blog.blogId)}`);
@@ -188,24 +202,52 @@ const InteractOnBlog = ({ blog }: { blog: BlogResponse }) => {
             </ul>
             <Divider />
 
-            <form action={formAction} className="my-5">
+            <form ref={formRef} action={formAction} className="my-5">
                 <TextField
                     placeholder="Nhập bình luận của bạn"
                     multiline
                     fullWidth
-                    minRows={5}
                     inputRef={inputRef}
-                    onFocus={redirectToLogin}
+                    minRows={5}
                     name="comment"
                     error={state?.comment.error}
-                    helperText={state?.comment.error && (
+                    helperText={state && state.comment.error && (
                         <span className="flex items-center gap-x-1">
                             <ErrorOutlineRoundedIcon sx={{ fontSize: '16px' }} />
                             {state?.comment.message}
                         </span>
                     )}
                     disabled={status !== "authenticated"}
+                    slotProps={{
+                        input: {
+                            endAdornment:
+                                <InputAdornment position="end">
+                                    <IconButton onClick={(event) => setAnchorEl(event.currentTarget)}>
+                                        <EmojiEmotionsIcon />
+                                    </IconButton>
+                                </InputAdornment>
+
+                        }
+                    }}
                 />
+                <Popover
+                    open={Boolean(anchorEl)}
+                    anchorEl={anchorEl}
+                    onClose={() => setAnchorEl(null)}
+                    anchorOrigin={{
+                        vertical: "bottom",
+                        horizontal: "left",
+                    }}
+                >
+                    <Box sx={{
+                        '.epr_-6npj90': { backgroundColor: 'black' },
+                        '.epr_-xuzz9z': { backgroundColor: 'black' },
+                        '.epr_-2zpaw9': { backgroundColor: '#212529' },
+                        '.epr_qyh4cg': { display: 'none' },
+                    }}>
+                        <EmojiPicker onEmojiClick={handleEmojiClick} />
+                    </Box>
+                </Popover>
                 <Button
                     loading={pending}
                     variant="contained"

@@ -1,19 +1,16 @@
 'use client'
 import { apiUrl, storageUrl } from '@/utils/url'
 import { Avatar, Button, IconButton, Popover, Tooltip } from '@mui/material'
-import React, { Dispatch, SetStateAction, useActionState, useEffect, useRef, useState } from 'react'
+import React, { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import FavoriteSharpIcon from '@mui/icons-material/FavoriteSharp';
 import ChatBubbleOutlineOutlinedIcon from '@mui/icons-material/ChatBubbleOutlineOutlined';
 import CommentList from './list.comments';
 import { sendRequest } from '@/utils/fetch.api';
-import { useRouter } from 'next/navigation';
 import CancelPresentationIcon from '@mui/icons-material/CancelPresentation';
 import PestControlIcon from '@mui/icons-material/PestControl';
 import { useSession } from 'next-auth/react'
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { Client } from '@stomp/stompjs';
-import { comment } from '@/features/blog/blog.interact.action';
-import { isNumberObject } from 'util/types';
 
 const dateFormatter = new Intl.DateTimeFormat(undefined, {
     dateStyle: 'medium',
@@ -46,7 +43,6 @@ const Comment = ({ commentResponse, blog, setComments, refreshBlog }: {
             });
             if (checkTym.status === 200) {
                 setLikeComment(checkTym.data)
-                console.log("vao cl")
             }
         }
 
@@ -91,7 +87,7 @@ const Comment = ({ commentResponse, blog, setComments, refreshBlog }: {
                 // Gọi API lấy danh sách bình luận ban đầu
                 client.subscribe('/topic/comments/delete', (message) => {
                     if (message.body.toString() === "deleteSuccess") {
-                        setComments(prev => prev.filter(comment => comment !== commentResponse));
+                        // setComments(prev => prev.filter(comment => comment !== commentResponse));
                         refreshBlog()
                     }
                 })
@@ -143,13 +139,11 @@ const Comment = ({ commentResponse, blog, setComments, refreshBlog }: {
             });
 
             if (likeBlog.status === 200) {
-                console.log("vao roi nhe")
                 setLikeComment(true);
                 // router.refresh();
             }
 
         } else {
-            console.log("Bat dau chuyen trang thai true->false")
             const dislikeComment = await sendRequest<ApiResponse<String>>({
                 url: `${apiUrl}/likes/dislike-comment/${commentResponse.commentId}`,
                 method: 'DELETE',
@@ -166,8 +160,6 @@ const Comment = ({ commentResponse, blog, setComments, refreshBlog }: {
         }
 
     }
-
-
 
     // Hàm toggle trạng thái của từng comment dựa vào commentId
     const toggleChildrenVisibility = (commentId: number) => {
