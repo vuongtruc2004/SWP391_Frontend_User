@@ -86,16 +86,11 @@ declare global {
 
     interface CourseDetailsResponse extends CourseResponse {
         introduction: string;
-        accepted: boolean;
         expert: ExpertDetailsResponse;
         subjects: SubjectResponse[];
         chapters: ChapterResponse[];
         averageRating: number;
         totalRating: number;
-        orderStatus: string;
-        orderDetails: OrderDetailsResponse[];
-        totalAmount: number;
-        course: CourseResponse;
     }
 
     interface ChapterResponse {
