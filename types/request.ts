@@ -75,7 +75,7 @@ declare global {
 
     interface CommentRequest {
         content: string,
-        blog: number,
+        blog: number | null,
         parentComment: number | null,
     }
 

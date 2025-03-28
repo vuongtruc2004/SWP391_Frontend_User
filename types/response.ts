@@ -287,7 +287,6 @@ declare global {
         parentComment: CommentResponse,
         replies: CommentResponse[],
         likes: LikeResponse[],
-        blog: BlogResponse,
 
     }
 
