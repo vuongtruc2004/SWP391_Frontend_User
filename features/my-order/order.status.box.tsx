@@ -73,7 +73,7 @@ const OrderStatusBox = ({ order }: { order: OrderResponse }) => {
                 <div className="flex items-center justify-between px-3.5 py-1.5 border border-orange-500 rounded-md">
                     <div>
                         {remainingTime && remainingTime > 0 ? (
-                            <p>Đơn hàng sẽ hết hạn sau: <strong>{formatToMMSS(remainingTime)}</strong></p>
+                            <p>Thanh toán sẽ hết hạn sau: <strong>{formatToMMSS(remainingTime)}</strong></p>
                         ) : (
                             <p>Đơn</p>
                         )}

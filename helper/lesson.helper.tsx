@@ -15,7 +15,7 @@ export const countCompletionOfAChapter = (chapter: ChapterResponse, userProgress
     return total > 0 ? (completed / total) * 100 : 0;
 }
 
-export const countCompletedLessonsOfACourse = (course: CourseDetailsResponse | CourseResponse, userProgresses: UserProgressResponse[]): number => {
+export const countCompletedLessonsAndQuizOfACourse = (course: CourseDetailsResponse | CourseResponse, userProgresses: UserProgressResponse[]): number => {
     return userProgresses.filter(progress => progress.courseId === course.courseId).length;
 }
 

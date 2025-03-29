@@ -6,7 +6,7 @@ import { BorderLinearProgress } from "@/components/course/course-slider/custom.p
 import { useCourseView } from "@/wrapper/course-view/course.view.wrapper";
 import SingleChapter from "./single.chapter";
 import { useUserProgress } from "@/wrapper/user-progress/user.progress.wrapper";
-import { countCompletedLessonsOfACourse, countCompletedPercentOfACourse } from "@/helper/lesson.helper";
+import { countCompletedLessonsAndQuizOfACourse, countCompletedPercentOfACourse } from "@/helper/lesson.helper";
 import CloseIcon from '@mui/icons-material/Close';
 
 const ChaptersList = () => {
@@ -45,7 +45,7 @@ const ChaptersList = () => {
 
             <div className="px-5 py-5">
                 <div className={`text-sm flex items-center justify-between mb-1.5 text-gray-400`}>
-                    <p>Đã hoàn thành {countCompletedLessonsOfACourse(course, userProgresses)} / {course.totalLessons + course.totalQuizzes}</p>
+                    <p>Đã hoàn thành {countCompletedLessonsAndQuizOfACourse(course, userProgresses)} / {course.totalLessons + course.totalQuizzes}</p>
                     <EmojiEventsIcon sx={{ fontSize: '1.2rem' }} className={completionOfACourse >= 99.9 ? "text-[#faaf00]" : ""} />
                 </div>
                 <BorderLinearProgress variant="determinate" value={completionOfACourse} height={4} thumb_color={completionOfACourse >= 99.9 ? "#05df72" : "#dab2ff"} />

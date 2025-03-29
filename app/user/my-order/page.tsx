@@ -1,4 +1,4 @@
-import MyOrderTabs from '@/components/purchase-history/my.order.tabs';
+import MyOrderTabs from '@/components/my-order/my.order.tabs';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
