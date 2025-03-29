@@ -1,7 +1,7 @@
 import { apiUrl } from "@/utils/url";
-import { Avatar, Box, Button, CircularProgress, IconButton, InputAdornment, Popover, Rating, Snackbar, SnackbarContent, TextField } from "@mui/material";
+import { Avatar, Box, Button, IconButton, InputAdornment, Popover, Rating, TextField } from "@mui/material";
 import { useSession } from "next-auth/react";
-import { useState, useEffect, useRef, Dispatch, SetStateAction } from "react";
+import { useState, useEffect, useRef } from "react";
 import EmojiPicker from "emoji-picker-react";
 import EmojiEmotionsIcon from "@mui/icons-material/EmojiEmotions";
 import { sendRequest } from "@/utils/fetch.api";
@@ -9,7 +9,7 @@ import { useCourseRate } from "@/wrapper/course-rate/course.rate.wrapper";
 import { useUserAvatar } from "@/wrapper/user-avatar/user.avatar.wrapper";
 import ClearIcon from '@mui/icons-material/Clear';
 
-const CreateCourseRating = ({ course, setOpenSnackbarSuccess }: { course: CourseDetailsResponse, setOpenSnackbarSuccess: Dispatch<SetStateAction<boolean>> }) => {
+const CreateCourseRating = ({ course }: { course: CourseDetailsResponse }) => {
     const { fetchRatePage } = useCourseRate();
     const { avatarSrc, fullname } = useUserAvatar();
     const { data: session, status } = useSession();
@@ -17,9 +17,8 @@ const CreateCourseRating = ({ course, setOpenSnackbarSuccess }: { course: Course
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const [text, setText] = useState("");
     const [isFocused, setIsFocused] = useState(false);
-    const [loading, setLoading] = useState(false);
     const containerRef = useRef<HTMLDivElement>(null);
-    const [openSnackbar, setOpenSnackbar] = useState(false);
+    const [errorMessage, setErrorMessage] = useState("");
 
     const handleEmojiClick = (emojiObject: any) => {
         setText((prevText) => prevText + emojiObject.emoji);
@@ -43,16 +42,9 @@ const CreateCourseRating = ({ course, setOpenSnackbarSuccess }: { course: Course
 
     const handleOk = async () => {
         if (status === 'authenticated') {
-            setLoading(true);
-            setTimeout(async () => {
-                if (text.split(/\s+/).length > 50) {
-                    setOpenSnackbar(true)
-                    setTimeout(() => {
-                        setOpenSnackbar(false);
-                    }, 3000);
-                    setLoading(false)
-                    return
-                }
+            if (text.split(/\s+/).length >= 50) {
+                setErrorMessage("Đánh giá không được vượt quá 50 từ!");
+            } else {
                 const rateRequest: RateRequest = {
                     content: text,
                     stars: star,
@@ -70,102 +62,87 @@ const CreateCourseRating = ({ course, setOpenSnackbarSuccess }: { course: Course
                 });
 
                 if (ratingResponse.status === 200) {
-                    setIsFocused(false)
-                    setOpenSnackbarSuccess(true);
-                    setTimeout(() => {
-                        setOpenSnackbarSuccess(false);
-                    }, 3000)
+                    setIsFocused(false);
+                    setErrorMessage("");
                 }
-
                 fetchRatePage();
-
-                setLoading(false);
-            }, 500);
+            }
         }
     };
 
     return (
-        <>
-            <Snackbar open={openSnackbar} anchorOrigin={{ vertical: "top", horizontal: "center" }}>
-                <SnackbarContent message="Vui lòng bình luận không quá 50 từ!" sx={{ backgroundColor: "red", color: "white", fontWeight: "bold" }} />
-            </Snackbar>
+        <div className="my-8" ref={containerRef}>
+            <div className="flex gap-5 items-center">
+                <Avatar alt='User avatar' src={avatarSrc} sx={{ width: "60px", height: "60px" }}>
+                    {fullname.charAt(0).toUpperCase()}
+                </Avatar>
 
-            {loading ? (
-                <div className="flex items-center justify-center">
-                    <CircularProgress />
-                </div>
-            ) : (
-                <div className="my-8" ref={containerRef}>
-                    <div className="flex gap-5 items-center">
-                        <Avatar alt='User avatar' src={avatarSrc} sx={{ width: "60px", height: "60px" }}>
-                            {fullname.charAt(0).toUpperCase()}
-                        </Avatar>
+                <div className="flex-1 pr-8">
+                    {isFocused && (
+                        <Rating value={star} size="small" onChange={(event, newStar) => setStar(newStar)} />
+                    )}
 
-                        <div className="flex-1 pr-8">
-                            {isFocused && (
-                                <Rating value={star} size="small" onChange={(event, newStar) => setStar(newStar)} />
-                            )}
+                    <TextField
+                        multiline
+                        maxRows={4}
+                        variant="standard"
+                        placeholder={!isFocused ? "Nhập đánh giá của bạn" : ""}
+                        onChange={(e) => setText(e.target.value)}
+                        onFocus={() => setIsFocused(true)}
+                        fullWidth
+                        value={text}
+                        slotProps={{
+                            input: {
+                                endAdornment: isFocused && (
+                                    <InputAdornment position="end">
+                                        <IconButton onClick={(event) => setAnchorEl(event.currentTarget)}>
+                                            <EmojiEmotionsIcon />
+                                        </IconButton>
+                                    </InputAdornment>
+                                ),
+                            }
+                        }}
+                        error={errorMessage !== ""}
+                        helperText={errorMessage !== "" && errorMessage}
+                    />
 
-                            <TextField
-                                multiline
-                                maxRows={4}
-                                variant="standard"
-                                placeholder={!isFocused ? "Nhập đánh giá của bạn" : ""}
-                                onChange={(e) => setText(e.target.value)}
-                                onFocus={() => setIsFocused(true)}
-                                fullWidth
-                                value={text}
-                                slotProps={{
-                                    input: {
-                                        endAdornment: isFocused && (
-                                            <InputAdornment position="end">
-                                                <IconButton onClick={(event) => setAnchorEl(event.currentTarget)}>
-                                                    <EmojiEmotionsIcon />
-                                                </IconButton>
-                                            </InputAdornment>
-                                        ),
-                                    }
-                                }}
-                            />
+                    <Popover
+                        open={Boolean(anchorEl)}
+                        anchorEl={anchorEl}
+                        onClose={() => setAnchorEl(null)}
+                        anchorOrigin={{
+                            vertical: "bottom",
+                            horizontal: "left",
+                        }}
+                    >
+                        <Box sx={{
+                            '.epr_-6npj90': { backgroundColor: 'black' },
+                            '.epr_-xuzz9z': { backgroundColor: 'black' },
+                            '.epr_-2zpaw9': { backgroundColor: '#212529' },
+                            '.epr_qyh4cg': { display: 'none' },
+                        }}>
+                            <EmojiPicker onEmojiClick={handleEmojiClick} />
+                        </Box>
+                    </Popover>
 
-                            <Popover
-                                open={Boolean(anchorEl)}
-                                anchorEl={anchorEl}
-                                onClose={() => setAnchorEl(null)}
-                                anchorOrigin={{
-                                    vertical: "bottom",
-                                    horizontal: "left",
-                                }}
-                            >
-                                <Box sx={{
-                                    '.epr_-6npj90': { backgroundColor: 'black' },
-                                    '.epr_-xuzz9z': { backgroundColor: 'black' },
-                                    '.epr_-2zpaw9': { backgroundColor: '#212529' },
-                                    '.epr_qyh4cg': { display: 'none' },
-                                }}>
-                                    <EmojiPicker onEmojiClick={handleEmojiClick} />
-                                </Box>
-                            </Popover>
+                    {isFocused && (
+                        <div className='mt-3 flex justify-end gap-x-3'>
+                            <Button sx={{ borderRadius: '20px' }} variant="outlined" color="secondary" startIcon={<ClearIcon />} onClick={() => {
+                                setIsFocused(false);
+                                setText("");
+                                setErrorMessage("");
+                            }}>
+                                Hủy
+                            </Button>
 
-                            {isFocused && (
-                                <div className='mt-3 flex justify-end gap-x-3'>
-                                    <Button sx={{ borderRadius: '20px' }} variant="outlined" color="secondary" startIcon={<ClearIcon />} onClick={() => {
-                                        setIsFocused(false);
-                                        setText("");
-                                    }}>
-                                        Hủy
-                                    </Button>
-
-                                    <Button sx={{ borderRadius: '20px' }} variant="contained" disabled={text.trim() === "" || !star} onClick={handleOk}>
-                                        Đánh giá
-                                    </Button>
-                                </div>
-                            )}
+                            <Button sx={{ borderRadius: '20px' }} variant="contained" disabled={text.trim() === "" || !star} onClick={handleOk}>
+                                Đánh giá
+                            </Button>
                         </div>
-                    </div>
+                    )}
                 </div>
-            )}
-        </>
+            </div>
+        </div>
     );
 };
 

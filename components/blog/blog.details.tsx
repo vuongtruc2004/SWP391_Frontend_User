@@ -75,8 +75,6 @@ const BlogDetails = ({ blog }: { blog: BlogResponse }) => {
             >
                 {blog.content}
             </Markdown>
-
-            <a href={`${storageUrl}/blog/Dump20250325.sql`} download className="w-full h-10 bg-gray-300">Download file</a>
         </Box>
     )
 }

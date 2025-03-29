@@ -1,6 +1,6 @@
 'use client'
 import { BorderLinearProgress } from '@/components/course/course-slider/custom.progress'
-import { Alert, Button, Popover, Snackbar, Typography } from '@mui/material'
+import { Alert, Button, Popover, Snackbar } from '@mui/material'
 import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
 import { useDoQuiz } from '@/wrapper/do-quiz/do.quiz.wrapper';
 import { useEffect, useState } from 'react';
@@ -14,7 +14,6 @@ import { countCompletionPercent } from '@/helper/quiz.helper';
 import { formatToMMSS } from '@/utils/format';
 import { useUserProgress } from '@/wrapper/user-progress/user.progress.wrapper';
 import { useCourseView } from '@/wrapper/course-view/course.view.wrapper';
-import { useWebSocket } from '@/hooks/use.websocket';
 
 const QuestionButton = () => {
     const { data: session, status } = useSession();
@@ -82,8 +81,6 @@ const QuestionButton = () => {
         }
     }
 
-
-
     useEffect(() => {
         const timeLeft = maxEndTime.diff(dayjs(), 'second');
         setRemainingTime(timeLeft > 0 ? timeLeft : 0);
@@ -95,7 +92,7 @@ const QuestionButton = () => {
                 const updatedTime = maxEndTime.diff(dayjs(), 'second');
                 setRemainingTime(updatedTime > 0 ? updatedTime : 0);
 
-                if (updatedTime > 0 && updatedTime % 30 === 0) {
+                if (updatedTime > 0 && updatedTime % 300 === 0) {
                     handleSaveQuizAttempt(true);
                 }
 

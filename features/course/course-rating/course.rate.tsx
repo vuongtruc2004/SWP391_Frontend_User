@@ -17,7 +17,6 @@ const CourseRate = ({ course }: { course: CourseDetailsResponse }) => {
     const { data: session } = useSession();
     const [myRating, setMyRating] = useState<RateResponse | null>(null);
     const [myOrder, setMyOrder] = useState<OrderDetailsResponse | null>(null);
-    const [openSnackbarSuccess, setOpenSnackbarSuccess] = useState(false);
 
     const handleStarsFilter = (stars: number) => {
         setStarsFilter(stars);
@@ -94,7 +93,7 @@ const CourseRate = ({ course }: { course: CourseDetailsResponse }) => {
                 <span>đánh giá</span>
             </div>
 
-            <div className="flex items-center gap-x-3 mb-4">
+            <div className="flex items-center gap-x-3 mb-5">
                 <Button variant="contained" color='info' onClick={() => handleStarsFilter(0)}>Tất cả</Button>
                 {Array.from({ length: 5 }).map((_, index) => {
                     const star = 5 - index;
@@ -112,7 +111,7 @@ const CourseRate = ({ course }: { course: CourseDetailsResponse }) => {
                 })}
             </div>
 
-            {(myRating === null && myOrder !== null) && <CreateCourseRating course={course} setOpenSnackbarSuccess={setOpenSnackbarSuccess} />}
+            {(myRating === null && myOrder !== null) && <CreateCourseRating course={course} />}
 
             {rateList.length ? (
                 <>
@@ -149,7 +148,6 @@ const CourseRate = ({ course }: { course: CourseDetailsResponse }) => {
             )}
 
             <Snackbar
-                open={openSnackbarSuccess}
                 anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
             >
                 <SnackbarContent

@@ -288,7 +288,7 @@ const Comment = ({
                         justifyContent: "flex-start",
                       }}
                       onClick={handleDeleteComment}>
-                      Xóa thông báo này
+                      Xóa bình luận này
                     </Button>
                   )}
 
@@ -316,9 +316,8 @@ const Comment = ({
       {childCommentList !== null && (
         <>
           <div
-            className={`flex ${
-              !childrenVisibility[commentResponse.commentId] ? "hidden" : ""
-            }`}>
+            className={`flex ${!childrenVisibility[commentResponse.commentId] ? "hidden" : ""
+              }`}>
             <div className="w-[2px] bg-gray-500"></div>
             <div className="pl-6 grow box-border">
               <CommentList
